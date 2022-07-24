@@ -96,22 +96,30 @@
         <h1 class="display-6 fw-bold">Data Pipeline</h1>
         <p class="col-md-8 fs-5">Define your own data.</p>
         <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Upload x attributes to Buffer</button>
-        <br>
-        <text>Upload x attributes in the csv format from local directory to Buffer.</text>
-        <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Upload y attributes to Buffer</button>
-        <br>
-        <text>Upload y attributes in the csv format from local directory to Buffer.</text>
-        <br><br>
-        <!-- <a href="./model" class="btn btn-primary btn-lg">Save File to Server</a> -->
-        <button class="btn btn-primary btn-lg" type="button">Save File to Server</button>
-        <br>
-        <text>Save file from Buffer to Server in a directory.</text>
-        <br><br>
-        <!-- <p class="col-md-8 fs-5">Data Cleaning Rules</p>
-        <p class="col-md-8 fs-5">Data Transformation Rules</p>
-        <p class="col-md-8 fs-5">Data Featuring Rules</p> -->
+         <form action="/pipeline/data/upload" method="post" enctype="multipart/form-data">
+          <div>
+              <label class="col-md-8 fs-4">Choose x attributes in the csv format from local directory to Buffer.</label>
+              <label for="data_x" class="btn btn-primary btn-lg">Choose</label>
+              <input type="file" id="data_x" name="file_x" hidden >
+              <br>
+              <text><b>Current x attributes file : {{filename_x}}</b></text>
+              <br><br>
+              <label class="col-md-8 fs-4">Choose y attributes in the csv format from local directory to Buffer.</label>
+              <label for="data_y" class="btn btn-primary btn-lg">Choose</label>
+              <input type="file" id="data_y" name="file_y" hidden >
+              <br>
+              <text><b>Current y attributes file : {{filename_y}}</b></text>
+          </div>
+          <br><br>
+          <div>
+              <label class="col-md-8 fs-4">Upload file to Server</label>
+              <label for="save_data" class="btn btn-primary btn-lg">Upload</label>
+              <input type="submit" id="save_data" class="btn btn-primary btn-lg" hidden>
+              <br>
+              <text>Save file from Buffer to Server in a directory.</text>
+          </div>
+       </form>
+
       </div>
     </div>
 
