@@ -1,10 +1,11 @@
-from typing import List
-from fastapi import FastAPI, Request, File, UploadFile, Form
+from typing import List, Union
+from fastapi import FastAPI, Request, File, UploadFile, Form, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-
+import os
+import shutil
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -14,37 +15,44 @@ app.mount(
     name="static",
 )
 
+class PathManager():
+   """
+   In charge of changing work directory, need to construct it in the main code.
+   """
+   def __init__(self, rootPath) -> None:
+      self.rootPath = rootPath
+
+   def backToRoot(self):
+      os.chdir(self.rootPath)
+
+   def createUploadPath(self):
+      UPLOAD_ROOT_PATH = "./upload_data"
+      try:
+         os.mkdir(UPLOAD_ROOT_PATH)
+         os.chdir(UPLOAD_ROOT_PATH)
+      except:
+         os.chdir(UPLOAD_ROOT_PATH)
+
+   def createDirectoryInUploadPath(self, directoryName):
+      try:
+         shutil.rmtree(directoryName)
+         os.mkdir(directoryName)
+      except Exception as e: 
+         os.mkdir(directoryName)
+
+
+global pathManager
+
+# back to project directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+os.chdir("..")
+pathManager = PathManager(os.getcwd())
+
+
+# Function
 @app.get("/")
 def read_root():
-   return {"Hello": "World"}
-
-# testing 
-@app.get('/form')
-def form_post(request: Request):
-    result = 'Type a number'
-    return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
-
-
-@app.post('/form')
-def form_post(request: Request, num: int = Form(...)):
-    result = num
-    print(request)
-    return templates.TemplateResponse('form.html', context={'request': request, 'result': result, 'num': num})
-
-# testing 
-@app.get('/f/')
-async def ff(request:Request):
-    return templates.TemplateResponse('f1.html',{"request":request})
-
-@app.post('/upfile/')
-async def up_f(request:Request,file_list:List[bytes]=File(...)):
-    return templates.TemplateResponse('f.html',{"request":request,"file_sizes":[len(dd)/1024 for dd in file_list]})
-
-@app.post('/upfile1/')
-async def up_f1(request:Request,file_list:List[UploadFile]=File(...)):
-    return templates.TemplateResponse('f.html',{"request":request,"file_names":[dd.filename for dd in file_list]})
-
-
+   return {"Hello": "World", "s":os.path.dirname(os.path.abspath(__file__))}
 
 # developing
 @app.get("/pipeline/platform")
@@ -55,19 +63,37 @@ def pipeline_platform(request: Request):
 def pipeline_data(request: Request):
    return templates.TemplateResponse("data.html",{"request":request})
 
-@app.post("/pipeline/data/upload")
-async def pipeline_data_upload_x(request: Request, file_x: UploadFile = File(...), file_y: UploadFile = File(...)): 
+@app.post("/pipeline/data")
+async def pipeline_data_upload(request: Request, directoryName: str = Form(default=None, max_length=50), file_x: UploadFile = File(...), file_y: UploadFile = File(...)):  # directory__Name: Union[str, None] = Query(default=None, max_length=50)
+      
+      global pathManager
+
+      pathManager.createUploadPath()
+      pathManager.createDirectoryInUploadPath(directoryName)
+
       filelist = [file_x, file_y]
-      for file in filelist:
+      
+      for i, file in enumerate(filelist):
+         
          try:
             contents = await file.read()
-            with open(file.filename, 'wb') as f:
-                  f.write(contents)
-         except Exception:
+            # X(labeling)
+            if i == 0:
+               with open(os.path.join(directoryName, "X_" + file.filename), 'wb') as f:
+                     f.write(contents)
+            # Y(labeling)
+            elif i == 1:
+               with open(os.path.join(directoryName, "Y_" + file.filename), 'wb') as f:
+                     f.write(contents)
+         except Exception as e:
+            print(e)
             return {"message": "There was an error uploading the file"}
          finally:
             await file.close()
-      return templates.TemplateResponse("data.html", context = {'request': request, "filename_x" : file_x.filename, "filename_y" : file_y.filename})
+
+      pathManager.backToRoot()   
+
+      return templates.TemplateResponse("data.html", context = {'request': request, "directoryName": directoryName, "filename_x" : file_x.filename, "filename_y" : file_y.filename})
 
 
 @app.get("/pipeline/model")
@@ -81,3 +107,4 @@ def pipeline_service(request: Request):
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
    return {"item_id": item_id, "q": q}
+

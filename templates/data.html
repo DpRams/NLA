@@ -96,15 +96,18 @@
         <h1 class="display-6 fw-bold">Data Pipeline</h1>
         <p class="col-md-8 fs-5">Define your own data.</p>
         <br><br>
-         <form action="/pipeline/data/upload" method="post" enctype="multipart/form-data">
+         <form action="/pipeline/data" method="post" enctype="multipart/form-data">
           <div>
-              <label class="col-md-8 fs-4">Choose x attributes in the csv format from local directory to Buffer.</label>
+              <label class="col-md-8 fs-4">Create a directory saves file uploaded.<br>(While selecting data for training, just select directory.)</label>
+              <input type="text" id="directory_name" name="directoryName"  >
+              <br><br>
+              <label class="col-md-8 fs-4">Choose x attributes file in the csv format from local directory.</label>
               <label for="data_x" class="btn btn-primary btn-lg">Choose</label>
               <input type="file" id="data_x" name="file_x" hidden >
               <br>
               <text><b>Current x attributes file : {{filename_x}}</b></text>
               <br><br>
-              <label class="col-md-8 fs-4">Choose y attributes in the csv format from local directory to Buffer.</label>
+              <label class="col-md-8 fs-4">Choose y attributes file in the csv format from local directory.</label>
               <label for="data_y" class="btn btn-primary btn-lg">Choose</label>
               <input type="file" id="data_y" name="file_y" hidden >
               <br>
@@ -116,7 +119,7 @@
               <label for="save_data" class="btn btn-primary btn-lg">Upload</label>
               <input type="submit" id="save_data" class="btn btn-primary btn-lg" hidden>
               <br>
-              <text>Save file from Buffer to Server in a directory.</text>
+              <text>Save file  to Server in <font color="blue"><b>{{directoryName}}</b></font> directory.</text>
           </div>
        </form>
 
