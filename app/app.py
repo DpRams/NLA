@@ -70,7 +70,7 @@ async def pipeline_data_upload(request: Request, directoryName: str = Form(defau
 
       pathManager.createUploadPath()
       pathManager.createDirectoryInUploadPath(directoryName)
-
+      
       filelist = [file_x, file_y]
       
       for i, file in enumerate(filelist):

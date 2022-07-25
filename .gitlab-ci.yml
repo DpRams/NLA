@@ -1,0 +1,32 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  tags:
+    - 1506020
+  only:
+    - master
+  script:
+    - echo "build"
+
+test:
+  stage: test
+  tags:
+    - 1506020
+  only:
+    - master
+  script:
+    - echo "testing"
+
+deploy:
+  stage: deploy
+  tags:
+    - 1506020
+  only:
+    - master
+  script:
+    - echo "deploy"
+
