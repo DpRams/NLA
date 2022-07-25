@@ -6,7 +6,7 @@ stages:
 build:
   stage: build
   tags:
-    - 1506020
+    - "1506020"
   only:
     - master
   script:
@@ -15,7 +15,7 @@ build:
 test:
   stage: test
   tags:
-    - 1506020
+    - "1506020"
   only:
     - master
   script:
@@ -24,7 +24,7 @@ test:
 deploy:
   stage: deploy
   tags:
-    - 1506020
+    - "1506020"
   only:
     - master
   script:
