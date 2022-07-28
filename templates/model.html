@@ -117,77 +117,124 @@
         <h1 class="display-6 fw-bold">Model Pipeline</h1>
         <p class="col-md-8 fs-5">Define your own Model and train.</p> 
         <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Select Data directory from Server</button> 
-        <br>
-        <text>Select the data file which will be used to train model.</text>
-        <br><br>
-        <text><b>Current x attributes file from Data Pipeline. : {...}</b></text>
-        <br>
-        <text><b>Current y attributes file from Data Pipeline. : {...}</b></text>
-        <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Select Model from Repository</button> 
-        <br>
-        <text>Including various kind of model, such as: bibo, biro, ribo, riro. <br>Each one has a completed module process, such as Initializing, Selecting, Matching, Reorganizing, Cramming.</text>
-        <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Select Hyperparameters</button>
-        <br>
-        <text>Loss Function, Learning goal, Learning rate / Upper / Lower bound, Optimizer, Regularizing strength.</text>
-        <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Start training</button>
-        <br>
-        <text>Should place a progressbar that enable user to check the Progress.(Traced by the learned training data.)</text>
-        <br><br>
 
-        <button class="btn btn-primary btn-lg" type="button" disabled>Model Performance</button>
-        <div class="p-5 mb-1 bg-light rounded-3">
-
-          <text>Training accuracy : {...}</text>
-          <br>
-          <text>Validating accuracy : {...}</text>
-          <br>
-          <text>Testing accuracy : {...}</text>
+        <form action="/pipeline/model" method="post" enctype="multipart/form-data">
+          <label class="col-md-8 fs-4">Select Data directory from Server.</label>
+          <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
+            {% for dataDir in upload_data %}
+            <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+            {% endfor %}
+          </select>
 
           <br><br>
-          <div class="gallery">
-            <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-              <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
-            </a>
-            <div class="desc">Model Accuracy</div>
+
+          <label class="col-md-8 fs-4">Select Model from Repository.</label>
+          <select name="modelFile" method="GET"  style="font-size:20px;">
+            {% for model in model_file %}
+            <option value= "{{model}}"  SELECTED>{{model}}</option>"
+            {% endfor %}
+          </select>
+
+          <br><br>
+
+          <label class="col-md-8 fs-4">Select Hyperparameters.</label>
+          <br><br>
+          <label class="col-md-8 fs-5">Loss Function</label> 
+          <input type="text" id="Hyperparameters" name="lossFunction"  >
+          <label class="col-md-8 fs-5">Learning goal</label>
+          <input type="text" id="Hyperparameters" name="learningGoal"  >
+          <label class="col-md-8 fs-5">Learning rate</label>
+          <input type="text" id="Hyperparameters" name="learningRate"  >
+          <label class="col-md-8 fs-5">Learning rate Upper bound</label>
+          <input type="text" id="Hyperparameters" name="learningRateUpperBound"  >
+          <label class="col-md-8 fs-5">Learning rate Lower bound</label>
+          <input type="text" id="Hyperparameters" name="learningRateLowerBound"  >
+          <label class="col-md-8 fs-5">Optimizer</label>
+          <input type="text" id="Hyperparameters" name="optimizer"  >
+          <label class="col-md-8 fs-5">Regularizing strength</label>
+          <input type="text" id="Hyperparameters" name="regularizingStrength"  >
+          <br><br>
+          
+
+          <label class="col-md-8 fs-5"></label>
+          <label for="train_data" class="btn btn-primary btn-lg">Train</label>
+          <input type="submit" id="train_data" class="btn btn-primary btn-lg" hidden>
+          
+          <br><br>
+          <label class="col-md-8 fs-3">Training configuration</label>
+          <br><br>
+          <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
+          <br>
+          <text><b>Model  : <font color="blue">{{modelFile}}</font></b></text>
+          <br>
+          <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
+          <br>
+          <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
+          <br>
+          <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+          <br>
+          <text><b>Learning rate Upper bound : <font color="blue">{{learningRateUpperBound}}</font></b></text>
+          <br>
+          <text><b>Learning rate Lower bound : <font color="blue">{{learningRateLowerBound}}</font></b></text>
+          <br>
+          <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+          <br>
+          <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+          <br>
+
+          <br><br>
+          <label class="col-md-8 fs-3">Training progressbar</label>
+          <br><br>
+          <label class="col-md-8 fs-3">Model Performance</label>
+          <br><br>
+          <text><b>Training accuracy : <font color="blue">{{0.98}}</font></b></text>
+          <br>
+          <text><b>Validating accuracy : <font color="blue">{{0.97}}</font></b></text>
+          <br>
+          <text><b>Testing accuracy : <font color="blue">{{0.95}}</font></b></text>
+          <br>
+          <div class="p-5 mb-1 bg-light rounded-3">
+  
+
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
+                <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
+              </a>
+              <div class="desc">Model Accuracy</div>
+            </div>
+            
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
+                <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
+              </a>
+              <div class="desc">Model loss</div>
+            </div>
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
+                <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
+              </a>
+              <div class="desc">Model Accuracy</div>
+            </div>
+            
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
+                <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
+              </a>
+              <div class="desc">Model loss</div>
+            </div>
+            
           </div>
           
-          <div class="gallery">
-            <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
-              <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
-            </a>
-            <div class="desc">Model loss</div>
-          </div>
-          <div class="gallery">
-            <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-              <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
-            </a>
-            <div class="desc">Model Accuracy</div>
-          </div>
-          
-          <div class="gallery">
-            <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
-              <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
-            </a>
-            <div class="desc">Model loss</div>
-          </div>
-          
-        </div>
-         
-        <br><br><br><br><br><br><br><br>
-        <button class="btn btn-primary btn-lg" type="button" >Save configuration and Performace</button> 
-        <br>
-        <text>After training completed, this save mechanism will execute automatically.<br>But user could manually execute it before training so that it can just store the configuration in Database.</text>
-         
-        <br><br>
+          <br><br><br><br><br><br><br><br>
+          <label class="col-md-8 fs-4">Save configuration and Performace.</label>
+          <label for="train_data" class="btn btn-primary btn-lg">Save</label>
+          <input type="submit" id="save_configuration_performance" class="btn btn-primary btn-lg" hidden>
+          <br><br>
+          <text>After training completed, this save mechanism will execute automatically.<br>But user could manually execute it before training so that it can just store the configuration in Database.</text>
+        </form>
 
       </div>
     </div>
-
-
 
     <footer class="pt-3 mt-4 text-muted border-top">
       © 2022

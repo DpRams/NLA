@@ -96,13 +96,100 @@ async def pipeline_data_upload(request: Request, directoryName: str = Form(defau
       return templates.TemplateResponse("data.html", context = {'request': request, "directoryName": directoryName, "filename_x" : file_x.filename, "filename_y" : file_y.filename})
 
 
+
 @app.get("/pipeline/model")
 def pipeline_model(request: Request):
-   return templates.TemplateResponse("model.html",{"request":request})
+
+   global pathManager
+
+   # List the upload data to Dropdownlist
+   pathManager.backToRoot()
+   upload_data = os.listdir("./upload_data")
+   model_file = os.listdir("./model_file")
+   
+   return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
+
+@app.post("/pipeline/model")
+def pipeline_model_input(request: Request, \
+                     dataDirectory: str = Form(default=None, max_length=50), \
+                     modelFile: str = Form(default=None, max_length=50), \
+                     lossFunction: str = Form(default=None, max_length=50), \
+                     learningGoal: str = Form(default=None, max_length=50), \
+                     learningRate: str = Form(default=None, max_length=50), \
+                     learningRateUpperBound: str = Form(default=None, max_length=50), \
+                     learningRateLowerBound: str = Form(default=None, max_length=50), \
+                     optimizer: str = Form(default=None, max_length=50), \
+                     regularizingStrength: str = Form(default=None, max_length=50)):
+
+   global pathManager
+
+   # List the upload data to Dropdownlist
+   pathManager.backToRoot()
+   upload_data = os.listdir("./upload_data")
+   model_file = os.listdir("./model_file")
+
+   return templates.TemplateResponse("model.html", \
+            context={"request":request, \
+                     "upload_data":upload_data, \
+                     "model_file":model_file, \
+                     "dataDirectory":dataDirectory, \
+                     "modelFile":modelFile, \
+                     "lossFunction":lossFunction, \
+                     "learningGoal":learningGoal, \
+                     "learningRate":learningRate, \
+                     "learningRateUpperBound":learningRateUpperBound, \
+                     "learningRateLowerBound":learningRateLowerBound, \
+                     "optimizer":optimizer, \
+                     "regularizingStrength":regularizingStrength})
+
+
+# @app.post("/pipeline/model/input")
+# def pipeline_model_input(request: Request, \
+#                      dataDirectory: str = Form(default=None, max_length=50), \
+#                      modelFile: str = Form(default=None, max_length=50), \
+#                      lossFunction: str = Form(default=None, max_length=50), \
+#                      learningGoal: str = Form(default=None, max_length=50), \
+#                      learningRate: str = Form(default=None, max_length=50), \
+#                      learningRateUpperBound: str = Form(default=None, max_length=50), \
+#                      learningRateLowerBound: str = Form(default=None, max_length=50), \
+#                      optimizer: str = Form(default=None, max_length=50), \
+#                      regularizingStrength: str = Form(default=None, max_length=50)):
+
+   
+#    return   {"dataDirectory":dataDirectory, \
+#             "modelFile":modelFile, \
+#             "lossFunction":lossFunction, \
+#             "learningGoal":learningGoal, \
+#             "learningRate":learningRate, \
+#             "learningRateUpperBound":learningRateUpperBound, \
+#             "learningRateLowerBound":learningRateLowerBound, \
+#             "optimizer":optimizer, \
+#             "regularizingStrength":regularizingStrength}
+   # return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_repo":model_repo})
 
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
-   return templates.TemplateResponse("service.html",{"request":request})
+   
+   global pathManager
+
+   # List the upload data to Dropdownlist
+   pathManager.backToRoot()
+   upload_data = os.listdir("./upload_data")
+   model_repo = os.listdir("./model_repo")
+   
+   return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_repo":model_repo})
+
+@app.post("/pipeline/service")
+def pipeline_service(request: Request):
+
+   global pathManager
+
+   # List the upload data to Dropdownlist
+   pathManager.backToRoot()
+   upload_data = os.listdir("./upload_data")
+   model_repo = os.listdir("./model_repo")
+
+   return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_repo":model_repo})
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):

@@ -118,66 +118,86 @@
       <div class="container-fluid py-0">
         <h1 class="display-6 fw-bold">Service</h1>
         <p class="col-md-8 fs-5">Deploy your model and provide service.</p>
-        <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Deploy Model from Registry</button> 
-        <br>
-        <text>Select a model from Model Registry and deploy the service. <b>Current model for service. : {...}</b></text>
-        <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Select Data from Server</button> 
-        <br>
-        <text>Select data from Server to inference. <b>Current data file from Data Pipeline. : {...}</b></text>
-        <br><br>
-        <button class="btn btn-primary btn-lg" type="button">Start inferencing</button>
-        <br>
-        <text>Inference the given test data by the service.</text>
+
         <br><br>
 
-        <button class="btn btn-primary btn-lg" type="button" disabled>Model Performance</button>
+        <form action="/pipeline/service" method="post" enctype="multipart/form-data">
 
-        <div class="p-5 mb-1 bg-light rounded-3">
-
-          <text>Training accuracy : {...}</text>
-          <br>
-          <text>Validating accuracy : {...}</text>
-          <br>
-          <text>Testing accuracy : {...}</text>
+          <label class="col-md-8 fs-4">Deploy Model from Registry.</label>
+          <select name="modelFile" method="GET"  style="font-size:20px;">
+            {% for model in model_repo %}
+            <option value= "{{model}}"  SELECTED>{{model}}</option>"
+            {% endfor %}
+          </select>
 
           <br><br>
-          <div class="gallery">
-            <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-              <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
-            </a>
-            <div class="desc">Model Accuracy</div>
-          </div>
-          
-          <div class="gallery">
-            <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
-              <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
-            </a>
-            <div class="desc">Model loss</div>
-          </div>
-          <div class="gallery">
-            <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-              <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
-            </a>
-            <div class="desc">Model Accuracy</div>
-          </div>
-          
-          <div class="gallery">
-            <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
-              <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
-            </a>
-            <div class="desc">Model loss</div>
-          </div>
-          
-        </div>
+
+          <label class="col-md-8 fs-4">Select Data directory from Server.</label>
+          <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
+            {% for dataDir in upload_data %}
+            <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+            {% endfor %}
+          </select>
+
+          <br><br>
+
+
+
+
+
+          <label class="col-md-8 fs-5"></label>
+          <label for="inference" class="btn btn-primary btn-lg">Inference</label>
+          <input type="submit" id="inference" class="btn btn-primary btn-lg" hidden>
         
-        
-        <br><br><br><br><br><br><br><br>
-        <button class="btn btn-primary btn-lg" type="button" >Save configuration and Performace</button> 
-        <br>
-        <text>After inferencing completed, this save mechanism will execute automatically.</text>
-         
+          <br><br>
+          <label class="col-md-8 fs-3">Model Performance</label>
+          <br><br>
+          <text><b>Training accuracy : <font color="blue">{{0.98}}</font></b></text>
+          <br>
+          <text><b>Validating accuracy : <font color="blue">{{0.97}}</font></b></text>
+          <br>
+          <text><b>Testing accuracy : <font color="blue">{{0.95}}</font></b></text>
+          <br>
+          <div class="p-5 mb-1 bg-light rounded-3">
+  
+
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
+                <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
+              </a>
+              <div class="desc">Model Accuracy</div>
+            </div>
+            
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
+                <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
+              </a>
+              <div class="desc">Model loss</div>
+            </div>
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
+                <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
+              </a>
+              <div class="desc">Model Accuracy</div>
+            </div>
+            
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
+                <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
+              </a>
+              <div class="desc">Model loss</div>
+            </div>
+            
+          </div>
+          
+          <br><br><br><br><br><br><br><br>
+          <label class="col-md-8 fs-4">Save configuration and Performace.</label>
+          <label for="save_configuration_performance" class="btn btn-primary btn-lg">Save</label>
+          <input type="submit" id="save_configuration_performance" class="btn btn-primary btn-lg" hidden>
+          <br><br>
+          <text>After inferencing completed, this save mechanism will execute automatically.</text>
+        </form>
+
         <br><br>
       </div>
     </div>

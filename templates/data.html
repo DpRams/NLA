@@ -98,20 +98,23 @@
         <br><br>
          <form action="/pipeline/data" method="post" enctype="multipart/form-data">
           <div>
-              <label class="col-md-8 fs-4">Create a directory saves file uploaded.<br>(While selecting data for training, just select directory.)</label>
+              <label class="col-md-8 fs-4">Create a directory saves file uploaded.</label>
               <input type="text" id="directory_name" name="directoryName"  >
+              <br>
+              <text>While selecting data for training, just select directory.</text>
+              <br>
               <br><br>
               <label class="col-md-8 fs-4">Choose x attributes file in the csv format from local directory.</label>
               <label for="data_x" class="btn btn-primary btn-lg">Choose</label>
               <input type="file" id="data_x" name="file_x" hidden >
               <br>
-              <text><b>Current x attributes file : {{filename_x}}</b></text>
+              <text>Current x attributes file : <font color="blue"><b>{{filename_x}}</b></font></text>
               <br><br>
               <label class="col-md-8 fs-4">Choose y attributes file in the csv format from local directory.</label>
               <label for="data_y" class="btn btn-primary btn-lg">Choose</label>
               <input type="file" id="data_y" name="file_y" hidden >
               <br>
-              <text><b>Current y attributes file : {{filename_y}}</b></text>
+              <text>Current y attributes file : <font color="blue"><b>{{filename_y}}</b></font></text>
           </div>
           <br><br>
           <div>
