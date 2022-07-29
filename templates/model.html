@@ -117,8 +117,8 @@
         <h1 class="display-6 fw-bold">Model Pipeline</h1>
         <p class="col-md-8 fs-5">Define your own Model and train.</p> 
         <br><br>
-
-        <form action="/pipeline/model" method="post" enctype="multipart/form-data">
+        
+        <form  method="post" enctype="multipart/form-data"> <!-- action="/pipeline/model"/ -->
           <label class="col-md-8 fs-4">Select Data directory from Server.</label>
           <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
             {% for dataDir in upload_data %}
@@ -157,8 +157,8 @@
           
 
           <label class="col-md-8 fs-5"></label>
-          <label for="train_data" class="btn btn-primary btn-lg">Train</label>
-          <input type="submit" id="train_data" class="btn btn-primary btn-lg" hidden>
+          <label for="define_model" class="btn btn-primary btn-lg">Train</label>
+          <input type="submit" id="define_model" class="btn btn-primary btn-lg" formaction="/pipeline/model" hidden>
           
           <br><br>
           <label class="col-md-8 fs-3">Training configuration</label>
@@ -180,8 +180,6 @@
           <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
           <br>
           <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
-          <br>
-
           <br><br>
           <label class="col-md-8 fs-3">Training progressbar</label>
           <br><br>

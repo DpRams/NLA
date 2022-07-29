@@ -4,8 +4,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
+from modelParameter import ModelParameter
+import uvicorn
 import os
 import shutil
+import requests
+# import model_file
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -52,7 +56,7 @@ pathManager = PathManager(os.getcwd())
 # Function
 @app.get("/")
 def read_root():
-   return {"Hello": "World", "s":os.path.dirname(os.path.abspath(__file__))}
+   return {"Hello": "World"}
 
 # developing
 @app.get("/pipeline/platform")
@@ -110,7 +114,7 @@ def pipeline_model(request: Request):
    return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
 
 @app.post("/pipeline/model")
-def pipeline_model_input(request: Request, \
+def pipeline_model(request: Request, \
                      dataDirectory: str = Form(default=None, max_length=50), \
                      modelFile: str = Form(default=None, max_length=50), \
                      lossFunction: str = Form(default=None, max_length=50), \
@@ -121,12 +125,25 @@ def pipeline_model_input(request: Request, \
                      optimizer: str = Form(default=None, max_length=50), \
                      regularizingStrength: str = Form(default=None, max_length=50)):
 
-   global pathManager
+   global pathManager, model_params
 
    # List the upload data to Dropdownlist
    pathManager.backToRoot()
    upload_data = os.listdir("./upload_data")
    model_file = os.listdir("./model_file")
+
+   # Define modelParameter
+   model_params = ModelParameter(dataDirectory=dataDirectory, \
+                                 modelFile=modelFile, \
+                                 lossFunction=lossFunction, \
+                                 learningGoal=learningGoal, \
+                                 learningRate=learningRate, \
+                                 learningRateUpperBound=learningRateUpperBound,\
+                                 learningRateLowerBound=learningRateLowerBound, \
+                                 optimizer=optimizer, \
+                                 regularizingStrength=regularizingStrength)
+   # Train model
+   __model_training(model_params)
 
    return templates.TemplateResponse("model.html", \
             context={"request":request, \
@@ -143,29 +160,10 @@ def pipeline_model_input(request: Request, \
                      "regularizingStrength":regularizingStrength})
 
 
-# @app.post("/pipeline/model/input")
-# def pipeline_model_input(request: Request, \
-#                      dataDirectory: str = Form(default=None, max_length=50), \
-#                      modelFile: str = Form(default=None, max_length=50), \
-#                      lossFunction: str = Form(default=None, max_length=50), \
-#                      learningGoal: str = Form(default=None, max_length=50), \
-#                      learningRate: str = Form(default=None, max_length=50), \
-#                      learningRateUpperBound: str = Form(default=None, max_length=50), \
-#                      learningRateLowerBound: str = Form(default=None, max_length=50), \
-#                      optimizer: str = Form(default=None, max_length=50), \
-#                      regularizingStrength: str = Form(default=None, max_length=50)):
-
+def __model_training(model_params):
    
-#    return   {"dataDirectory":dataDirectory, \
-#             "modelFile":modelFile, \
-#             "lossFunction":lossFunction, \
-#             "learningGoal":learningGoal, \
-#             "learningRate":learningRate, \
-#             "learningRateUpperBound":learningRateUpperBound, \
-#             "learningRateLowerBound":learningRateLowerBound, \
-#             "optimizer":optimizer, \
-#             "regularizingStrength":regularizingStrength}
-   # return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_repo":model_repo})
+   print(model_params.info())
+   
 
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
@@ -195,3 +193,7 @@ def pipeline_service(request: Request):
 def read_item(item_id: int, q: str = None):
    return {"item_id": item_id, "q": q}
 
+
+
+if __name__ == '__main__':
+	uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
