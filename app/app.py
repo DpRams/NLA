@@ -2,14 +2,24 @@ from typing import List, Union
 from fastapi import FastAPI, Request, File, UploadFile, Form, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pathlib import Path
 
-from modelParameter import ModelParameter
 import uvicorn
 import os
 import shutil
 import requests
-# import model_file
+import time
+
+# Append absolute path to import module within different directory.
+import sys
+from pathlib import Path
+file = Path(__file__).resolve()
+parent, root = file.parent, file.parents[1]
+sys.path.append(str(root))
+# print(parent, root)
+
+from model_file import riro, ribo
+# from model_file.riro import main
+from modelParameter import ModelParameter
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -46,11 +56,8 @@ class PathManager():
 
 
 global pathManager
-
-# back to project directory
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-os.chdir("..")
-pathManager = PathManager(os.getcwd())
+# parent, root = file.parent, file.parents[1]
+pathManager = PathManager(root)
 
 
 # Function
@@ -109,7 +116,7 @@ def pipeline_model(request: Request):
    # List the upload data to Dropdownlist
    pathManager.backToRoot()
    upload_data = os.listdir("./upload_data")
-   model_file = os.listdir("./model_file")
+   model_file = [pythonFile for pythonFile in os.listdir("./model_file") if pythonFile.endswith(".py")]
    
    return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
 
@@ -125,12 +132,12 @@ def pipeline_model(request: Request, \
                      optimizer: str = Form(default=None, max_length=50), \
                      regularizingStrength: str = Form(default=None, max_length=50)):
 
-   global pathManager, model_params
+   global pathManager
 
    # List the upload data to Dropdownlist
    pathManager.backToRoot()
    upload_data = os.listdir("./upload_data")
-   model_file = os.listdir("./model_file")
+   model_file = [pythonFile for pythonFile in os.listdir("./model_file") if pythonFile.endswith(".py")]
 
    # Define modelParameter
    model_params = ModelParameter(dataDirectory=dataDirectory, \
@@ -143,7 +150,11 @@ def pipeline_model(request: Request, \
                                  optimizer=optimizer, \
                                  regularizingStrength=regularizingStrength)
    # Train model
-   __model_training(model_params)
+   model_perf, model_perf_fig = __model_training(model_params)
+   # Save model config a& Perf.
+   save_model(model_params, model_perf, model_perf_fig)
+
+
 
    return templates.TemplateResponse("model.html", \
             context={"request":request, \
@@ -162,8 +173,16 @@ def pipeline_model(request: Request, \
 
 def __model_training(model_params):
    
-   print(model_params.info())
    
+   print(model_params.info())
+   model_file_str = model_params.modelFile.split(".")[0] # riro.py -> riro
+   model = eval(model_file_str) # str to module through eval function : riro, ribo, biro, bibo
+   model.main()
+
+   model_perf = None
+   model_perf_fig = None
+
+   return (model_perf, model_perf_fig)
 
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
@@ -188,6 +207,21 @@ def pipeline_service(request: Request):
    model_repo = os.listdir("./model_repo")
 
    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_repo":model_repo})
+
+@app.post("/save/service")
+def save_service(model_params, model_perf, model_perf_fig):
+   print(f'已進入 save_service()')
+   print(f'model_params = {model_params}')
+   print(f'model_perf = {model_perf}')
+   print(f'model_perf_fig = {model_perf_fig}')
+
+@app.post("/save/model")
+def save_model(model_params, model_perf, model_perf_fig):
+   print(f'已進入 save_model()')
+   print(f'model_params = {model_params}')
+   print(f'model_perf = {model_perf}')
+   print(f'model_perf_fig = {model_perf_fig}')
+
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
