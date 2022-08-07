@@ -177,8 +177,9 @@ def __model_training(model_params):
    print(model_params.info())
    model_file_str = model_params.modelFile.split(".")[0] # riro.py -> riro
    model = eval(model_file_str) # str to module through eval function : riro, ribo, biro, bibo
+   print(model)
    model.main()
-
+   
    model_perf = None
    model_perf_fig = None
 
