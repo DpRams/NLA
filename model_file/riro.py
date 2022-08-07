@@ -5,6 +5,7 @@
 import torch 
 import copy
 import pickle
+import os 
 
 import pandas as pd
 import numpy as np
@@ -24,21 +25,26 @@ class Network(torch.nn.Module):
     def __init__(self, nb_neuro, x_train_scaled, y_train_scaled, **kwargs):
 
         super().__init__()
-        print(kwargs)
+        # print(f"參數灌入:{kwargs}")
         # Initialize
         self.linear1 = torch.nn.Linear(x_train_scaled.shape[1], nb_neuro).to(device)
         self.linear2 = torch.nn.Linear(nb_neuro, 1).to(device)
     
         # Stop criteria - threshold
-        self.threshold_for_error = kwargs["learning_goal"] # from **kwargs
-        self.threshold_for_lr = 1e-5
+        self.threshold_for_error = eval(kwargs["learning_goal"]) 
+        self.threshold_for_lr = eval(kwargs["learning_rate_lower_bound"]) 
+
+        self.regularizing_strength = eval(kwargs["regularizing_strength"])
+        
+        # Set default now, not open for customization.
+        not_used_currently = (kwargs["regularizing_strength"], kwargs["optimizer"])
 
         # Input data
         self.x = torch.FloatTensor(x_train_scaled).to(device)
         self.y = torch.FloatTensor(y_train_scaled).to(device)
 
         # Learning rate
-        self.learning_rate = 1e-3
+        self.learning_rate = eval(kwargs["learning_rate"])
 
         # Whether the network is acceptable, default as False
         self.acceptable = False
@@ -128,7 +134,7 @@ def matching(network):
     times_enlarge, times_shrink = 0,0
 
     # Set up the learning rate of the network
-    network.learning_rate = 1e-3
+    # network.learning_rate = 1e-3
     network.acceptable = False
 
     network_pre = copy.deepcopy(network)
@@ -191,7 +197,7 @@ def matching_for_reorganizing(network):
     times_enlarge, times_shrink = 0, 0
 
     # Set up the learning rate of the network
-    network.learning_rate = 1e-3
+    # network.learning_rate = 1e-3
     network.acceptable = False
 
     network_pre = copy.deepcopy(network)
@@ -365,20 +371,20 @@ def regularizing(network):
     ## Record the number of executions
     times_enlarge, times_shrink = 0, 0
 
-    ## Set up the learning rate of the network
-    network.learning_rate = 1e-3
+    # ## Set up the learning rate of the network
+    # network.learning_rate = 1e-3
 
     ## Set epoch to 100
     for i in range(100):
 
         ## Store the parameter of the network
         network_pre = copy.deepcopy(network)
-        output, loss = network.forward(1e-3)
+        output, loss = network.forward(network.regularizing_strength)
         loss_pre = loss
 
         ## Backward operation to optain w'
         network.backward_Adam(loss)
-        output, loss = network.forward(1e-3)
+        output, loss = network.forward(network.regularizing_strength)
 
         ## Confirm whether the adjusted loss value is smaller than the current one
         if loss <= loss_pre:
@@ -521,9 +527,12 @@ def plot_loss(checkpoint):
     plt.show()
 
 
-def reading_dataset():
+def reading_dataset(dataDirecotry):
     
-    filePath_X, filePath_Y = r"C:\Users\ZZ01GI858\Desktop\research\project\upload_data\太陽能\X_solarEnergy_x_70.csv", r"C:\Users\ZZ01GI858\Desktop\research\project\upload_data\太陽能\Y_solarEnergy_y_70.csv"
+    filelist = os.listdir(f"./upload_data/{dataDirecotry}")
+    file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
+    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/{file_x}", f"./upload_data/{dataDirecotry}/{file_y}"
+    print(f"filePath_X = {filePath_X}\nfilePath_Y = {filePath_Y}")
     df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
 
     # StandardScaler
@@ -538,28 +547,33 @@ def reading_dataset():
     initial_x, x_train_scaled = torch.FloatTensor(x_train[:x_train.shape[1]+1]), torch.FloatTensor(x_train[x_train.shape[1]+1:])
     initial_y, y_train_scaled = torch.FloatTensor(y_train[:x_train.shape[1]+1]), torch.FloatTensor(y_train[x_train.shape[1]+1:])
 
-    print(f'initial_x.shape : {initial_x.shape}')
-    print(f'initial_y.shape : {initial_y.shape}\n')
-    print(f'x_train_scaled.shape : {x_train_scaled.shape}')
-    print(f'y_train_scaled.shape : {y_train_scaled.shape}\n')
+    # print(f'initial_x.shape : {initial_x.shape}')
+    # print(f'initial_y.shape : {initial_y.shape}\n')
+    # print(f'x_train_scaled.shape : {x_train_scaled.shape}')
+    # print(f'y_train_scaled.shape : {y_train_scaled.shape}\n')
     
     return (initial_x, initial_y, x_train_scaled, y_train_scaled)
     
 
-(initial_x, initial_y, x_train_scaled, y_train_scaled) = reading_dataset()
-
 # 存放model, experiments_record
-def main():
-    lr_goals = [0.9, 1.0]
+def main(model_params):
+    lr_goals = [model_params.learningGoal]
     model_experiments_record = {"lr_goals" : {key : None for key in lr_goals}}
 
     for lr_goal in sorted(lr_goals, reverse=True):
         
         # Reading dataset
-        (initial_x, initial_y, x_train_scaled, y_train_scaled) = reading_dataset()
+        (initial_x, initial_y, x_train_scaled, y_train_scaled) = reading_dataset(model_params.dataDirectory)
         
         # Defining model
-        network = Network(1, initial_x, initial_y, learning_goal = lr_goal)
+        network = Network(1, initial_x, initial_y, \
+                            loss_function=model_params.lossFunction, \
+                            learning_goal=lr_goal, \
+                            learning_rate=model_params.learningRate, \
+                            learning_rate_lower_bound=model_params.learningRateLowerBound, \
+                            optimizer=model_params.optimizer,  \
+                            regularizing_strength=model_params.regularizingStrength)
+
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         network = network.to(device)
 
@@ -567,8 +581,8 @@ def main():
         initializing(network, initial_x, initial_y)
 
         # Record experiments data
-        experiments_record = {"train" : {"acc" : [], "loss" : []}, \
-                              "valid" : {"acc" : 0}, \
+        experiments_record = {"train" : {"mean_acc" : 0, "acc_step" : [], "mean_loss" : 0, "loss_step" : []}, \
+                              "valid" : {"mean_acc" : 0}, \
                               "nb_node" : [], "nb_node_pruned" : [],\
                               "Route" : {"Blue": 0, "Red":0, "Green":0, "Purple":0}}
 
@@ -632,9 +646,9 @@ def main():
                         
                         # Append every record in one iteration
                         output, loss = network.forward()
-                        train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean()
-                        experiments_record["train"]["acc"].append(train_acc)
-                        experiments_record["train"]["loss"].append(loss.item())
+                        train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean().cpu()
+                        experiments_record["train"]["acc_step"].append(train_acc)
+                        experiments_record["train"]["loss_step"].append(loss.item())
                         experiments_record["nb_node"].append(network.nb_node)
                         experiments_record["nb_node_pruned"].append(network.nb_node_pruned)
                         network.nb_node_pruned = 0
@@ -647,13 +661,17 @@ def main():
 
             # Append every record in one iteration
             output, loss = network.forward()
-            train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean()
-            experiments_record["train"]["acc"].append(train_acc)
-            experiments_record["train"]["loss"].append(loss.item())
+            train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean().cpu()
+            experiments_record["train"]["acc_step"].append(train_acc)
+            experiments_record["train"]["loss_step"].append(loss.item())
             experiments_record["nb_node"].append(network.nb_node)
             experiments_record["nb_node_pruned"].append(network.nb_node_pruned)
             network.nb_node_pruned = 0
-                
+
+
+        experiments_record["train"]["mean_acc"] = np.mean(experiments_record["train"]["acc_step"])
+        experiments_record["train"]["mean_loss"] = np.mean(experiments_record["train"]["loss_step"])
+
         model_experiments_record["lr_goals"][lr_goal] = {"network" : network, "experiments_record" : experiments_record}
     
     return model_experiments_record

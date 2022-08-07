@@ -140,17 +140,15 @@
           <label class="col-md-8 fs-4">Select Hyperparameters.</label>
           <br><br>
           <label class="col-md-8 fs-5">Loss Function</label> 
-          <input type="text" id="Hyperparameters" name="lossFunction"  >
+          <input type="text" id="Hyperparameters" name="lossFunction" value="RMSE" disabled>
           <label class="col-md-8 fs-5">Learning goal</label>
           <input type="text" id="Hyperparameters" name="learningGoal"  >
           <label class="col-md-8 fs-5">Learning rate</label>
           <input type="text" id="Hyperparameters" name="learningRate"  >
-          <label class="col-md-8 fs-5">Learning rate Upper bound</label>
-          <input type="text" id="Hyperparameters" name="learningRateUpperBound"  >
           <label class="col-md-8 fs-5">Learning rate Lower bound</label>
-          <input type="text" id="Hyperparameters" name="learningRateLowerBound"  >
+          <input type="text" id="Hyperparameters" name="learningRateLowerBound" >
           <label class="col-md-8 fs-5">Optimizer</label>
-          <input type="text" id="Hyperparameters" name="optimizer"  >
+          <input type="text" id="Hyperparameters" name="optimizer"  value="Adam" disabled>
           <label class="col-md-8 fs-5">Regularizing strength</label>
           <input type="text" id="Hyperparameters" name="regularizingStrength"  >
           <br><br>
@@ -173,23 +171,21 @@
           <br>
           <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
           <br>
-          <text><b>Learning rate Upper bound : <font color="blue">{{learningRateUpperBound}}</font></b></text>
-          <br>
           <text><b>Learning rate Lower bound : <font color="blue">{{learningRateLowerBound}}</font></b></text>
           <br>
           <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
           <br>
           <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+          <br>
+          <text><b>model_experiments_record : <font color="blue">{{model_experiments_record}}</font></b></text>
           <br><br>
           <label class="col-md-8 fs-3">Training progressbar</label>
           <br><br>
           <label class="col-md-8 fs-3">Model Performance</label>
           <br><br>
-          <text><b>Training accuracy : <font color="blue">{{0.98}}</font></b></text>
+          <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
           <br>
           <text><b>Validating accuracy : <font color="blue">{{0.97}}</font></b></text>
-          <br>
-          <text><b>Testing accuracy : <font color="blue">{{0.95}}</font></b></text>
           <br>
           <div class="p-5 mb-1 bg-light rounded-3">
   

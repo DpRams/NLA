@@ -127,7 +127,6 @@ def pipeline_model(request: Request, \
                      lossFunction: str = Form(default=None, max_length=50), \
                      learningGoal: str = Form(default=None, max_length=50), \
                      learningRate: str = Form(default=None, max_length=50), \
-                     learningRateUpperBound: str = Form(default=None, max_length=50), \
                      learningRateLowerBound: str = Form(default=None, max_length=50), \
                      optimizer: str = Form(default=None, max_length=50), \
                      regularizingStrength: str = Form(default=None, max_length=50)):
@@ -145,12 +144,13 @@ def pipeline_model(request: Request, \
                                  lossFunction=lossFunction, \
                                  learningGoal=learningGoal, \
                                  learningRate=learningRate, \
-                                 learningRateUpperBound=learningRateUpperBound,\
                                  learningRateLowerBound=learningRateLowerBound, \
                                  optimizer=optimizer, \
                                  regularizingStrength=regularizingStrength)
    # Train model
-   model_perf, model_perf_fig = __model_training(model_params)
+   # model_perf, model_perf_fig = __model_training(model_params)
+   model_perf, model_perf_fig = None, None
+   model_experiments_record = __model_training(model_params)
    # Save model config a& Perf.
    save_model(model_params, model_perf, model_perf_fig)
 
@@ -165,10 +165,12 @@ def pipeline_model(request: Request, \
                      "lossFunction":lossFunction, \
                      "learningGoal":learningGoal, \
                      "learningRate":learningRate, \
-                     "learningRateUpperBound":learningRateUpperBound, \
                      "learningRateLowerBound":learningRateLowerBound, \
                      "optimizer":optimizer, \
-                     "regularizingStrength":regularizingStrength})
+                     "regularizingStrength":regularizingStrength, \
+                     "model_experiments_record":model_experiments_record, \
+                     "trainingAccuracy":model_experiments_record["lr_goals"][learningGoal]["experiments_record"]["train"]["mean_acc"]
+                     })
 
 
 def __model_training(model_params):
@@ -178,12 +180,13 @@ def __model_training(model_params):
    model_file_str = model_params.modelFile.split(".")[0] # riro.py -> riro
    model = eval(model_file_str) # str to module through eval function : riro, ribo, biro, bibo
    print(model)
-   model.main()
+   model_experiments_record = model.main(model_params)
    
    model_perf = None
    model_perf_fig = None
 
-   return (model_perf, model_perf_fig)
+   # return (model_perf, model_perf_fig)
+   return model_experiments_record
 
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
