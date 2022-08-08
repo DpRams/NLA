@@ -7,6 +7,7 @@ from pathlib import Path
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
+# commit message沒寫好，再push一次
 
 def writeIntoModelRegistry(model_experiments_record, model_params):
 
