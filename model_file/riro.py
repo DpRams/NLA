@@ -6,6 +6,7 @@ import torch
 import copy
 import pickle
 import os 
+import sys
 
 import pandas as pd
 import numpy as np
@@ -15,6 +16,15 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from matplotlib import pyplot as plt
+from pathlib import Path
+
+file = Path(__file__).resolve()
+parent, root = file.parent, file.parents[1]
+# sys.path.append(str(parent))
+sys.path.append(str(root))
+
+from apps import saveModel 
+
 
 # %matplotlib inline
 
@@ -488,33 +498,20 @@ def reorganizing(network):
 
 
 
-def test(network, x_test, y_test):   
+def inferencing(network, x_test, y_test):   
 
-    output_label = []
     network.eval()
     
     network.setData(x_test, y_test)
     output, loss = network.forward()
         
     diff = (output - network.y)
-    acc = (diff <= network.threshold_for_error).to(torch.float32).mean()
-
-    return acc, output, diff
-
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-
-def make_confusion_matrix(output_label):
-    
-    threshold_for_infer = 0 
-    y_pred = [1 if pair[0] < threshold_for_infer else -1  for pair in output_label]
-    y_true = [1 if pair[1] < threshold_for_infer else -1  for pair in output_label]
-    cm = confusion_matrix(y_true, y_pred)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[1,-1])
-    disp.plot()
-
-    return cm
+    acc = (diff <= network.threshold_for_error).to(torch.float32).mean().cpu().numpy()
+    return acc
 
 
+# Training Accuracy, Training Loss, nb_node, nb_node_pruned 折線圖
+# Route 圓餅圖
 def plot_loss(checkpoint):
     
     plt.plot([i.cpu().detach() for i in checkpoint['train_loss_history']], label = 'train') 
@@ -552,18 +549,19 @@ def reading_dataset(dataDirecotry):
     # print(f'x_train_scaled.shape : {x_train_scaled.shape}')
     # print(f'y_train_scaled.shape : {y_train_scaled.shape}\n')
     
-    return (initial_x, initial_y, x_train_scaled, y_train_scaled)
+    return (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test)
     
 
 # 存放model, experiments_record
 def main(model_params):
+
     lr_goals = [model_params.learningGoal]
     model_experiments_record = {"lr_goals" : {key : None for key in lr_goals}}
 
     for lr_goal in sorted(lr_goals, reverse=True):
         
         # Reading dataset
-        (initial_x, initial_y, x_train_scaled, y_train_scaled) = reading_dataset(model_params.dataDirectory)
+        (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset(model_params.dataDirectory)
         
         # Defining model
         network = Network(1, initial_x, initial_y, \
@@ -661,7 +659,7 @@ def main(model_params):
 
             # Append every record in one iteration
             output, loss = network.forward()
-            train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean().cpu()
+            train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean().cpu().detach()
             experiments_record["train"]["acc_step"].append(train_acc)
             experiments_record["train"]["loss_step"].append(loss.item())
             experiments_record["nb_node"].append(network.nb_node)
@@ -674,6 +672,20 @@ def main(model_params):
 
         model_experiments_record["lr_goals"][lr_goal] = {"network" : network, "experiments_record" : experiments_record}
     
+        # inferencing
+        valid_acc = inferencing(network, x_test, y_test)
+        model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["valid"]["mean_acc"] = valid_acc
+
+
+        # Save model
+        saveModel.writeIntoModelRegistry(model_experiments_record, model_params)
+
+
+    # Plot graph
+
+    
+    
+
     return model_experiments_record
 
     # save checkpoints

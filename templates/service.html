@@ -124,8 +124,9 @@
         <form action="/pipeline/service" method="post" enctype="multipart/form-data">
 
           <label class="col-md-8 fs-4">Deploy Model from Registry.</label>
+          <br><br>
           <select name="modelFile" method="GET"  style="font-size:20px;">
-            {% for model in model_repo %}
+            {% for model in model_registry %}
             <option value= "{{model}}"  SELECTED>{{model}}</option>"
             {% endfor %}
           </select>

@@ -169,7 +169,8 @@ def pipeline_model(request: Request, \
                      "optimizer":optimizer, \
                      "regularizingStrength":regularizingStrength, \
                      "model_experiments_record":model_experiments_record, \
-                     "trainingAccuracy":model_experiments_record["lr_goals"][learningGoal]["experiments_record"]["train"]["mean_acc"]
+                     "trainingAccuracy":model_experiments_record["lr_goals"][learningGoal]["experiments_record"]["train"]["mean_acc"], \
+                     "validatingAccuracy":model_experiments_record["lr_goals"][learningGoal]["experiments_record"]["valid"]["mean_acc"]
                      })
 
 
@@ -196,9 +197,9 @@ def pipeline_service(request: Request):
    # List the upload data to Dropdownlist
    pathManager.backToRoot()
    upload_data = os.listdir("./upload_data")
-   model_repo = os.listdir("./model_repo")
+   model_registry = os.listdir("./model_registry")
    
-   return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_repo":model_repo})
+   return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
 
 @app.post("/pipeline/service")
 def pipeline_service(request: Request):
@@ -208,9 +209,9 @@ def pipeline_service(request: Request):
    # List the upload data to Dropdownlist
    pathManager.backToRoot()
    upload_data = os.listdir("./upload_data")
-   model_repo = os.listdir("./model_repo")
+   model_registry = os.listdir("./model_registry")
 
-   return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_repo":model_repo})
+   return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
 
 @app.post("/save/service")
 def save_service(model_params, model_perf, model_perf_fig):
@@ -230,7 +231,6 @@ def save_model(model_params, model_perf, model_perf_fig):
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
    return {"item_id": item_id, "q": q}
-
 
 
 if __name__ == '__main__':
