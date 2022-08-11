@@ -20,6 +20,7 @@ sys.path.append(str(root))
 from model_file import riro, ribo
 # from model_file.riro import main
 from modelParameter import ModelParameter
+from apps import saving 
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -148,13 +149,17 @@ def pipeline_model(request: Request, \
                                  optimizer=optimizer, \
                                  regularizingStrength=regularizingStrength)
    # Train model
-   # model_perf, model_perf_fig = __model_training(model_params)
-   model_perf, model_perf_fig = None, None
-   model_experiments_record = __model_training(model_params)
+   model_experiments_record, model_params, model_perf_fig_drt = __model_training(model_params)
    # Save model config a& Perf.
-   save_model(model_params, model_perf, model_perf_fig)
+   save_model(model_experiments_record, model_params, model_perf_fig_drt)
 
+   img_drt = model_perf_fig_drt.parts[-1]
 
+   app.mount(
+    f"/model_fig",
+    StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / img_drt),
+    name="model_fig",
+   )  
 
    return templates.TemplateResponse("model.html", \
             context={"request":request, \
@@ -176,18 +181,12 @@ def pipeline_model(request: Request, \
 
 def __model_training(model_params):
    
-   
-   print(model_params.info())
+
    model_file_str = model_params.modelFile.split(".")[0] # riro.py -> riro
    model = eval(model_file_str) # str to module through eval function : riro, ribo, biro, bibo
-   print(model)
-   model_experiments_record = model.main(model_params)
-   
-   model_perf = None
-   model_perf_fig = None
+   model_experiments_record, model_params, model_perf_fig_drt = model.main(model_params)
 
-   # return (model_perf, model_perf_fig)
-   return model_experiments_record
+   return model_experiments_record, model_params, model_perf_fig_drt
 
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
@@ -221,12 +220,9 @@ def save_service(model_params, model_perf, model_perf_fig):
    print(f'model_perf_fig = {model_perf_fig}')
 
 @app.post("/save/model")
-def save_model(model_params, model_perf, model_perf_fig):
-   print(f'已進入 save_model()')
-   print(f'model_params = {model_params}')
-   print(f'model_perf = {model_perf}')
-   print(f'model_perf_fig = {model_perf_fig}')
+def save_model(model_experiments_record=None, model_params=None, model_perf_fig_drt=None):
 
+   saving.writeIntoModelRegistry(model_experiments_record, model_params, model_perf_fig_drt)
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):

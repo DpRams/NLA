@@ -23,7 +23,7 @@ parent, root = file.parent, file.parents[1]
 # sys.path.append(str(parent))
 sys.path.append(str(root))
 
-from apps import saveModel 
+from apps import evaluating, saving
 
 
 # %matplotlib inline
@@ -645,8 +645,8 @@ def main(model_params):
                         # Append every record in one iteration
                         output, loss = network.forward()
                         train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean().cpu()
-                        experiments_record["train"]["acc_step"].append(train_acc)
-                        experiments_record["train"]["loss_step"].append(loss.item())
+                        experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
+                        experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
                         experiments_record["nb_node"].append(network.nb_node)
                         experiments_record["nb_node_pruned"].append(network.nb_node_pruned)
                         network.nb_node_pruned = 0
@@ -660,8 +660,8 @@ def main(model_params):
             # Append every record in one iteration
             output, loss = network.forward()
             train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean().cpu().detach()
-            experiments_record["train"]["acc_step"].append(train_acc)
-            experiments_record["train"]["loss_step"].append(loss.item())
+            experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
+            experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
             experiments_record["nb_node"].append(network.nb_node)
             experiments_record["nb_node_pruned"].append(network.nb_node_pruned)
             network.nb_node_pruned = 0
@@ -673,20 +673,17 @@ def main(model_params):
         model_experiments_record["lr_goals"][lr_goal] = {"network" : network, "experiments_record" : experiments_record}
     
         # inferencing
-        valid_acc = inferencing(network, x_test, y_test)
+        valid_acc = evaluating.inferencing(network, x_test, y_test)
         model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["valid"]["mean_acc"] = valid_acc
 
+        # Plot graph
+        model_perf_fig_drt = evaluating.making_figure(model_experiments_record, model_params)
 
-        # Save model
-        saveModel.writeIntoModelRegistry(model_experiments_record, model_params)
-
-
-    # Plot graph
-
-    
+        # # Save model
+        # saving.writeIntoModelRegistry(model_experiments_record, model_params, model_perf_fig_drt)
     
 
-    return model_experiments_record
+    return model_experiments_record, model_params, model_perf_fig_drt
 
     # save checkpoints
     # filepath = "./checkpoints/algorithm_2/partial_data/" #'../checkpoints'

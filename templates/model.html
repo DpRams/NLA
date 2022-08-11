@@ -190,31 +190,45 @@
           <div class="p-5 mb-1 bg-light rounded-3">
   
 
-            <div class="gallery">
+            <!-- <div class="gallery">
               <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-                <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
+                <img src="{{ url_for('static', path='/img/acc.png') }}"  alt="Training Accuracy" width="600" height="400">
               </a>
-              <div class="desc">Model Accuracy</div>
+              <div class="desc">Training Accuracy</div>
+            </div> -->
+
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('model_fig', path='/Accuracy.png') }}">
+                <img src= "{{ url_for('model_fig', path='/Accuracy.png') }}"  alt="Training Accuracy" width="600" height="400">
+              </a>
+              <div class="desc">Training Accuracy</div>
             </div>
             
             <div class="gallery">
-              <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
-                <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
+              <a target="_blank" href="{{ url_for('model_fig', path='/Loss.png') }}">
+                <img src= "{{ url_for('model_fig', path='/Loss.png') }}"  alt="Training Loss" width="600" height="400">
               </a>
-              <div class="desc">Model loss</div>
+              <div class="desc">Training Loss</div>
             </div>
             <div class="gallery">
-              <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-                <img src="{{ url_for('static', path='/img/acc.png') }}" alt="Model Accuracy" width="600" height="400">
+              <a target="_blank" href="{{ url_for('model_fig', path='/Nodes.png') }}">
+                <img src="{{ url_for('model_fig', path='/Nodes.png') }}"  alt="Model Nodes" width="600" height="400">
               </a>
-              <div class="desc">Model Accuracy</div>
+              <div class="desc">Model Nodes</div>
             </div>
             
             <div class="gallery">
-              <a target="_blank" href="{{ url_for('static', path='/img/loss.png') }}">
-                <img src="{{ url_for('static', path='/img/loss.png') }}" alt="Forest" width="600" height="400">
+              <a target="_blank" href="{{ url_for('model_fig', path='/Pruned_nodes.png') }}">
+                <img src="{{ url_for('model_fig', path='/Pruned_nodes.png') }}"  alt="Pruned Nodes" width="600" height="400">
               </a>
-              <div class="desc">Model loss</div>
+              <div class="desc">Pruned Nodes</div>
+            </div>
+
+            <div class="gallery">
+              <a target="_blank" href="{{ url_for('model_fig', path='/Routes.png') }}">
+                <img src="{{ url_for('model_fig', path='/Routes.png') }}"  alt="Model Routes" width="600" height="400">
+              </a>
+              <div class="desc">Model Routes</div>
             </div>
             
           </div>
