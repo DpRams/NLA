@@ -118,6 +118,14 @@ def pipeline_model(request: Request):
    pathManager.backToRoot()
    upload_data = os.listdir("./upload_data")
    model_file = [pythonFile for pythonFile in os.listdir("./model_file") if pythonFile.endswith(".py")]
+
+   template_drt = "__template_drt"
+   
+   app.mount(
+      f"/model_fig/{template_drt}",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
+      name="model_fig",
+   )  
    
    return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
 
@@ -149,16 +157,15 @@ def pipeline_model(request: Request, \
                                  optimizer=optimizer, \
                                  regularizingStrength=regularizingStrength)
    # Train model
-   model_experiments_record, model_params, model_perf_fig_drt = __model_training(model_params)
+   model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
    # Save model config a& Perf.
-   save_model(model_experiments_record, model_params, model_perf_fig_drt)
+   save_model(model_experiments_record, model_params, model_fig_drt)
 
-   img_drt = model_perf_fig_drt.parts[-1]
 
    app.mount(
-    f"/model_fig",
-    StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / img_drt),
-    name="model_fig",
+      f"/model_fig/{model_fig_drt}",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / model_fig_drt), #  / img_drt
+      name="model_fig",
    )  
 
    return templates.TemplateResponse("model.html", \
@@ -184,9 +191,9 @@ def __model_training(model_params):
 
    model_file_str = model_params.modelFile.split(".")[0] # riro.py -> riro
    model = eval(model_file_str) # str to module through eval function : riro, ribo, biro, bibo
-   model_experiments_record, model_params, model_perf_fig_drt = model.main(model_params)
+   model_experiments_record, model_params, model_fig_drt = model.main(model_params)
 
-   return model_experiments_record, model_params, model_perf_fig_drt
+   return model_experiments_record, model_params, model_fig_drt
 
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
@@ -197,6 +204,14 @@ def pipeline_service(request: Request):
    pathManager.backToRoot()
    upload_data = os.listdir("./upload_data")
    model_registry = os.listdir("./model_registry")
+
+   template_drt = "__template_drt"
+   
+   app.mount(
+      f"/model_fig/{template_drt}",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
+      name="model_fig",
+   )  
    
    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
 
@@ -220,9 +235,9 @@ def save_service(model_params, model_perf, model_perf_fig):
    print(f'model_perf_fig = {model_perf_fig}')
 
 @app.post("/save/model")
-def save_model(model_experiments_record=None, model_params=None, model_perf_fig_drt=None):
+def save_model(model_experiments_record=None, model_params=None, model_fig_drt=None):
 
-   saving.writeIntoModelRegistry(model_experiments_record, model_params, model_perf_fig_drt)
+   saving.writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt)
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):

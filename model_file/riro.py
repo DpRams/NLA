@@ -677,13 +677,13 @@ def main(model_params):
         model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["valid"]["mean_acc"] = valid_acc
 
         # Plot graph
-        model_perf_fig_drt = evaluating.making_figure(model_experiments_record, model_params)
+        model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)
 
         # # Save model
         # saving.writeIntoModelRegistry(model_experiments_record, model_params, model_perf_fig_drt)
     
 
-    return model_experiments_record, model_params, model_perf_fig_drt
+    return model_experiments_record, model_params, model_fig_drt
 
     # save checkpoints
     # filepath = "./checkpoints/algorithm_2/partial_data/" #'../checkpoints'

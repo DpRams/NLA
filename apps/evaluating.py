@@ -54,9 +54,10 @@ def making_figure(model_experiments_record, model_params):
     __plot_nb_node_pruned(nb_node_pruned_step, drtPath)
     __plot_routes(routes_cnt, drtPath)
 
-    model_perf_fig_drt = drtPath
+    # model_fig_drt = drtPath # return the whole path
+    model_fig_drt = drtPath.parts[-1] # return only the last drtPath
 
-    return model_perf_fig_drt
+    return model_fig_drt
 
 def __plot_acc(training_acc_step, drtPath):
 
