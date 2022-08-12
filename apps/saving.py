@@ -1,6 +1,7 @@
 import time
 import pickle
 import sys
+import numpy as np
 from pathlib import Path
 
 file = Path(__file__).resolve()
@@ -16,7 +17,7 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
     drtPath = f"{root}\\model_registry\\"
     timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
     modelType = model_params.modelFile[:-3]
-    validAcc = model_experiments_record["experiments_record"]["valid"]["mean_acc"]
+    validAcc = str(model_experiments_record["experiments_record"]["valid"]["mean_acc"])[:5]
     fileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pkl" 
     checkpoint = {"model_experiments_record":model_experiments_record, "model_params":model_params, "model_fig_drt":model_fig_drt}
     with open(drtPath + fileName, "wb") as f:

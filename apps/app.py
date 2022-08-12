@@ -147,6 +147,10 @@ def pipeline_model(request: Request, \
    upload_data = os.listdir("./upload_data")
    model_file = [pythonFile for pythonFile in os.listdir("./model_file") if pythonFile.endswith(".py")]
 
+   # Set default "RMSE", "Adam" for lossFn, optim  
+   lossFunction = "RMSE"
+   optimizer = "Adam"
+
    # Define modelParameter
    model_params = ModelParameter(dataDirectory=dataDirectory, \
                                  modelFile=modelFile, \
@@ -198,10 +202,17 @@ def __model_training(model_params):
 def __model_evaluating(dataDirectory, modelFile):
    
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory)
-   network = evaluating.reading_pkl(modelFile)
+   checkpoints = evaluating.reading_pkl(modelFile)
+
+   network = checkpoints["model_experiments_record"]["network"]
+   model_experiments_record = checkpoints["model_experiments_record"]
+   model_params = checkpoints["model_params"]
+   model_fig_drt = checkpoints["model_fig_drt"]
+   
+   # testAccuracy 應該不能跟原始pkl檔存一起，要另外存
    testingAccuracy = evaluating.inferencing(network, x_test, y_test)
 
-   return testingAccuracy
+   return model_experiments_record, model_params, model_fig_drt, testingAccuracy
 
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
@@ -235,18 +246,31 @@ def pipeline_service(request: Request, \
    upload_data = os.listdir("./upload_data")
    model_registry = os.listdir("./model_registry")
 
-   testingAccuracy = __model_evaluating(dataDirectory, modelFile)
+   model_experiments_record, model_params, model_fig_drt, testingAccuracy = __model_evaluating(dataDirectory, modelFile)
 
-   # await modified
-   template_drt = "__template_drt"
-   
    app.mount(
-      f"/model_fig/{template_drt}",
-      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
+      f"/model_fig/{model_fig_drt}",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / model_fig_drt), #  / img_drt
       name="model_fig",
    )  
 
-   return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
+   return templates.TemplateResponse("service.html", \
+                  context={"request":request, \
+                     "upload_data":upload_data, \
+                     "dataDirectory":dataDirectory, \
+                     "modelFile":modelFile, \
+                     "lossFunction":model_params.lossFunction, \
+                     "learningGoal":model_params.learningGoal, \
+                     "learningRate":model_params.learningRate, \
+                     "learningRateLowerBound":model_params.learningRateLowerBound, \
+                     "optimizer":model_params.optimizer, \
+                     "regularizingStrength":model_params.regularizingStrength, \
+                     "model_registry":model_registry, \
+                     "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+                     "testingAccuracy":testingAccuracy
+                     })
+
 
 @app.post("/save/service")
 def save_service(model_params, model_perf, model_perf_fig):

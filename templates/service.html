@@ -142,15 +142,42 @@
 
           <br><br>
 
-
           <label class="col-md-8 fs-5"></label>
           <label for="inference" class="btn btn-primary btn-lg">Inference</label>
           <input type="submit" id="inference" class="btn btn-primary btn-lg" hidden>
         
           <br><br>
+
+          <br><br>
+          <label class="col-md-8 fs-3">Training configuration</label>
+          <br><br>
+          <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
+          <br>
+          <text><b>Model  : <font color="blue">{{modelFile}}</font></b></text>
+          <br>
+          <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
+          <br>
+          <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
+          <br>
+          <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+          <br>
+          <text><b>Learning rate Lower bound : <font color="blue">{{learningRateLowerBound}}</font></b></text>
+          <br>
+          <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+          <br>
+          <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+          <!-- <br>
+          <text><b>model_experiments_record : <font color="blue">{{model_experiments_record}}</font></b></text> -->
+          <br><br>
+          <label class="col-md-8 fs-3">Training progressbar</label>
+          <br><br>
           <label class="col-md-8 fs-3">Model Performance</label>
           <br><br>
-          <text><b>Testing accuracy : <font color="blue">{{0.95}}</font></b></text>
+          <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
+          <br>
+          <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
+          <br>
+          <text><b>Testing accuracy : <font color="blue">{{testingAccuracy}}</font></b></text>
           <br>
           <div class="p-5 mb-1 bg-light rounded-3">
 

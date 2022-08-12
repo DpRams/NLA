@@ -112,9 +112,7 @@ def reading_pkl(modelFile):
     with open(modelPath, 'rb') as f:
         checkpoints = pickle.load(f)
 
-    network = checkpoints["model_experiments_record"]["network"]
-
-    return network
+    return checkpoints 
 
 
 
@@ -141,7 +139,7 @@ def making_figure(model_experiments_record, model_params):
     # create dir path
     timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
     modelType = model_params.modelFile[:-3]
-    validAcc = model_experiments_record["experiments_record"]["valid"]["mean_acc"]
+    validAcc = str(model_experiments_record["experiments_record"]["valid"]["mean_acc"])[:5]
     drtName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}\\" 
 
     # create dir    
