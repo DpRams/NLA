@@ -524,7 +524,7 @@ def plot_loss(checkpoint):
     plt.show()
 
 
-def reading_dataset(dataDirecotry):
+def reading_dataset_Training(dataDirecotry):
     
     filelist = os.listdir(f"./upload_data/{dataDirecotry}")
     file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
@@ -561,7 +561,7 @@ def main(model_params):
     for lr_goal in sorted(lr_goals, reverse=True):
         
         # Reading dataset
-        (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset(model_params.dataDirectory)
+        (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory)
         
         # Defining model
         network = Network(1, initial_x, initial_y, \

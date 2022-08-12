@@ -20,7 +20,7 @@ sys.path.append(str(root))
 from model_file import riro, ribo
 # from model_file.riro import main
 from modelParameter import ModelParameter
-from apps import saving 
+from apps import evaluating, saving 
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -195,6 +195,14 @@ def __model_training(model_params):
 
    return model_experiments_record, model_params, model_fig_drt
 
+def __model_evaluating(dataDirectory, modelFile):
+   
+   x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory)
+   network = evaluating.reading_pkl(modelFile)
+   testingAccuracy = evaluating.inferencing(network, x_test, y_test)
+
+   return testingAccuracy
+
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
    
@@ -216,7 +224,9 @@ def pipeline_service(request: Request):
    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
 
 @app.post("/pipeline/service")
-def pipeline_service(request: Request):
+def pipeline_service(request: Request, \
+                     dataDirectory: str = Form(default=None, max_length=50), \
+                     modelFile: str = Form(default=None, max_length=50)):
 
    global pathManager
 
@@ -224,6 +234,17 @@ def pipeline_service(request: Request):
    pathManager.backToRoot()
    upload_data = os.listdir("./upload_data")
    model_registry = os.listdir("./model_registry")
+
+   testingAccuracy = __model_evaluating(dataDirectory, modelFile)
+
+   # await modified
+   template_drt = "__template_drt"
+   
+   app.mount(
+      f"/model_fig/{template_drt}",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
+      name="model_fig",
+   )  
 
    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
 
