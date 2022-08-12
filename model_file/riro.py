@@ -556,7 +556,8 @@ def reading_dataset_Training(dataDirecotry):
 def main(model_params):
 
     lr_goals = [model_params.learningGoal]
-    model_experiments_record = {"lr_goals" : {key : None for key in lr_goals}}
+    # model_experiments_record = {"lr_goals" : {key : None for key in lr_goals}}
+    model_experiments_record = {"network" : None, "experiments_record" : None}
 
     for lr_goal in sorted(lr_goals, reverse=True):
         
@@ -670,11 +671,11 @@ def main(model_params):
         experiments_record["train"]["mean_acc"] = np.mean(experiments_record["train"]["acc_step"])
         experiments_record["train"]["mean_loss"] = np.mean(experiments_record["train"]["loss_step"])
 
-        model_experiments_record["lr_goals"][lr_goal] = {"network" : network, "experiments_record" : experiments_record}
+        model_experiments_record = {"network" : network, "experiments_record" : experiments_record}
     
         # inferencing
         valid_acc = evaluating.inferencing(network, x_test, y_test)
-        model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["valid"]["mean_acc"] = valid_acc
+        model_experiments_record["experiments_record"]["valid"]["mean_acc"] = valid_acc
 
         # Plot graph
         model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)

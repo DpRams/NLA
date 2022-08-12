@@ -112,7 +112,7 @@ def reading_pkl(modelFile):
     with open(modelPath, 'rb') as f:
         checkpoints = pickle.load(f)
 
-    network = checkpoints["model_experiments_record"]["lr_goals"]["1"]["network"]
+    network = checkpoints["model_experiments_record"]["network"]
 
     return network
 
@@ -141,18 +141,18 @@ def making_figure(model_experiments_record, model_params):
     # create dir path
     timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
     modelType = model_params.modelFile[:-3]
-    validAcc = model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["valid"]["mean_acc"]
+    validAcc = model_experiments_record["experiments_record"]["valid"]["mean_acc"]
     drtName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}\\" 
 
     # create dir    
     drtPath = Path(f"{root}\\model_fig\\{drtName}")
     drtPath.mkdir(parents=True, exist_ok=True)
 
-    training_acc_step = model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["train"]["acc_step"]
-    training_loss_step = model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["train"]["loss_step"]
-    nb_node_step = model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["nb_node"]
-    nb_node_pruned_step = model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["nb_node_pruned"]
-    routes_cnt = model_experiments_record["lr_goals"][lr_goal]["experiments_record"]["Route"]
+    training_acc_step = model_experiments_record["experiments_record"]["train"]["acc_step"]
+    training_loss_step = model_experiments_record["experiments_record"]["train"]["loss_step"]
+    nb_node_step = model_experiments_record["experiments_record"]["nb_node"]
+    nb_node_pruned_step = model_experiments_record["experiments_record"]["nb_node_pruned"]
+    routes_cnt = model_experiments_record["experiments_record"]["Route"]
 
     # making figure
     __plot_acc(training_acc_step, drtPath)

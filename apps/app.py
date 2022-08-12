@@ -181,8 +181,8 @@ def pipeline_model(request: Request, \
                      "optimizer":optimizer, \
                      "regularizingStrength":regularizingStrength, \
                      "model_experiments_record":model_experiments_record, \
-                     "trainingAccuracy":model_experiments_record["lr_goals"][learningGoal]["experiments_record"]["train"]["mean_acc"], \
-                     "validatingAccuracy":model_experiments_record["lr_goals"][learningGoal]["experiments_record"]["valid"]["mean_acc"]
+                     "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"]
                      })
 
 
