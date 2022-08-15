@@ -8,6 +8,7 @@ import os
 import shutil
 import requests
 import time
+import urllib.parse
 
 # testing
 # Append absolute path to import module within different directory.
@@ -120,13 +121,13 @@ def pipeline_model(request: Request):
    upload_data = os.listdir("./upload_data")
    model_file = [pythonFile for pythonFile in os.listdir("./model_file") if pythonFile.endswith(".py")]
 
-   template_drt = "__template_drt"
+   # template_drt = "__template_drt"
    
-   app.mount(
-      f"/model_fig/{template_drt}",
-      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
-      name="model_fig",
-   )  
+   # app.mount(
+   #    f"/model_fig/{template_drt}",
+   #    StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
+   #    name="model_fig",
+   # )  
    
    return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
 
@@ -166,13 +167,14 @@ def pipeline_model(request: Request, \
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
 
-
+   print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
-      f"/model_fig/{model_fig_drt}",
-      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / model_fig_drt), #  / img_drt
+      f"/model_fig",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
       name="model_fig",
    )  
-
+   print(app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'))
+   
    return templates.TemplateResponse("model.html", \
             context={"request":request, \
                      "upload_data":upload_data, \
@@ -187,7 +189,12 @@ def pipeline_model(request: Request, \
                      "regularizingStrength":regularizingStrength, \
                      "model_experiments_record":model_experiments_record, \
                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
-                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"]
+                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+                     "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
+                     "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
+                     "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
+                     "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
+                     "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
                      })
 
 
@@ -225,13 +232,13 @@ def pipeline_service(request: Request):
    upload_data = os.listdir("./upload_data")
    model_registry = os.listdir("./model_registry")
 
-   template_drt = "__template_drt"
+   # template_drt = "__template_drt"
    
-   app.mount(
-      f"/model_fig/{template_drt}",
-      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
-      name="model_fig",
-   )  
+   # app.mount(
+   #    f"/model_fig/{template_drt}",
+   #    StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
+   #    name="model_fig",
+   # )  
    
    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
 
@@ -249,9 +256,10 @@ def pipeline_service(request: Request, \
 
    model_experiments_record, model_params, model_fig_drt, testingAccuracy = __model_evaluating(dataDirectory, modelFile)
 
+   print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
-      f"/model_fig/{model_fig_drt}",
-      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / model_fig_drt), #  / img_drt
+      f"/model_fig",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
       name="model_fig",
    )  
 
@@ -269,7 +277,12 @@ def pipeline_service(request: Request, \
                      "model_registry":model_registry, \
                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
                      "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-                     "testingAccuracy":testingAccuracy
+                     "testingAccuracy":testingAccuracy, \
+                     "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
+                     "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
+                     "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
+                     "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
+                     "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
                      })
 
 

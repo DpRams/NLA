@@ -132,6 +132,9 @@ def inferencing(network, x_test, y_test):
 # Training Accuracy, Training Loss, nb_node, nb_node_pruned 折線圖
 # Route 圓餅圖
 def making_figure(model_experiments_record, model_params):
+    
+    # this line is set to prevent the bug about https://blog.csdn.net/qq_42998120/article/details/107871863
+    plt.switch_backend("agg")
 
     data_drt = model_params.dataDirectory
     lr_goal = model_params.learningGoal
