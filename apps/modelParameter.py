@@ -1,5 +1,5 @@
 class ModelParameter():
-    def __init__(self, dataDirectory, modelFile, lossFunction, learningGoal, learningRate, learningRateLowerBound, optimizer, regularizingStrength) -> None:
+    def __init__(self, dataDirectory, modelFile, lossFunction, learningGoal, learningRate, learningRateLowerBound, optimizer, tuningTimes, regularizingStrength) -> None:
         self.dataDirectory = dataDirectory
         self.modelFile = modelFile
         self.lossFunction = lossFunction
@@ -7,6 +7,7 @@ class ModelParameter():
         self.learningRate = learningRate
         self.learningRateLowerBound = learningRateLowerBound
         self.optimizer = optimizer
+        self.tuningTimes = tuningTimes
         self.regularizingStrength = regularizingStrength
     
     def info(self):
@@ -18,4 +19,5 @@ class ModelParameter():
         print(f'self.learningRate = {self.learningRate}')
         print(f'self.learningRateLowerBound = {self.learningRateLowerBound}')
         print(f'self.optimizer = {self.optimizer}')
+        print(f'self.tuningTimes = {self.tuningTimes}')
         print(f'self.regularizingStrength = {self.regularizingStrength}')

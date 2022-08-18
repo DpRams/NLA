@@ -30,7 +30,7 @@ class Network(torch.nn.Module):
         # Stop criteria - threshold
         self.threshold_for_error = eval(kwargs["learning_goal"]) 
         self.threshold_for_lr = eval(kwargs["learning_rate_lower_bound"]) 
-
+        self.tuning_times = eval(kwargs["tuning_times"]) 
         self.regularizing_strength = eval(kwargs["regularizing_strength"])
         
         # Set default now, not open for customization.

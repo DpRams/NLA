@@ -140,6 +140,7 @@ def pipeline_model(request: Request, \
                      learningRate: str = Form(default=None, max_length=50), \
                      learningRateLowerBound: str = Form(default=None, max_length=50), \
                      optimizer: str = Form(default=None, max_length=50), \
+                     tuningTimes: str = Form(default=None, max_length=50), \
                      regularizingStrength: str = Form(default=None, max_length=50)):
 
    global pathManager
@@ -161,6 +162,7 @@ def pipeline_model(request: Request, \
                                  learningRate=learningRate, \
                                  learningRateLowerBound=learningRateLowerBound, \
                                  optimizer=optimizer, \
+                                 tuningTimes=tuningTimes, \
                                  regularizingStrength=regularizingStrength)
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
@@ -186,6 +188,7 @@ def pipeline_model(request: Request, \
                      "learningRate":learningRate, \
                      "learningRateLowerBound":learningRateLowerBound, \
                      "optimizer":optimizer, \
+                     "tuningTimes":tuningTimes, \
                      "regularizingStrength":regularizingStrength, \
                      "model_experiments_record":model_experiments_record, \
                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
@@ -273,6 +276,7 @@ def pipeline_service(request: Request, \
                      "learningRate":model_params.learningRate, \
                      "learningRateLowerBound":model_params.learningRateLowerBound, \
                      "optimizer":model_params.optimizer, \
+                     "tuningTimes":model_params.tuningTimes, \
                      "regularizingStrength":model_params.regularizingStrength, \
                      "model_registry":model_registry, \
                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \

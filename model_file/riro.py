@@ -25,10 +25,6 @@ sys.path.append(str(root))
 
 from apps import evaluating, saving
 
-global tuning_times
-
-tuning_times = 1
-
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class Network(torch.nn.Module):
@@ -44,7 +40,7 @@ class Network(torch.nn.Module):
         # Stop criteria - threshold
         self.threshold_for_error = eval(kwargs["learning_goal"]) 
         self.threshold_for_lr = eval(kwargs["learning_rate_lower_bound"]) 
-
+        self.tuning_times = eval(kwargs["tuning_times"]) 
         self.regularizing_strength = eval(kwargs["regularizing_strength"])
         
         # Set default now, not open for customization.
@@ -162,7 +158,7 @@ def matching(network):
 
     else:
 
-        while times_enlarge + times_shrink < tuning_times:
+        while times_enlarge + times_shrink < network.tuning_times:
             
             output, loss = network.forward()
             network_pre = copy.deepcopy(network)
@@ -225,7 +221,7 @@ def matching_for_reorganizing(network):
 
     else:
 
-        while times_enlarge + times_shrink < tuning_times:
+        while times_enlarge + times_shrink < network.tuning_times:
             
             output, loss = network.forward()
             network_pre = copy.deepcopy(network)
@@ -389,7 +385,7 @@ def regularizing(network):
     # network.learning_rate = 1e-3
 
     ## Set epoch to 100
-    for i in range(tuning_times):
+    for i in range(network.tuning_times):
 
         ## Store the parameter of the network
         network_pre = copy.deepcopy(network)
@@ -575,6 +571,7 @@ def main(model_params):
                             learning_rate=model_params.learningRate, \
                             learning_rate_lower_bound=model_params.learningRateLowerBound, \
                             optimizer=model_params.optimizer,  \
+                            tuning_times=model_params.tuningTimes,  \
                             regularizing_strength=model_params.regularizingStrength)
 
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
