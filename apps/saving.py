@@ -8,7 +8,6 @@ file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
-
 def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt):
 
     data_drt = model_params.dataDirectory

@@ -166,6 +166,14 @@ def pipeline_model(request: Request, \
                                  regularizingStrength=regularizingStrength)
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
+
+   if model_experiments_record == "lr_goal is too small to training!":
+      return templates.TemplateResponse("model.html", \
+            context={"request":request,  \
+                     "upload_data":upload_data, \
+                     "model_file":model_file, \
+                     "typeHint":"lr_goal is too small to training!"})
+
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
 

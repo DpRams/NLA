@@ -550,6 +550,13 @@ def reading_dataset_Training(dataDirecotry):
     # print(f'y_train_scaled.shape : {y_train_scaled.shape}\n')
     
     return (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test)
+
+def __is_lr_goal_big_enough(network):
+    
+    if network.message == "有多筆 undesired_index，無法cramming" or network.message == "Cramming failed，視該筆資料為離群值，無法學習": 
+        return True
+    else:
+        return False
     
 
 # 存放model, experiments_record
@@ -579,6 +586,10 @@ def main(model_params):
 
         # Initializing model
         network = initializing(network, initial_x, initial_y)
+
+        # Checking if lr_goal is too small
+        # if __is__lr_goal_big_enough():pass
+        # else:return "lr_goal is too small to training!"
 
         # Record experiments data
         experiments_record = {"train" : {"mean_acc" : 0, "acc_step" : [], "mean_loss" : 0, "loss_step" : []}, \
@@ -629,32 +640,10 @@ def main(model_params):
                     network = copy.deepcopy(network_pre)
                     network = cramming(network)
                     print("Cramming End")
-                    print(f'network.message = {network.message}!')
-                    if network.message == "有多筆 undesired_index，無法cramming" or network.message == "Cramming failed，視該筆資料為離群值，無法學習": 
-
-                        print(f'network.undesired_index = {network.undesired_index}')
-                        current_x = np.delete(current_x, network.undesired_index, axis = 0)
-                        current_y = np.delete(current_y, network.undesired_index, axis = 0)
-                        print(f'current_x = {current_x.shape}')
-                        print(f'current_y = {current_y.shape}')
-                        network.message = ""
-                        network.undesired_index = None
-
-                        network = copy.deepcopy(network_pre)
-
-                        experiments_record["Route"]["Purple"] += 1
-                        
-                        # Append every record in one iteration
-                        output, loss = network.forward()
-                        train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean().cpu()
-                        experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
-                        experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
-                        experiments_record["nb_node"].append(network.nb_node)
-                        experiments_record["nb_node_pruned"].append(network.nb_node_pruned)
-                        network.nb_node_pruned = 0
-                        
-                        continue
-
+                    
+                    if  __is_lr_goal_big_enough(network):
+                        return "lr_goal is too small to training!", "lr_goal is too small to training!", "lr_goal is too small to training!"
+                    
                     network = reorganizing(network)
 
                     experiments_record["Route"]["Red"] += 1
@@ -679,11 +668,7 @@ def main(model_params):
         model_experiments_record["experiments_record"]["valid"]["mean_acc"] = np.round(valid_acc, 3)
 
         # Plot graph
-        model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)
-
-        # # Save model
-        # saving.writeIntoModelRegistry(model_experiments_record, model_params, model_perf_fig_drt)
-    
+        model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)    
 
     return model_experiments_record, model_params, model_fig_drt
 
