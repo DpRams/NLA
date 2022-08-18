@@ -25,8 +25,9 @@ sys.path.append(str(root))
 
 from apps import evaluating, saving
 
+global tuning_times
 
-# %matplotlib inline
+tuning_times = 1
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -124,6 +125,8 @@ def initializing(network, initial_x, initial_y):
     
     network.acceptable = True
 
+    return network
+
 def selecting(network, x_train_scaled, y_train_scaled):
     
     residual = []
@@ -141,6 +144,7 @@ def selecting(network, x_train_scaled, y_train_scaled):
 
 def matching(network):
 
+    global tuning_times
     times_enlarge, times_shrink = 0,0
 
     # Set up the learning rate of the network
@@ -158,7 +162,7 @@ def matching(network):
 
     else:
 
-        while times_enlarge + times_shrink < 100:
+        while times_enlarge + times_shrink < tuning_times:
             
             output, loss = network.forward()
             network_pre = copy.deepcopy(network)
@@ -221,7 +225,7 @@ def matching_for_reorganizing(network):
 
     else:
 
-        while times_enlarge + times_shrink < 100:
+        while times_enlarge + times_shrink < tuning_times:
             
             output, loss = network.forward()
             network_pre = copy.deepcopy(network)
@@ -377,7 +381,7 @@ def cramming(network): # 把undesired_index print出來，看一下k_data_num(un
 
 def regularizing(network):
     
-
+    global tuning_times
     ## Record the number of executions
     times_enlarge, times_shrink = 0, 0
 
@@ -385,7 +389,7 @@ def regularizing(network):
     # network.learning_rate = 1e-3
 
     ## Set epoch to 100
-    for i in range(100):
+    for i in range(tuning_times):
 
         ## Store the parameter of the network
         network_pre = copy.deepcopy(network)
@@ -577,7 +581,7 @@ def main(model_params):
         network = network.to(device)
 
         # Initializing model
-        initializing(network, initial_x, initial_y)
+        network = initializing(network, initial_x, initial_y)
 
         # Record experiments data
         experiments_record = {"train" : {"mean_acc" : 0, "acc_step" : [], "mean_loss" : 0, "loss_step" : []}, \
