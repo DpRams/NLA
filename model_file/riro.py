@@ -23,9 +23,10 @@ parent, root = file.parent, file.parents[1]
 # sys.path.append(str(parent))
 sys.path.append(str(root))
 
-from apps import evaluating, saving
+from apps import evaluating, saving, getFreerGpu
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+FreerGpuId = getFreerGpu.getting_freer_gpu()
+device = torch.device(f"cuda:{FreerGpuId}")
 
 class Network(torch.nn.Module):
 
@@ -671,13 +672,3 @@ def main(model_params):
         model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)    
 
     return model_experiments_record, model_params, model_fig_drt
-
-    # save checkpoints
-    # filepath = "./checkpoints/algorithm_2/partial_data/" #'../checkpoints'
-    # if os.path.isdir(filepath) == False: 
-    #     os.mkdir(filepath)
-    # filename = f"model_lr_{lr_goal}_seed_69_learned_315.pkl"
-    # with open (f"./checkpoints/algorithm_2/partial_data/{filename}", "wb") as f:
-    #     pickle.dump(model_record, f)
-
-# model_experiments_record = main()
