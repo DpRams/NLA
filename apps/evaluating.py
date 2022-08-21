@@ -14,18 +14,20 @@ from pathlib import Path
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 
+from apps import getFreerGpu
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class Network(torch.nn.Module):
 
     def __init__(self, nb_neuro, x_train_scaled, y_train_scaled, **kwargs):
 
         super().__init__()
-        # print(f"參數灌入:{kwargs}")
+
+        self.setting_device()
+
         # Initialize
-        self.linear1 = torch.nn.Linear(x_train_scaled.shape[1], nb_neuro).to(device)
-        self.linear2 = torch.nn.Linear(nb_neuro, 1).to(device)
+        self.linear1 = torch.nn.Linear(x_train_scaled.shape[1], nb_neuro).to(self.device)
+        self.linear2 = torch.nn.Linear(nb_neuro, 1).to(self.device)
     
         # Stop criteria - threshold
         self.threshold_for_error = eval(kwargs["learning_goal"]) 
@@ -37,8 +39,8 @@ class Network(torch.nn.Module):
         not_used_currently = (kwargs["regularizing_strength"], kwargs["optimizer"])
 
         # Input data
-        self.x = torch.FloatTensor(x_train_scaled).to(device)
-        self.y = torch.FloatTensor(y_train_scaled).to(device)
+        self.x = torch.FloatTensor(x_train_scaled).to(self.device)
+        self.y = torch.FloatTensor(y_train_scaled).to(self.device)
 
         # Learning rate
         self.learning_rate = eval(kwargs["learning_rate"])
@@ -52,6 +54,13 @@ class Network(torch.nn.Module):
         
         self.undesired_index = None
         self.message = ""
+    
+
+    def setting_device(self):
+
+        FreerGpuId = getFreerGpu.getting_freer_gpu()
+        device = torch.device(f"cuda:{FreerGpuId}")
+        self.device = device
         
     # Reset the x and y data
     def setData(self, x_train_scaled, y_train_scaled):

@@ -25,18 +25,18 @@ sys.path.append(str(root))
 
 from apps import evaluating, saving, getFreerGpu
 
-FreerGpuId = getFreerGpu.getting_freer_gpu()
-device = torch.device(f"cuda:{FreerGpuId}")
 
 class Network(torch.nn.Module):
 
     def __init__(self, nb_neuro, x_train_scaled, y_train_scaled, **kwargs):
 
         super().__init__()
-        # print(f"參數灌入:{kwargs}")
+
+        self.setting_device()
+
         # Initialize
-        self.linear1 = torch.nn.Linear(x_train_scaled.shape[1], nb_neuro).to(device)
-        self.linear2 = torch.nn.Linear(nb_neuro, 1).to(device)
+        self.linear1 = torch.nn.Linear(x_train_scaled.shape[1], nb_neuro).to(self.device)
+        self.linear2 = torch.nn.Linear(nb_neuro, 1).to(self.device)
     
         # Stop criteria - threshold
         self.threshold_for_error = eval(kwargs["learning_goal"]) 
@@ -48,8 +48,8 @@ class Network(torch.nn.Module):
         not_used_currently = (kwargs["regularizing_strength"], kwargs["optimizer"])
 
         # Input data
-        self.x = torch.FloatTensor(x_train_scaled).to(device)
-        self.y = torch.FloatTensor(y_train_scaled).to(device)
+        self.x = torch.FloatTensor(x_train_scaled).to(self.device)
+        self.y = torch.FloatTensor(y_train_scaled).to(self.device)
 
         # Learning rate
         self.learning_rate = eval(kwargs["learning_rate"])
@@ -63,12 +63,20 @@ class Network(torch.nn.Module):
         
         self.undesired_index = None
         self.message = ""
-        
+    
+
+    def setting_device(self):
+
+        FreerGpuId = getFreerGpu.getting_freer_gpu()
+        device = torch.device(f"cuda:{FreerGpuId}")
+        self.device = device
+
+    
     # Reset the x and y data
     def setData(self, x_train_scaled, y_train_scaled):
         
-        self.x = torch.FloatTensor(x_train_scaled).to(device)
-        self.y = torch.FloatTensor(y_train_scaled).to(device)
+        self.x = torch.FloatTensor(x_train_scaled).to(self.device)
+        self.y = torch.FloatTensor(y_train_scaled).to(self.device)
     # Add the new data to the x and y data
     def addData(self, new_x_train, new_y_train):
         
@@ -114,11 +122,11 @@ def initializing(network, initial_x, initial_y):
     reg = LinearRegression().fit(initial_x, res_y)
 
     # Set up the initial parameter of the network(through torch.nn.Parameter, we can turn non-trainable tensor into trainable tensor)
-    network.linear1.weight = torch.nn.Parameter(torch.FloatTensor(reg.coef_).to(device))
-    network.linear1.bias = torch.nn.Parameter(torch.FloatTensor(reg.intercept_).to(device))
-    network.linear2.weight = torch.nn.Parameter(torch.FloatTensor([[1]]).to(device))
-    print(f'torch.FloatTensor(min_y).to(device) = {torch.FloatTensor(min_y).to(device)}')
-    network.linear2.bias = torch.nn.Parameter(torch.FloatTensor(min_y).to(device))
+    network.linear1.weight = torch.nn.Parameter(torch.FloatTensor(reg.coef_).to(network.device))
+    network.linear1.bias = torch.nn.Parameter(torch.FloatTensor(reg.intercept_).to(network.device))
+    network.linear2.weight = torch.nn.Parameter(torch.FloatTensor([[1]]).to(network.device))
+    print(f'torch.FloatTensor(min_y).to(network.device) = {torch.FloatTensor(min_y).to(network.device)}')
+    network.linear2.bias = torch.nn.Parameter(torch.FloatTensor(min_y).to(network.device))
     
     network.acceptable = True
 
@@ -300,7 +308,7 @@ def cramming(network): # 把undesired_index print出來，看一下k_data_num(un
             
             ## Find m-vector gamma: r
             ## Use the random method to generate the gamma that can meet the conditions
-            gamma = torch.rand(size = [1, network.x.shape[1]]).to(device)
+            gamma = torch.rand(size = [1, network.x.shape[1]]).to(network.device)
             subtract_undesired_data = torch.sub(remain_tensor, undesired_data)
             matmul_value = torch.mm(gamma, torch.t(subtract_undesired_data))
 
@@ -311,7 +319,7 @@ def cramming(network): # 把undesired_index print出來，看一下k_data_num(un
 
             ## Find the tiny value: zeta
             ## Use the random method to generate the zeta that can meet the conditions
-            zeta = torch.rand(size=[1]).to(device)
+            zeta = torch.rand(size=[1]).to(network.device)
 
             if torch.all(torch.mul(torch.add(zeta, matmul_value), torch.sub(zeta, matmul_value))<0):
                 break
@@ -582,8 +590,8 @@ def main(model_params):
                             tuning_times=model_params.tuningTimes,  \
                             regularizing_strength=model_params.regularizingStrength)
 
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        network = network.to(device)
+        # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        # network = network.to(device)
 
         # Initializing model
         network = initializing(network, initial_x, initial_y)
