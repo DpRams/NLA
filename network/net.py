@@ -120,7 +120,7 @@ class RIRO(Network):
         super().__init__(nb_neuro, x_train_scaled, y_train_scaled, **kwargs)
         print("RIRO Initializing 成功")
 
-    def initializing(self):
+    def initializing(self, initial_x, initial_y):
         pass
 
     def selecting(self):

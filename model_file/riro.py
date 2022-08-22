@@ -1,4 +1,5 @@
 
+from this import d
 import torch 
 import copy
 import pickle
@@ -39,9 +40,8 @@ def initializing(network, initial_x, initial_y):
     network.linear1.weight = torch.nn.Parameter(torch.FloatTensor(reg.coef_).to(network.device))
     network.linear1.bias = torch.nn.Parameter(torch.FloatTensor(reg.intercept_).to(network.device))
     network.linear2.weight = torch.nn.Parameter(torch.FloatTensor([[1]]).to(network.device))
-    print(f'torch.FloatTensor(min_y).to(network.device) = {torch.FloatTensor(min_y).to(network.device)}')
     network.linear2.bias = torch.nn.Parameter(torch.FloatTensor(min_y).to(network.device))
-    
+
     network.acceptable = True
 
     return network
@@ -63,7 +63,6 @@ def selecting(network, x_train_scaled, y_train_scaled):
 
 def matching(network):
 
-    global tuning_times
     times_enlarge, times_shrink = 0,0
 
     # Set up the learning rate of the network
@@ -281,12 +280,13 @@ def cramming(network): # 把undesired_index print出來，看一下k_data_num(un
             print("Cramming successful")
             network.message = "Cramming successful"
             return network
+        else:
+            return None
 
 
 
 def regularizing(network):
     
-    global tuning_times
     ## Record the number of executions
     times_enlarge, times_shrink = 0, 0
 
@@ -411,7 +411,7 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
     filelist = os.listdir(f"./upload_data/{dataDirecotry}")
     file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
     filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/{file_x}", f"./upload_data/{dataDirecotry}/{file_y}"
-    print(f"filePath_X = {filePath_X}\nfilePath_Y = {filePath_Y}")
+    # print(f"filePath_X = {filePath_X}\nfilePath_Y = {filePath_Y}")
     df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
 
     # StandardScaler
@@ -423,8 +423,8 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
     x_train, x_test, y_train, y_test = train_test_split(X_transformed, Y_transformed, test_size=0.2, random_state=42)
 
     # Split data into intializing use and training use.
-    initial_x, x_train_scaled = torch.FloatTensor(x_train[:initializingNumber+1]), torch.FloatTensor(x_train[initializingNumber+1:])
-    initial_y, y_train_scaled = torch.FloatTensor(y_train[:initializingNumber+1]), torch.FloatTensor(y_train[initializingNumber+1:])
+    initial_x, x_train_scaled = torch.FloatTensor(x_train[:initializingNumber]), torch.FloatTensor(x_train[initializingNumber:])
+    initial_y, y_train_scaled = torch.FloatTensor(y_train[:initializingNumber]), torch.FloatTensor(y_train[initializingNumber:])
 
     # print(f'initial_x.shape : {initial_x.shape}')
     # print(f'initial_y.shape : {initial_y.shape}\n')
@@ -436,6 +436,10 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
 def is_initializingNumber_too_big_to_initializing(index_of_data):
     
     if index_of_data == 1 : return True
+
+def is_learningGoal_too_small_to_cramming(network):
+    
+    if network == None : return True
     
 
 # 存放model, experiments_record
@@ -486,7 +490,7 @@ def main(model_params):
         for i in range(1, x_train_scaled.shape[0]):
         
             print('-----------------------------------------------------------')
-            print(f"訓練第幾筆資料 : {i + model_params.initializingNumber + 1}")
+            print(f"訓練第幾筆資料 : {i + model_params.initializingNumber}")
 
             sorted_index = selecting(network, x_train_scaled[i-1:], y_train_scaled[i-1:])
             current_x = np.append(current_x, x_train_scaled[sorted_index[0]]).reshape(-1, x_train_scaled.shape[1])
@@ -502,7 +506,6 @@ def main(model_params):
             output, loss = network.forward()
 
             if torch.all(torch.abs(output - network.y) <= network.threshold_for_error):
-
                 network.acceptable = True
                 network = reorganizing(network)
                 experiments_record["Route"]["Blue"] += 1
@@ -523,9 +526,10 @@ def main(model_params):
 
                     network = copy.deepcopy(network_pre)
                     network = cramming(network)
-                    print("Cramming End")
-                    network = reorganizing(network)
+                    # print("Cramming End")
+                    if is_learningGoal_too_small_to_cramming(network): return "Cramming 失敗", "Cramming 失敗", "Cramming 失敗"
 
+                    network = reorganizing(network)
                     experiments_record["Route"]["Red"] += 1
 
             # Append every record in one iteration

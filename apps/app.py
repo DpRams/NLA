@@ -169,12 +169,17 @@ def pipeline_model(request: Request, \
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
-   if model_experiments_record == "Initializing 失敗":
+   if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
+      training_error_msg = ""
+
+      if model_experiments_record == "Initializing 失敗" : training_error_msg = "Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"
+      elif model_experiments_record == "Cramming 失敗" : training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
+
       return templates.TemplateResponse("model.html", \
             context={"request":request,  \
                      "upload_data":upload_data, \
                      "model_file":model_file, \
-                     "interrupted_message":"Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"})
+                     "interrupted_message":training_error_msg})
 
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
