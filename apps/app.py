@@ -135,6 +135,7 @@ def pipeline_model(request: Request):
 def pipeline_model(request: Request, \
                      dataDirectory: str = Form(default=None, max_length=50), \
                      modelFile: str = Form(default=None, max_length=50), \
+                     initializingNumber: str = Form(default=None, max_length=50), \
                      lossFunction: str = Form(default=None, max_length=50), \
                      learningGoal: str = Form(default=None, max_length=50), \
                      learningRate: str = Form(default=None, max_length=50), \
@@ -157,6 +158,7 @@ def pipeline_model(request: Request, \
    # Define modelParameter
    model_params = ModelParameter(dataDirectory=dataDirectory, \
                                  modelFile=modelFile, \
+                                 initializingNumber=int(initializingNumber), \
                                  lossFunction=lossFunction, \
                                  learningGoal=learningGoal, \
                                  learningRate=learningRate, \
@@ -167,12 +169,12 @@ def pipeline_model(request: Request, \
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
-   if model_experiments_record == "lr_goal is too small to training!":
+   if model_experiments_record == "Initializing 失敗":
       return templates.TemplateResponse("model.html", \
             context={"request":request,  \
                      "upload_data":upload_data, \
                      "model_file":model_file, \
-                     "typeHint":"lr_goal is too small to training!"})
+                     "interrupted_message":"Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"})
 
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
@@ -190,6 +192,7 @@ def pipeline_model(request: Request, \
                      "upload_data":upload_data, \
                      "model_file":model_file, \
                      "dataDirectory":dataDirectory, \
+                     "initializingNumber":initializingNumber, \
                      "modelFile":modelFile, \
                      "lossFunction":lossFunction, \
                      "learningGoal":learningGoal, \
@@ -279,6 +282,7 @@ def pipeline_service(request: Request, \
                      "upload_data":upload_data, \
                      "dataDirectory":dataDirectory, \
                      "modelFile":modelFile, \
+                     "initializingNumber":model_params.initializingNumber, \
                      "lossFunction":model_params.lossFunction, \
                      "learningGoal":model_params.learningGoal, \
                      "learningRate":model_params.learningRate, \

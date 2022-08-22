@@ -284,21 +284,17 @@ def cramming(network): # 把undesired_index print出來，看一下k_data_num(un
             print("Cramming successful")
             network.message = "Cramming successful"
             return network
-        else:
-#             print("Cramming failed，視該筆資料為離群值，無法學習")
-            network = copy.deepcopy(network_old)
-            network.message = "Cramming failed，視該筆資料為離群值，無法學習"
-            network.undesired_index = undesired_index[:,0].cpu()
-            return network
-    elif undesired_index.shape[0] == 0:
-        network.message = "資料皆滿足learning_goal"
-        return network
-    else:
-#         print("有多筆 undesired_index，無法cramming")
-        print(f'undesired_index = {undesired_index}')
-        network.message = "有多筆 undesired_index，無法cramming"
-        network.undesired_index = undesired_index[:,0].cpu()
-        return network
+
+#     elif undesired_index.shape[0] == 0:
+#         network.message = "資料皆滿足learning_goal"
+#         return network
+        
+#     else:
+# #         print("有多筆 undesired_index，無法cramming")
+#         print(f'undesired_index = {undesired_index}')
+#         network.message = "有多筆 undesired_index，無法cramming"
+#         network.undesired_index = undesired_index[:,0].cpu()
+#         return network
 
 
 def regularizing(network):
@@ -450,7 +446,7 @@ def plot_loss(checkpoint):
     plt.show()
 
 
-def reading_dataset_Training(dataDirecotry):
+def reading_dataset_Training(dataDirecotry, initializingNumber):
     
     filelist = os.listdir(f"./upload_data/{dataDirecotry}")
     file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
@@ -467,8 +463,8 @@ def reading_dataset_Training(dataDirecotry):
     x_train, x_test, y_train, y_test = train_test_split(X_transformed, Y_transformed, test_size=0.2, random_state=42)
 
     # Split data into intializing use and training use.
-    initial_x, x_train_scaled = torch.FloatTensor(x_train[:x_train.shape[1]+1]), torch.FloatTensor(x_train[x_train.shape[1]+1:])
-    initial_y, y_train_scaled = torch.FloatTensor(y_train[:x_train.shape[1]+1]), torch.FloatTensor(y_train[x_train.shape[1]+1:])
+    initial_x, x_train_scaled = torch.FloatTensor(x_train[:initializingNumber+1]), torch.FloatTensor(x_train[initializingNumber+1:])
+    initial_y, y_train_scaled = torch.FloatTensor(y_train[:initializingNumber+1]), torch.FloatTensor(y_train[initializingNumber+1:])
 
     # print(f'initial_x.shape : {initial_x.shape}')
     # print(f'initial_y.shape : {initial_y.shape}\n')
@@ -477,12 +473,9 @@ def reading_dataset_Training(dataDirecotry):
     
     return (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test)
 
-def __is_lr_goal_big_enough(network):
+def is_initializingNumber_too_big_to_initializing(index_of_data):
     
-    if network.message == "有多筆 undesired_index，無法cramming" or network.message == "Cramming failed，視該筆資料為離群值，無法學習": 
-        return True
-    else:
-        return False
+    if index_of_data == 1 : return True
     
 
 # 存放model, experiments_record
@@ -495,7 +488,7 @@ def main(model_params):
     for lr_goal in sorted(lr_goals, reverse=True):
         
         # Reading dataset
-        (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory)
+        (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory, model_params.initializingNumber)
         
         # Defining model
         network = Network(1, initial_x, initial_y, \
@@ -507,21 +500,14 @@ def main(model_params):
                             tuning_times=model_params.tuningTimes,  \
                             regularizing_strength=model_params.regularizingStrength)
 
-        # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        # network = network.to(device)
-
         # Initializing model
         network = initializing(network, initial_x, initial_y)
-
-        # Checking if lr_goal is too small
-        # if __is__lr_goal_big_enough():pass
-        # else:return "lr_goal is too small to training!"
 
         # Record experiments data
         experiments_record = {"train" : {"mean_acc" : 0, "acc_step" : [], "mean_loss" : 0, "loss_step" : []}, \
                               "valid" : {"mean_acc" : 0}, \
                               "nb_node" : [], "nb_node_pruned" : [],\
-                              "Route" : {"Blue": 0, "Red":0, "Green":0, "Purple":0}}
+                              "Route" : {"Blue": 0, "Red":0, "Green":0}}
 
         experiments_record["nb_node"].append(network.linear1.weight.data.shape[0])
         
@@ -531,7 +517,7 @@ def main(model_params):
         for i in range(1, x_train_scaled.shape[0]):
         
             print('-----------------------------------------------------------')
-            print(f"訓練第幾筆資料 : {i + x_train_scaled.shape[1] + 1}")
+            print(f"訓練第幾筆資料 : {i + model_params.initializingNumber + 1}")
 
             sorted_index = selecting(network, x_train_scaled[i-1:], y_train_scaled[i-1:])
             current_x = np.append(current_x, x_train_scaled[sorted_index[0]]).reshape(-1, x_train_scaled.shape[1])
@@ -551,7 +537,10 @@ def main(model_params):
                 network.acceptable = True
                 network = reorganizing(network)
                 experiments_record["Route"]["Blue"] += 1
+
             else:
+                
+                if is_initializingNumber_too_big_to_initializing(i): return "Initializing 失敗", "Initializing 失敗", "Initializing 失敗"
 
                 network.acceptable = False
                 network = matching(network)
@@ -566,10 +555,6 @@ def main(model_params):
                     network = copy.deepcopy(network_pre)
                     network = cramming(network)
                     print("Cramming End")
-                    
-                    if  __is_lr_goal_big_enough(network):
-                        return "lr_goal is too small to training!", "lr_goal is too small to training!", "lr_goal is too small to training!"
-                    
                     network = reorganizing(network)
 
                     experiments_record["Route"]["Red"] += 1

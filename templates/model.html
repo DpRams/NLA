@@ -139,7 +139,9 @@
 
           <label class="col-md-8 fs-4">Select Hyperparameters.</label>
           <br><br>
-          <label class="col-md-8 fs-5">Loss Function</label> 
+          <label class="col-md-8 fs-5">Initializing number</label>
+          <input type="text" id="Hyperparameters" name="initializingNumber" >
+          <label class="col-md-8 fs-5">Loss function</label> 
           <input type="text" id="Hyperparameters" name="lossFunction" value="RMSE" disabled>
           <label class="col-md-8 fs-5">Learning goal</label>
           <input type="text" id="Hyperparameters" name="learningGoal"  >
@@ -161,7 +163,7 @@
           <input type="submit" id="define_model" class="btn btn-primary btn-lg" formaction="/pipeline/model" hidden>
 
           <br><br>
-          <text><b>Type Hint : <font color="blue">{{typeHint}}</font></b></text>
+          <text><b>Interrupted message : <font color="blue">{{interrupted_message}}</font></b></text>
           
           <br><br>
           <label class="col-md-8 fs-3">Training configuration</label>
@@ -169,6 +171,8 @@
           <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
           <br>
           <text><b>Model  : <font color="blue">{{modelFile}}</font></b></text>
+          <br>
+          <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
           <br>
           <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
           <br>
