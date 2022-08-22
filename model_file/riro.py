@@ -474,7 +474,8 @@ def main(model_params):
                             regularizing_strength=model_params.regularizingStrength)
 
         # Initializing model
-        network = initializing(network, initial_x, initial_y)
+        # network = initializing(network, initial_x, initial_y)
+        network.initializing(initial_x, initial_y)
 
         # Record experiments data
         experiments_record = {"train" : {"mean_acc" : 0, "acc_step" : [], "mean_loss" : 0, "loss_step" : []}, \
@@ -492,7 +493,8 @@ def main(model_params):
             print('-----------------------------------------------------------')
             print(f"訓練第幾筆資料 : {i + model_params.initializingNumber}")
 
-            sorted_index = selecting(network, x_train_scaled[i-1:], y_train_scaled[i-1:])
+            # sorted_index = selecting(network, x_train_scaled[i-1:], y_train_scaled[i-1:])
+            sorted_index = network.selecting(x_train_scaled[i-1:], y_train_scaled[i-1:])
             current_x = np.append(current_x, x_train_scaled[sorted_index[0]]).reshape(-1, x_train_scaled.shape[1])
             current_y = np.append(current_y, y_train_scaled[sorted_index[0]].reshape(-1, 1))
             current_y = np.expand_dims(current_y, 1) #turn shape [n] into [n,1] 
@@ -508,28 +510,33 @@ def main(model_params):
             if torch.all(torch.abs(output - network.y) <= network.threshold_for_error):
                 network.acceptable = True
                 network = reorganizing(network)
+                # network.reorganizing()
                 experiments_record["Route"]["Blue"] += 1
 
             else:
                 
-                if is_initializingNumber_too_big_to_initializing(i): return "Initializing 失敗", "Initializing 失敗", "Initializing 失敗"
+                if RIRO.is_initializingNumber_too_big_to_initializing(i): return "Initializing 失敗", "Initializing 失敗", "Initializing 失敗"
 
                 network.acceptable = False
                 network = matching(network)
+                # network.matching()
 
                 if network.acceptable:
 
                     network = reorganizing(network)
+                    # network.reorganizing()
                     experiments_record["Route"]["Green"] += 1
 
                 else:
 
                     network = copy.deepcopy(network_pre)
                     network = cramming(network)
+                    # network.cramming()
                     # print("Cramming End")
-                    if is_learningGoal_too_small_to_cramming(network): return "Cramming 失敗", "Cramming 失敗", "Cramming 失敗"
-
+                    if RIRO.is_learningGoal_too_small_to_cramming(network): return "Cramming 失敗", "Cramming 失敗", "Cramming 失敗"
+                    
                     network = reorganizing(network)
+                    # network.reorganizing()
                     experiments_record["Route"]["Red"] += 1
 
             # Append every record in one iteration
