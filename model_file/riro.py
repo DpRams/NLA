@@ -1,6 +1,3 @@
-# def main():
-#     print("Call riro.py main function")
-
 
 import torch 
 import copy
@@ -24,7 +21,7 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
 from apps import evaluating, saving
-from network.net import Network
+from network.net import Network, RIRO
 
 
 def initializing(network, initial_x, initial_y):
@@ -285,16 +282,6 @@ def cramming(network): # 把undesired_index print出來，看一下k_data_num(un
             network.message = "Cramming successful"
             return network
 
-#     elif undesired_index.shape[0] == 0:
-#         network.message = "資料皆滿足learning_goal"
-#         return network
-        
-#     else:
-# #         print("有多筆 undesired_index，無法cramming")
-#         print(f'undesired_index = {undesired_index}')
-#         network.message = "有多筆 undesired_index，無法cramming"
-#         network.undesired_index = undesired_index[:,0].cpu()
-#         return network
 
 
 def regularizing(network):
@@ -419,33 +406,6 @@ def reorganizing(network):
                     k+=1
 
 
-
-def inferencing(network, x_test, y_test):   
-
-    network.eval()
-    
-    network.setData(x_test, y_test)
-    output, loss = network.forward()
-        
-    diff = (output - network.y)
-    acc = (diff <= network.threshold_for_error).to(torch.float32).mean().cpu().numpy()
-    return acc
-
-
-# Training Accuracy, Training Loss, nb_node, nb_node_pruned 折線圖
-# Route 圓餅圖
-def plot_loss(checkpoint):
-    
-    plt.plot([i.cpu().detach() for i in checkpoint['train_loss_history']], label = 'train') 
-    plt.plot(checkpoint['val_loss_history'], label = "val") 
-    plt.title("Training / Val loss history")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.grid(linestyle="--", linewidth=0.5)
-    plt.legend()
-    plt.show()
-
-
 def reading_dataset_Training(dataDirecotry, initializingNumber):
     
     filelist = os.listdir(f"./upload_data/{dataDirecotry}")
@@ -491,7 +451,16 @@ def main(model_params):
         (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory, model_params.initializingNumber)
         
         # Defining model
-        network = Network(1, initial_x, initial_y, \
+        # network = Network(1, initial_x, initial_y, \
+        #                     loss_function=model_params.lossFunction, \
+        #                     learning_goal=lr_goal, \
+        #                     learning_rate=model_params.learningRate, \
+        #                     learning_rate_lower_bound=model_params.learningRateLowerBound, \
+        #                     optimizer=model_params.optimizer,  \
+        #                     tuning_times=model_params.tuningTimes,  \
+        #                     regularizing_strength=model_params.regularizingStrength)
+
+        network = RIRO(1, initial_x, initial_y, \
                             loss_function=model_params.lossFunction, \
                             learning_goal=lr_goal, \
                             learning_rate=model_params.learningRate, \

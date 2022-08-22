@@ -112,3 +112,38 @@ class Network(torch.nn.Module):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+    
+class RIRO(Network):
+
+    def __init__(self, nb_neuro, x_train_scaled, y_train_scaled, **kwargs):
+        super().__init__(nb_neuro, x_train_scaled, y_train_scaled, **kwargs)
+        print("RIRO Initializing 成功")
+
+    def initializing(self):
+        pass
+
+    def selecting(self):
+        pass
+
+    def matching(self):
+        pass
+
+    def matching_for_reorganizing(self):
+        pass
+
+    def cramming(self):
+        pass
+
+    def regularizing(self):
+        pass
+    
+    def reorganizing(self):
+        pass
+
+    def is_initializingNumber_too_big_to_initializing():
+        pass
+
+
+
+
