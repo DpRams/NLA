@@ -518,8 +518,8 @@ def main(model_params):
                 if RIRO.is_initializingNumber_too_big_to_initializing(i): return "Initializing 失敗", "Initializing 失敗", "Initializing 失敗"
 
                 network.acceptable = False
-                network = matching(network)
-                # network.matching()
+                # network = matching(network)
+                network.matching()
 
                 if network.acceptable:
 
@@ -530,8 +530,8 @@ def main(model_params):
                 else:
 
                     network = copy.deepcopy(network_pre)
-                    network = cramming(network)
-                    # network.cramming()
+                    # network = cramming(network)
+                    network.cramming()
                     # print("Cramming End")
                     if RIRO.is_learningGoal_too_small_to_cramming(network): return "Cramming 失敗", "Cramming 失敗", "Cramming 失敗"
                     

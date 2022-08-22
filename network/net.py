@@ -225,7 +225,7 @@ class RIRO(Network):
 
         self.acceptable = False
     #     print("Matching Failed")
-        return network_pre       
+        return network_pre
 
     def matching_for_reorganizing(self):
         times_enlarge, times_shrink = 0, 0
@@ -287,7 +287,7 @@ class RIRO(Network):
 
         self.acceptable = False
     #     print("Matching(Re) Failed")
-        return network_pre         
+        return network_pre 
 
     def cramming(self):
         """
@@ -387,6 +387,7 @@ class RIRO(Network):
 
     def regularizing(self):
     
+    
         ## Record the number of executions
         times_enlarge, times_shrink = 0, 0
 
@@ -438,10 +439,10 @@ class RIRO(Network):
                     ## Restore the w
                     self = copy.deepcopy(network_pre)
     #                 print("Regularizing finished")
-                    return self
+                    return(self)
                     
         #print("Regularizing finished")
-        return self
+        return(self)
     
     def reorganizing(self):
 
@@ -449,10 +450,10 @@ class RIRO(Network):
 
         ## If the number of hidden node has already been 1, do the regularizing then. 
         if self.linear1.bias.shape[0] <= limit:
-            self.regularizing()
-            # print(f'檢查 regularizing {self}')
+            self = regularizing(self)
+            # self.regularizing()
     #         print("Reorganizing finished")
-            return self
+            return(self)
         
         else:
             
@@ -471,7 +472,8 @@ class RIRO(Network):
                 else:
 
                     ## Using the regularizing module to adjust the network
-                    self.regularizing()
+                    self = regularizing(self)
+                    # self.regularizing()
 
                     ## Store the network and w
                     network_pre = copy.deepcopy(self)
@@ -487,8 +489,9 @@ class RIRO(Network):
 
                     
                     ## Using the matching module to adjust the network
-                    self.matching_for_reorganizing()
-                    # print(f'檢查 matching_for_reorganizing {self}')
+                    self = matching_for_reorganizing(self)
+                    # self.matching_for_reorganizing()
+                    # self.matching()
 
                     ## If the resulting network is acceptable, this means that the k hidden node can be removed
                     if self.acceptable:
@@ -504,6 +507,7 @@ class RIRO(Network):
                         self = copy.deepcopy(network_pre)
                         k+=1
 
+
     def is_initializingNumber_too_big_to_initializing(index_of_data):
         
         if index_of_data == 1 : return True
@@ -514,4 +518,124 @@ class RIRO(Network):
 
 
 
+def regularizing(network):
+    
+    ## Record the number of executions
+    times_enlarge, times_shrink = 0, 0
 
+    # ## Set up the learning rate of the network
+    # network.learning_rate = 1e-3
+
+    ## Set epoch to 100
+    for i in range(network.tuning_times):
+
+        ## Store the parameter of the network
+        network_pre = copy.deepcopy(network)
+        output, loss = network.forward(network.regularizing_strength)
+        loss_pre = loss
+
+        ## Backward operation to optain w'
+        network.backward_Adam(loss)
+        output, loss = network.forward(network.regularizing_strength)
+
+        ## Confirm whether the adjusted loss value is smaller than the current one
+        if loss <= loss_pre:
+
+            ## Identify that all forecast value has met the error term
+            if torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+                
+                ## If true, multiply the learning rate by 1.2
+                network.learning_rate *= 1.2
+                times_enlarge += 1
+
+            else:
+
+                ## Else, restore w and end the process
+                network = copy.deepcopy(network_pre)
+                return(network)
+
+        # If the adjusted loss value is not smaller than the current one
+        else:
+
+            ## If the learning rate is greater than the threshold for learning rate
+            if network.learning_rate > network.threshold_for_lr:
+                
+                ## Restore the w and multiply the learning rate by 0.7
+                network = copy.deepcopy(network_pre)
+                network.learning_rate *= 0.7
+                times_shrink += 1
+
+            ## If the learning rate is smaller than the threshold for learning rate
+            else:
+                
+                ## Restore the w
+                network = copy.deepcopy(network_pre)
+#                 print("Regularizing finished")
+                return(network)
+                
+    #print("Regularizing finished")
+    return(network)
+
+
+def matching_for_reorganizing(network):
+
+    times_enlarge, times_shrink = 0, 0
+
+    # Set up the learning rate of the network
+    # network.learning_rate = 1e-3
+    network.acceptable = False
+
+    network_pre = copy.deepcopy(network)
+    output, loss = network.forward()
+
+    if torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+        
+        network.acceptable = True
+#         print("Matching(Re) Successful")
+        return network
+
+    else:
+
+        while times_enlarge + times_shrink < network.tuning_times:
+            
+            output, loss = network.forward()
+            network_pre = copy.deepcopy(network)
+            loss_pre = loss
+            
+            # Backward and check the loss performance of the network with new learning rate
+            network.backward_Adam(loss)
+            output, loss = network.forward()
+
+            # Confirm whether the loss value of the adjusted network is smaller than the current one
+            if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+
+                network.acceptable = True
+                #print("Matching(Re) Successful")
+                return network
+
+            elif loss <= loss_pre:
+                
+                # Multiply the learning rate by 1.2
+                times_enlarge += 1
+                network.learning_rate *= 1.2
+            else: #loss > loss_pre
+                
+                if network.learning_rate <= network.threshold_for_lr:
+
+                    # If true, set the acceptance of the network as False and return initial_netwrok
+                    network.acceptable = False
+                    #print("Matching(Re) Failed")
+                    return network_pre
+                
+                # On the contrary, restore w and adjust the learning rate
+                else:
+
+                    # Restore the parameter of the network
+                    network = copy.deepcopy(network_pre)
+                    times_shrink += 1
+                    network.learning_rate *= 0.7
+      
+
+    network.acceptable = False
+#     print("Matching(Re) Failed")
+    return network_pre         
