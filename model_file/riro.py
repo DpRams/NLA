@@ -1,5 +1,3 @@
-
-from this import d
 import torch 
 import copy
 import pickle
@@ -30,7 +28,6 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
     filelist = os.listdir(f"./upload_data/{dataDirecotry}")
     file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
     filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/{file_x}", f"./upload_data/{dataDirecotry}/{file_y}"
-    # print(f"filePath_X = {filePath_X}\nfilePath_Y = {filePath_Y}")
     df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
 
     # StandardScaler
@@ -44,11 +41,6 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
     # Split data into intializing use and training use.
     initial_x, x_train_scaled = torch.FloatTensor(x_train[:initializingNumber]), torch.FloatTensor(x_train[initializingNumber:])
     initial_y, y_train_scaled = torch.FloatTensor(y_train[:initializingNumber]), torch.FloatTensor(y_train[initializingNumber:])
-
-    # print(f'initial_x.shape : {initial_x.shape}')
-    # print(f'initial_y.shape : {initial_y.shape}\n')
-    # print(f'x_train_scaled.shape : {x_train_scaled.shape}')
-    # print(f'y_train_scaled.shape : {y_train_scaled.shape}\n')
     
     return (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test)
 
@@ -104,12 +96,6 @@ def main(model_params):
             print('-----------------------------------------------------------')
             print(f"訓練第幾筆資料 : {i + model_params.initializingNumber}")
 
-            # print(network.linear1.weight.data)
-            # print(network.linear1.bias.data)
-            # print(network.linear2.weight.data)
-            # print(network.linear2.bias.data)
-
-            # sorted_index = selecting(network, x_train_scaled[i-1:], y_train_scaled[i-1:])
             sorted_index = network.selecting(x_train_scaled[i-1:], y_train_scaled[i-1:])
             current_x = np.append(current_x, x_train_scaled[sorted_index[0]]).reshape(-1, x_train_scaled.shape[1])
             current_y = np.append(current_y, y_train_scaled[sorted_index[0]].reshape(-1, 1))
@@ -125,7 +111,6 @@ def main(model_params):
 
             if torch.all(torch.abs(output - network.y) <= network.threshold_for_error):
                 network.acceptable = True
-                # network = reorganizing(network)
                 network = network.reorganizing()
                 experiments_record["Route"]["Blue"] += 1
 
@@ -134,18 +119,15 @@ def main(model_params):
                 if RIRO.is_initializingNumber_too_big_to_initializing(i): return "Initializing 失敗", "Initializing 失敗", "Initializing 失敗"
 
                 network.acceptable = False
-                # network = matching(network)
                 network.matching()
 
                 if network.acceptable:
-                    # network = reorganizing(network)
                     network = network.reorganizing()
                     experiments_record["Route"]["Green"] += 1
 
                 else:
 
                     network = copy.deepcopy(network_pre)
-                    # network = cramming(network)
                     network.cramming()
                     # print("Cramming End")
                     if RIRO.is_learningGoal_too_small_to_cramming(network): return "Cramming 失敗", "Cramming 失敗", "Cramming 失敗"

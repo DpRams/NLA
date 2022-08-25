@@ -32,36 +32,6 @@ app.mount(
     name="static",
 )
 
-class PathManager():
-   """
-   In charge of changing work directory, need to construct it in the main code.
-   """
-   def __init__(self, rootPath) -> None:
-      self.rootPath = rootPath
-
-   def backToRoot(self):
-      os.chdir(self.rootPath)
-
-   def createUploadPath(self):
-      UPLOAD_ROOT_PATH = "./upload_data"
-      try:
-         os.mkdir(UPLOAD_ROOT_PATH)
-         os.chdir(UPLOAD_ROOT_PATH)
-      except:
-         os.chdir(UPLOAD_ROOT_PATH)
-
-   def createDirectoryInUploadPath(self, directoryName):
-      try:
-         shutil.rmtree(directoryName)
-         os.mkdir(directoryName)
-      except Exception as e: 
-         os.mkdir(directoryName)
-
-
-global pathManager
-# parent, root = file.parent, file.parents[1]
-pathManager = PathManager(root)
-
 
 # Function
 @app.get("/")
@@ -80,10 +50,8 @@ def pipeline_data(request: Request):
 @app.post("/pipeline/data")
 async def pipeline_data_upload(request: Request, directoryName: str = Form(default=None, max_length=50), file_x: UploadFile = File(...), file_y: UploadFile = File(...)):  # directory__Name: Union[str, None] = Query(default=None, max_length=50)
       
-      global pathManager
-
-      pathManager.createUploadPath()
-      pathManager.createDirectoryInUploadPath(directoryName)
+      drtPath = Path(f"{root}\\upload_data\\{directoryName}")
+      drtPath.mkdir(parents=True, exist_ok=True)
       
       filelist = [file_x, file_y]
       
@@ -93,11 +61,11 @@ async def pipeline_data_upload(request: Request, directoryName: str = Form(defau
             contents = await file.read()
             # X(labeling)
             if i == 0:
-               with open(os.path.join(directoryName, "X_" + file.filename), 'wb') as f:
+               with open(os.path.join(drtPath, "X_" + file.filename), 'wb') as f:
                      f.write(contents)
             # Y(labeling)
             elif i == 1:
-               with open(os.path.join(directoryName, "Y_" + file.filename), 'wb') as f:
+               with open(os.path.join(drtPath, "Y_" + file.filename), 'wb') as f:
                      f.write(contents)
          except Exception as e:
             print(e)
@@ -105,7 +73,7 @@ async def pipeline_data_upload(request: Request, directoryName: str = Form(defau
          finally:
             await file.close()
 
-      pathManager.backToRoot()   
+      # pathManager.backToRoot()   
 
       return templates.TemplateResponse("data.html", context = {'request': request, "directoryName": directoryName, "filename_x" : file_x.filename, "filename_y" : file_y.filename})
 
@@ -114,20 +82,8 @@ async def pipeline_data_upload(request: Request, directoryName: str = Form(defau
 @app.get("/pipeline/model")
 def pipeline_model(request: Request):
 
-   global pathManager
-
-   # List the upload data to Dropdownlist
-   pathManager.backToRoot()
-   upload_data = os.listdir("./upload_data")
-   model_file = [pythonFile for pythonFile in os.listdir("./model_file") if pythonFile.endswith(".py")]
-
-   # template_drt = "__template_drt"
-   
-   # app.mount(
-   #    f"/model_fig/{template_drt}",
-   #    StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
-   #    name="model_fig",
-   # )  
+   upload_data = os.listdir(f"{root}\\upload_data")
+   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
    
    return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
 
@@ -144,12 +100,10 @@ def pipeline_model(request: Request, \
                      tuningTimes: str = Form(default=None, max_length=50), \
                      regularizingStrength: str = Form(default=None, max_length=50)):
 
-   global pathManager
 
    # List the upload data to Dropdownlist
-   pathManager.backToRoot()
-   upload_data = os.listdir("./upload_data")
-   model_file = [pythonFile for pythonFile in os.listdir("./model_file") if pythonFile.endswith(".py")]
+   upload_data = os.listdir(f"{root}\\upload_data")
+   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
 
    # Set default "RMSE", "Adam" for lossFn, optim  
    lossFunction = "RMSE"
@@ -243,21 +197,10 @@ def __model_evaluating(dataDirectory, modelFile):
 
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
-   
-   global pathManager
 
    # List the upload data to Dropdownlist
-   pathManager.backToRoot()
-   upload_data = os.listdir("./upload_data")
-   model_registry = os.listdir("./model_registry")
-
-   # template_drt = "__template_drt"
-   
-   # app.mount(
-   #    f"/model_fig/{template_drt}",
-   #    StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig" / template_drt), 
-   #    name="model_fig",
-   # )  
+   upload_data = os.listdir(f"{root}\\upload_data")
+   model_registry = os.listdir(f"{root}\\model_registry")
    
    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
 
@@ -266,12 +209,9 @@ def pipeline_service(request: Request, \
                      dataDirectory: str = Form(default=None, max_length=50), \
                      modelFile: str = Form(default=None, max_length=50)):
 
-   global pathManager
-
    # List the upload data to Dropdownlist
-   pathManager.backToRoot()
-   upload_data = os.listdir("./upload_data")
-   model_registry = os.listdir("./model_registry")
+   upload_data = os.listdir(f"{root}\\upload_data")
+   model_registry = os.listdir(f"{root}\\model_registry")
 
    model_experiments_record, model_params, model_fig_drt, testingAccuracy = __model_evaluating(dataDirectory, modelFile)
 
