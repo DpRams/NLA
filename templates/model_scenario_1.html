@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://getbootstrap.com/docs/5.2/examples/jumbotron/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.98.0">
+    <title>Jumbotron example · Bootstrap v5.2</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/jumbotron/">
+
+
+
+<link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+<link rel="icon" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/favicon.ico">
+<meta name="theme-color" content="#712cf9">
+
+
+    <style>
+      div.gallery {
+        margin: 5px;
+        border: 1px solid #ccc;
+        float: left;
+        width: 180px;
+      }
+      
+      div.gallery:hover {
+        border: 1px solid #777;
+      }
+      
+      div.gallery img {
+        width: 100%;
+        height: auto;
+      }
+      
+      div.desc {
+        padding: 15px;
+        text-align: center;
+      }
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+    
+  </head>
+  <body>
+    
+
+    
+<main>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+      <a href='/pipeline/platform' class="d-flex align-items-center text-dark text-decoration-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img"><title>Bootstrap</title><path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z" fill="currentColor"></path></svg>
+        <span class="fs-4">A Platform </span>
+      </a>
+    </header>
+
+    <div class="p-5 mb-1 bg-light rounded-3">
+      <div class="container-fluid py-0">
+        <h1 class="display-6 fw-bold">Model Pipeline</h1>
+        <p class="col-md-8 fs-5">Define your own Model and train.</p> 
+        <br><br>
+        
+        <form  method="post" enctype="multipart/form-data"> <!-- action="/pipeline/model"/ -->
+          <label class="col-md-8 fs-4">Select Data directory from Server.</label>
+          <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
+            {% for dataDir in upload_data %}
+            <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+            {% endfor %}
+          </select>
+
+          <br><br>
+
+          <label class="col-md-8 fs-4">Select Model from Repository.</label>
+          <select name="modelFile" method="GET"  style="font-size:20px;">
+            {% for model in model_file %}
+            <option value= "{{model}}"  SELECTED>{{model}}</option>"
+            {% endfor %}
+          </select>
+
+          <br><br>
+
+          <label class="col-md-8 fs-4">Select Hyperparameters.</label>
+          <br><br>
+          <label class="col-md-8 fs-5">Initializing number</label>
+          <input type="text" id="Hyperparameters" name="initializingNumber" >
+          <label class="col-md-8 fs-5">Loss function</label> 
+          <input type="text" id="Hyperparameters" name="lossFunction" value="RMSE" disabled>
+          <label class="col-md-8 fs-5">Learning goal</label>
+          <input type="text" id="Hyperparameters" name="learningGoal"  >
+          <label class="col-md-8 fs-5">Learning rate</label>
+          <input type="text" id="Hyperparameters" name="learningRate"  >
+          <label class="col-md-8 fs-5">Learning rate Lower bound</label>
+          <input type="text" id="Hyperparameters" name="learningRateLowerBound" >
+          <label class="col-md-8 fs-5">Optimizer</label>
+          <input type="text" id="Hyperparameters" name="optimizer"  value="Adam" disabled>
+          <label class="col-md-8 fs-5">Tuning times</label>
+          <input type="text" id="Hyperparameters" name="tuningTimes" >
+          <label class="col-md-8 fs-5">Regularizing strength</label>
+          <input type="text" id="Hyperparameters" name="regularizingStrength"  >
+          <br><br>
+          
+
+          <label class="col-md-8 fs-5"></label>
+          <label for="define_model" class="btn btn-primary btn-lg">Train</label>
+          <input type="submit" id="define_model" class="btn btn-primary btn-lg" formaction="/pipeline/model/scenario/1" hidden>
+
+          <br><br>
+          <text><b>Interrupted message : <font color="blue">{{interrupted_message}}</font></b></text>
+          
+          <br><br>
+          <label class="col-md-8 fs-3">Training configuration</label>
+          <br><br>
+          <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
+          <br>
+          <text><b>Model  : <font color="blue">{{modelFile}}</font></b></text>
+          <br>
+          <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
+          <br>
+          <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
+          <br>
+          <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
+          <br>
+          <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+          <br>
+          <text><b>Learning rate Lower bound : <font color="blue">{{learningRateLowerBound}}</font></b></text>
+          <br>
+          <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+          <br>
+          <text><b>Tuning times : <font color="blue">{{tuningTimes}}</font></b></text>
+          <br>
+          <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+          <br>
+          <text><b>model_experiments_record : <font color="blue">{{model_experiments_record}}</font></b></text>
+          <br><br>
+          <label class="col-md-8 fs-3">Training progressbar</label>
+          <br><br>
+          <label class="col-md-8 fs-3">Model Performance</label>
+          <br><br>
+          <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
+          <br>
+          <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
+          <br>
+          <div class="p-5 mb-1 bg-light rounded-3">
+  
+            <!-- <div class="gallery">
+              <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
+                <img src="{{ url_for('static', path='/img/acc.png') }}"  alt="Training Accuracy" width="600" height="400">
+              </a>
+              <div class="desc">Training Accuracy</div>
+            </div> -->
+
+            <div class="gallery">
+              <a target="_blank" href="{{url_path_for_Accuracy}}">
+                <img src= "{{url_path_for_Accuracy}}"  alt="Training Accuracy" width="600" height="400">
+              </a>
+              <div class="desc">Training Accuracy</div>
+            </div>
+            
+            <div class="gallery">
+              <a target="_blank" href="{{url_path_for_Loss}}">
+                <img src= "{{url_path_for_Loss}}"  alt="Training Loss" width="600" height="400">
+              </a>
+              <div class="desc">Training Loss</div>
+            </div>
+            <div class="gallery">
+              <a target="_blank" href="{{url_path_for_Nodes}}">
+                <img src="{{url_path_for_Nodes}}"  alt="Model Nodes" width="600" height="400">
+              </a>
+              <div class="desc">Model Nodes</div>
+            </div>
+            
+            <div class="gallery">
+              <a target="_blank" href="{{url_path_for_Pruned_nodes}}">
+                <img src="{{url_path_for_Pruned_nodes}}"  alt="Pruned Nodes" width="600" height="400">
+              </a>
+              <div class="desc">Pruned Nodes</div>
+            </div>
+
+            <div class="gallery">
+              <a target="_blank" href="{{url_path_for_Routes}}">
+                <img src="{{url_path_for_Routes}}"  alt="Model Routes" width="600" height="400">
+              </a>
+              <div class="desc">Model Routes</div>
+            </div>
+            
+          </div>
+        
+          <br><br><br><br><br><br><br><br>
+          <text>After training completed, this save mechanism will execute automatically.</text>
+        </form>
+
+      </div>
+    </div>
+
+    <footer class="pt-3 mt-4 text-muted border-top">
+      © 2022
+    </footer>
+  </div>
+</main>
+
+
+</body></html>

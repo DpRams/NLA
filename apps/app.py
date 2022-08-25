@@ -31,6 +31,11 @@ app.mount(
     StaticFiles(directory=Path(__file__).parent.parent.absolute() / "static"),
     name="static",
 )
+# app.mount(
+#     "/pipeline",
+#     StaticFiles(directory=Path(__file__).parent.parent.absolute() / "templates"),
+#     name="pipeline",
+# )
 
 
 # Function
@@ -77,17 +82,20 @@ async def pipeline_data_upload(request: Request, directoryName: str = Form(defau
 
       return templates.TemplateResponse("data.html", context = {'request': request, "directoryName": directoryName, "filename_x" : file_x.filename, "filename_y" : file_y.filename})
 
-
-
 @app.get("/pipeline/model")
+def pipeline_model(request: Request):
+
+   return templates.TemplateResponse("model.html",{"request":request})
+
+@app.get("/pipeline/model/scenario/1")
 def pipeline_model(request: Request):
 
    upload_data = os.listdir(f"{root}\\upload_data")
    model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
    
-   return templates.TemplateResponse("model.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
+   return templates.TemplateResponse("model_scenario_1.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
 
-@app.post("/pipeline/model")
+@app.post("/pipeline/model/scenario/1")
 def pipeline_model(request: Request, \
                      dataDirectory: str = Form(default=None, max_length=50), \
                      modelFile: str = Form(default=None, max_length=50), \
@@ -129,7 +137,7 @@ def pipeline_model(request: Request, \
       if model_experiments_record == "Initializing 失敗" : training_error_msg = "Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"
       elif model_experiments_record == "Cramming 失敗" : training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
 
-      return templates.TemplateResponse("model.html", \
+      return templates.TemplateResponse("model_scenario_1.html", \
             context={"request":request,  \
                      "upload_data":upload_data, \
                      "model_file":model_file, \
@@ -146,7 +154,7 @@ def pipeline_model(request: Request, \
    )  
    print(app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'))
    
-   return templates.TemplateResponse("model.html", \
+   return templates.TemplateResponse("model_scenario_1.html", \
             context={"request":request, \
                      "upload_data":upload_data, \
                      "model_file":model_file, \
@@ -170,6 +178,23 @@ def pipeline_model(request: Request, \
                      "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
                      })
 
+
+@app.get("/pipeline/model/scenario/2")
+def pipeline_model(request: Request):
+
+   upload_data = os.listdir(f"{root}\\upload_data")
+   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
+   
+   return templates.TemplateResponse("model_scenario_2.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
+
+@app.post("/pipeline/model/scenario/2")
+def pipeline_model(request: Request):
+
+   upload_data = os.listdir(f"{root}\\upload_data")
+   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
+   
+   # return templates.TemplateResponse("model_scenario_2.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
+   return "/pipeline/model/scenario/2 收到 POST"
 
 def __model_training(model_params):
    
@@ -258,10 +283,6 @@ def save_service(model_params, model_perf, model_perf_fig):
 def save_model(model_experiments_record=None, model_params=None, model_fig_drt=None):
 
    saving.writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt)
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-   return {"item_id": item_id, "q": q}
 
 
 if __name__ == '__main__':
