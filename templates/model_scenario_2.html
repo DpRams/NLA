@@ -125,15 +125,63 @@
             <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
             {% endfor %}
           </select>
-
+          
           <br><br>
-
-          <label class="col-md-8 fs-4">Select Model from Repository.</label>
-          <select name="modelFile" method="GET"  style="font-size:20px;">
-            {% for model in model_file %}
-            <option value= "{{model}}"  SELECTED>{{model}}</option>"
-            {% endfor %}
+          <label class="col-md-8 fs-4">Two Layer Net.</label>
+          <label class="col-md-8 fs-5">Neuro node</label>
+          <input type="text" id="Hyperparameters" name="neuroNode" >
+          <label class="col-md-8 fs-5">Output dimension</label>
+          <input type="text" id="Hyperparameters" name="outputDimension" >
+          <label class="col-md-8 fs-5">Loss function</label>
+          <select name="lossFunction" method="GET"  style="font-size:20px;" > 
+            <option value= "RMSE" SELECTED>RMSE</option>
+            <option value= "MSE" SELECTED>MSE</option>
+            <option value= "CROSSENTROPYLOSS" SELECTED>CROSSENTROPYLOSS</option>
           </select>
+          <br><br>
+          <label class="col-md-8 fs-4">Back Propagation.</label>
+          <label class="col-md-8 fs-5">Optimizer</label>
+          <select name="optimizer" method="GET"  style="font-size:20px;" > 
+            <option value= "Adam" SELECTED>Adam</option>
+            <option value= "Adadelta" SELECTED>Adadelta</option>
+            <option value= "Adagrad" SELECTED>Adagrad</option>
+            <option value= "AdamW" SELECTED>AdamW</option>
+            
+          </select>
+          <label class="col-md-8 fs-5">Learning rate</label>
+          <input type="text" id="Hyperparameters" name="learningRate" >
+          <br><br>
+          <label class="col-md-8 fs-4">Selecting.</label>
+          <label class="col-md-8 fs-5">Rule</label>
+          <select name="matchingRule" method="GET"  style="font-size:20px;" > 
+            <option value= "POS" SELECTED>POS</option>
+            <option value= "LTS" SELECTED>LTS</option>
+          </select>
+          <br><br>
+          <label class="col-md-8 fs-4">Matching.</label>
+          <label class="col-md-8 fs-5">Rule</label>
+          <select name="matchingRule" method="GET"  style="font-size:20px;" > 
+            <option value= "EU" SELECTED>EU</option>
+            <option value= "EU, LG" SELECTED>EU, LG</option>
+            <option value= "EU, LG, UA" SELECTED>EU, LG, UA</option>
+            <option value= "LG, UA" SELECTED>LG, UA</option>
+          </select>
+          <br><br>
+          <label class="col-md-8 fs-4">Reorganizing.</label>
+          <label class="col-md-8 fs-5">Rule</label>
+          <select name="reorganizingRule" method="GET"  style="font-size:20px;" > 
+            <option value= "Default" SELECTED>Default</option>
+            <option value= "PCA" SELECTED>PCA</option>
+            <option value= "None" SELECTED>None</option>
+          </select>
+          <br><br>
+          <label class="col-md-8 fs-4">Cramming.</label>
+          <label class="col-md-8 fs-5">Rule</label>
+          <select name="crammingRule" method="GET"  style="font-size:20px;" > 
+            <option value= "ri_sro" SELECTED>ri_sro</option>
+            <option value= "None" SELECTED>None</option>
+          </select>
+
 
           <br><br>
 

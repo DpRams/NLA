@@ -113,10 +113,6 @@ def pipeline_model(request: Request, \
    upload_data = os.listdir(f"{root}\\upload_data")
    model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
 
-   # Set default "RMSE", "Adam" for lossFn, optim  
-   lossFunction = "RMSE"
-   optimizer = "Adam"
-
    # Define modelParameter
    model_params = ModelParameter(dataDirectory=dataDirectory, \
                                  modelFile=modelFile, \

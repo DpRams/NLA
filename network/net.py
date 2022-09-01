@@ -7,12 +7,17 @@ from sklearn.linear_model import LinearRegression
 
 class TwoLayerNet(torch.nn.Module):
     
-    def __init__(self, input_size, hidden_size, num_classes):
+    def __init__(self, input_dim, nb_neuro, output_dim, **kwargs):
 
         super().__init__()
-        self.layer_in = torch.nn.Linear(input_size, hidden_size) 
-        self.layer_out = torch.nn.Linear(hidden_size, num_classes) 
-        self.relu = torch.nn.ReLU()
+        
+        self.setting_device()
+
+        # Initialize
+        self.linear1 = torch.nn.Linear(input_dim, nb_neuro).to(self.device)
+        self.linear2 = torch.nn.Linear(nb_neuro, output_dim).to(self.device)
+        self.model_params = kwargs
+        # self.loss_function = self.model_params["loss_function"]
 
     def setting_device(self):
 
@@ -21,42 +26,55 @@ class TwoLayerNet(torch.nn.Module):
         self.device = device
 
 
-    def forward(self, inputs):
-        x = self.relu(self.layer_in(inputs))
-        x = self.layer_out(x)
+    def forward(self, reg_strength=0):
+        h_relu = self.linear1(self.x).clamp(min=0)
+        output = self.linear2(h_relu)
         
-        return x
+        if self.model_params["loss_function"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y))
+        if self.model_params["loss_function"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y)
+        if self.model_params["loss_function"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y)
 
+        return (output, loss)
 
+    def backward(self, loss):
+        
+        if self.model_params["optimizer"] == "Adam" : optimizer = torch.optim.Adam(self.parameters(), lr=self.model_params["learning_rate"])
+        if self.model_params["optimizer"] == "Adadelta" : optimizer = torch.optim.Adadelta(self.parameters(), lr=self.model_params["learning_rate"])
+        if self.model_params["optimizer"] == "Adagrad" : optimizer = torch.optim.Adagrad(self.parameters(), lr=self.model_params["learning_rate"])
+        if self.model_params["optimizer"] == "AdamW" : optimizer = torch.optim.AdamW(self.parameters(), lr=self.model_params["learning_rate"])
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        return self
 
 # 暫時先別亂動，目前有 import 在用
 class Network(torch.nn.Module):
 
-    def __init__(self, nb_neuro, x_train_scaled, y_train_scaled, **kwargs):
+    # def __init__(self, nb_neuro, x_train_scaled, y_train_scaled, **kwargs):
+    def __init__(self, input_dim, nb_neuro, output_dim, **kwargs):
 
         super().__init__()
 
         self.setting_device()
 
         # Initialize
-        self.linear1 = torch.nn.Linear(x_train_scaled.shape[1], nb_neuro).to(self.device)
-        self.linear2 = torch.nn.Linear(nb_neuro, 1).to(self.device)
+        self.linear1 = torch.nn.Linear(input_dim, nb_neuro).to(self.device)
+        self.linear2 = torch.nn.Linear(nb_neuro, output_dim).to(self.device)
     
         # Stop criteria - threshold
-        self.threshold_for_error = eval(kwargs["learning_goal"]) 
-        self.threshold_for_lr = eval(kwargs["learning_rate_lower_bound"]) 
-        self.tuning_times = eval(kwargs["tuning_times"]) 
-        self.regularizing_strength = eval(kwargs["regularizing_strength"])
+        self.model_params = kwargs
+        self.threshold_for_error = eval(self.model_params["learning_goal"]) 
+        self.threshold_for_lr = eval(self.model_params["learning_rate_lower_bound"]) 
+        self.tuning_times = eval(self.model_params["tuning_times"]) 
+        self.regularizing_strength = eval(self.model_params["regularizing_strength"])
         
         # Set default now, not open for customization.
-        not_used_currently = (kwargs["regularizing_strength"], kwargs["optimizer"])
-
-        # Input data
-        self.x = torch.FloatTensor(x_train_scaled).to(self.device)
-        self.y = torch.FloatTensor(y_train_scaled).to(self.device)
+        not_used_currently = (self.model_params["regularizing_strength"], self.model_params["optimizer"])
 
         # Learning rate
-        self.learning_rate = eval(kwargs["learning_rate"])
+        self.learning_rate = eval(self.model_params["learning_rate"])
 
         # Whether the network is acceptable, default as False
         self.acceptable = False
@@ -67,6 +85,8 @@ class Network(torch.nn.Module):
         
         self.undesired_index = None
         self.message = ""
+
+        print(self.model_params)
     
     def setting_device(self):
 
@@ -110,12 +130,16 @@ class Network(torch.nn.Module):
             + self.linear1.weight.data.shape[1] * (self.linear1.weight.data.shape[0] + 1)
         ) * param_val
 
+        if self.model_params["loss_function"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y))
+        if self.model_params["loss_function"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y)
+        if self.model_params["loss_function"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y)
+
         loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y)) + reg_term
 
         return (output, loss)
     
     # Backward operation
-    def backward_Adam(self, loss):
+    def backward(self, loss):
 
         optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         optimizer.zero_grad()
@@ -127,17 +151,20 @@ class Network(torch.nn.Module):
     
 class RIRO(Network):
 
-    def __init__(self, nb_neuro, x_train_scaled, y_train_scaled, **kwargs):
-        super().__init__(nb_neuro, x_train_scaled, y_train_scaled, **kwargs)
+    def __init__(self, input_dim, nb_neuro, output_dim, **kwargs):
+        super().__init__(input_dim, nb_neuro, output_dim, **kwargs)
         print("RIRO Initializing 成功")
 
     # Backward operation
-    def backward_Adam(self, loss):
+    def backward(self, loss):
+        
+        if self.model_params["optimizer"] == "Adam" : optimizer = torch.optim.Adam(self.parameters(), lr=eval(self.model_params["learning_rate"]))
+        if self.model_params["optimizer"] == "Adadelta" : optimizer = torch.optim.Adadelta(self.parameters(), lr=eval(self.model_params["learning_rate"]))
+        if self.model_params["optimizer"] == "Adagrad" : optimizer = torch.optim.Adagrad(self.parameters(), lr=eval(self.model_params["learning_rate"]))
+        if self.model_params["optimizer"] == "AdamW" : optimizer = torch.optim.AdamW(self.parameters(), lr=eval(self.model_params["learning_rate"]))
 
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         optimizer.zero_grad()
         loss.backward()
-        # if loss != loss: raise Exception("NaN in loss, crack!")
         optimizer.step()
 
         return self
@@ -201,7 +228,7 @@ class RIRO(Network):
                 loss_pre = loss
                 
                 # Backward and check the loss performance of the network with new learning rate
-                self.backward_Adam(loss)
+                self.backward(loss)
                 output, loss = self.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
@@ -263,7 +290,7 @@ class RIRO(Network):
                 loss_pre = loss
                 
                 # Backward and check the loss performance of the network with new learning rate
-                self.backward_Adam(loss)
+                self.backward(loss)
                 output, loss = self.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
@@ -414,7 +441,7 @@ class RIRO(Network):
             loss_pre = loss
 
             ## Backward operation to optain w'
-            self.backward_Adam(loss)
+            self.backward(loss)
             output, loss = self.forward(self.regularizing_strength)
        
             ## Confirm whether the adjusted loss value is smaller than the current one
@@ -591,7 +618,7 @@ class CSI_function_not_objective_oriented():
                 loss_pre = loss
                 
                 # Backward and check the loss performance of the network with new learning rate
-                network.backward_Adam(loss)
+                network.backward(loss)
                 output, loss = network.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
@@ -654,7 +681,7 @@ class CSI_function_not_objective_oriented():
                 loss_pre = loss
                 
                 # Backward and check the loss performance of the network with new learning rate
-                network.backward_Adam(loss)
+                network.backward(loss)
                 output, loss = network.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
@@ -806,7 +833,7 @@ class CSI_function_not_objective_oriented():
             loss_pre = loss
 
             ## Backward operation to optain w'
-            network.backward_Adam(loss)
+            network.backward(loss)
             output, loss = network.forward(network.regularizing_strength)
 
             ## Confirm whether the adjusted loss value is smaller than the current one

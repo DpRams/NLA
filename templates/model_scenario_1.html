@@ -142,7 +142,11 @@
           <label class="col-md-8 fs-5">Initializing number</label>
           <input type="text" id="Hyperparameters" name="initializingNumber" >
           <label class="col-md-8 fs-5">Loss function</label> 
-          <input type="text" id="Hyperparameters" name="lossFunction" value="RMSE" disabled>
+          <select name="lossFunction" method="GET"  style="font-size:20px;" > 
+            <option value= "RMSE" SELECTED>RMSE</option>
+            <option value= "MSE" SELECTED>MSE</option>
+            <option value= "CROSSENTROPYLOSS" SELECTED>CROSSENTROPYLOSS</option>
+          </select>
           <label class="col-md-8 fs-5">Learning goal</label>
           <input type="text" id="Hyperparameters" name="learningGoal"  >
           <label class="col-md-8 fs-5">Learning rate</label>
@@ -150,7 +154,12 @@
           <label class="col-md-8 fs-5">Learning rate Lower bound</label>
           <input type="text" id="Hyperparameters" name="learningRateLowerBound" >
           <label class="col-md-8 fs-5">Optimizer</label>
-          <input type="text" id="Hyperparameters" name="optimizer"  value="Adam" disabled>
+          <select name="optimizer" method="GET"  style="font-size:20px;" > 
+            <option value= "Adam" SELECTED>Adam</option>
+            <option value= "Adadelta" SELECTED>Adadelta</option>
+            <option value= "Adagrad" SELECTED>Adagrad</option>
+            <option value= "AdamW" SELECTED>AdamW</option>
+          </select>
           <label class="col-md-8 fs-5">Tuning times</label>
           <input type="text" id="Hyperparameters" name="tuningTimes" >
           <label class="col-md-8 fs-5">Regularizing strength</label>
