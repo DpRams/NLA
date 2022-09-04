@@ -1,5 +1,10 @@
 class ModelParameter():
     def __init__(self, dataDirectory, modelFile, initializingNumber, lossFunction, learningGoal, learningRate, learningRateLowerBound, optimizer, tuningTimes, regularizingStrength) -> None:
+        
+        """
+        
+        """
+        
         self.dataDirectory = dataDirectory
         self.modelFile = modelFile
         self.initializingNumber = initializingNumber
@@ -23,3 +28,31 @@ class ModelParameter():
         print(f'self.optimizer = {self.optimizer}')
         print(f'self.tuningTimes = {self.tuningTimes}')
         print(f'self.regularizingStrength = {self.regularizingStrength}')
+
+class ModelParameter2(ModelParameter):
+    def __init__(self, **model_params):
+
+        """
+        dataDirectory
+        dataDescribing
+        neuroNode
+        outputDimension
+        lossFunction
+        optimizer
+        learningRate
+        initializingNumber
+        initializingLearningGoal
+        selectingRule
+        matchingRule
+        matchingTimes
+        matchingLearningGoal
+        matchingLearningRateLowerBound
+        crammingRule
+        reorganizingRule
+        regularizingTimes
+        regularizingStrength
+        regularizingLearningGoal
+        regularizingLearningRateLowerBound
+        """
+
+        self.model_params = model_params
