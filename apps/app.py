@@ -53,7 +53,10 @@ def pipeline_data(request: Request):
    return templates.TemplateResponse("data.html",{"request":request})
 
 @app.post("/pipeline/data")
-async def pipeline_data_upload(request: Request, directoryName: str = Form(default=None, max_length=50), file_x: UploadFile = File(...), file_y: UploadFile = File(...)):  # directory__Name: Union[str, None] = Query(default=None, max_length=50)
+async def pipeline_data_upload(request: Request, \
+                               directoryName: str = Form(default=None, max_length=50), \
+                               file_x: UploadFile = File(...), file_y: UploadFile = File(...)):  
+                               # directory__Name: Union[str, None] = Query(default=None, max_length=50)
       
       drtPath = Path(f"{root}\\upload_data\\{directoryName}")
       drtPath.mkdir(parents=True, exist_ok=True)
@@ -80,7 +83,12 @@ async def pipeline_data_upload(request: Request, directoryName: str = Form(defau
 
       # pathManager.backToRoot()   
 
-      return templates.TemplateResponse("data.html", context = {'request': request, "directoryName": directoryName, "filename_x" : file_x.filename, "filename_y" : file_y.filename})
+      return templates.TemplateResponse("data.html", \
+                                        context = \
+                                       {"request": request, \
+                                        "directoryName": directoryName, \
+                                        "filename_x" : file_x.filename, \
+                                        "filename_y" : file_y.filename})
 
 @app.get("/pipeline/model")
 def pipeline_model(request: Request):
@@ -130,8 +138,10 @@ def pipeline_model(request: Request, \
    if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
       training_error_msg = ""
 
-      if model_experiments_record == "Initializing 失敗" : training_error_msg = "Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"
-      elif model_experiments_record == "Cramming 失敗" : training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
+      if model_experiments_record == "Initializing 失敗" : 
+         training_error_msg = "Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"
+      elif model_experiments_record == "Cramming 失敗" : 
+         training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
 
       return templates.TemplateResponse("model_scenario_1.html", \
             context={"request":request,  \
@@ -185,9 +195,34 @@ def pipeline_model(request: Request):
 
 @app.post("/pipeline/model/scenario/2")
 def pipeline_model(request: Request):
+   # def pipeline_model(request: Request, \
+   #                   dataDirectory: str = Form(default=None, max_length=50), \
+   #                   modelFile: str = Form(default=None, max_length=50), \
+   #                   initializingNumber: str = Form(default=None, max_length=50), \
+   #                   lossFunction: str = Form(default=None, max_length=50), \
+   #                   learningGoal: str = Form(default=None, max_length=50), \
+   #                   learningRate: str = Form(default=None, max_length=50), \
+   #                   learningRateLowerBound: str = Form(default=None, max_length=50), \
+   #                   optimizer: str = Form(default=None, max_length=50), \
+   #                   tuningTimes: str = Form(default=None, max_length=50), \
+   #                   regularizingStrength: str = Form(default=None, max_length=50)):
 
-   upload_data = os.listdir(f"{root}\\upload_data")
-   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
+
+   # # List the upload data to Dropdownlist
+   # upload_data = os.listdir(f"{root}\\upload_data")
+   # model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
+
+   # # Define modelParameter
+   # model_params = ModelParameter(dataDirectory=dataDirectory, \
+   #                               modelFile=modelFile, \
+   #                               initializingNumber=int(initializingNumber), \
+   #                               lossFunction=lossFunction, \
+   #                               learningGoal=learningGoal, \
+   #                               learningRate=learningRate, \
+   #                               learningRateLowerBound=learningRateLowerBound, \
+   #                               optimizer=optimizer, \
+   #                               tuningTimes=tuningTimes, \
+   #                               regularizingStrength=regularizingStrength)
    
    # return templates.TemplateResponse("model_scenario_2.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
    return "/pipeline/model/scenario/2 收到 POST"

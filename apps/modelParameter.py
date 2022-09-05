@@ -1,21 +1,31 @@
 class ModelParameter():
-    def __init__(self, dataDirectory, modelFile, initializingNumber, lossFunction, learningGoal, learningRate, learningRateLowerBound, optimizer, tuningTimes, regularizingStrength) -> None:
+    def __init__(self, **model_params) -> None:
         
         """
-        
+        dataDirectory
+        modelFile
+        initializingNumber
+        lossFunction
+        learningGoal
+        learningRate
+        learningRateLowerBound
+        optimizer
+        tuningTimes
+        regularizingStrength
         """
+        self.model_params = model_params
         
-        self.dataDirectory = dataDirectory
-        self.modelFile = modelFile
-        self.initializingNumber = initializingNumber
-        self.lossFunction = lossFunction
-        self.learningGoal = learningGoal
-        self.learningRate = learningRate
-        self.learningRateLowerBound = learningRateLowerBound
-        self.optimizer = optimizer
-        self.tuningTimes = tuningTimes
-        self.regularizingStrength = regularizingStrength
-    
+        self.dataDirectory = self.model_params["dataDirectory"]
+        self.modelFile = self.model_params["modelFile"]
+        self.initializingNumber = self.model_params["initializingNumber"]
+        self.lossFunction = self.model_params["lossFunction"]
+        self.learningGoal = self.model_params["learningGoal"]
+        self.learningRate = self.model_params["learningRate"]
+        self.learningRateLowerBound = self.model_params["learningRateLowerBound"]
+        self.optimizer = self.model_params["optimizer"]
+        self.tuningTimes = self.model_params["tuningTimes"]
+        self.regularizingStrength = self.model_params["regularizingStrength"]
+
     def info(self):
         
         print(f'self.dataDirectory = {self.dataDirectory}')
@@ -56,3 +66,7 @@ class ModelParameter2(ModelParameter):
         """
 
         self.model_params = model_params
+
+    def info(self):
+        
+        print(f'self.model_params = {self.model_params}')

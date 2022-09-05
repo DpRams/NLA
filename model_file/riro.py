@@ -61,7 +61,6 @@ def main(model_params):
         input_dim = initial_x.shape[1]
         nb_neuro = 1
         output_dim = 1
-        
         network = RIRO(input_dim, nb_neuro, output_dim,  \
                             loss_function=model_params.lossFunction, \
                             learning_goal=lr_goal, \
