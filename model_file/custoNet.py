@@ -138,10 +138,10 @@ def building_net(model_params):
             self.net = yourCSI()
 
         def initializing(self, initial_x, initial_y):
-            self.net.initializing(self)
+            self.net.initializing(self, initial_x, initial_y)
 
         def selecting(self, x_train_scaled, y_train_scaled):
-            self.net.selecting(self)
+            self.net.selecting(self, x_train_scaled, y_train_scaled)
 
         def matching(self):
             self.net = self.net.matching(self)
