@@ -59,7 +59,7 @@ def main(model_params):
         
         # Defining model
         network = RIRO( input_dimension=model_params.inputDimension, \
-                        nb_neuro=model_params.neuroNode, \
+                        hidden_node=model_params.hiddenNode, \
                         output_dimension=model_params.outputDimension, \
                         loss_function=model_params.lossFunction, \
                         learning_goal=lr_goal, \

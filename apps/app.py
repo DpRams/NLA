@@ -123,7 +123,7 @@ def pipeline_model(request: Request, \
                                  dataShape=dataShape, \
                                  modelFile=modelFile, \
                                  inputDimension=dataShape["X"][1], \
-                                 neuroNode=1, \
+                                 hiddenNode=1, \
                                  outputDimension=dataShape["Y"][1], \
                                  initializingNumber=int(initializingNumber), \
                                  lossFunction=lossFunction, \

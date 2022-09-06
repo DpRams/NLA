@@ -7,16 +7,17 @@ from sklearn.linear_model import LinearRegression
 
 class TwoLayerNet(torch.nn.Module):
     
-    def __init__(self, input_dim, nb_neuro, output_dim, **kwargs):
+    def __init__(self, **model_params):
 
         super().__init__()
         
         self.setting_device()
+        self.model_params = model_params
 
         # Initialize
-        self.linear1 = torch.nn.Linear(input_dim, nb_neuro).to(self.device)
-        self.linear2 = torch.nn.Linear(nb_neuro, output_dim).to(self.device)
-        self.model_params = kwargs
+        self.linear1 = torch.nn.Linear(self.model_params["input_dimension"], self.model_params["nb_neuro"]).to(self.device)
+        self.linear2 = torch.nn.Linear(self.model_params["hidden_node"], self.model_params["output_dimension"]).to(self.device)
+        
         # self.loss_function = self.model_params["loss_function"]
 
     def setting_device(self):
@@ -24,7 +25,6 @@ class TwoLayerNet(torch.nn.Module):
         FreerGpuId = getFreerGpu.getting_freer_gpu()
         device = torch.device(f"cuda:{FreerGpuId}")
         self.device = device
-
 
     def forward(self, reg_strength=0):
 
@@ -88,8 +88,8 @@ class Network(torch.nn.Module):
         self.setting_device()
 
         # Initialize
-        self.linear1 = torch.nn.Linear(self.model_params["input_dimension"], self.model_params["nb_neuro"]).to(self.device)
-        self.linear2 = torch.nn.Linear(self.model_params["nb_neuro"], self.model_params["output_dimension"]).to(self.device)
+        self.linear1 = torch.nn.Linear(self.model_params["input_dimension"], self.model_params["hidden_node"]).to(self.device)
+        self.linear2 = torch.nn.Linear(self.model_params["hidden_node"], self.model_params["output_dimension"]).to(self.device)
     
         # Stop criteria - threshold
         self.model_params = model_params
@@ -109,7 +109,7 @@ class Network(torch.nn.Module):
 
         # Record the experiment result
         self.nb_node_pruned = 0
-        self.nb_node = self.model_params["nb_neuro"]
+        self.nb_node = self.model_params["hidden_node"]
         
         self.undesired_index = None
         self.message = ""

@@ -9,7 +9,7 @@ class ModelParameter():
         dataShape
         modelFile
         inputDimension
-        neuroNode
+        hiddenNode
         outputDimension
         initializingNumber
         lossFunction
@@ -26,7 +26,7 @@ class ModelParameter():
         self.dataShape = self.kwargs["dataShape"]
         self.modelFile = self.kwargs["modelFile"]
         self.inputDimension = self.kwargs["inputDimension"]
-        self.neuroNode = self.kwargs["neuroNode"]
+        self.hiddenNode = self.kwargs["hiddenNode"]
         self.outputDimension = self.kwargs["outputDimension"]
         self.initializingNumber = self.kwargs["initializingNumber"]
         self.lossFunction = self.kwargs["lossFunction"]
@@ -67,7 +67,7 @@ class ModelParameter2(ModelParameter):
         dataDirectory
         dataDescribing
         inputDimension
-        neuroNode
+        hiddenNode
         outputDimension
         lossFunction
         optimizer

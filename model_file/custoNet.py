@@ -78,7 +78,7 @@ def building_net(model_params):
     """
     # Two layer net & backpropagation
     parameters : 
-    neuroNode
+    hiddenNode
     outputDimension
     lossFunction
     optimizer

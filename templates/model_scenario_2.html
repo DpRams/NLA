@@ -115,7 +115,7 @@
     <div class="p-5 mb-1 bg-light rounded-5">
       <div class="container-fluid py-0">
         <h1 class="display-6 fw-bold">Model Pipeline</h1>
-        <p class="col-md-8 fs-5">Define your own Model and train.</p> 
+        <p class="col-md-8 fs-5">Define your own SLFN and train.</p> 
         <br><br>
         
         <form  method="post" enctype="multipart/form-data">
@@ -146,29 +146,30 @@
 
           <br><br>
           <div id = "module_2LayerNet">
-          <label class="col-md-8 fs-4">Two Layer Net.</label>
-          <label class="col-md-8 fs-5">Neuro node</label>
-          <input type="text" id="Hyperparameters" name="neuroNode" >
-          <label class="col-md-8 fs-5">Output dimension</label>
-          <input type="text" id="Hyperparameters" name="outputDimension" >
+          <label class="col-md-8 fs-4">SLFN(Two Layer).</label>
+          <label class="col-md-8 fs-5">Hidden node</label>
+          <input type="text" id="Hyperparameters" name="hiddenNode" >
+          <label class="col-md-8 fs-5">Activation function : ReLU</label>
+
+          <br><br>
+          <label class="col-md-8 fs-4">Back Propagation.</label>
           <label class="col-md-8 fs-5">Loss function</label>
           <select name="lossFunction" method="GET"  style="font-size:20px;" > 
             <option value= "RMSE" SELECTED>RMSE</option>
             <option value= "MSE" >MSE</option>
             <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
           </select>
-          <br><br>
-          <label class="col-md-8 fs-4">Back Propagation.</label>
           <label class="col-md-8 fs-5">Optimizer</label>
           <select name="optimizer" method="GET"  style="font-size:20px;" > 
             <option value= "Adam" SELECTED>Adam</option>
             <option value= "Adadelta" >Adadelta</option>
             <option value= "Adagrad" >Adagrad</option>
             <option value= "AdamW" >AdamW</option>
-            
           </select>
           <label class="col-md-8 fs-5">Learning rate</label>
           <input type="text" id="Hyperparameters" name="learningRate" >
+          <label class="col-md-8 fs-5">Epoch upper bound</label>
+          <input type="text" id="Hyperparameters" name="matchingTimes"  >
           </div>
           
           <br><br>
@@ -198,14 +199,11 @@
           <label class="col-md-8 fs-4">Matching.</label>
           <label class="col-md-8 fs-5">Rule</label>
           <select name="matchingRule" method="GET"  style="font-size:20px;" > 
-            <option value= "EU" >EU</option>
             <option value= "EU, LG" >EU_LG</option>
             <option value= "EU, LG, UA" >EU_LG_UA</option>
             <option value= "LG, UA" >LG_UA</option>
             <option value= "Disabled" SELECTED>Disabled</option>
           </select>
-          <label class="col-md-8 fs-5">Matching times</label>
-          <input type="text" id="Hyperparameters" name="matchingTimes"  >
           <label class="col-md-8 fs-5">Matching learning goal</label>
           <input type="text" id="Hyperparameters" name="matchingLearningGoal"  >
           <label class="col-md-8 fs-5">Matching learning rate lower bound</label>
@@ -276,22 +274,24 @@
           <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
           <br>
           <text><b>Data descirbing : <font color="blue">{{dataDescribing}}</font></b></text>
+          <br>
+          <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
           <br><br>
 
           <label class="col-md-8 fs-5">Two Layer Net.</label>
           <br>
-          <text><b>Neuro node : <font color="blue">{{neuroNode}}</font></b></text>
-          <br>
-          <text><b>Output dimension : <font color="blue">{{outputDimension}}</font></b></text>
-          <br>
-          <text><b>Loss function : <font color="blue">{{lossFunction}}</font></b></text>
+          <text><b>Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
 
           <br><br>
           <label class="col-md-8 fs-5">Back Propagation.</label>
           <br>
+          <text><b>Loss function : <font color="blue">{{lossFunction}}</font></b></text>
+          <br>
           <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
           <br>
           <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+          <br>
+          <text><b>Epoch upper bound : <font color="blue">{{matchingTimes}}</font></b></text>
 
           <br><br>
           <label class="col-md-8 fs-5">Initializing.</label>
@@ -309,8 +309,6 @@
           <label class="col-md-8 fs-5">Matching.</label>
           <br>
           <text><b>Rule : <font color="blue">{{matchingRule}}</font></b></text>
-          <br>
-          <text><b>Matching times : <font color="blue">{{matchingTimes}}</font></b></text>
           <br>
           <text><b>Matching learning goal : <font color="blue">{{matchingLearningGoal}}</font></b></text>
           <br>
