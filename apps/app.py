@@ -31,12 +31,6 @@ app.mount(
     StaticFiles(directory=Path(__file__).parent.parent.absolute() / "static"),
     name="static",
 )
-# app.mount(
-#     "/pipeline",
-#     StaticFiles(directory=Path(__file__).parent.parent.absolute() / "templates"),
-#     name="pipeline",
-# )
-
 
 # Function
 @app.get("/")
@@ -121,9 +115,16 @@ def pipeline_model(request: Request, \
    upload_data = os.listdir(f"{root}\\upload_data")
    model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
 
+   # Get data shape
+   dataShape = ModelParameter.get_dataShape(f"{root}\\upload_data\\{dataDirectory}")
+
    # Define modelParameter
    model_params = ModelParameter(dataDirectory=dataDirectory, \
+                                 dataShape=dataShape, \
                                  modelFile=modelFile, \
+                                 inputDimension=dataShape["X"][1], \
+                                 neuroNode=1, \
+                                 outputDimension=dataShape["Y"][1], \
                                  initializingNumber=int(initializingNumber), \
                                  lossFunction=lossFunction, \
                                  learningGoal=learningGoal, \
@@ -165,6 +166,7 @@ def pipeline_model(request: Request, \
                      "upload_data":upload_data, \
                      "model_file":model_file, \
                      "dataDirectory":dataDirectory, \
+                     "dataShape":dataShape, \
                      "initializingNumber":initializingNumber, \
                      "modelFile":modelFile, \
                      "lossFunction":lossFunction, \

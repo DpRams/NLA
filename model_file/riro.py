@@ -58,17 +58,16 @@ def main(model_params):
         (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory, model_params.initializingNumber)
         
         # Defining model
-        input_dim = initial_x.shape[1]
-        nb_neuro = 1
-        output_dim = 1
-        network = RIRO(input_dim, nb_neuro, output_dim,  \
-                            loss_function=model_params.lossFunction, \
-                            learning_goal=lr_goal, \
-                            learning_rate=model_params.learningRate, \
-                            learning_rate_lower_bound=model_params.learningRateLowerBound, \
-                            optimizer=model_params.optimizer,  \
-                            tuning_times=model_params.tuningTimes,  \
-                            regularizing_strength=model_params.regularizingStrength)
+        network = RIRO( input_dimension=model_params.inputDimension, \
+                        nb_neuro=model_params.neuroNode, \
+                        output_dimension=model_params.outputDimension, \
+                        loss_function=model_params.lossFunction, \
+                        learning_goal=lr_goal, \
+                        learning_rate=model_params.learningRate, \
+                        learning_rate_lower_bound=model_params.learningRateLowerBound, \
+                        optimizer=model_params.optimizer,  \
+                        tuning_times=model_params.tuningTimes,  \
+                        regularizing_strength=model_params.regularizingStrength)
 
         # Initializing model
         # network = initializing(network, initial_x, initial_y)

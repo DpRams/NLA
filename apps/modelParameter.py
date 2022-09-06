@@ -1,9 +1,16 @@
+import pandas as pd
+from pathlib import Path
+
 class ModelParameter():
-    def __init__(self, **model_params) -> None:
+    def __init__(self, **kwargs) -> None:
         
         """
         dataDirectory
+        dataShape
         modelFile
+        inputDimension
+        neuroNode
+        outputDimension
         initializingNumber
         lossFunction
         learningGoal
@@ -13,22 +20,27 @@ class ModelParameter():
         tuningTimes
         regularizingStrength
         """
-        self.model_params = model_params
+        self.kwargs = kwargs
         
-        self.dataDirectory = self.model_params["dataDirectory"]
-        self.modelFile = self.model_params["modelFile"]
-        self.initializingNumber = self.model_params["initializingNumber"]
-        self.lossFunction = self.model_params["lossFunction"]
-        self.learningGoal = self.model_params["learningGoal"]
-        self.learningRate = self.model_params["learningRate"]
-        self.learningRateLowerBound = self.model_params["learningRateLowerBound"]
-        self.optimizer = self.model_params["optimizer"]
-        self.tuningTimes = self.model_params["tuningTimes"]
-        self.regularizingStrength = self.model_params["regularizingStrength"]
+        self.dataDirectory = self.kwargs["dataDirectory"]
+        self.dataShape = self.kwargs["dataShape"]
+        self.modelFile = self.kwargs["modelFile"]
+        self.inputDimension = self.kwargs["inputDimension"]
+        self.neuroNode = self.kwargs["neuroNode"]
+        self.outputDimension = self.kwargs["outputDimension"]
+        self.initializingNumber = self.kwargs["initializingNumber"]
+        self.lossFunction = self.kwargs["lossFunction"]
+        self.learningGoal = self.kwargs["learningGoal"]
+        self.learningRate = self.kwargs["learningRate"]
+        self.learningRateLowerBound = self.kwargs["learningRateLowerBound"]
+        self.optimizer = self.kwargs["optimizer"]
+        self.tuningTimes = self.kwargs["tuningTimes"]
+        self.regularizingStrength = self.kwargs["regularizingStrength"]
 
     def info(self):
         
         print(f'self.dataDirectory = {self.dataDirectory}')
+        print(f'self.dataShape = {self.dataShape}')
         print(f'self.modelFile = {self.modelFile}')
         print(f'self.initializingNumber = {self.initializingNumber}')
         print(f'self.lossFunction = {self.lossFunction}')
@@ -39,12 +51,22 @@ class ModelParameter():
         print(f'self.tuningTimes = {self.tuningTimes}')
         print(f'self.regularizingStrength = {self.regularizingStrength}')
 
+    def get_dataShape(path):
+        
+        p = Path(path).glob('**/*')
+        files = [str(x) for x in p if x.is_file()]
+        shapes = [pd.read_csv(filePath).shape for filePath in files]
+        dataShape = {"X":shapes[0], "Y":shapes[1]}
+
+        return dataShape
+
 class ModelParameter2(ModelParameter):
-    def __init__(self, **model_params):
+    def __init__(self, **kwargs):
 
         """
         dataDirectory
         dataDescribing
+        inputDimension
         neuroNode
         outputDimension
         lossFunction
@@ -65,8 +87,8 @@ class ModelParameter2(ModelParameter):
         regularizingLearningRateLowerBound
         """
 
-        self.model_params = model_params
+        self.kwargs = kwargs
 
     def info(self):
         
-        print(f'self.model_params = {self.model_params}')
+        print(f'self.kwargs = {self.kwargs}')

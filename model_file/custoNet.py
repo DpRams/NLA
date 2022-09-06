@@ -20,7 +20,7 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
 from apps import evaluating, saving
-from network.net import Network, RIRO
+from network.net import TwoLayerNet
 
 
 def reading_dataset_Training(dataDirecotry, initializingNumber):
@@ -64,7 +64,7 @@ def reading_dataset_Training_only_2LayerNet(dataDirecotry):
 
 def building_net(model_params):
     """
-    於此處定義好，客製模型的 function ，並回傳 變數(<- 外部 function)供 main function 使用
+    於此處定義好，客製模型的 class ，並回傳 class(繼承外部 class)供 main function 使用
     """
 
     """
@@ -131,6 +131,9 @@ def building_net(model_params):
     waitting_import_fn = None
     if model_params["reorganizingRule"] == "Disabled" : reorganizing_fn = None
     else :  reorganizing_fn = eval(waitting_import_fn) 
+
+
+    network = TwoLayerNet()
 
 def main(model_params):
 
