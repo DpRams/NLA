@@ -133,12 +133,32 @@ def building_net(model_params):
     if model_params["reorganizingRule"] == "Disabled" : reorganizing_fn = None
     else : reorganizing_fn = eval(waitting_import_fn) 
 
-    class Model():
+    class YourCSI():
         def __init__(self):
-            self.net = CustoNet()
+            self.net = yourCSI()
 
+        def initializing(self, initial_x, initial_y):
+            self.net.initializing(self)
 
-    class CustoNet(TwoLayerNet):
+        def selecting(self, x_train_scaled, y_train_scaled):
+            self.net.selecting(self)
+
+        def matching(self):
+            self.net = self.net.matching(self)
+
+        def cramming(self):
+            self.net.cramming(self)
+
+        def matching_reorganizing(self):
+            self.net = self.net.matching_reorganizing(self)
+             
+        def regularizing(self):
+            self.net = self.net.regularizing(self)
+
+        def reoranizing(self):
+            self.net = self.net.reoranizing(self)
+
+    class yourCSI(TwoLayerNet):
 
         def __init__(self, **model_params):
             super().__init__(**model_params)
@@ -151,22 +171,23 @@ def building_net(model_params):
             return sorted_index
 
         def matching(self):
-            network = Match.EU_LG_UA(self)
-            return network
+            # matching_fn = "EU_LG"
+            # eval(matching_fn)(self)
+            return Match.EU_LG_UA(self)
 
         def cramming(self):
-            network = Cramming.ri_sro(self)
-            return network
+            return Cramming.ri_sro(self)
 
         def matching_reorganizing(self):
-            Reorganize.ri_sro(self)
-            return 
+            return Reorganize.ri_sro(self)
+             
         def regularizing(self):
-            return super().regularizing()
-        def reoranizing(self):
-            return super().reoranizing()
+            return Reorganize.regularizing(self)
 
-    network = CustoNet()
+        def reoranizing(self):
+            return Reorganize.ri_sro(self)
+
+    network = YourCSI()
 
     return network
 
