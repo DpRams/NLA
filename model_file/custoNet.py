@@ -21,6 +21,7 @@ sys.path.append(str(root))
 
 from apps import evaluating, saving
 from network.net import TwoLayerNet
+from module.modules import Initialize, Select, Match, Cramming, Reorganize
 
 
 def reading_dataset_Training(dataDirecotry, initializingNumber):
@@ -130,10 +131,44 @@ def building_net(model_params):
     """
     waitting_import_fn = None
     if model_params["reorganizingRule"] == "Disabled" : reorganizing_fn = None
-    else :  reorganizing_fn = eval(waitting_import_fn) 
+    else : reorganizing_fn = eval(waitting_import_fn) 
+
+    class Model():
+        def __init__(self):
+            self.net = CustoNet()
 
 
-    network = TwoLayerNet()
+    class CustoNet(TwoLayerNet):
+
+        def __init__(self, **model_params):
+            super().__init__(**model_params)
+
+        def initializing(self, initial_x, initial_y):
+            Initialize.Default(self, initial_x, initial_y)
+
+        def selecting(self, x_train_scaled, y_train_scaled):
+            sorted_index = Select.LTS(self, x_train_scaled, y_train_scaled)
+            return sorted_index
+
+        def matching(self):
+            network = Match.EU_LG_UA(self)
+            return network
+
+        def cramming(self):
+            network = Cramming.ri_sro(self)
+            return network
+
+        def matching_reorganizing(self):
+            Reorganize.ri_sro(self)
+            return 
+        def regularizing(self):
+            return super().regularizing()
+        def reoranizing(self):
+            return super().reoranizing()
+
+    network = CustoNet()
+
+    return network
 
 def main(model_params):
 
