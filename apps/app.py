@@ -19,7 +19,7 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 # print(parent, root)
 
-from model_file import riro, ribo
+from model_file import riro, ribo, custoNetTest
 # from model_file.riro import main
 from modelParameter import ModelParameter
 from apps import evaluating, saving 

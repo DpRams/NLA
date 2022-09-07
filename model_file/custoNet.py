@@ -23,6 +23,10 @@ from apps import evaluating, saving
 from network.net import TwoLayerNet
 from module.modules import Initialize, Select, Match, Cramming, Reorganize
 
+"""
+與riro同等層級，用作training。
+"""
+
 
 def reading_dataset_Training(dataDirecotry, initializingNumber):
     

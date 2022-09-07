@@ -58,7 +58,7 @@ def main(model_params):
         (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory, model_params.initializingNumber)
         
         # Defining model
-        network = RIRO( input_dimension=model_params.inputDimension, \
+        network = YourCSI( input_dimension=model_params.inputDimension, \
                         hidden_node=model_params.hiddenNode, \
                         output_dimension=model_params.outputDimension, \
                         loss_function=model_params.lossFunction, \
@@ -79,7 +79,7 @@ def main(model_params):
                               "nb_node" : [], "nb_node_pruned" : [],\
                               "Route" : {"Blue": 0, "Red":0, "Green":0}}
 
-        experiments_record["nb_node"].append(network.linear1.weight.data.shape[0])
+        experiments_record["nb_node"].append(network.net.linear1.weight.data.shape[0])
         
         # The initializing-use data should be add into the training data too.
         current_x, current_y = initial_x, initial_y 
@@ -97,14 +97,14 @@ def main(model_params):
             print(f'current_x = {current_x.shape}')
             print(f'current_y = {current_y.shape}')
 
-            network.setData(current_x, current_y)
+            network.net.setData(current_x, current_y)
             network_pre = copy.deepcopy(network)
 
-            output, loss = network.forward()
+            output, loss = network.net.forward()
 
-            if torch.all(torch.abs(output - network.y) <= network.threshold_for_error):
-                network.acceptable = True
-                network = network.reorganizing()
+            if torch.all(torch.abs(output - network.net.y) <= network.net.threshold_for_error):
+                network.net.acceptable = True
+                network.reorganizing()
                 experiments_record["Route"]["Blue"] += 1
 
             else:
@@ -115,7 +115,7 @@ def main(model_params):
                 network.matching()
 
                 if network.acceptable:
-                    network = network.reorganizing()
+                    network.reorganizing()
                     experiments_record["Route"]["Green"] += 1
 
                 else:
@@ -126,26 +126,26 @@ def main(model_params):
                     if RIRO.is_learningGoal_too_small_to_cramming(network): return "Cramming 失敗", "Cramming 失敗", "Cramming 失敗"
                     
                     # network = reorganizing(network)
-                    network = network.reorganizing()
+                    network.reorganizing()
                     experiments_record["Route"]["Red"] += 1
 
             # Append every record in one iteration
-            output, loss = network.forward()
-            train_acc = ((output - network.y) <= network.threshold_for_error).to(torch.float32).mean().cpu().detach()
+            output, loss = network.net.forward()
+            train_acc = ((output - network.net.y) <= network.net.threshold_for_error).to(torch.float32).mean().cpu().detach()
             experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
             experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
-            experiments_record["nb_node"].append(network.nb_node)
-            experiments_record["nb_node_pruned"].append(network.nb_node_pruned)
-            network.nb_node_pruned = 0
+            experiments_record["nb_node"].append(network.net.nb_node)
+            experiments_record["nb_node_pruned"].append(network.net.nb_node_pruned)
+            network.net.nb_node_pruned = 0
 
 
         experiments_record["train"]["mean_acc"] = np.mean(experiments_record["train"]["acc_step"])
         experiments_record["train"]["mean_loss"] = np.mean(experiments_record["train"]["loss_step"])
 
-        model_experiments_record = {"network" : network, "experiments_record" : experiments_record}
+        model_experiments_record = {"network" : network.net, "experiments_record" : experiments_record}
     
         # inferencing
-        valid_acc = evaluating.inferencing(network, x_test, y_test)
+        valid_acc = evaluating.inferencing(network.net, x_test, y_test)
         model_experiments_record["experiments_record"]["valid"]["mean_acc"] = np.round(valid_acc, 3)
 
         # Plot graph

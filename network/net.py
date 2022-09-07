@@ -4,6 +4,11 @@ from apps import getFreerGpu
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
+from module.modules import Initialize, Select, Match, Cramming, Reorganize
+
+"""
+Original
+"""
 
 class TwoLayerNet(torch.nn.Module):
     
@@ -71,7 +76,7 @@ class TwoLayerNet(torch.nn.Module):
         pass
     def regularizing(self):
         pass
-    def reoranizing(self):
+    def reorganizing(self):
         pass
 
 
@@ -970,5 +975,64 @@ class CSI_function_not_objective_oriented():
     def is_learningGoal_too_small_to_cramming(network):
         
         if network == None : return True
+        
 
+"""
+Customize model(It could work!!!)
+"""
+
+class YourCSI():
+    def __init__(self, **model_params):
+        self.net = yourCSI(**model_params)
+
+    def initializing(self, initial_x, initial_y):
+        self.net.initializing(initial_x, initial_y)
+
+    def selecting(self, x_train_scaled, y_train_scaled):
+        return self.net.selecting(x_train_scaled, y_train_scaled)
+
+    def matching(self):
+        self.net = self.net.matching()
+
+    def cramming(self):
+        self.net.cramming()
+
+    def matching_reorganizing(self):
+        self.net = self.net.matching_reorganizing()
+            
+    def regularizing(self):
+        self.net = self.net.regularizing()
+
+    def reorganizing(self):
+        self.net = self.net.reorganizing()
+
+# TwoLayerNet -> Network
+class yourCSI(Network): 
+
+    def __init__(self, **model_params):
+        super().__init__(**model_params)
+
+    def initializing(self, initial_x, initial_y):
+        Initialize.Default(self, initial_x, initial_y)
+
+    def selecting(self, x_train_scaled, y_train_scaled):
+        sorted_index = Select.LTS(self, x_train_scaled, y_train_scaled)
+        return sorted_index
+
+    def matching(self):
+        # matching_fn = "EU_LG"
+        # eval(matching_fn)(self)
+        return Match.EU_LG_UA(self)
+
+    def cramming(self):
+        return Cramming.ri_sro(self)
+
+    def matching_reorganizing(self):
+        return Reorganize.ri_sro(self)
+            
+    def regularizing(self):
+        return Reorganize.regularizing(self)
+
+    def reorganizing(self):
+        return Reorganize.ri_sro(self)
 
