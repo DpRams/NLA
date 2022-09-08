@@ -4,7 +4,7 @@ from apps import getFreerGpu
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
-from module.modules import Initialize, Select, Match, Cramming, Reorganize
+from module.modules import Initialize, Select, Match, Cram, Reorganize
 
 """
 Original
@@ -1013,26 +1013,32 @@ class yourCSI(Network):
         super().__init__(**model_params)
 
     def initializing(self, initial_x, initial_y):
+        # initializing_fn = eval(str("Initialize.")+str(self.model_params["initializingRule"]))
         Initialize.Default(self, initial_x, initial_y)
 
     def selecting(self, x_train_scaled, y_train_scaled):
+        # selecting_fn = eval(str("Select.")+str(self.model_params["selectingRule"]))
         sorted_index = Select.LTS(self, x_train_scaled, y_train_scaled)
         return sorted_index
 
     def matching(self):
-        # matching_fn = "EU_LG"
-        # eval(matching_fn)(self)
+        # matching_fn = eval(str("Match.")+str(self.model_params["matchingRule"]))
         return Match.EU_LG_UA(self)
 
     def cramming(self):
-        return Cramming.ri_sro(self)
+        # cramming_fn = eval(str("Cram.")+str(self.model_params["crammingRule"]))
+        return Cram.ri_sro(self)
 
     def matching_reorganizing(self):
-        return Reorganize.ri_sro(self)
+        # 這段若固定，就不用下面這段
+        # matching_reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["matchingRule"]))
+        return Reorganize.matching_for_reorganizing(self)
             
     def regularizing(self):
+        # regularizing_fn = eval(str("Reorganize.")+str(self.model_params["regularizingTimes"]))
         return Reorganize.regularizing(self)
 
     def reorganizing(self):
+        # reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["reorganizingRule"]))
         return Reorganize.ri_sro(self)
 

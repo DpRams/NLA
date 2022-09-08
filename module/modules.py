@@ -139,7 +139,7 @@ class Match():
 
 
 
-class Cramming():
+class Cram():
 
     def ri_sro(network):
 

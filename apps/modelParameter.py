@@ -66,12 +66,14 @@ class ModelParameter2(ModelParameter):
         """
         dataDirectory
         dataDescribing
+        
         inputDimension
         hiddenNode
         outputDimension
         lossFunction
         optimizer
         learningRate
+        initializingRule
         initializingNumber
         initializingLearningGoal
         selectingRule

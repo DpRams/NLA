@@ -179,6 +179,13 @@
 
           <div id = "module_initializing">
             <label class="col-md-8 fs-4">Initializing.</label>
+            <label class="col-md-8 fs-5">Rule</label>
+            <select name="initializingRule" method="GET"  style="font-size:20px;" > 
+              <option value= "LinearRegression" >LinearRegression</option>
+              <option value= "RandomSmall" >RandomSmall</option>
+              <option value= "Xavier" >Xavier</option>
+              <option value= "Disabled" SELECTED>Disabled</option>
+            </select>
             <label class="col-md-8 fs-5">Initializing number</label>
             <input type="text" id="Hyperparameters" name="initializingNumber" >
             <label class="col-md-8 fs-5">Initializing learning goal</label>
@@ -295,6 +302,8 @@
 
           <br><br>
           <label class="col-md-8 fs-5">Initializing.</label>
+          <br>
+          <text><b>Rule : <font color="blue">{{initializingRule}}</font></b></text>
           <br>
           <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
           <br>
