@@ -24,6 +24,21 @@
 
 
     <style>
+      div.gallery {
+        margin: 5px;
+        border: 1px solid #ccc;
+        float: left;
+        width: 180px;
+      }
+      
+      div.gallery:hover {
+        border: 1px solid #777;
+      }
+      
+      div.gallery img {
+        width: 100%;
+        height: auto;
+      }
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -97,6 +112,24 @@
         <p class="col-md-8 fs-5">Define your own data.</p>
         <br><br>
          <form action="/pipeline/data" method="post" enctype="multipart/form-data">
+          <label class="col-md-8 fs-4"><b>Supported Data format : CSV (Comma-Separated Values) E.g., </b></label>
+          <br><br>
+          <div class="row align-items-md-stretch">
+            <div class="col-md-6">
+              <div class="h-100 p-5 bg-light border rounded-3">
+                <h2>X: </h2>
+                <img src="{{ url_for('static', path='/img/csv_eg_x.png') }}"  alt="data format supported" width="450" height="200" style="display:block;" >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="h-100 p-5 bg-light border rounded-3">
+                <h2>Y: </h2>
+                <img src="{{ url_for('static', path='/img/csv_eg_y.png') }}"  alt="data format supported" width="100" height="200" style="display:block;" >
+              </div>
+            </div>
+          </div>
+
+          <br><br>
           <div>
               <label class="col-md-8 fs-4">Create a directory saves file uploaded.</label>
               <input type="text" id="directory_name" name="directoryName"  >
