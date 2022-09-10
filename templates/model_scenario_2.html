@@ -97,7 +97,10 @@
       }
     </style>
 
-    
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
   </head>
   <body>
     
@@ -154,11 +157,21 @@
           <br><br>
           <label class="col-md-8 fs-4">Back Propagation.</label>
           <label class="col-md-8 fs-5">Loss function</label>
-          <select name="lossFunction" method="GET"  style="font-size:20px;" > 
+          <select id="select_loss" name="lossFunction" method="GET"  style="font-size:20px;" onclick="showLossFunctionEquation()"> 
             <option value= "RMSE" SELECTED>RMSE</option>
             <option value= "MSE" >MSE</option>
             <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
           </select>
+          <script type="text/javascript" src="{{ url_for('static', path='/js/script.js') }}"></script>
+          
+          <div>
+            <label class="col-md-8 fs-5">Function equation</label>
+            <p id="MSE" style="display:none"><span class="math display">\[MSE=\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2\]</span ></p>
+            <p id="RMSE" style="display:none"><span class="math display">\[RMSE=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2}\]</span ></p>
+            <p id="CROSSENTROPYLOSS_b" style="display:none"><span class="math display">\[CrossEntropyLoss(binary)=-{(y\log(p) + (1 - y)\log(1 - p))}\]</span ></p>
+            <p id="CROSSENTROPYLOSS_m" style="display:none"><span class="math display">\[CrossEntropyLoss(multiclass)=-\sum_{c=1}^My_{o,c}\log(p_{o,c})\]</span ></p>
+          </div>
+
           <label class="col-md-8 fs-5">Optimizer</label>
           <select name="optimizer" method="GET"  style="font-size:20px;" > 
             <option value= "Adam" SELECTED>Adam</option>
@@ -406,7 +419,10 @@
       © 2022
     </footer>
   </div>
+
 </main>
 
 
-</body></html>
+</body>
+
+</html>
