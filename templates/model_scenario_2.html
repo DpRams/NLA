@@ -100,6 +100,7 @@
   <script type="text/javascript"
     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
+  <script type="text/javascript" src="{{ url_for('static', path='/js/script_model_2.js') }}"></script>
 
   </head>
   <body>
@@ -122,294 +123,358 @@
         <br><br>
         
         <form  method="post" enctype="multipart/form-data">
-          ----------------------------------------------------------------------------------------------------------------------------------------------------
-          <br><br>
-          <label class="col-md-8 fs-4">Select Data directory from Server.</label>
-          <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
-            {% for dataDir in upload_data %}
-            <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
-            {% endfor %}
-          </select>
-          <br><br>
-          <label class="col-md-8 fs-5">Data descirbing</label>
-          <select name="dataDescribing" method="GET"  style="font-size:20px;" > 
-            <option value= "ri_sro" SELECTED>ri_sro</option>
-            <option value= "ri_mro" >ri_mro</option>
-            <option value= "bi_sro" >bi_sro</option>
-            <option value= "bi_mro" >bi_mro</option>
-            <option value= "ri_sbo" >ri_sbo</option>
-            <option value= "ri_mbo" >ri_mbo</option>
-            <option value= "bi_sbo" >bi_sbo</option>
-            <option value= "bi_mbo" >bi_mbo</option>
-          </select>
 
-
-          <br><br>
-          ----------------------------------------------------------------------------------------------------------------------------------------------------
-
-          <br><br>
-          <div id = "module_2LayerNet">
-          <label class="col-md-8 fs-4">SLFN(Two Layer).</label>
-          <label class="col-md-8 fs-5">Hidden node</label>
-          <input type="text" id="Hyperparameters" name="hiddenNode" >
-          <label class="col-md-8 fs-5">Activation function : ReLU</label>
-
-          <br><br>
-          <label class="col-md-8 fs-4">Back Propagation.</label>
-          <label class="col-md-8 fs-5">Loss function</label>
-          <select id="select_loss" name="lossFunction" method="GET"  style="font-size:20px;" onclick="showLossFunctionEquation()"> 
-            <option value= "RMSE" SELECTED>RMSE</option>
-            <option value= "MSE" >MSE</option>
-            <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
-          </select>
-          <script type="text/javascript" src="{{ url_for('static', path='/js/script.js') }}"></script>
+          <!-- <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+            </div>
+          </div> -->
           
-          <div>
-            <label class="col-md-8 fs-5">Function equation</label>
-            <p id="MSE" style="display:none"><span class="math display">\[MSE=\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2\]</span ></p>
-            <p id="RMSE" style="display:none"><span class="math display">\[RMSE=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2}\]</span ></p>
-            <p id="CROSSENTROPYLOSS_b" style="display:none"><span class="math display">\[CrossEntropyLoss(binary)=-{(y\log(p) + (1 - y)\log(1 - p))}\]</span ></p>
-            <p id="CROSSENTROPYLOSS_m" style="display:none"><span class="math display">\[CrossEntropyLoss(multiclass)=-\sum_{c=1}^My_{o,c}\log(p_{o,c})\]</span ></p>
-          </div>
-
-          <label class="col-md-8 fs-5">Optimizer</label>
-          <select name="optimizer" method="GET"  style="font-size:20px;" > 
-            <option value= "Adam" SELECTED>Adam</option>
-            <option value= "Adadelta" >Adadelta</option>
-            <option value= "Adagrad" >Adagrad</option>
-            <option value= "AdamW" >AdamW</option>
-          </select>
-          <label class="col-md-8 fs-5">Learning rate</label>
-          <input type="text" id="Hyperparameters" name="learningRate" >
-          <label class="col-md-8 fs-5">Epoch upper bound</label>
-          <input type="text" id="Hyperparameters" name="matchingTimes"  >
-          </div>
-          
-          <br><br>
-        
-          ----------------------------------------------------------------------------------------------------------------------------------------------------
-          <br><br>
-
-          <div id = "module_initializing">
-            <label class="col-md-8 fs-4">Initializing.</label>
-            <label class="col-md-8 fs-5">Rule</label>
-            <select name="initializingRule" method="GET"  style="font-size:20px;" > 
-              <option value= "LinearRegression" >LinearRegression</option>
-              <option value= "RandomSmall" >RandomSmall</option>
-              <option value= "Xavier" >Xavier</option>
-              <option value= "Disabled" SELECTED>Disabled</option>
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+              
+            <label class="col-md-8 fs-4">Select Data directory from Server.</label>
+            <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
+              {% for dataDir in upload_data %}
+              <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+              {% endfor %}
             </select>
-            <label class="col-md-8 fs-5">Initializing number</label>
-            <input type="text" id="Hyperparameters" name="initializingNumber" >
-            <label class="col-md-8 fs-5">Initializing learning goal</label>
-            <input type="text" id="Hyperparameters" name="initializingLearningGoal"  >
             <br><br>
-            <label class="col-md-8 fs-4">Selecting.</label>
-            <label class="col-md-8 fs-5">Rule</label>
-            <select name="selectingRule" method="GET"  style="font-size:20px;" > 
-              <option value= "POS" >POS</option>
-              <option value= "LTS" >LTS</option>
-              <option value= "Disabled" SELECTED>Disabled</option>
+            <label class="col-md-8 fs-5">Data descirbing</label>
+            <select name="dataDescribing" method="GET"  style="font-size:20px;" > 
+              <option value= "ri_sro" SELECTED>ri_sro</option>
+              <option value= "ri_mro" >ri_mro</option>
+              <option value= "bi_sro" >bi_sro</option>
+              <option value= "bi_mro" >bi_mro</option>
+              <option value= "ri_sbo" >ri_sbo</option>
+              <option value= "ri_mbo" >ri_mbo</option>
+              <option value= "bi_sbo" >bi_sbo</option>
+              <option value= "bi_mbo" >bi_mbo</option>
             </select>
+
+            </div>
           </div>
 
-          <br><br>
-          ----------------------------------------------------------------------------------------------------------------------------------------------------
-          <br><br>
-          <label class="col-md-8 fs-4">Matching.</label>
-          <label class="col-md-8 fs-5">Rule</label>
-          <select name="matchingRule" method="GET"  style="font-size:20px;" > 
-            <option value= "EU, LG" >EU_LG</option>
-            <option value= "EU, LG, UA" >EU_LG_UA</option>
-            <option value= "LG, UA" >LG_UA</option>
-            <option value= "Disabled" SELECTED>Disabled</option>
-          </select>
-          <label class="col-md-8 fs-5">Matching learning goal</label>
-          <input type="text" id="Hyperparameters" name="matchingLearningGoal"  >
-          <label class="col-md-8 fs-5">Matching learning rate lower bound</label>
-          <input type="text" id="Hyperparameters" name="matchingLearningRateLowerBound"  >
+          <br>
 
-          <br><br>
-          ----------------------------------------------------------------------------------------------------------------------------------------------------
-          <br><br>
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+              <div id = "module_2LayerNet">
+              <label class="col-md-8 fs-4">SLFN(Two Layer).</label>
+              <label class="col-md-8 fs-5">Hidden node</label>
+              <input type="text" id="Hyperparameters" name="hiddenNode" >
+              <label class="col-md-8 fs-5">Activation function : ReLU</label>
 
-          <label class="col-md-8 fs-4">Cramming.</label>
-          <label class="col-md-8 fs-5">Rule</label>
-          <select name="crammingRule" method="GET"  style="font-size:20px;" > 
-            <option value= "ri_sro" SELECTED>ri_sro</option>
-            <option value= "ri_mro" >ri_mro</option>
-            <option value= "bi_sro" >bi_sro</option>
-            <option value= "bi_mro" >bi_mro</option>
-            <option value= "ri_sbo" >ri_sbo</option>
-            <option value= "ri_mbo" >ri_mbo</option>
-            <option value= "bi_sbo" >bi_sbo</option>
-            <option value= "bi_mbo" >bi_mbo</option>
-            <option value= "Disabled" SELECTED>Disabled</option>
-          </select>
+              <br><br>
+              <label class="col-md-8 fs-4">Back Propagation.</label>
+              <label class="col-md-8 fs-5">Loss function</label>
+              <select id="select_loss" name="lossFunction" method="GET"  style="font-size:20px;" onclick="showLossFunctionEquation()"> 
+                <option value= "RMSE" SELECTED>RMSE</option>
+                <option value= "MSE" >MSE</option>
+                <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
+              </select>
+              
+              <div>
+                <label class="col-md-8 fs-5">Function equation</label>
+                <p id="MSE" style="display:none"><span class="math display">\[MSE=\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2\]</span ></p>
+                <p id="RMSE" style="display:none"><span class="math display">\[RMSE=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2}\]</span ></p>
+                <p id="CROSSENTROPYLOSS_b" style="display:none"><span class="math display">\[CrossEntropyLoss(binary)=-{(y\log(p) + (1 - y)\log(1 - p))}\]</span ></p>
+                <p id="CROSSENTROPYLOSS_m" style="display:none"><span class="math display">\[CrossEntropyLoss(multiclass)=-\sum_{c=1}^My_{o,c}\log(p_{o,c})\]</span ></p>
+              </div>
 
-          <br><br>
-          ----------------------------------------------------------------------------------------------------------------------------------------------------
-          <br><br>
+              <label class="col-md-8 fs-5">Optimizer</label>
+              <select name="optimizer" method="GET"  style="font-size:20px;" > 
+                <option value= "Adam" SELECTED>Adam</option>
+                <option value= "Adadelta" >Adadelta</option>
+                <option value= "Adagrad" >Adagrad</option>
+                <option value= "AdamW" >AdamW</option>
+              </select>
+              <label class="col-md-8 fs-5">Learning rate</label>
+              <input type="text" id="Hyperparameters" name="learningRate" >
+              <label class="col-md-8 fs-5">Epoch upper bound</label>
+              <input type="text" id="Hyperparameters" name="matchingTimes"  >
+              </div>
 
-          <label class="col-md-8 fs-4">Reorganizing.</label>
-          <label class="col-md-8 fs-5">Rule</label>
-          <select name="reorganizingRule" method="GET"  style="font-size:20px;" > 
-            <option value= "ri_sro" SELECTED>ri_sro</option>
-            <option value= "ri_mro" >ri_mro</option>
-            <option value= "bi_sro" >bi_sro</option>
-            <option value= "bi_mro" >bi_mro</option>
-            <option value= "ri_sbo" >ri_sbo</option>
-            <option value= "ri_mbo" >ri_mbo</option>
-            <option value= "bi_sbo" >bi_sbo</option>
-            <option value= "bi_mbo" >bi_mbo</option>
-            <option value= "Disabled" SELECTED>Disabled</option>
-          </select>
-          <label class="col-md-8 fs-5">Regularizing times</label>
-          <input type="text" id="Hyperparameters" name="regularizingTimes"  >
-          <label class="col-md-8 fs-5">Regularizing strength</label>
-          <input type="text" id="Hyperparameters" name="regularizingStrength"  >
-          <label class="col-md-8 fs-5">Regularizing learning goal</label>
-          <input type="text" id="Hyperparameters" name="regularizingLearningGoal"  >
-          <label class="col-md-8 fs-5">Regularizing learning rate lower bound</label>
-          <input type="text" id="Hyperparameters" name="regularizingLearningRateLowerBound"  >
-          <br><br>
-          ----------------------------------------------------------------------------------------------------------------------------------------------------
+            </div>
+          </div>
+          
+          <br>
+        
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <div id = "module_initializing">
+                <label class="col-md-8 fs-4">Initializing.</label>
+                <label class="col-md-8 fs-5">Rule</label>
+                <select id="select_initializingRule" name="initializingRule" method="GET"  style="font-size:20px;" onclick="showInitializingParameters()"> 
+                  <option value= "LinearRegression" >LinearRegression</option>
+                  <option value= "RandomSmall" >RandomSmall</option>
+                  <option value= "Xavier" >Xavier</option>
+                  <option value= "Disabled" SELECTED>Disabled</option>
+                </select>
+
+                <p id = "regressionParameters" style="display:none">
+                  <label class="col-md-8 fs-5">Initializing number</label>
+                  <input type="text" id="initializingNumber" name="initializingNumber" >
+                  <label class="col-md-8 fs-5">Initializing learning goal</label>
+                  <input type="text" id="initializingLearningGoal" name="initializingLearningGoal"  >
+                </p>
+
+                <br><br>
+                <label class="col-md-8 fs-4">Selecting.</label>
+                <label class="col-md-8 fs-5">Rule</label>
+                <select name="selectingRule" method="GET"  style="font-size:20px;" > 
+                  <option value= "POS" >POS</option>
+                  <option value= "LTS" >LTS</option>
+                  <option value= "Disabled" SELECTED>Disabled</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          <br>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <label class="col-md-8 fs-4">Matching.</label>
+              <label class="col-md-8 fs-5">Rule</label>
+              <select id="matchingRule" name="matchingRule" method="GET"  style="font-size:20px;" onclick="showMacthingParameters()"> 
+                <option value= "EU, LG" >EU_LG</option>
+                <option value= "EU, LG, UA" >EU_LG_UA</option>
+                <option value= "Disabled" SELECTED>Disabled</option>
+              </select>
+
+              <p id = "matchingLearningGoal" style="display:none">
+              <label class="col-md-8 fs-5">Matching learning goal</label>
+              <input type="text" id="Hyperparameters" name="matchingLearningGoal"  >
+              </p>  
+              <p id = "matchingLearningRateLowerBound" style="display:none">
+              <label class="col-md-8 fs-5">Matching learning rate lower bound</label>
+              <input type="text" id="Hyperparameters" name="matchingLearningRateLowerBound"  >
+              </p>
+
+            </div>
+          </div>
+        
+          <br>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <label class="col-md-8 fs-4">Cramming.</label>
+              <label class="col-md-8 fs-5">Rule</label>
+              <select name="crammingRule" method="GET"  style="font-size:20px;" > 
+                <option value= "ri_sro" SELECTED>ri_sro</option>
+                <option value= "ri_mro" >ri_mro</option>
+                <option value= "bi_sro" >bi_sro</option>
+                <option value= "bi_mro" >bi_mro</option>
+                <option value= "ri_sbo" >ri_sbo</option>
+                <option value= "ri_mbo" >ri_mbo</option>
+                <option value= "bi_sbo" >bi_sbo</option>
+                <option value= "bi_mbo" >bi_mbo</option>
+                <option value= "Disabled" SELECTED>Disabled</option>
+              </select>
+
+            </div>
+          </div>
+
+          <br>
+          
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <label class="col-md-8 fs-4">Reorganizing.</label>
+              <label class="col-md-8 fs-5">Rule</label>
+              <select id="reorganizingRule" name="reorganizingRule" method="GET"  style="font-size:20px;" onclick="showReorganzingingParameters()"> 
+                <option value= "ri_sro" SELECTED>ri_sro</option>
+                <option value= "ri_mro" >ri_mro</option>
+                <option value= "bi_sro" >bi_sro</option>
+                <option value= "bi_mro" >bi_mro</option>
+                <option value= "ri_sbo" >ri_sbo</option>
+                <option value= "ri_mbo" >ri_mbo</option>
+                <option value= "bi_sbo" >bi_sbo</option>
+                <option value= "bi_mbo" >bi_mbo</option>
+                <option value= "Disabled" SELECTED>Disabled</option>
+              </select>
+
+              <p id = "reorganizingParamaters" style="display:none">
+                <label class="col-md-8 fs-5">Regularizing times</label>
+                <input type="text" id="Hyperparameters" name="regularizingTimes"  >
+                <label class="col-md-8 fs-5">Regularizing strength</label>
+                <input type="text" id="Hyperparameters" name="regularizingStrength"  >
+                <label class="col-md-8 fs-5">Regularizing learning goal</label>
+                <input type="text" id="Hyperparameters" name="regularizingLearningGoal"  >
+                <label class="col-md-8 fs-5">Regularizing learning rate lower bound</label>
+                <input type="text" id="Hyperparameters" name="regularizingLearningRateLowerBound"  >
+              </p>
+
+            </div>
+          </div>
+
           <br><br>
 
           <label class="col-md-8 fs-5"></label>
           <label for="define_model" class="btn btn-primary btn-lg">Train</label>
           <input type="submit" id="define_model" class="btn btn-primary btn-lg" formaction="/pipeline/model/scenario/2" hidden>
           <br><br>
-          <text><b>Hint message : <font color="blue">若要啟用 Cramming 或 Reorganizing，請確保 Rule 與 Data Sescribing 設置相同</font></b></text> 
-          <!-- 上面這行可以寫個後端判斷，是否達成條件，未達成則顯示上述訊息 -->
-          <br><br>
-          <text><b>Interrupted message : <font color="blue">{{interrupted_message}}</font></b></text>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <text><b>Hint message : <font color="blue">若要啟用 Cramming 或 Reorganizing，請確保 Rule 與 Data Sescribing 設置相同</font></b></text> 
+              <!-- 上面這行可以寫個後端判斷，是否達成條件，未達成則顯示上述訊息 -->
+              <br><br>
+              <text><b>Interrupted message : <font color="blue">{{interrupted_message}}</font></b></text>
           
-          <br><br>
-          <label class="col-md-8 fs-3">Training configuration</label>
-          <br><br>
-
-          <label class="col-md-8 fs-5">Data.</label>
-          <br>
-          <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
-          <br>
-          <text><b>Data descirbing : <font color="blue">{{dataDescribing}}</font></b></text>
-          <br>
-          <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
-          <br><br>
-
-          <label class="col-md-8 fs-5">Two Layer Net.</label>
-          <br>
-          <text><b>Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
-
-          <br><br>
-          <label class="col-md-8 fs-5">Back Propagation.</label>
-          <br>
-          <text><b>Loss function : <font color="blue">{{lossFunction}}</font></b></text>
-          <br>
-          <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
-          <br>
-          <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
-          <br>
-          <text><b>Epoch upper bound : <font color="blue">{{matchingTimes}}</font></b></text>
-
-          <br><br>
-          <label class="col-md-8 fs-5">Initializing.</label>
-          <br>
-          <text><b>Rule : <font color="blue">{{initializingRule}}</font></b></text>
-          <br>
-          <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
-          <br>
-          <text><b>Initializing learning goal : <font color="blue">{{initializingLearningGoal}}</font></b></text>
-     
-          <br><br>
-          <label class="col-md-8 fs-5">Selecting.</label>
-          <br>
-          <text><b>Rule : <font color="blue">{{selectingRule}}</font></b></text>
-
-          <br><br>
-          <label class="col-md-8 fs-5">Matching.</label>
-          <br>
-          <text><b>Rule : <font color="blue">{{matchingRule}}</font></b></text>
-          <br>
-          <text><b>Matching learning goal : <font color="blue">{{matchingLearningGoal}}</font></b></text>
-          <br>
-          <text><b>Matching learning rate lower bound : <font color="blue">{{matchingLearningRateLowerBound}}</font></b></text>
-
-          <br><br>
-          <label class="col-md-8 fs-5">Cramming.</label>
-          <br>
-          <text><b>Rule : <font color="blue">{{crammingRule}}</font></b></text>
-
-          <br><br>
-          <label class="col-md-8 fs-5">Reorganizing.</label>
-          <br>
-          <text><b>Rule : <font color="blue">{{reorganizingRule}}</font></b></text>
-          <br>
-          <text><b>Regularizing times : <font color="blue">{{regularizingTimes}}</font></b></text>
-          <br>
-          <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
-          <br>
-          <text><b>Matching learning goal : <font color="blue">{{regularizingLearningGoal}}</font></b></text>
-          <br>
-          <text><b>Matching learning rate lower bound : <font color="blue">{{regularizingLearningRateLowerBound}}</font></b></text>
-
-          <br><br>
-          <label class="col-md-8 fs-5">Model experiments record : <font color="blue">{{model_experiments_record}}</font></label>
-          <br><br>
-          <label class="col-md-8 fs-3">Model Performance</label>
-          <br><br>
-          <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
-          <br>
-          <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
-          <br>
-          <div class="p-5 mb-1 bg-light rounded-3">
-  
-            <!-- <div class="gallery">
-              <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-                <img src="{{ url_for('static', path='/img/acc.png') }}"  alt="Training Accuracy" width="600" height="400">
-              </a>
-              <div class="desc">Training Accuracy</div>
-            </div> -->
-
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Accuracy}}">
-                <img src= "{{url_path_for_Accuracy}}"  alt="Training Accuracy" width="600" height="400">
-              </a>
-              <div class="desc">Training Accuracy</div>
             </div>
-            
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Loss}}">
-                <img src= "{{url_path_for_Loss}}"  alt="Training Loss" width="600" height="400">
-              </a>
-              <div class="desc">Training Loss</div>
-            </div>
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Nodes}}">
-                <img src="{{url_path_for_Nodes}}"  alt="Model Nodes" width="600" height="400">
-              </a>
-              <div class="desc">Model Nodes</div>
-            </div>
-            
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Pruned_nodes}}">
-                <img src="{{url_path_for_Pruned_nodes}}"  alt="Pruned Nodes" width="600" height="400">
-              </a>
-              <div class="desc">Pruned Nodes</div>
-            </div>
+          </div>
 
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Routes}}">
-                <img src="{{url_path_for_Routes}}"  alt="Model Routes" width="600" height="400">
-              </a>
-              <div class="desc">Model Routes</div>
+          <br>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+              <label class="col-md-8 fs-3">Training configuration</label>
+              <br><br>
+
+              <label class="col-md-8 fs-5">Data.</label>
+              <br>
+              <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
+              <br>
+              <text><b>Data descirbing : <font color="blue">{{dataDescribing}}</font></b></text>
+              <br>
+              <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
+              <br><br>
+
+              <label class="col-md-8 fs-5">Two Layer Net.</label>
+              <br>
+              <text><b>Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
+
+              <br><br>
+              <label class="col-md-8 fs-5">Back Propagation.</label>
+              <br>
+              <text><b>Loss function : <font color="blue">{{lossFunction}}</font></b></text>
+              <br>
+              <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+              <br>
+              <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+              <br>
+              <text><b>Epoch upper bound : <font color="blue">{{matchingTimes}}</font></b></text>
+
+              <br><br>
+              <label class="col-md-8 fs-5">Initializing.</label>
+              <br>
+              <text><b>Rule : <font color="blue">{{initializingRule}}</font></b></text>
+              <br>
+              <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
+              <br>
+              <text><b>Initializing learning goal : <font color="blue">{{initializingLearningGoal}}</font></b></text>
+        
+              <br><br>
+              <label class="col-md-8 fs-5">Selecting.</label>
+              <br>
+              <text><b>Rule : <font color="blue">{{selectingRule}}</font></b></text>
+
+              <br><br>
+              <label class="col-md-8 fs-5">Matching.</label>
+              <br>
+              <text><b>Rule : <font color="blue">{{matchingRule}}</font></b></text>
+              <br>
+              <text><b>Matching learning goal : <font color="blue">{{matchingLearningGoal}}</font></b></text>
+              <br>
+              <text><b>Matching learning rate lower bound : <font color="blue">{{matchingLearningRateLowerBound}}</font></b></text>
+
+              <br><br>
+              <label class="col-md-8 fs-5">Cramming.</label>
+              <br>
+              <text><b>Rule : <font color="blue">{{crammingRule}}</font></b></text>
+
+              <br><br>
+              <label class="col-md-8 fs-5">Reorganizing.</label>
+              <br>
+              <text><b>Rule : <font color="blue">{{reorganizingRule}}</font></b></text>
+              <br>
+              <text><b>Regularizing times : <font color="blue">{{regularizingTimes}}</font></b></text>
+              <br>
+              <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+              <br>
+              <text><b>Matching learning goal : <font color="blue">{{regularizingLearningGoal}}</font></b></text>
+              <br>
+              <text><b>Matching learning rate lower bound : <font color="blue">{{regularizingLearningRateLowerBound}}</font></b></text>
+
+              <br><br>
+              <label class="col-md-8 fs-5">Model experiments record : <font color="blue">{{model_experiments_record}}</font></label>
+              <br><br>
+
             </div>
-            
+          </div>
+
+          <br>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <label class="col-md-8 fs-3">Model Performance</label>
+              <br><br>
+              <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
+              <br>
+              <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
+              <br>
+
+
+
+
+              <div class="p-5 mb-1 bg-light rounded-3">
+      
+                <!-- <div class="gallery">
+                  <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
+                    <img src="{{ url_for('static', path='/img/acc.png') }}"  alt="Training Accuracy" width="600" height="400">
+                  </a>
+                  <div class="desc">Training Accuracy</div>
+                </div> -->
+
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Accuracy}}">
+                    <img src= "{{url_path_for_Accuracy}}"  alt="Training Accuracy" width="600" height="400">
+                  </a>
+                  <div class="desc">Training Accuracy</div>
+                </div>
+                
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Loss}}">
+                    <img src= "{{url_path_for_Loss}}"  alt="Training Loss" width="600" height="400">
+                  </a>
+                  <div class="desc">Training Loss</div>
+                </div>
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Nodes}}">
+                    <img src="{{url_path_for_Nodes}}"  alt="Model Nodes" width="600" height="400">
+                  </a>
+                  <div class="desc">Model Nodes</div>
+                </div>
+                
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Pruned_nodes}}">
+                    <img src="{{url_path_for_Pruned_nodes}}"  alt="Pruned Nodes" width="600" height="400">
+                  </a>
+                  <div class="desc">Pruned Nodes</div>
+                </div>
+
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Routes}}">
+                    <img src="{{url_path_for_Routes}}"  alt="Model Routes" width="600" height="400">
+                  </a>
+                  <div class="desc">Model Routes</div>
+                </div>
+                
+              </div>
+              <br><br><br><br><br>
+            </div>
           </div>
         
-          <br><br><br><br><br><br><br><br>
+          <br><br>
           <text>After training completed, this save mechanism will execute automatically.</text>
+
         </form>
 
       </div>

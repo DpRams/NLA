@@ -119,142 +119,175 @@
         <br><br>
         
         <form  method="post" enctype="multipart/form-data"> <!-- action="/pipeline/model"/ -->
-          <label class="col-md-8 fs-4">Select Data directory from Server.</label>
-          <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
-            {% for dataDir in upload_data %}
-            <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
-            {% endfor %}
-          </select>
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
 
-          <br><br>
+              <label class="col-md-8 fs-4">Select Data directory from Server.</label>
+              <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
+                {% for dataDir in upload_data %}
+                <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+                {% endfor %}
+              </select>
 
-          <label class="col-md-8 fs-4">Select Model from Repository.</label>
-          <select name="modelFile" method="GET"  style="font-size:20px;">
-            {% for model in model_file %}
-            <option value= "{{model}}"  SELECTED>{{model}}</option>"
-            {% endfor %}
-          </select>
+            </div>
+          </div>
 
-          <br><br>
+          <br>
 
-          <label class="col-md-8 fs-4">Select Hyperparameters.</label>
-          <br><br>
-          <label class="col-md-8 fs-5">Initializing number</label>
-          <input type="text" id="Hyperparameters" name="initializingNumber" >
-          <label class="col-md-8 fs-5">Loss function</label> 
-          <select name="lossFunction" method="GET"  style="font-size:20px;" > 
-            <option value= "RMSE" SELECTED>RMSE</option>
-            <option value= "MSE" >MSE</option>
-            <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
-          </select>
-          <label class="col-md-8 fs-5">Learning goal</label>
-          <input type="text" id="Hyperparameters" name="learningGoal"  >
-          <label class="col-md-8 fs-5">Learning rate</label>
-          <input type="text" id="Hyperparameters" name="learningRate"  >
-          <label class="col-md-8 fs-5">Learning rate Lower bound</label>
-          <input type="text" id="Hyperparameters" name="learningRateLowerBound" >
-          <label class="col-md-8 fs-5">Optimizer</label>
-          <select name="optimizer" method="GET"  style="font-size:20px;" > 
-            <option value= "Adam" SELECTED>Adam</option>
-            <option value= "Adadelta" >Adadelta</option>
-            <option value= "Adagrad" >Adagrad</option>
-            <option value= "AdamW" >AdamW</option>
-          </select>
-          <label class="col-md-8 fs-5">Tuning times</label>
-          <input type="text" id="Hyperparameters" name="tuningTimes" >
-          <label class="col-md-8 fs-5">Regularizing strength</label>
-          <input type="text" id="Hyperparameters" name="regularizingStrength"  >
-          <br><br>
-          
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <label class="col-md-8 fs-4">Select Model from Repository.</label>
+              <select name="modelFile" method="GET"  style="font-size:20px;">
+                {% for model in model_file %}
+                <option value= "{{model}}"  SELECTED>{{model}}</option>"
+                {% endfor %}
+              </select>
+
+            </div>
+          </div>
+
+          <br>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <label class="col-md-8 fs-4">Select Hyperparameters.</label>
+              <br><br>
+              <label class="col-md-8 fs-5">Initializing number</label>
+              <input type="text" id="Hyperparameters" name="initializingNumber" >
+              <label class="col-md-8 fs-5">Loss function</label> 
+              <select name="lossFunction" method="GET"  style="font-size:20px;" > 
+                <option value= "RMSE" SELECTED>RMSE</option>
+                <option value= "MSE" >MSE</option>
+                <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
+              </select>
+              <label class="col-md-8 fs-5">Learning goal</label>
+              <input type="text" id="Hyperparameters" name="learningGoal"  >
+              <label class="col-md-8 fs-5">Learning rate</label>
+              <input type="text" id="Hyperparameters" name="learningRate"  >
+              <label class="col-md-8 fs-5">Learning rate Lower bound</label>
+              <input type="text" id="Hyperparameters" name="learningRateLowerBound" >
+              <label class="col-md-8 fs-5">Optimizer</label>
+              <select name="optimizer" method="GET"  style="font-size:20px;" > 
+                <option value= "Adam" SELECTED>Adam</option>
+                <option value= "Adadelta" >Adadelta</option>
+                <option value= "Adagrad" >Adagrad</option>
+                <option value= "AdamW" >AdamW</option>
+              </select>
+              <label class="col-md-8 fs-5">Tuning times</label>
+              <input type="text" id="Hyperparameters" name="tuningTimes" >
+              <label class="col-md-8 fs-5">Regularizing strength</label>
+              <input type="text" id="Hyperparameters" name="regularizingStrength"  >
+              <br><br>
+
+            </div>
+          </div>
+
+          <br>
 
           <label class="col-md-8 fs-5"></label>
           <label for="define_model" class="btn btn-primary btn-lg">Train</label>
           <input type="submit" id="define_model" class="btn btn-primary btn-lg" formaction="/pipeline/model/scenario/1" hidden>
 
           <br><br>
-          <text><b>Interrupted message : <font color="blue">{{interrupted_message}}</font></b></text>
-          
-          <br><br>
-          <label class="col-md-8 fs-3">Training configuration</label>
-          <br><br>
-          <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
-          <br>
-          <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
-          <br>
-          <text><b>Model  : <font color="blue">{{modelFile}}</font></b></text>
-          <br>
-          <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
-          <br>
-          <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
-          <br>
-          <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
-          <br>
-          <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
-          <br>
-          <text><b>Learning rate Lower bound : <font color="blue">{{learningRateLowerBound}}</font></b></text>
-          <br>
-          <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
-          <br>
-          <text><b>Tuning times : <font color="blue">{{tuningTimes}}</font></b></text>
-          <br>
-          <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
-          <br>
-          <text><b>model_experiments_record : <font color="blue">{{model_experiments_record}}</font></b></text>
-          <br><br>
-          <label class="col-md-8 fs-3">Training progressbar</label>
-          <br><br>
-          <label class="col-md-8 fs-3">Model Performance</label>
-          <br><br>
-          <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
-          <br>
-          <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
-          <br>
-          <div class="p-5 mb-1 bg-light rounded-3">
-  
-            <!-- <div class="gallery">
-              <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-                <img src="{{ url_for('static', path='/img/acc.png') }}"  alt="Training Accuracy" width="600" height="400">
-              </a>
-              <div class="desc">Training Accuracy</div>
-            </div> -->
 
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Accuracy}}">
-                <img src= "{{url_path_for_Accuracy}}"  alt="Training Accuracy" width="600" height="400">
-              </a>
-              <div class="desc">Training Accuracy</div>
-            </div>
-            
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Loss}}">
-                <img src= "{{url_path_for_Loss}}"  alt="Training Loss" width="600" height="400">
-              </a>
-              <div class="desc">Training Loss</div>
-            </div>
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Nodes}}">
-                <img src="{{url_path_for_Nodes}}"  alt="Model Nodes" width="600" height="400">
-              </a>
-              <div class="desc">Model Nodes</div>
-            </div>
-            
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Pruned_nodes}}">
-                <img src="{{url_path_for_Pruned_nodes}}"  alt="Pruned Nodes" width="600" height="400">
-              </a>
-              <div class="desc">Pruned Nodes</div>
-            </div>
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
 
-            <div class="gallery">
-              <a target="_blank" href="{{url_path_for_Routes}}">
-                <img src="{{url_path_for_Routes}}"  alt="Model Routes" width="600" height="400">
-              </a>
-              <div class="desc">Model Routes</div>
+              <text><b>Interrupted message : <font color="blue">{{interrupted_message}}</font></b></text>
+              
+              <br><br>
+              <label class="col-md-8 fs-3">Training configuration</label>
+              <br><br>
+              <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
+              <br>
+              <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
+              <br>
+              <text><b>Model  : <font color="blue">{{modelFile}}</font></b></text>
+              <br>
+              <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
+              <br>
+              <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
+              <br>
+              <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
+              <br>
+              <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+              <br>
+              <text><b>Learning rate Lower bound : <font color="blue">{{learningRateLowerBound}}</font></b></text>
+              <br>
+              <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+              <br>
+              <text><b>Tuning times : <font color="blue">{{tuningTimes}}</font></b></text>
+              <br>
+              <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+              <br>
+              <text><b>model_experiments_record : <font color="blue">{{model_experiments_record}}</font></b></text>
+              <br><br>
+
             </div>
-            
+          </div>
+
+          <br>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+              <label class="col-md-8 fs-3">Model Performance</label>
+              <br><br>
+              <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
+              <br>
+              <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
+              <br>
+              <div class="p-5 mb-1 bg-light rounded-3">
+      
+                <!-- <div class="gallery">
+                  <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
+                    <img src="{{ url_for('static', path='/img/acc.png') }}"  alt="Training Accuracy" width="600" height="400">
+                  </a>
+                  <div class="desc">Training Accuracy</div>
+                </div> -->
+
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Accuracy}}">
+                    <img src= "{{url_path_for_Accuracy}}"  alt="Training Accuracy" width="600" height="400">
+                  </a>
+                  <div class="desc">Training Accuracy</div>
+                </div>
+                
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Loss}}">
+                    <img src= "{{url_path_for_Loss}}"  alt="Training Loss" width="600" height="400">
+                  </a>
+                  <div class="desc">Training Loss</div>
+                </div>
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Nodes}}">
+                    <img src="{{url_path_for_Nodes}}"  alt="Model Nodes" width="600" height="400">
+                  </a>
+                  <div class="desc">Model Nodes</div>
+                </div>
+                
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Pruned_nodes}}">
+                    <img src="{{url_path_for_Pruned_nodes}}"  alt="Pruned Nodes" width="600" height="400">
+                  </a>
+                  <div class="desc">Pruned Nodes</div>
+                </div>
+
+                <div class="gallery">
+                  <a target="_blank" href="{{url_path_for_Routes}}">
+                    <img src="{{url_path_for_Routes}}"  alt="Model Routes" width="600" height="400">
+                  </a>
+                  <div class="desc">Model Routes</div>
+                </div>
+                
+              </div>
+
+              <br><br><br><br><br>
+            </div>
           </div>
         
-          <br><br><br><br><br><br><br><br>
+
           <text>After training completed, this save mechanism will execute automatically.</text>
         </form>
 
