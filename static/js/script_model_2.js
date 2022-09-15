@@ -64,3 +64,4 @@ function showReorganzingingParameters(){
       reorganizingParamaters.style.display = "block";
     }
   }
+

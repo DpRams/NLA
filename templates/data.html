@@ -98,31 +98,46 @@
         <p class="col-md-8 fs-5">Define your own data.</p>
         <br><br>
          <form action="/pipeline/data" method="post" enctype="multipart/form-data">
-          <label class="col-md-8 fs-4"><b>Supported Data format : CSV (Comma-Separated Values) E.g., </b></label>
-          <br><br>
-          <div class="row align-items-md-stretch">
-            <div class="col-md-6">
-              <div class="h-100 p-5 bg-light border rounded-3">
-                <h2>X: </h2>
-                <img src="{{ url_for('static', path='/img/csv_eg_x.png') }}"  alt="data format supported" width="450" height="200" style="display:block;" >
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <label class="col-md-8 fs-4"><b>Supported Data format : CSV (Comma-Separated Values) E.g., </b></label>
+
+              <div class="row align-items-md-stretch">
+
+                <div class="col-md-6">
+                  <div class="h-100 p-5 bg-light  rounded-3">
+                    <h2>X: </h2>
+                    <img src="{{ url_for('static', path='/img/csv_eg_x.png') }}"  alt="data format supported" width="450" height="200" style="display:block;" >
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="h-100 p-5 bg-light  rounded-3">
+                    <h2>Y: </h2>
+                    <img src="{{ url_for('static', path='/img/csv_eg_y.png') }}"  alt="data format supported" width="100" height="200" style="display:block;" >
+                  </div>
+                </div>
+                
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="h-100 p-5 bg-light border rounded-3">
-                <h2>Y: </h2>
-                <img src="{{ url_for('static', path='/img/csv_eg_y.png') }}"  alt="data format supported" width="100" height="200" style="display:block;" >
-              </div>
+
             </div>
           </div>
 
           <br><br>
-          <div>
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
               <label class="col-md-8 fs-4">Create a directory saves file uploaded.</label>
               <input type="text" id="directory_name" name="directoryName"  >
               <br>
               <text>While selecting data for training, just select directory.</text>
+            </div>
+          </div>
               <br>
-              <br><br>
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
               <label class="col-md-8 fs-4">Choose x attributes file in the csv format from local directory.</label>
               <label for="data_x" class="btn btn-primary btn-lg">Choose</label>
               <input type="file" id="data_x" name="file_x" hidden >
@@ -134,14 +149,17 @@
               <input type="file" id="data_y" name="file_y" hidden >
               <br>
               <text>Current y attributes file : <font color="blue"><b>{{filename_y}}</b></font></text>
+            </div>
           </div>
-          <br><br>
-          <div>
+          <br>
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
               <label class="col-md-8 fs-4">Upload file to Server</label>
               <label for="save_data" class="btn btn-primary btn-lg">Upload</label>
               <input type="submit" id="save_data" class="btn btn-primary btn-lg" hidden>
               <br>
               <text>Save file  to Server in <font color="blue"><b>{{directoryName}}</b></font> directory.</text>
+            </div>
           </div>
        </form>
 

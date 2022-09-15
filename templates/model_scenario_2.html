@@ -95,6 +95,10 @@
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
       }
+      select {
+            width: 183px;
+
+      }
     </style>
 
   <script type="text/javascript"
@@ -180,18 +184,24 @@
                 <p id="CROSSENTROPYLOSS_b" style="display:none"><span class="math display">\[CrossEntropyLoss(binary)=-{(y\log(p) + (1 - y)\log(1 - p))}\]</span ></p>
                 <p id="CROSSENTROPYLOSS_m" style="display:none"><span class="math display">\[CrossEntropyLoss(multiclass)=-\sum_{c=1}^My_{o,c}\log(p_{o,c})\]</span ></p>
               </div>
-
-              <label class="col-md-8 fs-5">Optimizer</label>
-              <select name="optimizer" method="GET"  style="font-size:20px;" > 
+              <br>
+              <label class="col-md-8 fs-4">Optimizer</label>
+              <select name="optimizer" method="GET"  style="font-size:20px;" onclick="showOptimizerParameters()" > 
                 <option value= "Adam" SELECTED>Adam</option>
-                <option value= "Adadelta" >Adadelta</option>
-                <option value= "Adagrad" >Adagrad</option>
                 <option value= "AdamW" >AdamW</option>
               </select>
+
               <label class="col-md-8 fs-5">Learning rate</label>
               <input type="text" id="Hyperparameters" name="learningRate" >
+              <label class="col-md-8 fs-5">Betas</label>
+              <input type="text" id="Hyperparameters" name="betas" >
+              <label class="col-md-8 fs-5">Eps</label>
+              <input type="text" id="Hyperparameters" name="eps" >
+              <label class="col-md-8 fs-5">Weight decay</label>
+              <input type="text" id="Hyperparameters" name="weightDecay" >
               <label class="col-md-8 fs-5">Epoch upper bound</label>
               <input type="text" id="Hyperparameters" name="matchingTimes"  >
+
               </div>
 
             </div>
@@ -207,8 +217,6 @@
                 <label class="col-md-8 fs-5">Rule</label>
                 <select id="select_initializingRule" name="initializingRule" method="GET"  style="font-size:20px;" onclick="showInitializingParameters()"> 
                   <option value= "LinearRegression" >LinearRegression</option>
-                  <option value= "RandomSmall" >RandomSmall</option>
-                  <option value= "Xavier" >Xavier</option>
                   <option value= "Disabled" SELECTED>Disabled</option>
                 </select>
 
