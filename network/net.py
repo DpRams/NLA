@@ -4,7 +4,7 @@ from apps import getFreerGpu
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
-from module.modules import Initialize, Select, Match, Cram, Reorganize
+from CSI_Modules.modules import Initialize, Select, Match, Cram, Reorganize
 
 """
 Original

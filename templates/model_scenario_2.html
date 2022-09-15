@@ -166,7 +166,10 @@
               <label class="col-md-8 fs-4">SLFN(Two Layer).</label>
               <label class="col-md-8 fs-5">Hidden node</label>
               <input type="text" id="Hyperparameters" name="hiddenNode" >
-              <label class="col-md-8 fs-5">Activation function : ReLU</label>
+              <label class="col-md-8 fs-5">Activation function</label>
+              <select id="select_loss" name="activationFunction" method="GET"  style="font-size:20px;"> 
+                <option value= "ReLU" SELECTED>ReLU</option>
+              </select>
 
               <br><br>
               <label class="col-md-8 fs-4">Back Propagation.</label>
@@ -354,9 +357,11 @@
               <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
               <br><br>
 
-              <label class="col-md-8 fs-5">Two Layer Net.</label>
+              <label class="col-md-8 fs-5">SLFN(Two Layer)</label>
               <br>
               <text><b>Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
+              <br>
+              <text><b>Activation function : <font color="blue">{{activationFunction}}</font></b></text>
 
               <br><br>
               <label class="col-md-8 fs-5">Back Propagation.</label>
@@ -366,6 +371,12 @@
               <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
               <br>
               <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+              <br>
+              <text><b>Betas : <font color="blue">{{betas}}</font></b></text>
+              <br>
+              <text><b>Eps : <font color="blue">{{eps}}</font></b></text>
+              <br>
+              <text><b>Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
               <br>
               <text><b>Epoch upper bound : <font color="blue">{{matchingTimes}}</font></b></text>
 
@@ -406,9 +417,9 @@
               <br>
               <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
               <br>
-              <text><b>Matching learning goal : <font color="blue">{{regularizingLearningGoal}}</font></b></text>
+              <text><b>Regularizing learning goal : <font color="blue">{{regularizingLearningGoal}}</font></b></text>
               <br>
-              <text><b>Matching learning rate lower bound : <font color="blue">{{regularizingLearningRateLowerBound}}</font></b></text>
+              <text><b>Regularizing learning rate lower bound : <font color="blue">{{regularizingLearningRateLowerBound}}</font></b></text>
 
               <br><br>
               <label class="col-md-8 fs-5">Model experiments record : <font color="blue">{{model_experiments_record}}</font></label>

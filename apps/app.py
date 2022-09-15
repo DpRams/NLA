@@ -21,7 +21,7 @@ sys.path.append(str(root))
 
 from model_file import riro, ribo, custoNetTest
 # from model_file.riro import main
-from modelParameter import ModelParameter
+from modelParameter import ModelParameter, ModelParameter2
 from apps import evaluating, saving 
 
 app = FastAPI()
@@ -196,38 +196,108 @@ def pipeline_model(request: Request):
    return templates.TemplateResponse("model_scenario_2.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
 
 @app.post("/pipeline/model/scenario/2")
-def pipeline_model(request: Request):
-   # def pipeline_model(request: Request, \
-   #                   dataDirectory: str = Form(default=None, max_length=50), \
-   #                   modelFile: str = Form(default=None, max_length=50), \
-   #                   initializingNumber: str = Form(default=None, max_length=50), \
-   #                   lossFunction: str = Form(default=None, max_length=50), \
-   #                   learningGoal: str = Form(default=None, max_length=50), \
-   #                   learningRate: str = Form(default=None, max_length=50), \
-   #                   learningRateLowerBound: str = Form(default=None, max_length=50), \
-   #                   optimizer: str = Form(default=None, max_length=50), \
-   #                   tuningTimes: str = Form(default=None, max_length=50), \
-   #                   regularizingStrength: str = Form(default=None, max_length=50)):
+def pipeline_model(request: Request, \
+                     dataDirectory : str = Form(default=None, max_length=50), \
+                     dataDescribing : str = Form(default=None, max_length=50), \
+                     hiddenNode : str = Form(default=None, max_length=50), \
+                     activationFunction : str = Form(default=None, max_length=50), \
+                     lossFunction : str = Form(default=None, max_length=50), \
+                     optimizer : str = Form(default=None, max_length=50), \
+                     learningRate : str = Form(default=None, max_length=50), \
+                     betas : str = Form(default=None, max_length=50), \
+                     eps : str = Form(default=None, max_length=50), \
+                     weightDecay : str = Form(default=None, max_length=50), \
+                     initializingRule : str = Form(default=None, max_length=50), \
+                     initializingNumber : str = Form(default=None, max_length=50), \
+                     initializingLearningGoal : str = Form(default=None, max_length=50), \
+                     selectingRule : str = Form(default=None, max_length=50), \
+                     matchingRule : str = Form(default=None, max_length=50), \
+                     matchingTimes : str = Form(default=None, max_length=50), \
+                     matchingLearningGoal : str = Form(default=None, max_length=50), \
+                     matchingLearningRateLowerBound : str = Form(default=None, max_length=50), \
+                     crammingRule : str = Form(default=None, max_length=50), \
+                     reorganizingRule : str = Form(default=None, max_length=50), \
+                     regularizingTimes : str = Form(default=None, max_length=50), \
+                     regularizingStrength : str = Form(default=None, max_length=50), \
+                     regularizingLearningGoal : str = Form(default=None, max_length=50), \
+                     regularizingLearningRateLowerBound : str = Form(default=None, max_length=50)):
+
+   # List the upload data to Dropdownlist
+   upload_data = os.listdir(f"{root}\\upload_data")
+
+   # Get data shape
+   dataShape = ModelParameter.get_dataShape(f"{root}\\upload_data\\{dataDirectory}")
+
+   # Define modelParameter
+   model_params = ModelParameter2(dataDirectory=dataDirectory, \
+                                 dataDescribing=dataDescribing, \
+                                 dataShape=dataShape, \
+                                 inputDimension=dataShape["X"][1], \
+                                 hiddenNode=hiddenNode, \
+                                 outputDimension=dataShape["Y"][1], \
+                                 activationFunction=activationFunction, \
+                                 lossFunction=lossFunction, \
+                                 optimizer=optimizer, \
+                                 learningRate=learningRate, \
+                                 betas=betas, \
+                                 eps=eps, \
+                                 weightDecay=weightDecay, \
+                                 initializingRule=initializingRule, \
+                                 initializingNumber=initializingNumber, \
+                                 initializingLearningGoal=initializingLearningGoal, \
+                                 selectingRule=selectingRule, \
+                                 matchingRule=matchingRule, \
+                                 matchingTimes=matchingTimes, \
+                                 matchingLearningGoal=matchingLearningGoal, \
+                                 matchingLearningRateLowerBound=matchingLearningRateLowerBound, \
+                                 crammingRule=crammingRule, \
+                                 reorganizingRule=reorganizingRule, \
+                                 regularizingTimes=regularizingTimes, \
+                                 regularizingStrength=regularizingStrength, \
+                                 regularizingLearningGoal=regularizingLearningGoal, \
+                                 regularizingLearningRateLowerBound=regularizingLearningRateLowerBound)
 
 
-   # # List the upload data to Dropdownlist
-   # upload_data = os.listdir(f"{root}\\upload_data")
-   # model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
-
-   # # Define modelParameter
-   # model_params = ModelParameter(dataDirectory=dataDirectory, \
-   #                               modelFile=modelFile, \
-   #                               initializingNumber=int(initializingNumber), \
-   #                               lossFunction=lossFunction, \
-   #                               learningGoal=learningGoal, \
-   #                               learningRate=learningRate, \
-   #                               learningRateLowerBound=learningRateLowerBound, \
-   #                               optimizer=optimizer, \
-   #                               tuningTimes=tuningTimes, \
-   #                               regularizingStrength=regularizingStrength)
    
-   # return templates.TemplateResponse("model_scenario_2.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
-   return "/pipeline/model/scenario/2 收到 POST"
+   return templates.TemplateResponse("model_scenario_2.html", \
+                                    context={"request":request, \
+                                             "upload_data":upload_data, \
+                                             "dataDirectory":dataDirectory, \
+                                             "dataDescribing":dataDescribing, \
+                                             "dataShape":dataShape, \
+                                             "hiddenNode":hiddenNode, \
+                                             "activationFunction":activationFunction, \
+                                             "lossFunction":lossFunction, \
+                                             "optimizer":optimizer, \
+                                             "learningRate":learningRate, \
+                                             "betas":betas, \
+                                             "eps":eps, \
+                                             "weightDecay":weightDecay, \
+                                             "matchingTimes":matchingTimes, \
+                                             "initializingRule":initializingRule, \
+                                             "initializingNumber":initializingNumber, \
+                                             "initializingLearningGoal":initializingLearningGoal, \
+                                             "selectingRule":selectingRule, \
+                                             "matchingRule":matchingRule, \
+                                             "matchingLearningGoal":matchingLearningGoal, \
+                                             "matchingLearningRateLowerBound":matchingLearningRateLowerBound, \
+                                             "crammingRule":crammingRule, \
+                                             "reorganizingRule":reorganizingRule, \
+                                             "regularizingTimes":regularizingTimes, \
+                                             "regularizingStrength":regularizingStrength, \
+                                             "regularizingLearningGoal":regularizingLearningGoal, \
+                                             "regularizingLearningRateLowerBound":regularizingLearningRateLowerBound, \
+                                             "model_experiments_record":None
+                                             # "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+                                             # "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+                                             # "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
+                                             # "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
+                                             # "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
+                                             # "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
+                                             # "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
+                                             
+                                             })
+
 
 def __model_training(model_params):
    
