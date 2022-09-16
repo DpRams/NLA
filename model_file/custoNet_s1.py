@@ -20,7 +20,7 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
 from apps import evaluating, saving
-from network.net import Network, RIRO, YourCSI
+from network.net import Network, RIRO, YourCSI_s1
 
 
 def reading_dataset_Training(dataDirecotry, initializingNumber):
@@ -58,7 +58,7 @@ def main(model_params):
         (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory, model_params.initializingNumber)
         
         # Defining model
-        network = YourCSI( input_dimension=model_params.inputDimension, \
+        network = YourCSI_s1( input_dimension=model_params.inputDimension, \
                         hidden_node=model_params.hiddenNode, \
                         output_dimension=model_params.outputDimension, \
                         loss_function=model_params.lossFunction, \

@@ -19,7 +19,7 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 # print(parent, root)
 
-from model_file import riro, ribo, custoNetTest
+from model_file import custoNet_s2, custoNet_s1, riro, ribo
 # from model_file.riro import main
 from modelParameter import ModelParameter, ModelParameter2
 from apps import evaluating, saving 
@@ -232,6 +232,7 @@ def pipeline_model(request: Request, \
    model_params = ModelParameter2(dataDirectory=dataDirectory, \
                                  dataDescribing=dataDescribing, \
                                  dataShape=dataShape, \
+                                 modelFile="custoNet_s2.py", \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=hiddenNode, \
                                  outputDimension=dataShape["Y"][1], \
@@ -257,7 +258,32 @@ def pipeline_model(request: Request, \
                                  regularizingLearningGoal=regularizingLearningGoal, \
                                  regularizingLearningRateLowerBound=regularizingLearningRateLowerBound)
 
+   # # Train model
+   model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
+   # if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
+   #    training_error_msg = ""
+
+   #    if model_experiments_record == "Initializing 失敗" : 
+   #       training_error_msg = "Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"
+   #    elif model_experiments_record == "Cramming 失敗" : 
+   #       training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
+
+   #    return templates.TemplateResponse("model_scenario_1.html", \
+   #          context={"request":request,  \
+   #                   "upload_data":upload_data, \
+   #                   "interrupted_message":training_error_msg})
+
+   # # Save model config a& Perf.
+   # save_model(model_experiments_record, model_params, model_fig_drt)
+
+   # print(f"model_fig_drt = {model_fig_drt}")
+   # app.mount(
+   #    f"/model_fig",
+   #    StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
+   #    name="model_fig",
+   # )  
+   # print(app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'))
    
    return templates.TemplateResponse("model_scenario_2.html", \
                                     context={"request":request, \
@@ -302,7 +328,7 @@ def pipeline_model(request: Request, \
 def __model_training(model_params):
    
 
-   model_file_str = model_params.modelFile.split(".")[0] # riro.py -> riro
+   model_file_str = model_params.kwargs["modelFile"].split(".")[0] # riro.py -> riro
    model = eval(model_file_str) # str to module through eval function : riro, ribo, biro, bibo
    model_experiments_record, model_params, model_fig_drt = model.main(model_params)
 

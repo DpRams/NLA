@@ -20,7 +20,7 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
 from apps import evaluating, saving
-from network.net import Network, RIRO, YourCSI
+from network.net import Network, RIRO
 
 
 def reading_dataset_Training(dataDirecotry, initializingNumber):

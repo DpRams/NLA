@@ -67,6 +67,7 @@ class ModelParameter2(ModelParameter):
         dataDirectory
         dataDescribing
         dataShape
+        modelFile
         inputDimension
         hiddenNode
         outputDimension
@@ -94,7 +95,36 @@ class ModelParameter2(ModelParameter):
         """
 
         self.kwargs = kwargs
-
+        
+        self.dataDirectory = self.kwargs["dataDirectory"]
+        self.dataDescribing = self.kwargs["dataDescribing"]
+        self.dataShape = self.kwargs["dataShape"]
+        self.modelFile = self.kwargs["modelFile"]
+        self.inputDimension = self.kwargs["inputDimension"]
+        self.hiddenNode = self.kwargs["hiddenNode"]
+        self.outputDimension = self.kwargs["outputDimension"]
+        self.activationFunction = self.kwargs["activationFunction"]
+        self.lossFunction = self.kwargs["lossFunction"]
+        self.optimizer = self.kwargs["optimizer"]
+        self.learningRate = self.kwargs["learningRate"]
+        self.betas = self.kwargs["betas"]
+        self.eps = self.kwargs["eps"]
+        self.weightDecay = self.kwargs["weightDecay"]
+        self.initializingRule = self.kwargs["initializingRule"]
+        self.initializingNumber = self.kwargs["initializingNumber"]
+        self.initializingLearningGoal = self.kwargs["initializingLearningGoal"]
+        self.selectingRule = self.kwargs["selectingRule"]
+        self.matchingRule = self.kwargs["matchingRule"]
+        self.matchingTimes = self.kwargs["matchingTimes"]
+        self.matchingLearningGoal = self.kwargs["matchingLearningGoal"]
+        self.matchingLearningRateLowerBound = self.kwargs["matchingLearningRateLowerBound"]
+        self.crammingRule = self.kwargs["crammingRule"]
+        self.reorganizingRule = self.kwargs["reorganizingRule"]
+        self.regularizingTimes = self.kwargs["regularizingTimes"]
+        self.regularizingStrength = self.kwargs["regularizingStrength"]
+        self.regularizingLearningGoal = self.kwargs["regularizingLearningGoal"]
+        self.regularizingLearningRateLowerBound = self.kwargs["regularizingLearningRateLowerBound"]
+    
     def info(self):
         
         print(f'self.kwargs = {self.kwargs}')
