@@ -48,7 +48,7 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
 # 存放model, experiments_record
 def main(model_params):
 
-    lr_goals = [model_params.learningGoal]
+    lr_goals = [model_params.kwargs["initializingLearningGoal"]]
     # model_experiments_record = {"lr_goals" : {key : None for key in lr_goals}}
     model_experiments_record = {"network" : None, "experiments_record" : None}
 
@@ -58,16 +58,16 @@ def main(model_params):
         (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory, model_params.initializingNumber)
         
         # Defining model
-        network = YourCSI_s1( input_dimension=model_params.inputDimension, \
-                        hidden_node=model_params.hiddenNode, \
-                        output_dimension=model_params.outputDimension, \
-                        loss_function=model_params.lossFunction, \
-                        learning_goal=lr_goal, \
-                        learning_rate=model_params.learningRate, \
-                        learning_rate_lower_bound=model_params.learningRateLowerBound, \
-                        optimizer=model_params.optimizer,  \
-                        tuning_times=model_params.tuningTimes,  \
-                        regularizing_strength=model_params.regularizingStrength)
+        network = YourCSI_s1( inputDimension=model_params.inputDimension, \
+                            hiddenNode=model_params.hiddenNode, \
+                            outputDimension=model_params.outputDimension, \
+                            lossFunction=model_params.lossFunction, \
+                            initializingLearningGoal=lr_goal, \
+                            learningRate=model_params.learningRate, \
+                            regularizingLearningRateLowerBound=model_params.regularizingLearningRateLowerBound, \
+                            optimizer=model_params.optimizer,  \
+                            matchingTimes=model_params.matchingTimes,  \
+                            regularizingStrength=model_params.regularizingStrength)
 
         # Initializing model
         # network = initializing(network, initial_x, initial_y)
@@ -102,7 +102,7 @@ def main(model_params):
 
             output, loss = network.net.forward()
 
-            if torch.all(torch.abs(output - network.net.y) <= network.net.threshold_for_error):
+            if torch.all(torch.abs(output - network.net.y) <= network.net.model_params["initializingLearningGoal"]):
                 network.net.acceptable = True
                 network.reorganizing()
                 experiments_record["Route"]["Blue"] += 1
@@ -131,7 +131,7 @@ def main(model_params):
 
             # Append every record in one iteration
             output, loss = network.net.forward()
-            train_acc = ((output - network.net.y) <= network.net.threshold_for_error).to(torch.float32).mean().cpu().detach()
+            train_acc = ((output - network.net.y) <= network.net.model_params["initializingLearningGoal"]).to(torch.float32).mean().cpu().detach()
             experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
             experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
             experiments_record["nb_node"].append(network.net.nb_node)

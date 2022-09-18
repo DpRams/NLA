@@ -35,7 +35,7 @@ function showInitializingParameters(){
 
 }
 
-function showMacthingParameters(){
+function showMatchingParameters(){
 
   let matchingRule = document.getElementById("matchingRule");
   let matchingLearningGoal = document.getElementById("matchingLearningGoal");
@@ -44,9 +44,9 @@ function showMacthingParameters(){
   matchingLearningGoal.style.display = "none";
   matchingLearningRateLowerBound.style.display = "none";
 
-  if (matchingRule.value == "EU, LG"){
+  if (matchingRule.value == "EU_LG"){
     matchingLearningGoal.style.display = "block";
-  }else if (matchingRule.value == "EU, LG, UA"){
+  }else if (matchingRule.value == "EU_LG_UA"){
     matchingLearningGoal.style.display = "block";
     matchingLearningRateLowerBound.style.display = "block";
   }

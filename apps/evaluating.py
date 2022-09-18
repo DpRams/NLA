@@ -6,7 +6,7 @@ import os
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
-from modelParameter import ModelParameter
+from modelParameter import ModelParameter, ModelParameter2
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from pathlib import Path
@@ -50,7 +50,13 @@ def inferencing(network, x_test, y_test):
     output, loss = network.forward()
         
     diff = (output - network.y)
-    acc = (diff <= network.threshold_for_error).to(torch.float32).mean().cpu().numpy()
+    
+    if "initializingLearningGoal" in network.model_params.keys():
+        lr_goal = network.model_params["initializingLearningGoal"]
+    else:
+        lr_goal = network.model_params["learningGoal"]
+
+    acc = (diff <= lr_goal).to(torch.float32).mean().cpu().numpy()
     acc = np.round(acc, 3)
     return acc
 
@@ -62,12 +68,18 @@ def making_figure(model_experiments_record, model_params):
     # this line is set to prevent the bug about https://blog.csdn.net/qq_42998120/article/details/107871863
     plt.switch_backend("agg")
 
-    data_drt = model_params.dataDirectory
-    lr_goal = model_params.learningGoal
+    # print(f"查看{model_params}")
+
+    data_drt = model_params.kwargs["dataDirectory"]
+    
+    if "initializingLearningGoal" in model_params.kwargs.keys():
+        lr_goal = model_params.kwargs["initializingLearningGoal"]
+    else:
+        lr_goal = model_params.kwargs["learningGoal"]
 
     # create dir path
     timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
-    modelType = model_params.modelFile[:-3]
+    modelType = model_params.kwargs["modelFile"][:-3]
     validAcc = str(model_experiments_record["experiments_record"]["valid"]["mean_acc"])[:5]
     drtName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}\\" 
 

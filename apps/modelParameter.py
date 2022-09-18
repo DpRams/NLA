@@ -13,15 +13,16 @@ class ModelParameter():
         outputDimension
         initializingNumber
         lossFunction
-        learningGoal
+        learningGoal -> initializingLearningGoal
         learningRate
-        learningRateLowerBound
+        learningRateLowerBound -> regularizingLearningRateLowerBound
         optimizer
-        tuningTimes
+        tuningTimes -> matchingTimes
         regularizingStrength
         """
         self.kwargs = kwargs
         
+        # 以下這段完全可刪除
         self.dataDirectory = self.kwargs["dataDirectory"]
         self.dataShape = self.kwargs["dataShape"]
         self.modelFile = self.kwargs["modelFile"]
@@ -30,11 +31,11 @@ class ModelParameter():
         self.outputDimension = self.kwargs["outputDimension"]
         self.initializingNumber = self.kwargs["initializingNumber"]
         self.lossFunction = self.kwargs["lossFunction"]
-        self.learningGoal = self.kwargs["learningGoal"]
+        self.initializingLearningGoal = self.kwargs["initializingLearningGoal"]
         self.learningRate = self.kwargs["learningRate"]
-        self.learningRateLowerBound = self.kwargs["learningRateLowerBound"]
+        self.regularizingLearningRateLowerBound = self.kwargs["regularizingLearningRateLowerBound"]
         self.optimizer = self.kwargs["optimizer"]
-        self.tuningTimes = self.kwargs["tuningTimes"]
+        self.matchingTimes = self.kwargs["matchingTimes"]
         self.regularizingStrength = self.kwargs["regularizingStrength"]
 
     def info(self):
@@ -96,6 +97,7 @@ class ModelParameter2(ModelParameter):
 
         self.kwargs = kwargs
         
+        # 以下這段完全可刪除
         self.dataDirectory = self.kwargs["dataDirectory"]
         self.dataDescribing = self.kwargs["dataDescribing"]
         self.dataShape = self.kwargs["dataShape"]
@@ -128,3 +130,27 @@ class ModelParameter2(ModelParameter):
     def info(self):
         
         print(f'self.kwargs = {self.kwargs}')
+    
+"""
+        self.model_params["activationFunction"]
+        self.model_params["lossFunction"]
+        self.model_params["optimizer"]
+        self.model_params["learningRate"]
+        self.model_params["betas"]
+        self.model_params["eps"]
+        self.model_params["weightDecay"]
+        self.model_params["initializingRule"]
+        self.model_params["initializingNumber"]
+        self.model_params["initializingLearningGoal"]
+        self.model_params["selectingRule"]
+        self.model_params["matchingRule"]
+        self.model_params["matchingTimes"]
+        self.model_params["matchingLearningGoal"]
+        self.model_params["matchingLearningRateLowerBound"]
+        self.model_params["crammingRule"]
+        self.model_params["reorganizingRule"]
+        self.model_params["regularizingTimes"]
+        self.model_params["regularizingStrength"]
+        self.model_params["regularizingLearningGoal"]
+        self.model_params["regularizingLearningRateLowerBound"]
+"""

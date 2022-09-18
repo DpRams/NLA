@@ -250,17 +250,17 @@
 
               <label class="col-md-8 fs-4">Matching.</label>
               <label class="col-md-8 fs-5">Rule</label>
-              <select id="matchingRule" name="matchingRule" method="GET"  style="font-size:20px;" onclick="showMacthingParameters()"> 
-                <option value= "EU, LG" >EU_LG</option>
-                <option value= "EU, LG, UA" >EU_LG_UA</option>
+              <select id="matchingRule" name="matchingRule" method="GET"  style="font-size:20px;" onclick="showMatchingParameters()"> 
+                <option value= "EU_LG" >EU_LG</option>
+                <option value= "EU_LG_UA" >EU_LG_UA</option>
                 <option value= "Disabled" SELECTED>Disabled</option>
               </select>
 
-              <p id = "matchingLearningGoal" style="display:none">
+              <p id = "matchingLearningGoal" style="display:block">
               <label class="col-md-8 fs-5">Matching learning goal</label>
               <input type="text" id="Hyperparameters" name="matchingLearningGoal"  >
               </p>  
-              <p id = "matchingLearningRateLowerBound" style="display:none">
+              <p id = "matchingLearningRateLowerBound" style="display:block">
               <label class="col-md-8 fs-5">Matching learning rate lower bound</label>
               <input type="text" id="Hyperparameters" name="matchingLearningRateLowerBound"  >
               </p>

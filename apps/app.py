@@ -107,7 +107,7 @@ def pipeline_model(request: Request, \
                      learningRate: str = Form(default=None, max_length=50), \
                      learningRateLowerBound: str = Form(default=None, max_length=50), \
                      optimizer: str = Form(default=None, max_length=50), \
-                     tuningTimes: str = Form(default=None, max_length=50), \
+                     matchingTimes: str = Form(default=None, max_length=50), \
                      regularizingStrength: str = Form(default=None, max_length=50)):
 
 
@@ -125,14 +125,14 @@ def pipeline_model(request: Request, \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=1, \
                                  outputDimension=dataShape["Y"][1], \
-                                 initializingNumber=int(initializingNumber), \
+                                 initializingNumber=eval(initializingNumber), \
                                  lossFunction=lossFunction, \
-                                 learningGoal=learningGoal, \
-                                 learningRate=learningRate, \
-                                 learningRateLowerBound=learningRateLowerBound, \
+                                 initializingLearningGoal=eval(learningGoal), \
+                                 learningRate=eval(learningRate), \
+                                 regularizingLearningRateLowerBound=eval(learningRateLowerBound), \
                                  optimizer=optimizer, \
-                                 tuningTimes=tuningTimes, \
-                                 regularizingStrength=regularizingStrength)
+                                 matchingTimes=eval(matchingTimes), \
+                                 regularizingStrength=eval(regularizingStrength))
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
@@ -174,7 +174,7 @@ def pipeline_model(request: Request, \
                      "learningRate":learningRate, \
                      "learningRateLowerBound":learningRateLowerBound, \
                      "optimizer":optimizer, \
-                     "tuningTimes":tuningTimes, \
+                     "matchingTimes":matchingTimes, \
                      "regularizingStrength":regularizingStrength, \
                      "model_experiments_record":model_experiments_record, \
                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
@@ -234,56 +234,56 @@ def pipeline_model(request: Request, \
                                  dataShape=dataShape, \
                                  modelFile="custoNet_s2.py", \
                                  inputDimension=dataShape["X"][1], \
-                                 hiddenNode=hiddenNode, \
+                                 hiddenNode=eval(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
                                  activationFunction=activationFunction, \
                                  lossFunction=lossFunction, \
                                  optimizer=optimizer, \
-                                 learningRate=learningRate, \
-                                 betas=betas, \
-                                 eps=eps, \
-                                 weightDecay=weightDecay, \
+                                 learningRate=eval(learningRate), \
+                                 betas=eval(betas), \
+                                 eps=eval(eps), \
+                                 weightDecay=eval(weightDecay), \
                                  initializingRule=initializingRule, \
-                                 initializingNumber=initializingNumber, \
-                                 initializingLearningGoal=initializingLearningGoal, \
+                                 initializingNumber=eval(initializingNumber), \
+                                 initializingLearningGoal=eval(initializingLearningGoal), \
                                  selectingRule=selectingRule, \
                                  matchingRule=matchingRule, \
-                                 matchingTimes=matchingTimes, \
-                                 matchingLearningGoal=matchingLearningGoal, \
-                                 matchingLearningRateLowerBound=matchingLearningRateLowerBound, \
+                                 matchingTimes=eval(matchingTimes), \
+                                 matchingLearningGoal=eval(matchingLearningGoal), \
+                                 matchingLearningRateLowerBound=eval(matchingLearningRateLowerBound), \
                                  crammingRule=crammingRule, \
                                  reorganizingRule=reorganizingRule, \
-                                 regularizingTimes=regularizingTimes, \
-                                 regularizingStrength=regularizingStrength, \
-                                 regularizingLearningGoal=regularizingLearningGoal, \
-                                 regularizingLearningRateLowerBound=regularizingLearningRateLowerBound)
+                                 regularizingTimes=eval(regularizingTimes), \
+                                 regularizingStrength=eval(regularizingStrength), \
+                                 regularizingLearningGoal=eval(regularizingLearningGoal), \
+                                 regularizingLearningRateLowerBound=eval(regularizingLearningRateLowerBound))
 
    # # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
-   # if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
-   #    training_error_msg = ""
+   if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
+      training_error_msg = ""
 
-   #    if model_experiments_record == "Initializing 失敗" : 
-   #       training_error_msg = "Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"
-   #    elif model_experiments_record == "Cramming 失敗" : 
-   #       training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
+      if model_experiments_record == "Initializing 失敗" : 
+         training_error_msg = "Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"
+      elif model_experiments_record == "Cramming 失敗" : 
+         training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
 
-   #    return templates.TemplateResponse("model_scenario_1.html", \
-   #          context={"request":request,  \
-   #                   "upload_data":upload_data, \
-   #                   "interrupted_message":training_error_msg})
+      return templates.TemplateResponse("model_scenario_1.html", \
+            context={"request":request,  \
+                     "upload_data":upload_data, \
+                     "interrupted_message":training_error_msg})
 
-   # # Save model config a& Perf.
-   # save_model(model_experiments_record, model_params, model_fig_drt)
+   # Save model config a& Perf.
+   save_model(model_experiments_record, model_params, model_fig_drt)
 
-   # print(f"model_fig_drt = {model_fig_drt}")
-   # app.mount(
-   #    f"/model_fig",
-   #    StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
-   #    name="model_fig",
-   # )  
-   # print(app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'))
+   print(f"model_fig_drt = {model_fig_drt}")
+   app.mount(
+      f"/model_fig",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
+      name="model_fig",
+   )  
+   print(app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'))
    
    return templates.TemplateResponse("model_scenario_2.html", \
                                     context={"request":request, \
@@ -313,17 +313,16 @@ def pipeline_model(request: Request, \
                                              "regularizingStrength":regularizingStrength, \
                                              "regularizingLearningGoal":regularizingLearningGoal, \
                                              "regularizingLearningRateLowerBound":regularizingLearningRateLowerBound, \
-                                             "model_experiments_record":None
-                                             # "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
-                                             # "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-                                             # "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
-                                             # "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
-                                             # "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
-                                             # "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
-                                             # "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
+                                             "model_experiments_record":model_experiments_record, \
+                                             "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+                                             "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+                                             "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
+                                             "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
+                                             "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
+                                             "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
+                                             "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
                                              
                                              })
-
 
 def __model_training(model_params):
    
@@ -383,11 +382,11 @@ def pipeline_service(request: Request, \
                      "modelFile":modelFile, \
                      "initializingNumber":model_params.initializingNumber, \
                      "lossFunction":model_params.lossFunction, \
-                     "learningGoal":model_params.learningGoal, \
+                     "learningGoal":model_params.initializingLearningGoal, \
                      "learningRate":model_params.learningRate, \
-                     "learningRateLowerBound":model_params.learningRateLowerBound, \
+                     "learningRateLowerBound":model_params.regularizingLearningRateLowerBound, \
                      "optimizer":model_params.optimizer, \
-                     "tuningTimes":model_params.tuningTimes, \
+                     "tuningTimes":model_params.matchingTimes, \
                      "regularizingStrength":model_params.regularizingStrength, \
                      "model_registry":model_registry, \
                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \

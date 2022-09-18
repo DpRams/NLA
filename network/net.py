@@ -4,7 +4,8 @@ from apps import getFreerGpu
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
-from CSI_Modules.modules import Initialize, Select, Match, Cram, Reorganize
+# from CSI_Modules.modules import Initialize, Select, Match, Cram, Reorganize
+from CSI_Modules.modules_s2 import Initialize, Select, Match, Cram, Reorganize
 
 """
 Original
@@ -93,33 +94,37 @@ class Network(torch.nn.Module):
         self.setting_device()
 
         # Initialize
-        self.linear1 = torch.nn.Linear(self.model_params["input_dimension"], self.model_params["hidden_node"]).to(self.device)
-        self.linear2 = torch.nn.Linear(self.model_params["hidden_node"], self.model_params["output_dimension"]).to(self.device)
-    
-        # Stop criteria - threshold
-        self.model_params = model_params
-        self.threshold_for_error = eval(self.model_params["learning_goal"]) 
-        self.threshold_for_lr = eval(self.model_params["learning_rate_lower_bound"]) 
-        self.tuning_times = eval(self.model_params["tuning_times"]) 
-        self.regularizing_strength = eval(self.model_params["regularizing_strength"])
-        
-        # Set default now, not open for customization.
-        not_used_currently = (self.model_params["regularizing_strength"], self.model_params["optimizer"])
-
-        # Learning rate
-        self.learning_rate = eval(self.model_params["learning_rate"])
-
-        # Whether the network is acceptable, default as False
-        self.acceptable = False
+        self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.model_params["hiddenNode"]).to(self.device)
+        self.linear2 = torch.nn.Linear(self.model_params["hiddenNode"], self.model_params["outputDimension"]).to(self.device)
 
         # Record the experiment result
         self.nb_node_pruned = 0
-        self.nb_node = self.model_params["hidden_node"]
-        
-        self.undesired_index = None
-        self.message = ""
+        self.nb_node = self.model_params["hiddenNode"]
 
-        print(self.model_params)
+        # # Stop criteria - threshold
+        # self.model_params = model_params
+        # self.threshold_for_error = eval(self.model_params["learning_goal"]) 
+        # self.threshold_for_lr = eval(self.model_params["learning_rate_lower_bound"]) 
+        # self.tuning_times = eval(self.model_params["tuning_times"]) 
+        # self.regularizing_strength = eval(self.model_params["regularizing_strength"])
+        
+        # # Set default now, not open for customization.
+        # not_used_currently = (self.model_params["regularizing_strength"], self.model_params["optimizer"])
+
+        # # Learning rate
+        # self.learning_rate = eval(self.model_params["learning_rate"])
+
+        # # Whether the network is acceptable, default as False
+        # self.acceptable = False
+
+        # # Record the experiment result
+        # self.nb_node_pruned = 0
+        # self.nb_node = self.model_params["hidden_node"]
+        
+        # self.undesired_index = None
+        # self.message = ""
+
+        # print(self.model_params)
     
     def setting_device(self):
 
@@ -163,16 +168,16 @@ class Network(torch.nn.Module):
             + self.linear1.weight.data.shape[1] * (self.linear1.weight.data.shape[0] + 1)
         ) * param_val
 
-        if self.model_params["loss_function"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y)) + reg_term
-        if self.model_params["loss_function"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y) + reg_term
-        if self.model_params["loss_function"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y) + reg_term
+        if self.model_params["lossFunction"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y)) + reg_term
+        if self.model_params["lossFunction"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y) + reg_term
+        if self.model_params["lossFunction"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y) + reg_term
 
         return (output, loss)
     
     # Backward operation
     def backward(self, loss):
 
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.model_params["learningRate"])
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -189,10 +194,10 @@ class RIRO(Network):
     # Backward operation
     def backward(self, loss):
         
-        if self.model_params["optimizer"] == "Adam" : optimizer = torch.optim.Adam(self.parameters(), lr=eval(self.model_params["learning_rate"]))
-        if self.model_params["optimizer"] == "Adadelta" : optimizer = torch.optim.Adadelta(self.parameters(), lr=eval(self.model_params["learning_rate"]))
-        if self.model_params["optimizer"] == "Adagrad" : optimizer = torch.optim.Adagrad(self.parameters(), lr=eval(self.model_params["learning_rate"]))
-        if self.model_params["optimizer"] == "AdamW" : optimizer = torch.optim.AdamW(self.parameters(), lr=eval(self.model_params["learning_rate"]))
+        if self.model_params["optimizer"] == "Adam" : optimizer = torch.optim.Adam(self.parameters(), lr=self.model_params["learningRate"])
+        if self.model_params["optimizer"] == "Adadelta" : optimizer = torch.optim.Adadelta(self.parameters(), lr=self.model_params["learningRate"])
+        if self.model_params["optimizer"] == "Adagrad" : optimizer = torch.optim.Adagrad(self.parameters(), lr=self.model_params["learningRate"])
+        if self.model_params["optimizer"] == "AdamW" : optimizer = torch.optim.AdamW(self.parameters(), lr=self.model_params["learningRate"])
 
         optimizer.zero_grad()
         loss.backward()
@@ -244,7 +249,7 @@ class RIRO(Network):
         network_pre = copy.deepcopy(self)
         output, loss = self.forward()
 
-        if torch.all(torch.abs(output - self.y) < self.threshold_for_error):
+        if torch.all(torch.abs(output - self.y) < self.model_params["initializingLearningGoal"]):
             
             self.acceptable = True
     #         print("Matching Successful")
@@ -252,7 +257,7 @@ class RIRO(Network):
 
         else:
 
-            while times_enlarge + times_shrink < self.tuning_times:
+            while times_enlarge + times_shrink < self.model_params["matchingTimes"]:
                 
                 output, loss = self.forward()
                 network_pre = copy.deepcopy(self)
@@ -263,7 +268,7 @@ class RIRO(Network):
                 output, loss = self.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
-                if loss <= loss_pre and torch.all(torch.abs(output - self.y) < self.threshold_for_error):
+                if loss <= loss_pre and torch.all(torch.abs(output - self.y) < self.model_params["initializingLearningGoal"]):
 
                     self.acceptable = True
                     #print("Matching Successful")
@@ -273,10 +278,10 @@ class RIRO(Network):
                     
                     # Multiply the learning rate by 1.2
                     times_enlarge += 1
-                    self.learning_rate *= 1.2
+                    self.model_params["learningRate"] *= 1.2
                 else: #loss > loss_pre
                     
-                    if self.learning_rate <= self.threshold_for_lr:
+                    if self.model_params["learningRate"] <= self.model_params["learningRateLowerBound"]:
 
                         # If true, set the acceptance of the network as False and return initial_netwrok
                         self.acceptable = False
@@ -289,7 +294,7 @@ class RIRO(Network):
                         # Restore the parameter of the network
                         self = copy.deepcopy(network_pre)
                         times_shrink += 1
-                        self.learning_rate *= 0.7
+                        self.model_params["learningRate"] *= 0.7
         
 
         self.acceptable = False
@@ -306,7 +311,7 @@ class RIRO(Network):
         network_pre = copy.deepcopy(self)
         output, loss = self.forward()
 
-        if torch.all(torch.abs(output - self.y) < self.threshold_for_error):
+        if torch.all(torch.abs(output - self.y) < self.model_params["initializingLearningGoal"]):
             
             self.acceptable = True
     #         print("Matching(Re) Successful")
@@ -314,7 +319,7 @@ class RIRO(Network):
 
         else:
 
-            while times_enlarge + times_shrink < self.tuning_times:
+            while times_enlarge + times_shrink < self.model_params["matchingTimes"]:
                 
                 output, loss = self.forward()
                 network_pre = copy.deepcopy(self)
@@ -325,7 +330,7 @@ class RIRO(Network):
                 output, loss = self.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
-                if loss <= loss_pre and torch.all(torch.abs(output - self.y) < self.threshold_for_error):
+                if loss <= loss_pre and torch.all(torch.abs(output - self.y) < self.model_params["initializingLearningGoal"]):
 
                     self.acceptable = True
                     #print("Matching(Re) Successful")
@@ -335,10 +340,10 @@ class RIRO(Network):
                     
                     # Multiply the learning rate by 1.2
                     times_enlarge += 1
-                    self.learning_rate *= 1.2
+                    self.model_params["learningRate"] *= 1.2
                 else: #loss > loss_pre
                     
-                    if self.learning_rate <= self.threshold_for_lr:
+                    if self.model_params["learningRate"] <= self.model_params["learningRateLowerBound"]:
 
                         # If true, set the acceptance of the network as False and return initial_netwrok
                         self.acceptable = False
@@ -351,7 +356,7 @@ class RIRO(Network):
                         # Restore the parameter of the network
                         self = copy.deepcopy(network_pre)
                         times_shrink += 1
-                        self.learning_rate *= 0.7
+                        self.model_params["learningRate"] *= 0.7
         
 
         self.acceptable = False
@@ -368,7 +373,7 @@ class RIRO(Network):
         network_old = copy.deepcopy(self)
         output, loss = self.forward()
 
-        undesired_index = torch.nonzero(torch.abs(output - self.y) > self.threshold_for_error + 1e-3, as_tuple = False)
+        undesired_index = torch.nonzero(torch.abs(output - self.y) > self.model_params["initializingLearningGoal"] + 1e-3, as_tuple = False)
 
         """
         [ [0] [1] [3] ] shape = (3,1), 代表有3筆非0的data。 演算法基礎上應只有一筆，thus undesired_index.shape[0] == 1
@@ -446,7 +451,7 @@ class RIRO(Network):
             output, loss = self.forward()
 
             ## Determine if cramming is succesful and print out the corresponding information
-            if torch.all(torch.abs(output - self.y) < self.threshold_for_error):
+            if torch.all(torch.abs(output - self.y) < self.model_params["initializingLearningGoal"]):
                 self.acceptable = True
                 print("Cramming successful")
                 self.message = "Cramming successful"
@@ -464,22 +469,22 @@ class RIRO(Network):
         # network.learning_rate = 1e-3
 
         ## Set epoch to 100
-        for i in range(self.tuning_times):
+        for i in range(self.model_params["matchingTimes"]):
 
             ## Store the parameter of the network
             network_pre = copy.deepcopy(self)
-            output, loss = self.forward(self.regularizing_strength)
+            output, loss = self.forward(self.model_params["regularizingStrength"])
             loss_pre = loss
 
             ## Backward operation to optain w'
             self.backward(loss)
-            output, loss = self.forward(self.regularizing_strength)
+            output, loss = self.forward(self.model_params["regularizingStrength"])
        
             ## Confirm whether the adjusted loss value is smaller than the current one
             if loss <= loss_pre:
 
                 ## Identify that all forecast value has met the error term
-                if torch.all(torch.abs(output - self.y) < self.threshold_for_error):
+                if torch.all(torch.abs(output - self.y) < self.model_params["initializingLearningGoal"]):
                     
                     ## If true, multiply the learning rate by 1.2
                     self.learning_rate *= 1.2
@@ -495,11 +500,11 @@ class RIRO(Network):
             else:
 
                 ## If the learning rate is greater than the threshold for learning rate
-                if self.learning_rate > self.threshold_for_lr:
+                if self.model_params["learningRate"] > self.model_params["regularizingLearningRateLowerBound"]:
                     
                     ## Restore the w and multiply the learning rate by 0.7
                     self = copy.deepcopy(network_pre)
-                    self.learning_rate *= 0.7
+                    self.model_params["learningRate"] *= 0.7
                     times_shrink += 1
 
                 ## If the learning rate is smaller than the threshold for learning rate
@@ -994,31 +999,55 @@ class Network_s2(torch.nn.Module):
         # Initialize
         self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.model_params["hiddenNode"]).to(self.device)
         self.linear2 = torch.nn.Linear(self.model_params["hiddenNode"], self.model_params["outputDimension"]).to(self.device)
-    
-        # Stop criteria - threshold
-        self.model_params = model_params
-        self.threshold_for_error = eval(self.model_params["learning_goal"]) 
-        self.threshold_for_lr = eval(self.model_params["learning_rate_lower_bound"]) 
-        self.tuning_times = eval(self.model_params["tuning_times"]) 
-        self.regularizing_strength = eval(self.model_params["regularizing_strength"])
+
+        # # Stop criteria - threshold
+        # self.model_params = model_params
+        # self.threshold_for_error = eval(self.model_params["learning_goal"]) 
+        # self.threshold_for_lr = eval(self.model_params["learning_rate_lower_bound"]) 
+        # self.tuning_times = eval(self.model_params["tuning_times"]) 
+        # self.regularizing_strength = eval(self.model_params["regularizing_strength"])
         
-        # Set default now, not open for customization.
-        not_used_currently = (self.model_params["regularizing_strength"], self.model_params["optimizer"])
+        # # Set default now, not open for customization.
+        # not_used_currently = (self.model_params["regularizing_strength"], self.model_params["optimizer"])
 
-        # Learning rate
-        self.learning_rate = eval(self.model_params["learning_rate"])
+        # # Learning rate
+        # self.learning_rate = eval(self.model_params["learning_rate"])
 
-        # Whether the network is acceptable, default as False
-        self.acceptable = False
+        # # Whether the network is acceptable, default as False
+        # self.acceptable = False
 
         # Record the experiment result
         self.nb_node_pruned = 0
-        self.nb_node = self.model_params["hidden_node"]
+        self.nb_node = self.model_params["hiddenNode"]
         
-        self.undesired_index = None
-        self.message = ""
+        
+        # self.undesired_index = None
+        # self.message = ""
 
-        print(self.model_params)
+        # # 
+        # self.model_params["activationFunction"]
+        # self.model_params["lossFunction"]
+        # self.model_params["optimizer"]
+        # self.model_params["learningRate"]
+        # self.model_params["betas"]
+        # self.model_params["eps"]
+        # self.model_params["weightDecay"]
+        # #
+        # self.model_params["initializingRule"]
+        # self.model_params["initializingNumber"]
+        # self.model_params["initializingLearningGoal"]
+        # self.model_params["selectingRule"]
+        # self.model_params["matchingRule"]
+        # self.model_params["matchingTimes"]
+        # self.model_params["matchingLearningGoal"]
+        # self.model_params["matchingLearningRateLowerBound"]
+        # self.model_params["crammingRule"]
+        # self.model_params["reorganizingRule"]
+        # self.model_params["regularizingTimes"]
+        # self.model_params["regularizingStrength"]
+        # self.model_params["regularizingLearningGoal"]
+        # self.model_params["regularizingLearningRateLowerBound"]
+
     
     def setting_device(self):
 
@@ -1050,6 +1079,7 @@ class Network_s2(torch.nn.Module):
     # Forward operaion
     def forward(self, reg_strength=0):
         
+        # self.model_params["activationFunction"]
         h_relu = self.linear1(self.x).clamp(min=0)
         output = self.linear2(h_relu)
 
@@ -1062,21 +1092,31 @@ class Network_s2(torch.nn.Module):
             + self.linear1.weight.data.shape[1] * (self.linear1.weight.data.shape[0] + 1)
         ) * param_val
 
-        if self.model_params["loss_function"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y)) + reg_term
-        if self.model_params["loss_function"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y) + reg_term
-        if self.model_params["loss_function"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y) + reg_term
+        if self.model_params["lossFunction"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y)) + reg_term
+        if self.model_params["lossFunction"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y) + reg_term
+        if self.model_params["lossFunction"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y) + reg_term
 
         return (output, loss)
     
     # Backward operation
     def backward(self, loss):
 
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        if self.model_params["optimizer"] == "Adam" : 
+            optimizer = torch.optim.Adam(params=self.parameters(), \
+                                            lr=self.model_params["learningRate"], \
+                                            betas=self.model_params["betas"], \
+                                            eps=self.model_params["eps"], \
+                                            weight_decay=self.model_params["weightDecay"])
+        if self.model_params["optimizer"] == "AdamW" : 
+            optimizer = torch.optim.AdamW(params=self.parameters(), \
+                                            lr=self.model_params["learningRate"], \
+                                            betas=self.model_params["betas"], \
+                                            eps=self.model_params["eps"], \
+                                            weight_decay=self.model_params["weightDecay"])
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
-        return self
 
 class YourCSI_s2():
     def __init__(self, **model_params):
@@ -1208,7 +1248,7 @@ class yourCSI_s1(Network):
 
     def initializing(self, initial_x, initial_y):
         # initializing_fn = eval(str("Initialize.")+str(self.model_params["initializingRule"]))
-        Initialize.Default(self, initial_x, initial_y)
+        Initialize.LinearRegression(self, initial_x, initial_y)
 
     def selecting(self, x_train_scaled, y_train_scaled):
         # selecting_fn = eval(str("Select.")+str(self.model_params["selectingRule"]))

@@ -12,7 +12,7 @@ from sklearn.linear_model import LinearRegression
 
 class Initialize():
 
-    def Default(network, initial_x, initial_y):
+    def LinearRegression(network, initial_x, initial_y):
         
         # Find each minimum output value y
         min_y = min(initial_y)
@@ -78,14 +78,12 @@ class Match():
 
         times_enlarge, times_shrink = 0,0
 
-        # Set up the learning rate of the network
-        # network.learning_rate = 1e-3
         network.acceptable = False
 
         network_pre = copy.deepcopy(network)
         output, loss = network.forward()
 
-        if torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+        if torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
             
             network.acceptable = True
     #         print("Matching Successful")
@@ -93,7 +91,7 @@ class Match():
 
         else:
 
-            while times_enlarge + times_shrink < network.tuning_times:
+            while times_enlarge + times_shrink < network.model_params["matchingTimes"]:
                 
                 output, loss = network.forward()
                 network_pre = copy.deepcopy(network)
@@ -104,7 +102,7 @@ class Match():
                 output, loss = network.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
-                if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+                if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
 
                     network.acceptable = True
                     #print("Matching Successful")
@@ -114,10 +112,10 @@ class Match():
                     
                     # Multiply the learning rate by 1.2
                     times_enlarge += 1
-                    network.learning_rate *= 1.2
+                    network.model_params["learningRate"] *= 1.2
                 else: #loss > loss_pre
                     
-                    if network.learning_rate <= network.threshold_for_lr:
+                    if network.model_params["learningRate"] <= network.model_params["matchingLearningRateLowerBound"]:
 
                         # If true, set the acceptance of the network as False and return initial_netwrok
                         network.acceptable = False
@@ -130,7 +128,7 @@ class Match():
                         # Restore the parameter of the network
                         network = copy.deepcopy(network_pre)
                         times_shrink += 1
-                        network.learning_rate *= 0.7
+                        network.model_params["learningRate"] *= 0.7
         
 
         network.acceptable = False
@@ -149,7 +147,7 @@ class Cram():
         network_old = copy.deepcopy(network)
         output, loss = network.forward()
 
-        undesired_index = torch.nonzero(torch.abs(output - network.y) > network.threshold_for_error + 1e-3, as_tuple = False)
+        undesired_index = torch.nonzero(torch.abs(output - network.y) > network.model_params["initializingLearningGoal"] + 1e-3, as_tuple = False)
 
         """
         [ [0] [1] [3] ] shape = (3,1), 代表有3筆非0的data。 演算法基礎上應只有一筆，thus undesired_index.shape[0] == 1
@@ -227,7 +225,7 @@ class Cram():
             output, loss = network.forward()
 
             ## Determine if cramming is succesful and print out the corresponding information
-            if torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+            if torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
                 network.acceptable = True
                 print("Cramming successful")
                 network.message = "Cramming successful"
@@ -303,13 +301,13 @@ class Reorganize():
         times_enlarge, times_shrink = 0, 0
 
         # Set up the learning rate of the network
-        # network.learning_rate = 1e-3
+        # network.model_params["learningRate"] = 1e-3
         network.acceptable = False
 
         network_pre = copy.deepcopy(network)
         output, loss = network.forward()
 
-        if torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+        if torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
             
             network.acceptable = True
     #         print("Matching(Re) Successful")
@@ -317,7 +315,7 @@ class Reorganize():
 
         else:
 
-            while times_enlarge + times_shrink < network.tuning_times:
+            while times_enlarge + times_shrink < network.model_params["matchingTimes"]:
                 
                 output, loss = network.forward()
                 network_pre = copy.deepcopy(network)
@@ -328,7 +326,7 @@ class Reorganize():
                 output, loss = network.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
-                if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+                if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
 
                     network.acceptable = True
                     #print("Matching(Re) Successful")
@@ -338,10 +336,10 @@ class Reorganize():
                     
                     # Multiply the learning rate by 1.2
                     times_enlarge += 1
-                    network.learning_rate *= 1.2
+                    network.model_params["learningRate"] *= 1.2
                 else: #loss > loss_pre
                     
-                    if network.learning_rate <= network.threshold_for_lr:
+                    if network.model_params["learningRate"] <= network.model_params["matchingLearningRateLowerBound"]:
 
                         # If true, set the acceptance of the network as False and return initial_netwrok
                         network.acceptable = False
@@ -354,7 +352,7 @@ class Reorganize():
                         # Restore the parameter of the network
                         network = copy.deepcopy(network_pre)
                         times_shrink += 1
-                        network.learning_rate *= 0.7
+                        network.model_params["learningRate"] *= 0.7
         
 
         network.acceptable = False
@@ -367,28 +365,28 @@ class Reorganize():
         times_enlarge, times_shrink = 0, 0
 
         # ## Set up the learning rate of the network
-        # network.learning_rate = 1e-3
+        # network.model_params["learningRate"] = 1e-3
 
         ## Set epoch to 100
-        for i in range(network.tuning_times):
+        for i in range(network.model_params["matchingTimes"]):
 
             ## Store the parameter of the network
             network_pre = copy.deepcopy(network)
-            output, loss = network.forward(network.regularizing_strength)
+            output, loss = network.forward(network.model_params["regularizingStrength"])
             loss_pre = loss
 
             ## Backward operation to optain w'
             network.backward(loss)
-            output, loss = network.forward(network.regularizing_strength)
+            output, loss = network.forward(network.model_params["regularizingStrength"])
 
             ## Confirm whether the adjusted loss value is smaller than the current one
             if loss <= loss_pre:
 
                 ## Identify that all forecast value has met the error term
-                if torch.all(torch.abs(output - network.y) < network.threshold_for_error):
+                if torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
                     
                     ## If true, multiply the learning rate by 1.2
-                    network.learning_rate *= 1.2
+                    network.model_params["learningRate"] *= 1.2
                     times_enlarge += 1
 
                 else:
@@ -401,11 +399,11 @@ class Reorganize():
             else:
 
                 ## If the learning rate is greater than the threshold for learning rate
-                if network.learning_rate > network.threshold_for_lr:
+                if network.model_params["learningRate"] > network.model_params["regularizingLearningRateLowerBound"]:
                     
                     ## Restore the w and multiply the learning rate by 0.7
                     network = copy.deepcopy(network_pre)
-                    network.learning_rate *= 0.7
+                    network.model_params["learningRate"] *= 0.7
                     times_shrink += 1
 
                 ## If the learning rate is smaller than the threshold for learning rate
