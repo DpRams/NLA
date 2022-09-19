@@ -104,6 +104,7 @@
   <script type="text/javascript"
     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
+
   <script type="text/javascript" src="{{ url_for('static', path='/js/script_model_2.js') }}"></script>
 
   </head>
@@ -167,7 +168,7 @@
               <label class="col-md-8 fs-5">Hidden node</label>
               <input type="text" id="Hyperparameters" name="hiddenNode" >
               <label class="col-md-8 fs-5">Activation function</label>
-              <select id="select_loss" name="activationFunction" method="GET"  style="font-size:20px;"> 
+              <select id="select_activationFunction" name="activationFunction" method="GET"  style="font-size:20px;"> 
                 <option value= "ReLU" SELECTED>ReLU</option>
               </select>
 
@@ -250,17 +251,17 @@
 
               <label class="col-md-8 fs-4">Matching.</label>
               <label class="col-md-8 fs-5">Rule</label>
-              <select id="matchingRule" name="matchingRule" method="GET"  style="font-size:20px;" onclick="showMatchingParameters()"> 
+              <select id="select_matchingRule" name="matchingRule" method="GET" style="font-size:20px;" onclick="showMatchingParameters()"> 
                 <option value= "EU_LG" >EU_LG</option>
                 <option value= "EU_LG_UA" >EU_LG_UA</option>
                 <option value= "Disabled" SELECTED>Disabled</option>
               </select>
 
-              <p id = "matchingLearningGoal" style="display:block">
+              <p id = "p_matchingLearningGoal" style="display:none">
               <label class="col-md-8 fs-5">Matching learning goal</label>
               <input type="text" id="Hyperparameters" name="matchingLearningGoal"  >
               </p>  
-              <p id = "matchingLearningRateLowerBound" style="display:block">
+              <p id = "p_matchingLearningRateLowerBound" style="display:none">
               <label class="col-md-8 fs-5">Matching learning rate lower bound</label>
               <input type="text" id="Hyperparameters" name="matchingLearningRateLowerBound"  >
               </p>

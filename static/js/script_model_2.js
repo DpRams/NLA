@@ -1,4 +1,3 @@
-
 function showLossFunctionEquation(){
 
     let select_loss = document.getElementById("select_loss");
@@ -35,24 +34,6 @@ function showInitializingParameters(){
 
 }
 
-function showMatchingParameters(){
-
-  let matchingRule = document.getElementById("matchingRule");
-  let matchingLearningGoal = document.getElementById("matchingLearningGoal");
-  let matchingLearningRateLowerBound = document.getElementById("matchingLearningRateLowerBound");
-
-  matchingLearningGoal.style.display = "none";
-  matchingLearningRateLowerBound.style.display = "none";
-
-  if (matchingRule.value == "EU_LG"){
-    matchingLearningGoal.style.display = "block";
-  }else if (matchingRule.value == "EU_LG_UA"){
-    matchingLearningGoal.style.display = "block";
-    matchingLearningRateLowerBound.style.display = "block";
-  }
-
-}
-
 function showReorganzingingParameters(){
 
     let reorganizingRule = document.getElementById("reorganizingRule");
@@ -65,3 +46,24 @@ function showReorganzingingParameters(){
     }
   }
 
+
+function showMatchingParameters(){
+
+  let select_matchingRule = document.getElementById("select_matchingRule");
+  let matchingLearningGoal = document.getElementById("p_matchingLearningGoal");
+  let matchingLearningRateLowerBound = document.getElementById("p_matchingLearningRateLowerBound");
+  
+
+  if (select_matchingRule.value == "EU_LG"){
+    matchingLearningGoal.style.display = "block";
+    matchingLearningRateLowerBound.style.display = "none";
+  }else if (select_matchingRule.value == "EU_LG_UA"){
+    matchingLearningGoal.style.display = "block";
+    matchingLearningRateLowerBound.style.display = "block";
+  }
+  else if (select_matchingRule.value == "Disabled"){
+    matchingLearningGoal.style.display = "none";
+    matchingLearningRateLowerBound.style.display = "none";
+  }
+
+}

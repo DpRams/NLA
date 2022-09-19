@@ -904,53 +904,9 @@ class Network_s2(torch.nn.Module):
         self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.model_params["hiddenNode"]).to(self.device)
         self.linear2 = torch.nn.Linear(self.model_params["hiddenNode"], self.model_params["outputDimension"]).to(self.device)
 
-        # # Stop criteria - threshold
-        # self.model_params = model_params
-        # self.threshold_for_error = eval(self.model_params["learning_goal"]) 
-        # self.threshold_for_lr = eval(self.model_params["learning_rate_lower_bound"]) 
-        # self.tuning_times = eval(self.model_params["tuning_times"]) 
-        # self.regularizing_strength = eval(self.model_params["regularizing_strength"])
-        
-        # # Set default now, not open for customization.
-        # not_used_currently = (self.model_params["regularizing_strength"], self.model_params["optimizer"])
-
-        # # Learning rate
-        # self.learning_rate = eval(self.model_params["learning_rate"])
-
-        # # Whether the network is acceptable, default as False
-        # self.acceptable = False
-
         # Record the experiment result
         self.nb_node_pruned = 0
         self.nb_node = self.model_params["hiddenNode"]
-        
-        
-        # self.undesired_index = None
-        # self.message = ""
-
-        # # 
-        # self.model_params["activationFunction"]
-        # self.model_params["lossFunction"]
-        # self.model_params["optimizer"]
-        # self.model_params["learningRate"]
-        # self.model_params["betas"]
-        # self.model_params["eps"]
-        # self.model_params["weightDecay"]
-        # #
-        # self.model_params["initializingRule"]
-        # self.model_params["initializingNumber"]
-        # self.model_params["initializingLearningGoal"]
-        # self.model_params["selectingRule"]
-        # self.model_params["matchingRule"]
-        # self.model_params["matchingTimes"]
-        # self.model_params["matchingLearningGoal"]
-        # self.model_params["matchingLearningRateLowerBound"]
-        # self.model_params["crammingRule"]
-        # self.model_params["reorganizingRule"]
-        # self.model_params["regularizingTimes"]
-        # self.model_params["regularizingStrength"]
-        # self.model_params["regularizingLearningGoal"]
-        # self.model_params["regularizingLearningRateLowerBound"]
 
     
     def setting_device(self):
@@ -1059,7 +1015,8 @@ class yourCSI_s2(Network_s2):
             initializing_fn = eval(str("Initialize.")+str(self.model_params["initializingRule"]))
             initializing_fn(self, initial_x, initial_y)
         else:
-            pass
+            print("不啟用 initializing")
+            return self
 
     def selecting(self, x_train_scaled, y_train_scaled):
 
@@ -1079,7 +1036,8 @@ class yourCSI_s2(Network_s2):
             matching_fn = eval(str("Match.")+str(self.model_params["matchingRule"]))
             return matching_fn(self)
         else:
-            pass
+            print("不啟用 matching")
+            return self
 
     def cramming(self):
 
@@ -1087,7 +1045,8 @@ class yourCSI_s2(Network_s2):
             cramming_fn = eval(str("Cram.")+str(self.model_params["crammingRule"]))
             return cramming_fn(self)
         else:
-            pass
+            print("不啟用 cramming")
+            return self
 
     def matching_reorganizing(self):
 
@@ -1111,9 +1070,9 @@ class yourCSI_s2(Network_s2):
             reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["reorganizingRule"]))
             return reorganizing_fn(self)
         else:
-            pass
-
-
+            print("不啟用 reorganizing")
+            return self
+            
 """
 copy of YourCSI
 """

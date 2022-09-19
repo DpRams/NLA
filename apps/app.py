@@ -125,14 +125,14 @@ def pipeline_model(request: Request, \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=1, \
                                  outputDimension=dataShape["Y"][1], \
-                                 initializingNumber=eval(initializingNumber), \
+                                 initializingNumber=eval_avoidNone(initializingNumber), \
                                  lossFunction=lossFunction, \
-                                 initializingLearningGoal=eval(learningGoal), \
-                                 learningRate=eval(learningRate), \
-                                 regularizingLearningRateLowerBound=eval(learningRateLowerBound), \
+                                 initializingLearningGoal=eval_avoidNone(learningGoal), \
+                                 learningRate=eval_avoidNone(learningRate), \
+                                 regularizingLearningRateLowerBound=eval_avoidNone(learningRateLowerBound), \
                                  optimizer=optimizer, \
-                                 matchingTimes=eval(matchingTimes), \
-                                 regularizingStrength=eval(regularizingStrength))
+                                 matchingTimes=eval_avoidNone(matchingTimes), \
+                                 regularizingStrength=eval_avoidNone(regularizingStrength))
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
@@ -234,29 +234,29 @@ def pipeline_model(request: Request, \
                                  dataShape=dataShape, \
                                  modelFile="custoNet_s2.py", \
                                  inputDimension=dataShape["X"][1], \
-                                 hiddenNode=eval(hiddenNode), \
+                                 hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
                                  activationFunction=activationFunction, \
                                  lossFunction=lossFunction, \
                                  optimizer=optimizer, \
-                                 learningRate=eval(learningRate), \
-                                 betas=eval(betas), \
-                                 eps=eval(eps), \
-                                 weightDecay=eval(weightDecay), \
+                                 learningRate=eval_avoidNone(learningRate), \
+                                 betas=eval_avoidNone(betas), \
+                                 eps=eval_avoidNone(eps), \
+                                 weightDecay=eval_avoidNone(weightDecay), \
                                  initializingRule=initializingRule, \
-                                 initializingNumber=eval(initializingNumber), \
-                                 initializingLearningGoal=eval(initializingLearningGoal), \
+                                 initializingNumber=eval_avoidNone(initializingNumber), \
+                                 initializingLearningGoal=eval_avoidNone(initializingLearningGoal), \
                                  selectingRule=selectingRule, \
                                  matchingRule=matchingRule, \
-                                 matchingTimes=eval(matchingTimes), \
-                                 matchingLearningGoal=eval(matchingLearningGoal), \
-                                 matchingLearningRateLowerBound=eval(matchingLearningRateLowerBound), \
+                                 matchingTimes=eval_avoidNone(matchingTimes), \
+                                 matchingLearningGoal=eval_avoidNone(matchingLearningGoal), \
+                                 matchingLearningRateLowerBound=eval_avoidNone(matchingLearningRateLowerBound), \
                                  crammingRule=crammingRule, \
                                  reorganizingRule=reorganizingRule, \
-                                 regularizingTimes=eval(regularizingTimes), \
-                                 regularizingStrength=eval(regularizingStrength), \
-                                 regularizingLearningGoal=eval(regularizingLearningGoal), \
-                                 regularizingLearningRateLowerBound=eval(regularizingLearningRateLowerBound))
+                                 regularizingTimes=eval_avoidNone(regularizingTimes), \
+                                 regularizingStrength=eval_avoidNone(regularizingStrength), \
+                                 regularizingLearningGoal=eval_avoidNone(regularizingLearningGoal), \
+                                 regularizingLearningRateLowerBound=eval_avoidNone(regularizingLearningRateLowerBound))
 
    # # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
@@ -412,6 +412,13 @@ def save_model(model_experiments_record=None, model_params=None, model_fig_drt=N
 
    saving.writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt)
 
+
+def eval_avoidNone(parameter):
+   # eval processing, can't using function when input is None
+   if parameter is not None:
+      return eval(parameter)
+   else:
+      return None
 
 if __name__ == '__main__':
 	uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
