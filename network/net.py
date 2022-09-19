@@ -11,77 +11,6 @@ from CSI_Modules.modules_s2 import Initialize, Select, Match, Cram, Reorganize
 Original
 """
 
-class TwoLayerNet(torch.nn.Module):
-    
-    def __init__(self, **model_params):
-
-        super().__init__()
-        
-        self.setting_device()
-        self.model_params = model_params
-
-        # Initialize
-        self.linear1 = torch.nn.Linear(self.model_params["input_dimension"], self.model_params["nb_neuro"]).to(self.device)
-        self.linear2 = torch.nn.Linear(self.model_params["hidden_node"], self.model_params["output_dimension"]).to(self.device)
-        
-        # self.loss_function = self.model_params["loss_function"]
-
-    def setting_device(self):
-
-        FreerGpuId = getFreerGpu.getting_freer_gpu()
-        device = torch.device(f"cuda:{FreerGpuId}")
-        self.device = device
-
-    def forward(self, reg_strength=0):
-
-        h_relu = self.linear1(self.x).clamp(min=0)
-        output = self.linear2(h_relu)
-
-        param_val = torch.sum(torch.pow(self.linear2.bias.data, 2)) + \
-                    torch.sum(torch.pow(self.linear2.weight.data, 2)) + \
-                    torch.sum(torch.pow(self.linear1.bias.data, 2)) + \
-                    torch.sum(torch.pow(self.linear1.weight.data, 2))
-        reg_term = reg_strength / (
-            self.linear1.weight.data.shape[1] + 1 \
-            + self.linear1.weight.data.shape[1] * (self.linear1.weight.data.shape[0] + 1)
-        ) * param_val
-
-        if self.model_params["loss_function"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y)) + reg_term
-        if self.model_params["loss_function"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y) + reg_term
-        if self.model_params["loss_function"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y) + reg_term
-
-        return (output, loss)
-
-    def backward(self, loss):
-        
-        if self.model_params["optimizer"] == "Adam" : optimizer = torch.optim.Adam(self.parameters(), lr=self.model_params["learning_rate"])
-        if self.model_params["optimizer"] == "Adadelta" : optimizer = torch.optim.Adadelta(self.parameters(), lr=self.model_params["learning_rate"])
-        if self.model_params["optimizer"] == "Adagrad" : optimizer = torch.optim.Adagrad(self.parameters(), lr=self.model_params["learning_rate"])
-        if self.model_params["optimizer"] == "AdamW" : optimizer = torch.optim.AdamW(self.parameters(), lr=self.model_params["learning_rate"])
-
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        return self
-
-    def initializing(self):
-        pass
-    def selecting(self):
-        pass
-    def matching(self):
-        pass
-    def cramming(self):
-        pass
-    def matching_reorganizing(self):
-        pass
-    def regularizing(self):
-        pass
-    def reorganizing(self):
-        pass
-
-
-
 # 暫時先別亂動，目前有 import 在用
 class Network(torch.nn.Module):
 
@@ -101,31 +30,6 @@ class Network(torch.nn.Module):
         self.nb_node_pruned = 0
         self.nb_node = self.model_params["hiddenNode"]
 
-        # # Stop criteria - threshold
-        # self.model_params = model_params
-        # self.threshold_for_error = eval(self.model_params["learning_goal"]) 
-        # self.threshold_for_lr = eval(self.model_params["learning_rate_lower_bound"]) 
-        # self.tuning_times = eval(self.model_params["tuning_times"]) 
-        # self.regularizing_strength = eval(self.model_params["regularizing_strength"])
-        
-        # # Set default now, not open for customization.
-        # not_used_currently = (self.model_params["regularizing_strength"], self.model_params["optimizer"])
-
-        # # Learning rate
-        # self.learning_rate = eval(self.model_params["learning_rate"])
-
-        # # Whether the network is acceptable, default as False
-        # self.acceptable = False
-
-        # # Record the experiment result
-        # self.nb_node_pruned = 0
-        # self.nb_node = self.model_params["hidden_node"]
-        
-        # self.undesired_index = None
-        # self.message = ""
-
-        # print(self.model_params)
-    
     def setting_device(self):
 
         FreerGpuId = getFreerGpu.getting_freer_gpu()
