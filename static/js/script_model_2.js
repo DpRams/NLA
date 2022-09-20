@@ -50,20 +50,37 @@ function showReorganzingingParameters(){
 function showMatchingParameters(){
 
   let select_matchingRule = document.getElementById("select_matchingRule");
+  let matchingTimes = document.getElementById("p_matchingTimes");
   let matchingLearningGoal = document.getElementById("p_matchingLearningGoal");
   let matchingLearningRateLowerBound = document.getElementById("p_matchingLearningRateLowerBound");
-  
 
-  if (select_matchingRule.value == "EU_LG"){
-    matchingLearningGoal.style.display = "block";
-    matchingLearningRateLowerBound.style.display = "none";
-  }else if (select_matchingRule.value == "EU_LG_UA"){
-    matchingLearningGoal.style.display = "block";
-    matchingLearningRateLowerBound.style.display = "block";
-  }
-  else if (select_matchingRule.value == "Disabled"){
+
+  if (select_matchingRule.value == "EU"){
+
+    matchingTimes.style.display = "block";
     matchingLearningGoal.style.display = "none";
     matchingLearningRateLowerBound.style.display = "none";
+
+  }else if (select_matchingRule.value == "EU_LG"){
+
+    matchingTimes.style.display = "block";
+    matchingLearningGoal.style.display = "block";
+    matchingLearningRateLowerBound.style.display = "none";
+
+  }else if (select_matchingRule.value == "EU_LG_UA"){
+
+    matchingTimes.style.display = "block";
+    matchingLearningGoal.style.display = "block";
+    matchingLearningRateLowerBound.style.display = "block";
+
   }
+  else if (select_matchingRule.value == "Disabled"){
+
+    matchingTimes.style.display = "none";
+    matchingLearningGoal.style.display = "none";
+    matchingLearningRateLowerBound.style.display = "none";
+
+  }
+  
 
 }

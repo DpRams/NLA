@@ -92,6 +92,7 @@
       </a>
     </header>
 
+
     <div class="p-5 mb-1 bg-light rounded-3">
       <div class="container-fluid py-0">
         <h1 class="display-6 fw-bold">Data Pipeline</h1>
@@ -139,13 +140,13 @@
             <div class="h-100 p-5 bg-light border rounded-3">
 
               <label class="col-md-8 fs-4">Choose x attributes file in the csv format from local directory.</label>
-              <label for="data_x" class="btn btn-primary btn-lg">Choose</label>
+              <label for="data_x" class="btn btn-outline-primary btn-lg">Choose</label>
               <input type="file" id="data_x" name="file_x" hidden >
               <br>
               <text>Current x attributes file : <font color="blue"><b>{{filename_x}}</b></font></text>
               <br><br>
               <label class="col-md-8 fs-4">Choose y attributes file in the csv format from local directory.</label>
-              <label for="data_y" class="btn btn-primary btn-lg">Choose</label>
+              <label for="data_y" class="btn btn-outline-primary btn-lg">Choose</label>
               <input type="file" id="data_y" name="file_y" hidden >
               <br>
               <text>Current y attributes file : <font color="blue"><b>{{filename_y}}</b></font></text>
@@ -155,8 +156,8 @@
           <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
               <label class="col-md-8 fs-4">Upload file to Server</label>
-              <label for="save_data" class="btn btn-primary btn-lg">Upload</label>
-              <input type="submit" id="save_data" class="btn btn-primary btn-lg" hidden>
+              <label for="save_data" class="btn btn-outline-primary btn-lg">Upload</label>
+              <input type="submit" id="save_data" class="btn btn-outline-primary btn-lg" hidden>
               <br>
               <text>Save file  to Server in <font color="blue"><b>{{directoryName}}</b></font> directory.</text>
             </div>
