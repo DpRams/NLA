@@ -84,3 +84,18 @@ function showMatchingParameters(){
   
 
 }
+
+
+function showtest(){
+
+  let test_e = document.getElementById("test_e");
+  let test_d = document.getElementById("test_d");
+
+  if (select_initializingRule.value == "LinearRegression"){
+    regressionParameters.style.display = "block";
+  }else{
+    regressionParameters.style.display = "none";
+  }
+
+}
+
