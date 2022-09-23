@@ -137,51 +137,35 @@
           </div> -->
           
           <div class="row">
-            <div class="col-md-2 d-flex justify-content-center align-items-center">
+            <div class="col-md-12">
+                <div class="h-100 p-5 bg-light border rounded-3">
+                  
+                  <label class="col-md-8 fs-4">Select Data directory from Server.</label>
 
-                <div class="btn-group-toggle" data-toggle="buttons">
-
-                    <div id="test_1"class="btn-group" role="group" aria-label="Basic example" >
-
-                      <button id = "test_e" type="button" class="btn btn-outline-primary" onclick="btntest('test_e')">Enable</button>
-                      <button id = "test_d" type="button" class="btn btn-outline-primary" onclick="btntest()">Disable</button>
-
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="col-md-10">
-              <div id="data_mask"class="color" style="position:relative;width:auto;height:auto;z-index:999;color:grey; opacity:0.65; pointer-events:none;">
-                  <div class="h-100 p-5 bg-light border rounded-3">
-                    
-                    <label class="col-md-8 fs-4">Select Data directory from Server.</label>
-
-                    <div class="form-floating mb-3">
-                      <select class="form-control" id="select_data" placeholder="10" name="dataDirectory" method="GET"  style="font-size:20px;"> 
-                        {% for dataDir in upload_data %}
-                        <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
-                        {% endfor %}
-                      </select>
-                      <label for="select_data">Data directory</label>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                      <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
-                        <option value= "ri_sro" SELECTED>ri_sro</option>
-                        <option value= "ri_mro" >ri_mro</option>
-                        <option value= "bi_sro" >bi_sro</option>
-                        <option value= "bi_mro" >bi_mro</option>
-                        <option value= "ri_sbo" >ri_sbo</option>
-                        <option value= "ri_mbo" >ri_mbo</option>
-                        <option value= "bi_sbo" >bi_sbo</option>
-                        <option value= "bi_mbo" >bi_mbo</option>
-                      </select>
-                      <label for="select_activationFunction">Data descirbing</label>
-                    </div>
-                    
+                  <div class="form-floating mb-3">
+                    <select class="form-control" id="select_data" placeholder="10" name="dataDirectory" method="GET"  style="font-size:20px;"> 
+                      {% for dataDir in upload_data %}
+                      <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+                      {% endfor %}
+                    </select>
+                    <label for="select_data">Data directory</label>
                   </div>
-              </div>
+
+                  <div class="form-floating mb-3">
+                    <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
+                      <option value= "ri_sro" SELECTED>ri_sro</option>
+                      <option value= "ri_mro" >ri_mro</option>
+                      <option value= "bi_sro" >bi_sro</option>
+                      <option value= "bi_mro" >bi_mro</option>
+                      <option value= "ri_sbo" >ri_sbo</option>
+                      <option value= "ri_mbo" >ri_mbo</option>
+                      <option value= "bi_sbo" >bi_sbo</option>
+                      <option value= "bi_mbo" >bi_mbo</option>
+                    </select>
+                    <label for="select_activationFunction">Data descirbing</label>
+                  </div>
+                  
+                </div>
             </div>
           </div>
           
@@ -192,7 +176,7 @@
             <div class="h-100 p-5 bg-light border rounded-3">
 
               <label class="col-md-8 fs-4">SLFN(Two Layer).</label>
-              <label class="col-md-8 fs-5">---Training---</label>
+              <label class="col-md-8 fs-5">For training</label>
               
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode">
@@ -206,7 +190,7 @@
                 <label for="select_activationFunction">Activation function</label>
               </div>
               
-              <label class="col-md-8 fs-5">---Evaluating---</label>
+              <label class="col-md-8 fs-5">For evaluating</label>
               <div class="form-floating mb-3">
 
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="thresholdForError">
@@ -309,115 +293,170 @@
 
           
           <br>
-        
-          <div class="col-md-12">
-            <div class="h-100 p-5 bg-light border rounded-3">
+          <div class="row">
+            <div class="col-md-2 d-flex justify-content-center align-items-center">
 
-              <label class="col-md-8 fs-4">Initializing.</label>
-              <div class="form-floating mb-3">
-                <select class="form-control" id="select_initializingRule" placeholder="10" name="initializingRule" method="GET"  style="font-size:20px;" onclick="showInitializingParameters()"> 
-                  <option value= "LinearRegression" >LinearRegression</option>
-                  <option value= "Disabled" SELECTED>Disabled</option>
-                </select>
-                <label for="select_initializingRule">Initializing rule</label>
+              <div class="btn-group-toggle" data-toggle="buttons">
+
+                  <div class="btn-group" role="group" aria-label="Basic example" >
+
+                    <button id = "initializing_mask_e" type="button" class="btn btn-outline-primary" onclick="showModules('initializing_mask_e')">Enable</button>
+                    <button id = "initializing_mask_d" type="button" class="btn btn-outline-primary" onclick="showModules('initializing_mask_d')">Disable</button>
+
+                  </div>
+
               </div>
+          </div>
 
-                <div id = "regressionParameters" style="display:none;margin:0;">
-                  <div class="form-floating mb-3"  >
-                    <input type="text" class="form-control" id="floatingInput" placeholder="10" name="initializingNumber">
-                    <label for="floatingInput">Initializing number</label>
+             
+            <div class="col-md-10">
+              <div id="initializing_mask" class="color" style="position:relative;width:auto;height:auto;z-index:999;color:grey; opacity:0.65; pointer-events:none;">
+                <div class="h-100 p-5 bg-light border rounded-3">
+
+                  <label class="col-md-8 fs-4">Initializing.</label>
+                  <div class="form-floating mb-3">
+                    <select class="form-control" id="select_initializingRule" placeholder="10" name="initializingRule" method="GET"  style="font-size:20px;" onclick="showInitializingParameters()"> 
+                      <option value= "LinearRegression" >LinearRegression</option>
+                      <option value= "Disabled" SELECTED>Disabled</option>
+                    </select>
+                    <label for="select_initializingRule">Initializing rule</label>
                   </div>
-  
-                  <div class="form-floating mb-3"  >
-                    <input type="text" class="form-control" id="floatingInput" placeholder="10" name="initializingLearningGoal">
-                    <label for="floatingInput">Initializing learning goal</label>
-                  </div>
-                </div>
 
-                <br><br>
-                <label class="col-md-8 fs-4">Selecting.</label>
-                <div class="form-floating mb-3">
-                  <select class="form-control" id="select_selectingRule" placeholder="10" name="selectingRule" method="GET"  style="font-size:20px;"> 
-                    <option value= "POS" >POS</option>
-                    <option value= "LTS" >LTS</option>
-                    <option value= "Disabled" SELECTED>Disabled</option>
-                  </select>
-                  <label for="select_selectingRule">Selecting rule</label>
-                </div>
+                    <div id = "regressionParameters" style="display:none;margin:0;">
+                      <div class="form-floating mb-3"  >
+                        <input type="text" class="form-control" id="floatingInput" placeholder="10" name="initializingNumber">
+                        <label for="floatingInput">Initializing number</label>
+                      </div>
+      
+                      <div class="form-floating mb-3"  >
+                        <input type="text" class="form-control" id="floatingInput" placeholder="10" name="initializingLearningGoal">
+                        <label for="floatingInput">Initializing learning goal</label>
+                      </div>
+                    </div>
 
+                    <br><br>
+                    <label class="col-md-8 fs-4">Selecting.</label>
+                    <div class="form-floating mb-3">
+                      <select class="form-control" id="select_selectingRule" placeholder="10" name="selectingRule" method="GET"  style="font-size:20px;"> 
+                        <option value= "POS" >POS</option>
+                        <option value= "LTS" >LTS</option>
+                        <option value= "Disabled" SELECTED>Disabled</option>
+                      </select>
+                      <label for="select_selectingRule">Selecting rule</label>
+                    </div>
+
+                </div>
+              </div>
             </div>
           </div>
         
           <br>
 
-          <div class="col-md-12">
-            <div class="h-100 p-5 bg-light border rounded-3">
+          <div class="row">
+            <div class="col-md-2 d-flex justify-content-center align-items-center">
 
-              <label class="col-md-8 fs-4">Cramming.</label>
-              <div class="form-floating mb-3">
-                <select class="form-control" id="select_crammingRule" placeholder="10" name="crammingRule" method="GET"  style="font-size:20px;"> 
-                  <option value= "ri_sro" SELECTED>ri_sro</option>
-                  <option value= "ri_mro" >ri_mro</option>
-                  <option value= "bi_sro" >bi_sro</option>
-                  <option value= "bi_mro" >bi_mro</option>
-                  <option value= "ri_sbo" >ri_sbo</option>
-                  <option value= "ri_mbo" >ri_mbo</option>
-                  <option value= "bi_sbo" >bi_sbo</option>
-                  <option value= "bi_mbo" >bi_mbo</option>
-                  <option value= "Disabled" SELECTED>Disabled</option>
-                </select>
-                <label for="select_crammingRule">Selecting rule</label>
+              <div class="btn-group-toggle" data-toggle="buttons">
+
+                  <div class="btn-group" role="group" aria-label="Basic example">
+
+                    <button id = "cramming_mask_e" type="button" class="btn btn-outline-primary" onclick="showModules('cramming_mask_e')" disabled>Enable</button>
+                    <button id = "cramming_mask_d" type="button" class="btn btn-outline-primary" onclick="showModules('cramming_mask_d')" disabled>Disable</button>
+
+                  </div>
+
               </div>
+          </div>
 
+             
+            <div class="col-md-10">
+              <div id="cramming_mask" class="color" style="position:relative;width:auto;height:auto;z-index:999;color:grey; opacity:0.65; pointer-events:none;">
+                <div class="h-100 p-5 bg-light border rounded-3">
+
+                  <label class="col-md-8 fs-4">Cramming.</label>
+                  <div class="form-floating mb-3">
+                    <select class="form-control" id="select_crammingRule" placeholder="10" name="crammingRule" method="GET"  style="font-size:20px;"> 
+                      <option value= "ri_sro" SELECTED>ri_sro</option>
+                      <option value= "ri_mro" >ri_mro</option>
+                      <option value= "bi_sro" >bi_sro</option>
+                      <option value= "bi_mro" >bi_mro</option>
+                      <option value= "ri_sbo" >ri_sbo</option>
+                      <option value= "ri_mbo" >ri_mbo</option>
+                      <option value= "bi_sbo" >bi_sbo</option>
+                      <option value= "bi_mbo" >bi_mbo</option>
+                      <option value= "Disabled" SELECTED>Disabled</option>
+                    </select>
+                    <label for="select_crammingRule">Selecting rule</label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <br>
+
+          <br><br>
           
-          <div class="col-md-12">
-            <div class="h-100 p-5 bg-light border rounded-3">
+          <div class="row">
+            <div class="col-md-2 d-flex justify-content-center align-items-center">
 
-              <label class="col-md-8 fs-4">Reorganizing.</label>
-              <div class="form-floating mb-3">
-                <select class="form-control" id="select_reorganizingRule" placeholder="10" name="reorganizingRule" method="GET"  style="font-size:20px;" onclick="showReorganzingingParameters()"> 
-                  <option value= "ri_sro" SELECTED>ri_sro</option>
-                  <option value= "ri_mro" >ri_mro</option>
-                  <option value= "bi_sro" >bi_sro</option>
-                  <option value= "bi_mro" >bi_mro</option>
-                  <option value= "ri_sbo" >ri_sbo</option>
-                  <option value= "ri_mbo" >ri_mbo</option>
-                  <option value= "bi_sbo" >bi_sbo</option>
-                  <option value= "bi_mbo" >bi_mbo</option>
-                  <option value= "Disabled" SELECTED>Disabled</option>
-                </select>
-                <label for="select_reorganizingRule">Reorganizing rule</label>
+              <div class="btn-group-toggle" data-toggle="buttons">
+
+                  <div class="btn-group" role="group" aria-label="Basic example" >
+
+                    <button id = "reorganizing_mask_e" type="button" class="btn btn-outline-primary" onclick="showModules('reorganizing_mask_e')" disabled>Enable</button>
+                    <button id = "reorganizing_mask_d" type="button" class="btn btn-outline-primary" onclick="showModules('reorganizing_mask_d')" disabled>Disable</button>
+
+                  </div>
+
               </div>
-
-              <div id = "reorganizingParamaters" style="display:none;margin:0;">
-                <div class="form-floating mb-3"  >
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingTimes">
-                  <label for="floatingInput">Regularizing times</label>
-                </div>
-
-                <div class="form-floating mb-3"  >
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingStrength">
-                  <label for="floatingInput">Regularizing strength</label>
-                </div>
-
-                <div class="form-floating mb-3"  >
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingLearningGoal">
-                  <label for="floatingInput">Regularizing learning goal</label>
-                </div>
-
-                <div class="form-floating mb-3"  >
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingLearningRateLowerBound">
-                  <label for="floatingInput">Regularizing learning rate lower bound</label>
-                </div>
-              </div>
-
-            </div>
           </div>
 
+             
+            <div class="col-md-10">
+              <div id="reorganizing_mask" class="color" style="position:relative;width:auto;height:auto;z-index:999;color:grey; opacity:0.65; pointer-events:none;">
+                <div class="h-100 p-5 bg-light border rounded-3">
+
+                  <label class="col-md-8 fs-4">Reorganizing.</label>
+                  <div class="form-floating mb-3">
+                    <select class="form-control" id="select_reorganizingRule" placeholder="10" name="reorganizingRule" method="GET"  style="font-size:20px;" onclick="showReorganzingingParameters()"> 
+                      <option value= "ri_sro" SELECTED>ri_sro</option>
+                      <option value= "ri_mro" >ri_mro</option>
+                      <option value= "bi_sro" >bi_sro</option>
+                      <option value= "bi_mro" >bi_mro</option>
+                      <option value= "ri_sbo" >ri_sbo</option>
+                      <option value= "ri_mbo" >ri_mbo</option>
+                      <option value= "bi_sbo" >bi_sbo</option>
+                      <option value= "bi_mbo" >bi_mbo</option>
+                      <option value= "Disabled" SELECTED>Disabled</option>
+                    </select>
+                    <label for="select_reorganizingRule">Reorganizing rule</label>
+                  </div>
+
+                  <div id = "reorganizingParamaters" style="display:none;margin:0;">
+                    <div class="form-floating mb-3"  >
+                      <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingTimes">
+                      <label for="floatingInput">Regularizing times</label>
+                    </div>
+
+                    <div class="form-floating mb-3"  >
+                      <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingStrength">
+                      <label for="floatingInput">Regularizing strength</label>
+                    </div>
+
+                    <div class="form-floating mb-3"  >
+                      <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingLearningGoal">
+                      <label for="floatingInput">Regularizing learning goal</label>
+                    </div>
+
+                    <div class="form-floating mb-3"  >
+                      <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingLearningRateLowerBound">
+                      <label for="floatingInput">Regularizing learning rate lower bound</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <br><br>
 
           <label class="col-md-8 fs-5"></label>
