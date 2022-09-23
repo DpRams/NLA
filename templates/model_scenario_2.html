@@ -122,11 +122,6 @@
       </a>
     </header>
 
-    <div class="form-floating mb-3">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
-    </div>
-
     <div class="p-5 mb-1 bg-light rounded-5">
       <div class="container-fluid py-0">
         <h1 class="display-6 fw-bold">Model Pipeline</h1>
@@ -143,24 +138,48 @@
 
                     <div id="test_1"class="btn-group" role="group" aria-label="Basic example" >
 
-                      <button id = "test_e" type="button" class="btn btn-outline-primary" onclick="">Enable</button>
-                      <button id = "test_d" type="button" class="btn btn-outline-primary" onclick="">Disable</button>
+                      <button id = "test_e" type="button" class="btn btn-outline-primary" onclick="btntest()">Enable</button>
+                      <button id = "test_d" type="button" class="btn btn-outline-primary" onclick="btntest()">Disable</button>
 
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-10">
+            <div id="data_cell" class="col-md-10">
               <div class="h-100 p-5 bg-light border rounded-3">
                 
               <label class="col-md-8 fs-4">Select Data directory from Server.</label>
-              <select class="form-select-lg mb-1" name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
+
+              <!-- <select class="form-select-lg mb-1" name="dataDirectory" method="GET"  style="font-size:20px;" >
                 {% for dataDir in upload_data %}
                 <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
                 {% endfor %}
-              </select>
-              <br><br>
-              <label class="col-md-8 fs-5">Data descirbing</label>
+              </select> -->
+
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_data" placeholder="10" name="dataDirectory" method="GET"  style="font-size:20px;"> 
+                  {% for dataDir in upload_data %}
+                  <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+                  {% endfor %}
+                </select>
+                <label for="select_data">Data directory</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
+                  <option value= "ri_sro" SELECTED>ri_sro</option>
+                  <option value= "ri_mro" >ri_mro</option>
+                  <option value= "bi_sro" >bi_sro</option>
+                  <option value= "bi_mro" >bi_mro</option>
+                  <option value= "ri_sbo" >ri_sbo</option>
+                  <option value= "ri_mbo" >ri_mbo</option>
+                  <option value= "bi_sbo" >bi_sbo</option>
+                  <option value= "bi_mbo" >bi_mbo</option>
+                </select>
+                <label for="select_activationFunction">Data descirbing</label>
+              </div>
+
+              <!-- <label class="col-md-8 fs-5">Data descirbing</label>
               <select class="form-select-lg mb-1" name="dataDescribing" method="GET"  style="font-size:20px;" > 
                 <option value= "ri_sro" SELECTED>ri_sro</option>
                 <option value= "ri_mro" >ri_mro</option>
@@ -170,7 +189,7 @@
                 <option value= "ri_mbo" >ri_mbo</option>
                 <option value= "bi_sbo" >bi_sbo</option>
                 <option value= "bi_mbo" >bi_mbo</option>
-              </select>
+              </select> -->
 
               </div>
             </div>
@@ -191,15 +210,28 @@
                 <label for="floatingInput">Hidden node</label>
               </div>
 
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
+                  <option value= "ReLU" SELECTED>ReLU</option>
+                </select>
+                <label for="select_activationFunction">Activation function</label>
+              </div>
+
               <!-- <label class="col-md-8 fs-5">Hidden node</label>
               <input class="form-control-sm" class="form-control-sm" type="text" id="Hyperparameters" name="hiddenNode" > -->
-              <label class="col-md-8 fs-5">Activation function</label>
+              <!-- <label class="col-md-8 fs-5">Activation function</label>
               <select class="form-select-lg mb-1" id="select_activationFunction" name="activationFunction" method="GET"  style="font-size:20px;"> 
                 <option value= "ReLU" SELECTED>ReLU</option>
-              </select>
+              </select> -->
+              
               <label class="col-md-8 fs-5">---Evaluating---</label>
-              <label class="col-md-8 fs-5">Threshold for error</label>
-              <input class="form-control-sm" type="text" id="Hyperparameters" name="thresholdForError" >
+              <div class="form-floating mb-3">
+
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="thresholdForError">
+                <label for="floatingInput">Threshold for error</label>
+              </div>
+              <!-- <label class="col-md-8 fs-5">Threshold for error</label>
+              <input class="form-control-sm" type="text" id="Hyperparameters" name="thresholdForError" > -->
 
             </div>
           </div>
@@ -210,12 +242,22 @@
             <div class="h-100 p-5 bg-light border rounded-3">
 
               <label class="col-md-8 fs-4">Matching(Back Propagation).</label>
-              <label class="col-md-8 fs-5">---Loss function---</label>
+
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_loss" placeholder="10" name="lossFunction" method="GET"  style="font-size:20px;" onclick="showLossFunctionEquation()"> 
+                  <option value= "RMSE" SELECTED>RMSE</option>
+                  <option value= "MSE" >MSE</option>
+                  <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
+                </select>
+                <label for="select_loss">Loss function</label>
+              </div>
+
+              <!-- <label class="col-md-8 fs-5">---Loss function---</label>
               <select class="form-select-lg mb-1" id="select_loss" name="lossFunction" method="GET"  style="font-size:20px;" onclick="showLossFunctionEquation()"> 
                 <option value= "RMSE" SELECTED>RMSE</option>
                 <option value= "MSE" >MSE</option>
                 <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
-              </select>
+              </select> -->
 
               <div>
                 <label class="col-md-8 fs-5">Function equation</label>
@@ -225,35 +267,90 @@
                 <p id="CROSSENTROPYLOSS_m" style="display:none"><span class="math display">\[CrossEntropyLoss(multiclass)=-\sum_{c=1}^My_{o,c}\log(p_{o,c})\]</span ></p>
               </div>
 
-              <br><br>
+              <br>
 
-              <label class="col-md-8 fs-5">---Optimizer---</label>
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_optim" placeholder="10" name="optimizer" method="GET"  style="font-size:20px;" onclick="showOptimizerParameters()"> 
+                  <option value= "Adam" SELECTED>Adam</option>
+                  <option value= "AdamW" >AdamW</option>
+                </select>
+                <label for="select_optim">Optimizer</label>
+              </div>
+
+              <!-- <label class="col-md-8 fs-5">---Optimizer---</label>
               <select class="form-select-lg mb-1" name="optimizer" method="GET"  style="font-size:20px;" onclick="showOptimizerParameters()" > 
                 <option value= "Adam" SELECTED>Adam</option>
                 <option value= "AdamW" >AdamW</option>
-              </select>
+              </select> -->
 
-              <label class="col-md-8 fs-5">Learning rate</label>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate">
+                <label for="floatingInput">Learning rate</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas">
+                <label for="floatingInput">Betas</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps">
+                <label for="floatingInput">Eps</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay">
+                <label for="floatingInput">Weight decay</label>
+              </div>
+
+
+              <!-- <label class="col-md-8 fs-5">Learning rate</label>
               <input class="form-control-sm" type="text" id="Hyperparameters" name="learningRate" >
               <label class="col-md-8 fs-5">Betas</label>
               <input class="form-control-sm" type="text" id="Hyperparameters" name="betas" >
               <label class="col-md-8 fs-5">Eps</label>
               <input class="form-control-sm" type="text" id="Hyperparameters" name="eps" >
               <label class="col-md-8 fs-5">Weight decay</label>
-              <input class="form-control-sm" type="text" id="Hyperparameters" name="weightDecay" >
+              <input class="form-control-sm" type="text" id="Hyperparameters" name="weightDecay" > -->
               
               <br><br>
+
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_matchingRule" placeholder="10" name="matchingRule" method="GET"  style="font-size:20px;" onclick="showMatchingParameters()"> 
+                  <option value= "EU" >EU</option>
+                  <option value= "EU_LG" >EU_LG</option>
+                  <option value= "EU_LG_UA" >EU_LG_UA</option>
+                  <option value= "Disabled" SELECTED>Disabled</option>
+                </select>
+                <label for="select_matchingRule">Matching rule</label>
+              </div>
+
               
-              <label class="col-md-8 fs-5">---Rule---</label>
+              <!-- <label class="col-md-8 fs-5">---Rule---</label>
               <select class="form-select-lg mb-1" id="select_matchingRule" name="matchingRule" method="GET" style="font-size:20px;" onclick="showMatchingParameters()"> 
                 <option value= "EU" >EU</option>
                 <option value= "EU_LG" >EU_LG</option>
                 <option value= "EU_LG_UA" >EU_LG_UA</option>
                 <option value= "Disabled" SELECTED>Disabled</option>
-              </select>
+              </select> -->
 
-              
-              <p id = "p_matchingTimes" style="display:none;margin:0;">
+              <div class="form-floating mb-3" id = "p_matchingTimes" style="display:none;margin:0;">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="matchingTimes">
+                <label for="floatingInput">Matching times</label>
+              </div>
+
+              <div class="form-floating mb-3" id = "p_matchingLearningGoal" style="display:none;margin:0;">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="matchingLearningGoal">
+                <label for="floatingInput">Matching learning goal</label>
+              </div>
+
+              <div class="form-floating mb-3" id = "p_matchingLearningRateLowerBound" style="display:none;margin:0;">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="matchingLearningRateLowerBound">
+                <label for="floatingInput">Matching learning rate lower bound</label>
+              </div>
+
+              <!-- <p id = "p_matchingTimes" style="display:none;margin:0;">
               <label class="col-md-8 fs-5">Matching times</label>
               <input class="form-control-sm" type="text" id="Hyperparameters" name="matchingTimes"  >
               </p> 
@@ -266,12 +363,13 @@
               <p id = "p_matchingLearningRateLowerBound" style="display:none;margin:0;">
               <label class="col-md-8 fs-5">Matching learning rate lower bound</label>
               <input class="form-control-sm" type="text" id="Hyperparameters" name="matchingLearningRateLowerBound"  >
-              </p>
+              </p> -->
 
               </div>
 
             </div>
           </div>
+
 
           
           <br>
@@ -279,30 +377,54 @@
           <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
 
-              <div id = "module_initializing">
+              <label class="col-md-8 fs-4">Initializing.</label>
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_initializingRule" placeholder="10" name="initializingRule" method="GET"  style="font-size:20px;" onclick="showInitializingParameters()"> 
+                  <option value= "LinearRegression" >LinearRegression</option>
+                  <option value= "Disabled" SELECTED>Disabled</option>
+                </select>
+                <label for="select_initializingRule">Initializing rule</label>
+              </div>
+
+              <!-- <div id = "module_initializing">
                 <label class="col-md-8 fs-4">Initializing.</label>
                 <label class="col-md-8 fs-5">Rule</label>
                 <select class="form-select-lg mb-1" id="select_initializingRule" name="initializingRule" method="GET"  style="font-size:20px;" onclick="showInitializingParameters()"> 
                   <option value= "LinearRegression" >LinearRegression</option>
                   <option value= "Disabled" SELECTED>Disabled</option>
-                </select>
+                </select> -->
+
+                <div id = "regressionParameters" style="display:none;margin:0;">
+                  <div class="form-floating mb-3"  >
+                    <input type="text" class="form-control" id="floatingInput" placeholder="10" name="initializingNumber">
+                    <label for="floatingInput">Initializing number</label>
+                  </div>
+  
+                  <div class="form-floating mb-3"  >
+                    <input type="text" class="form-control" id="floatingInput" placeholder="10" name="initializingLearningGoal">
+                    <label for="floatingInput">Initializing learning goal</label>
+                  </div>
+                </div>
+
+                <!-- 
 
                 <p id = "regressionParameters" style="display:none">
                   <label class="col-md-8 fs-5">Initializing number</label>
                   <input class="form-control-sm" type="text" id="initializingNumber" name="initializingNumber" >
                   <label class="col-md-8 fs-5">Initializing learning goal</label>
                   <input class="form-control-sm" type="text" id="initializingLearningGoal" name="initializingLearningGoal"  >
-                </p>
+                </p> -->
 
                 <br><br>
                 <label class="col-md-8 fs-4">Selecting.</label>
-                <label class="col-md-8 fs-5">Rule</label>
-                <select class="form-select-lg mb-1" name="selectingRule" method="GET"  style="font-size:20px;" > 
-                  <option value= "POS" >POS</option>
-                  <option value= "LTS" >LTS</option>
-                  <option value= "Disabled" SELECTED>Disabled</option>
-                </select>
-              </div>
+                <div class="form-floating mb-3">
+                  <select class="form-control" id="select_selectingRule" placeholder="10" name="selectingRule" method="GET"  style="font-size:20px;"> 
+                    <option value= "POS" >POS</option>
+                    <option value= "LTS" >LTS</option>
+                    <option value= "Disabled" SELECTED>Disabled</option>
+                  </select>
+                  <label for="select_selectingRule">Selecting rule</label>
+                </div>
 
             </div>
           </div>
@@ -313,7 +435,21 @@
             <div class="h-100 p-5 bg-light border rounded-3">
 
               <label class="col-md-8 fs-4">Cramming.</label>
-              <label class="col-md-8 fs-5">Rule</label>
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_crammingRule" placeholder="10" name="crammingRule" method="GET"  style="font-size:20px;"> 
+                  <option value= "ri_sro" SELECTED>ri_sro</option>
+                  <option value= "ri_mro" >ri_mro</option>
+                  <option value= "bi_sro" >bi_sro</option>
+                  <option value= "bi_mro" >bi_mro</option>
+                  <option value= "ri_sbo" >ri_sbo</option>
+                  <option value= "ri_mbo" >ri_mbo</option>
+                  <option value= "bi_sbo" >bi_sbo</option>
+                  <option value= "bi_mbo" >bi_mbo</option>
+                  <option value= "Disabled" SELECTED>Disabled</option>
+                </select>
+                <label for="select_crammingRule">Selecting rule</label>
+              </div>
+              <!-- <label class="col-md-8 fs-5">Rule</label>
               <select class="form-select-lg mb-1" name="crammingRule" method="GET"  style="font-size:20px;" > 
                 <option value= "ri_sro" SELECTED>ri_sro</option>
                 <option value= "ri_mro" >ri_mro</option>
@@ -324,7 +460,7 @@
                 <option value= "bi_sbo" >bi_sbo</option>
                 <option value= "bi_mbo" >bi_mbo</option>
                 <option value= "Disabled" SELECTED>Disabled</option>
-              </select>
+              </select> -->
 
             </div>
           </div>
@@ -335,8 +471,23 @@
             <div class="h-100 p-5 bg-light border rounded-3">
 
               <label class="col-md-8 fs-4">Reorganizing.</label>
-              <label class="col-md-8 fs-5">Rule</label>
-              <select class="form-select-lg mb-1" id="reorganizingRule" name="reorganizingRule" method="GET"  style="font-size:20px;" onclick="showReorganzingingParameters()"> 
+              <div class="form-floating mb-3">
+                <select class="form-control" id="select_reorganizingRule" placeholder="10" name="reorganizingRule" method="GET"  style="font-size:20px;" onclick="showReorganzingingParameters()"> 
+                  <option value= "ri_sro" SELECTED>ri_sro</option>
+                  <option value= "ri_mro" >ri_mro</option>
+                  <option value= "bi_sro" >bi_sro</option>
+                  <option value= "bi_mro" >bi_mro</option>
+                  <option value= "ri_sbo" >ri_sbo</option>
+                  <option value= "ri_mbo" >ri_mbo</option>
+                  <option value= "bi_sbo" >bi_sbo</option>
+                  <option value= "bi_mbo" >bi_mbo</option>
+                  <option value= "Disabled" SELECTED>Disabled</option>
+                </select>
+                <label for="select_reorganizingRule">Reorganizing rule</label>
+              </div>
+
+              <!-- <label class="col-md-8 fs-5">Rule</label>
+              <select class="form-select-lg mb-1" id="select_reorganizingRule" name="reorganizingRule" method="GET"  style="font-size:20px;" onclick="showReorganzingingParameters()"> 
                 <option value= "ri_sro" SELECTED>ri_sro</option>
                 <option value= "ri_mro" >ri_mro</option>
                 <option value= "bi_sro" >bi_sro</option>
@@ -346,9 +497,32 @@
                 <option value= "bi_sbo" >bi_sbo</option>
                 <option value= "bi_mbo" >bi_mbo</option>
                 <option value= "Disabled" SELECTED>Disabled</option>
-              </select>
+              </select> -->
 
-              <p id = "reorganizingParamaters" style="display:none">
+              <div id = "reorganizingParamaters" style="display:none;margin:0;">
+                <div class="form-floating mb-3"  >
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingTimes">
+                  <label for="floatingInput">Regularizing times</label>
+                </div>
+
+                <div class="form-floating mb-3"  >
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingStrength">
+                  <label for="floatingInput">Regularizing strength</label>
+                </div>
+
+                <div class="form-floating mb-3"  >
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingLearningGoal">
+                  <label for="floatingInput">Regularizing learning goal</label>
+                </div>
+
+                <div class="form-floating mb-3"  >
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingLearningRateLowerBound">
+                  <label for="floatingInput">Regularizing learning rate lower bound</label>
+                </div>
+              </div>
+
+
+              <!-- <p id = "reorganizingParamaters" style="display:none">
                 <label class="col-md-8 fs-5">Regularizing times</label>
                 <input class="form-control-sm" type="text" id="Hyperparameters" name="regularizingTimes"  >
                 <label class="col-md-8 fs-5">Regularizing strength</label>
@@ -357,7 +531,7 @@
                 <input class="form-control-sm" type="text" id="Hyperparameters" name="regularizingLearningGoal"  >
                 <label class="col-md-8 fs-5">Regularizing learning rate lower bound</label>
                 <input class="form-control-sm" type="text" id="Hyperparameters" name="regularizingLearningRateLowerBound"  >
-              </p>
+              </p> -->
 
             </div>
           </div>

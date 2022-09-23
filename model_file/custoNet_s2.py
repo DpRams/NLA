@@ -215,7 +215,7 @@ def training_CSINet(MyCSI, model_params):
 
     # Plot graph
     model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)    
-
+    
     return model_experiments_record, model_params, model_fig_drt
 
 

@@ -26,6 +26,7 @@ function showInitializingParameters(){
   let select_initializingRule = document.getElementById("select_initializingRule");
   let regressionParameters = document.getElementById("regressionParameters");
 
+
   if (select_initializingRule.value == "LinearRegression"){
     regressionParameters.style.display = "block";
   }else{
@@ -36,7 +37,7 @@ function showInitializingParameters(){
 
 function showReorganzingingParameters(){
 
-    let reorganizingRule = document.getElementById("reorganizingRule");
+    let reorganizingRule = document.getElementById("select_reorganizingRule");
     let reorganizingParamaters = document.getElementById("reorganizingParamaters");
 
     reorganizingParamaters.style.display = "none";
@@ -96,6 +97,14 @@ function showtest(){
   }else{
     regressionParameters.style.display = "none";
   }
+
+}
+
+
+function btntest(){
+
+
+
 
 }
 
