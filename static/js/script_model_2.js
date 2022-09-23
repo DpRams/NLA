@@ -87,24 +87,15 @@ function showMatchingParameters(){
 }
 
 
-function showtest(){
 
-  let test_e = document.getElementById("test_e");
-  let test_d = document.getElementById("test_d");
+function btntest(btnID){
+  let data_mask = document.getElementById("data_mask")
 
-  if (select_initializingRule.value == "LinearRegression"){
-    regressionParameters.style.display = "block";
-  }else{
-    regressionParameters.style.display = "none";
+  if (btnID == "test_e"){
+    data_mask.style.color = "black";
+    data_mask.style.opacity = "1";
+    data_mask.style.pointerEvents = "";
   }
-
-}
-
-
-function btntest(){
-
-
-
 
 }
 
