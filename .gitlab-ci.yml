@@ -19,8 +19,6 @@ test:
   stage: test
   tags:
     - "AILab"
-  only:
-    - master
   script:
     - echo "testing"
   rules:
