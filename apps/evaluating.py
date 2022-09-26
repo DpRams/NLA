@@ -54,7 +54,7 @@ def inferencing(network, x_test, y_test):
     if "thresholdForError" in network.model_params.keys():
         thresholdForError = network.model_params["thresholdForError"]
     else:
-        thresholdForError = network.model_params["learningGoal"]
+        thresholdForError = network.model_params["initializingLearningGoal"]
 
     acc = (diff <= thresholdForError).to(torch.float32).mean().cpu().numpy()
     acc = np.round(acc, 3)
