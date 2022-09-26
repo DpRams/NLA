@@ -7,8 +7,6 @@ build:
   stage: build
   tags:
     - "AILab"
-  only:
-    - master
   script:
     - echo "build"
   rules:
@@ -29,8 +27,6 @@ deploy:
   stage: deploy
   tags:
     - "AILab"
-  only:
-    - master
   script:
     - echo "deploy"
   rules:
