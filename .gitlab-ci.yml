@@ -9,9 +9,6 @@ build:
     - "AILab"
   script:
     - echo "build"
-  rules:
-    - changes: 
-      - model_registry/*
 
 test:
   stage: test
@@ -19,9 +16,6 @@ test:
     - "AILab"
   script:
     - echo "testing"
-  rules:
-    - changes: 
-      - model_registry/*
 
 deploy:
   stage: deploy
