@@ -6,32 +6,39 @@ stages:
 build:
   stage: build
   tags:
-    - "local-use"
+    - "AILab"
   only:
     - master
   script:
     - echo "build"
+  rules:
+    - changes: 
+      - model_registry/*
 
 test:
   stage: test
   tags:
-    - "local-use"
+    - "AILab"
   only:
     - master
   script:
     - echo "testing"
+  rules:
+    - changes: 
+      - model_registry/*
 
 deploy:
   stage: deploy
   tags:
-    - "local-use"
+    - "AILab"
   only:
     - master
   script:
     - echo "deploy"
   rules:
     - changes: 
-      - model_registry/**/*
+      - model_registry/*
+  when: always
 
 
 
