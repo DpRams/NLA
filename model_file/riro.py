@@ -67,7 +67,8 @@ def main(model_params):
                         regularizingLearningRateLowerBound=model_params.regularizingLearningRateLowerBound, \
                         optimizer=model_params.optimizer,  \
                         matchingTimes=model_params.matchingTimes,  \
-                        regularizingStrength=model_params.regularizingStrength)
+                        regularizingStrength=model_params.regularizingStrength, \
+                        thresholdForError = model_params.thresholdForError)
 
         # Initializing model
         # network = initializing(network, initial_x, initial_y)

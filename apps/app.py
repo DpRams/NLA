@@ -108,7 +108,8 @@ def pipeline_model(request: Request, \
                      learningRateLowerBound: str = Form(default=None, max_length=50), \
                      optimizer: str = Form(default=None, max_length=50), \
                      matchingTimes: str = Form(default=None, max_length=50), \
-                     regularizingStrength: str = Form(default=None, max_length=50)):
+                     regularizingStrength: str = Form(default=None, max_length=50), \
+                     thresholdForError : str = Form(default=None, max_length=50)):
 
 
    # List the upload data to Dropdownlist
@@ -132,7 +133,8 @@ def pipeline_model(request: Request, \
                                  regularizingLearningRateLowerBound=eval_avoidNone(learningRateLowerBound), \
                                  optimizer=optimizer, \
                                  matchingTimes=eval_avoidNone(matchingTimes), \
-                                 regularizingStrength=eval_avoidNone(regularizingStrength))
+                                 regularizingStrength=eval_avoidNone(regularizingStrength), \
+                                 thresholdForError=eval_avoidNone(thresholdForError))
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
@@ -200,6 +202,7 @@ def pipeline_model(request: Request, \
                      dataDirectory : str = Form(default=None, max_length=50), \
                      dataDescribing : str = Form(default=None, max_length=50), \
                      hiddenNode : str = Form(default=None, max_length=50), \
+                     thresholdForError : str = Form(default=None, max_length=50), \
                      activationFunction : str = Form(default=None, max_length=50), \
                      lossFunction : str = Form(default=None, max_length=50), \
                      optimizer : str = Form(default=None, max_length=50), \
@@ -236,6 +239,7 @@ def pipeline_model(request: Request, \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
+                                 thresholdForError=eval_avoidNone(thresholdForError), \
                                  activationFunction=activationFunction, \
                                  lossFunction=lossFunction, \
                                  optimizer=optimizer, \

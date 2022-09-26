@@ -229,6 +229,7 @@ def main(model_params):
                         inputDimension = model_params.inputDimension, \
                         hiddenNode = model_params.hiddenNode, \
                         outputDimension = model_params.outputDimension, \
+                        thresholdForError = model_params.thresholdForError, \
                         activationFunction = model_params.activationFunction, \
                         lossFunction = model_params.lossFunction, \
                         optimizer = model_params.optimizer, \

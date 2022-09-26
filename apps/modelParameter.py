@@ -11,6 +11,7 @@ class ModelParameter():
         inputDimension
         hiddenNode
         outputDimension
+        thresholdForError
         initializingNumber
         lossFunction
         learningGoal -> initializingLearningGoal
@@ -29,6 +30,7 @@ class ModelParameter():
         self.inputDimension = self.kwargs["inputDimension"]
         self.hiddenNode = self.kwargs["hiddenNode"]
         self.outputDimension = self.kwargs["outputDimension"]
+        self.thresholdForError =self.kwargs["thresholdForError"]
         self.initializingNumber = self.kwargs["initializingNumber"]
         self.lossFunction = self.kwargs["lossFunction"]
         self.initializingLearningGoal = self.kwargs["initializingLearningGoal"]
@@ -73,6 +75,7 @@ class ModelParameter2(ModelParameter):
         hiddenNode
         outputDimension
         activationFunction
+        thresholdForError
         lossFunction
         optimizer
         learningRate
@@ -106,6 +109,7 @@ class ModelParameter2(ModelParameter):
         self.hiddenNode = self.kwargs["hiddenNode"]
         self.outputDimension = self.kwargs["outputDimension"]
         self.activationFunction = self.kwargs["activationFunction"]
+        self.thresholdForError =self.kwargs["thresholdForError"]
         self.lossFunction = self.kwargs["lossFunction"]
         self.optimizer = self.kwargs["optimizer"]
         self.learningRate = self.kwargs["learningRate"]

@@ -185,7 +185,7 @@ class RIRO(Network):
                     self.model_params["learningRate"] *= 1.2
                 else: #loss > loss_pre
                     
-                    if self.model_params["learningRate"] <= self.model_params["learningRateLowerBound"]:
+                    if self.model_params["learningRate"] <= self.model_params["regularizingLearningRateLowerBound"]:
 
                         # If true, set the acceptance of the network as False and return initial_netwrok
                         self.acceptable = False
@@ -391,7 +391,7 @@ class RIRO(Network):
                 if torch.all(torch.abs(output - self.y) < self.model_params["initializingLearningGoal"]):
                     
                     ## If true, multiply the learning rate by 1.2
-                    self.learning_rate *= 1.2
+                    self.model_params["learningRate"] *= 1.2 
                     times_enlarge += 1
 
                 else:
