@@ -29,4 +29,9 @@ deploy:
     - master
   script:
     - echo "deploy"
+  rules:
+    - changes: 
+      - model_registry/**/*
+
+
 
