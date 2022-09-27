@@ -8,7 +8,7 @@ build:
   tags:
     - "AILab"
   only:
-    - master
+    - scenario_2
   script:
     - echo "build"
 
@@ -17,7 +17,7 @@ test:
   tags:
     - "AILab"
   only:
-    - master
+    - scenario_2
   script:
     - echo "testing"
 
@@ -26,6 +26,6 @@ deploy:
   tags:
     - "AILab"
   only:
-    - master
+    - scenario_2
   script:
     - echo "deploy"
