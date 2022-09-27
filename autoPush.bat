@@ -1,3 +1,4 @@
+%echo off
 set dir=%~dp0
 set GIT_PATH="C:/Program Files/Git/mingw64/libexec/git-core/git.exe"
 

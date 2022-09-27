@@ -1,9 +1,6 @@
 # git add/commit/push automatically
 
 from pathlib import Path
-
-
-
 from subprocess import Popen
 
 def main():
