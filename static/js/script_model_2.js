@@ -186,5 +186,6 @@ function commonLearningGoal(value){
   matchingLearningGoal.setAttribute("value", value);
   regularizingLearningGoal.setAttribute("value", value);
 
+  
 }
 
