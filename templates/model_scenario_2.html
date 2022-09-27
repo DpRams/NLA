@@ -265,8 +265,8 @@
 
 
               <div class="form-floating mb-3" id = "p_matchingTimes" style="display:none;margin:0;">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="matchingTimes">
-                <label for="floatingInput">Matching times</label>
+                <input type="text" class="form-control" id="matchingTimes" placeholder="10" name="matchingTimes" onchange="commonTuningTimes(this.value)">
+                <label for="matchingTimes">Matching times</label>
               </div>
 
               <div class="form-floating mb-3" id = "p_matchingLearningGoal" style="display:none;margin:0;">
@@ -275,8 +275,8 @@
               </div>
 
               <div class="form-floating mb-3" id = "p_matchingLearningRateLowerBound" style="display:none;margin:0;">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="matchingLearningRateLowerBound">
-                <label for="floatingInput">Matching learning rate lower bound</label>
+                <input type="text" class="form-control" id="matchingLearningRateLowerBound" placeholder="10" name="matchingLearningRateLowerBound" onchange="commonLearningRateLowerBound(this.value)">
+                <label for="matchingLearningRateLowerBound">Matching learning rate lower bound</label>
               </div>
 
 
@@ -424,8 +424,8 @@
 
                   <div id = "reorganizingParamaters" style="display:none;margin:0;">
                     <div class="form-floating mb-3"  >
-                      <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingTimes">
-                      <label for="floatingInput">Regularizing times</label>
+                      <input type="text" class="form-control" id="regularizingTimes" placeholder="10" name="regularizingTimes">
+                      <label for="regularizingTimes">Regularizing times</label>
                     </div>
 
                     <div class="form-floating mb-3"  >
@@ -439,8 +439,8 @@
                     </div>
 
                     <div class="form-floating mb-3"  >
-                      <input type="text" class="form-control" id="floatingInput" placeholder="10" name="regularizingLearningRateLowerBound">
-                      <label for="floatingInput">Regularizing learning rate lower bound</label>
+                      <input type="text" class="form-control" id="regularizingLearningRateLowerBound" placeholder="10" name="regularizingLearningRateLowerBound">
+                      <label for="regularizingLearningRateLowerBound">Regularizing learning rate lower bound</label>
                     </div>
                   </div>
                 </div>

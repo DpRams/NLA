@@ -181,3 +181,19 @@ function commonLearningGoal(value){
   
 }
 
+function commonTuningTimes(value){
+
+  let regularizingTimes = document.getElementById("regularizingTimes");
+
+  regularizingTimes.setAttribute("value", value);
+
+}
+
+function commonLearningRateLowerBound(value){
+
+  let regularizingLearningRateLowerBound = document.getElementById("regularizingLearningRateLowerBound");
+
+  regularizingLearningRateLowerBound.setAttribute("value", value);
+
+}
+
