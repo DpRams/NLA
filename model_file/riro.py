@@ -146,7 +146,7 @@ def main(model_params):
         model_experiments_record = {"network" : network, "experiments_record" : experiments_record}
     
         # inferencing
-        valid_acc = evaluating.inferencing(network, x_test, y_test)
+        valid_acc = evaluating.inferencing(network, x_test, y_test, validating=True)
         model_experiments_record["experiments_record"]["valid"]["mean_acc"] = np.round(valid_acc, 3)
 
         # Plot graph

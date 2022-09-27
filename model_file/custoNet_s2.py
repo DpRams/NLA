@@ -210,7 +210,7 @@ def training_CSINet(MyCSI, model_params):
     model_experiments_record = {"network" : MyCSI.net, "experiments_record" : experiments_record}
 
     # inferencing
-    valid_acc = evaluating.inferencing(MyCSI.net, x_test, y_test)
+    valid_acc = evaluating.inferencing(MyCSI.net, x_test, y_test, validating=True)
     model_experiments_record["experiments_record"]["valid"]["mean_acc"] = np.round(valid_acc, 3)
 
     # Plot graph

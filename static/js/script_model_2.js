@@ -86,8 +86,6 @@ function showMatchingParameters(){
 
 }
 
-
-
 function showModules(btnID){
 
   // after initializing_mask is enabled, button of cramming_mask, reorganizing_mask would be enabled
@@ -178,9 +176,15 @@ function showModules(btnID){
   }
 
 
+}
 
+function commonLearningGoal(value){
 
+  let matchingLearningGoal = document.getElementById("matchingLearningGoal");
+  let regularizingLearningGoal = document.getElementById("regularizingLearningGoal");
 
+  matchingLearningGoal.setAttribute("value", value);
+  regularizingLearningGoal.setAttribute("value", value);
 
 }
 

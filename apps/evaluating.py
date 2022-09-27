@@ -42,7 +42,7 @@ def reading_pkl(modelFile):
 
 
 
-def inferencing(network, x_test, y_test):   
+def inferencing(network, x_test, y_test, validating=False):   
 
     network.eval()
     
@@ -50,11 +50,13 @@ def inferencing(network, x_test, y_test):
     output, loss = network.forward()
         
     diff = (output - network.y)
-    
-    if "thresholdForError" in network.model_params.keys():
-        thresholdForError = network.model_params["thresholdForError"]
+
+    if validating:
+        thresholdForError = network.model_params["initializingLearningGoal"]  
+        # print(f"validating = {validating}, 採用 initializingLearningGoal")
     else:
-        thresholdForError = network.model_params["initializingLearningGoal"]
+        thresholdForError = network.model_params["thresholdForError"]
+        # print(f"validating = {validating}, 採用 thresholdForError")
 
     acc = (diff <= thresholdForError).to(torch.float32).mean().cpu().numpy()
     acc = np.round(acc, 3)
