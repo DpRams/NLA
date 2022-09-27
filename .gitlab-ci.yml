@@ -6,7 +6,7 @@ stages:
 build:
   stage: build
   tags:
-    - "local-use"
+    - "AILab"
   only:
     - master
   script:
@@ -15,7 +15,7 @@ build:
 test:
   stage: test
   tags:
-    - "local-use"
+    - "AILab"
   only:
     - master
   script:
@@ -24,7 +24,7 @@ test:
 deploy:
   stage: deploy
   tags:
-    - "local-use"
+    - "AILab"
   only:
     - master
   script:
