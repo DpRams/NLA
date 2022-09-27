@@ -86,13 +86,11 @@ function showMatchingParameters(){
 
 }
 
-function showModules(btnID){
+function showModules(){
 
-  // after initializing_mask is enabled, button of cramming_mask, reorganizing_mask would be enabled
-  let cramming_mask_e = document.getElementById("cramming_mask_e")
-  let cramming_mask_d = document.getElementById("cramming_mask_d")
-  let reorganizing_mask_e = document.getElementById("reorganizing_mask_e")
-  let reorganizing_mask_d = document.getElementById("reorganizing_mask_d")
+  let initializing_switch = document.getElementById("initializing_switch")
+  let cramming_switch = document.getElementById("cramming_switch")
+  let reorganizing_switch = document.getElementById("reorganizing_switch")
 
   let initializing_mask = document.getElementById("initializing_mask")
   let cramming_mask = document.getElementById("cramming_mask")
@@ -103,34 +101,27 @@ function showModules(btnID){
   let select_crammingRule = document.getElementById("select_crammingRule")
   let select_reorganizingRule = document.getElementById("select_reorganizingRule")
 
-
-  if (btnID == "initializing_mask_e"){
+  if (initializing_switch.checked == true){
   
-    cramming_mask_e.disabled = false;
-    cramming_mask_d.disabled = false;
-    reorganizing_mask_e.disabled = false;
-    reorganizing_mask_d.disabled = false;
-  
-  }else if (btnID == "initializing_mask_d"){
+    cramming_switch.disabled = false;
+    reorganizing_switch.disabled = false;
 
-    cramming_mask_e.disabled = true;
-    cramming_mask_d.disabled = true;
-    reorganizing_mask_e.disabled = true;
-    reorganizing_mask_d.disabled = true;
+  }else if (initializing_switch.checked == false){
+
+    cramming_switch.disabled = true;
+    cramming_switch.checked = false;
+    reorganizing_switch.disabled = true;
+    reorganizing_switch.checked = false;
     
   }
 
-
-  // show initializing_mask, cramming_mask, reorganizing_mask
-
-  if (btnID == "initializing_mask_e"){
+  if (initializing_switch.checked == true){
 
     initializing_mask.style.color = "black";
     initializing_mask.style.opacity = "1";
     initializing_mask.style.pointerEvents = "";
-
-  }else if (btnID == "initializing_mask_d"){
-
+  }else if (initializing_switch.checked == false){
+    
     // prevent that button has been disabled, but the div has already enabled
     initializing_mask.style.color = "grey";
     initializing_mask.style.opacity = "0.65";
@@ -150,23 +141,25 @@ function showModules(btnID){
     select_crammingRule.selectedIndex  = (select_crammingRule.options).length-1;
     select_reorganizingRule.selectedIndex  = (select_reorganizingRule.options).length-1;
 
-
-  }else if (btnID == "cramming_mask_e"){
+  }
+  if (cramming_switch.checked == true){
     cramming_mask.style.color = "black";
     cramming_mask.style.opacity = "1";
     cramming_mask.style.pointerEvents = "";
-  }else if (btnID == "cramming_mask_d"){
+  }else if (cramming_switch.checked == false){
     cramming_mask.style.color = "grey";
     cramming_mask.style.opacity = "0.65";
     cramming_mask.style.pointerEvents = "none";
 
     // prevent that div has already disabled, but the select value is not "Disabled"
     select_crammingRule.selectedIndex  = (select_crammingRule.options).length-1;
-  }else if (btnID == "reorganizing_mask_e"){
+  }
+  
+  if (reorganizing_switch.checked == true){
     reorganizing_mask.style.color = "black";
     reorganizing_mask.style.opacity = "1";
     reorganizing_mask.style.pointerEvents = "";
-  }else if (btnID == "reorganizing_mask_d"){
+  }else if (reorganizing_switch.checked == false){
     reorganizing_mask.style.color = "grey";
     reorganizing_mask.style.opacity = "0.65";
     reorganizing_mask.style.pointerEvents = "none";
@@ -174,7 +167,6 @@ function showModules(btnID){
     // prevent that div has already disabled, but the select value is not "Disabled"
     select_reorganizingRule.selectedIndex  = (select_reorganizingRule.options).length-1;
   }
-
 
 }
 
