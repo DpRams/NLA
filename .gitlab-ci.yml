@@ -28,6 +28,6 @@ deploy:
   script:
     - echo "deploy"
   rules:
-    - ch1anges:
+    - changes:
       - model_registry/*
 
