@@ -9,6 +9,7 @@ import shutil
 import requests
 import time
 import urllib.parse
+import autoPush
 
 # testing
 # Append absolute path to import module within different directory.
@@ -280,6 +281,9 @@ def pipeline_model(request: Request, \
 
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
+
+   # git add/commit/push automatically
+   autoPush.main()
 
    print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
