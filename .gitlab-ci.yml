@@ -29,3 +29,7 @@ deploy:
     - scenario_2
   script:
     - echo "deploy"
+  rules:
+    - changes:
+      - model_registry/*
+
