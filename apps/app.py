@@ -282,9 +282,6 @@ def pipeline_model(request: Request, \
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
 
-   # git add/commit/push automatically
-   autoPush.main()
-
    print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
       f"/model_fig",
@@ -356,6 +353,14 @@ def __model_evaluating(dataDirectory, modelFile):
 
    return model_experiments_record, model_params, model_fig_drt, testingAccuracy
 
+def __model_deploying(modelFile):
+
+   # save model to directory : model_deploying
+   saving.writeIntoModelDeploying(modelFile)
+
+   # git add/commit/push automatically
+   autoPush.main()
+
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
 
@@ -408,6 +413,14 @@ def pipeline_service(request: Request, \
                      })
 
 
+@app.post("/pipeline/deploy")
+def pipeline_deploy(request: Request, \
+                     modelFile : str = Form(default=None, max_length=50)):
+
+   __model_deploying(modelFile)
+
+   return modelFile
+
 @app.post("/save/service")
 def save_service(model_params, model_perf, model_perf_fig):
    print(f'已進入 save_service()')
@@ -419,7 +432,6 @@ def save_service(model_params, model_perf, model_perf_fig):
 def save_model(model_experiments_record=None, model_params=None, model_fig_drt=None):
 
    saving.writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt)
-
 
 def eval_avoidNone(parameter):
    # eval processing, can't using function when input is None

@@ -27,7 +27,8 @@ deploy:
     - "AILab"
   script:
     - echo "deploy"
+    - docker
   rules:
     - changes:
-      - model_registry/*
+      - model_deploying/*
 

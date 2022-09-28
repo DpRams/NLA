@@ -3,6 +3,7 @@ import pickle
 import sys
 import numpy as np
 from pathlib import Path
+import shutil
 
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
@@ -28,3 +29,17 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
     checkpoint = {"model_experiments_record":model_experiments_record, "model_params":model_params, "model_fig_drt":model_fig_drt}
     with open(f"{drtPath}\\{fileName}", "wb") as f:
         pickle.dump(checkpoint, f)
+
+def writeIntoModelDeploying(modelFile):
+
+    # define src, dst path
+    srcPath = Path(f"{root}\\model_registry\\")
+    dstPath = Path(f"{root}\\model_deploying\\")
+
+    # create dir
+    dstPath.mkdir(parents=True, exist_ok=True)
+
+    source = f"{srcPath}\\{modelFile}"
+    destination = f"{dstPath}\\{modelFile}"
+
+    shutil.copyfile(source, destination)

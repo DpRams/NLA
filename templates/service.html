@@ -121,7 +121,7 @@
     <div class="p-5 mb-1 bg-light rounded-3">
       <div class="container-fluid py-0">
         <h1 class="display-6 fw-bold">Service</h1>
-        <p class="col-md-8 fs-5">Deploy your model and provide service.</p>
+        <p class="col-md-8 fs-5">Call your model and provide temp service.</p>
 
         <br><br>
 
@@ -141,10 +141,17 @@
           </div>
 
           <br>
+
+          <label class="col-md-8 fs-5"></label>
+          <label for="deploy" class="btn btn-outline-primary btn-lg" >Deploy(test)</label>
+          <input type="submit" id="deploy" class="btn btn-outline-primary btn-lg" formaction="/pipeline/deploy" hidden onclick="return confirm('是否部署該模型');">
+
+          <br><br>
+
           <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
               <label class="col-md-8 fs-4">Select Data directory from Server.</label>
-              <select name="dataDirectory" method="GET"  style="font-size:20px;" >  <!-- select 也可以配 action -->
+              <select name="dataDirectory" method="GET"  style="font-size:20px;" >
                 {% for dataDir in upload_data %}
                 <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
                 {% endfor %}
