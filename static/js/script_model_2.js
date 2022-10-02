@@ -86,6 +86,26 @@ function showMatchingParameters(){
 
 }
 
+function AutoFillCrammingAndReorganizingRule(rule){
+
+  let select_dataDescribing = document.getElementById("select_dataDescribing")
+  // window.alert(select_dataDescribing.selectedIndex);
+
+
+  if (rule == "cramming"){
+
+    let select_crammingRule = document.getElementById("select_crammingRule")
+    select_crammingRule.selectedIndex = select_dataDescribing.selectedIndex;
+  
+  }
+  if (rule == "reorganizing"){
+
+    let select_reorganizingRule = document.getElementById("select_reorganizingRule")
+    select_reorganizingRule.selectedIndex = select_dataDescribing.selectedIndex;
+
+  }
+}
+
 function showModules(){
 
   let initializing_switch = document.getElementById("initializing_switch")
@@ -120,6 +140,7 @@ function showModules(){
     initializing_mask.style.color = "black";
     initializing_mask.style.opacity = "1";
     initializing_mask.style.pointerEvents = "";
+
   }else if (initializing_switch.checked == false){
     
     // prevent that button has been disabled, but the div has already enabled
@@ -146,6 +167,8 @@ function showModules(){
     cramming_mask.style.color = "black";
     cramming_mask.style.opacity = "1";
     cramming_mask.style.pointerEvents = "";
+    AutoFillCrammingAndReorganizingRule('cramming');
+
   }else if (cramming_switch.checked == false){
     cramming_mask.style.color = "grey";
     cramming_mask.style.opacity = "0.65";
@@ -159,12 +182,16 @@ function showModules(){
     reorganizing_mask.style.color = "black";
     reorganizing_mask.style.opacity = "1";
     reorganizing_mask.style.pointerEvents = "";
+    AutoFillCrammingAndReorganizingRule('reorganizing');
+
+    
   }else if (reorganizing_switch.checked == false){
     reorganizing_mask.style.color = "grey";
     reorganizing_mask.style.opacity = "0.65";
     reorganizing_mask.style.pointerEvents = "none";
 
     // prevent that div has already disabled, but the select value is not "Disabled"
+    console.log((select_reorganizingRule.options).length-1);
     select_reorganizingRule.selectedIndex  = (select_reorganizingRule.options).length-1;
   }
 

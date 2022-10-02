@@ -152,7 +152,7 @@
                   </div>
 
                   <div class="form-floating mb-3">
-                    <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
+                    <select class="form-control" id="select_dataDescribing" placeholder="10" name="dataDescribing" method="GET"  style="font-size:20px;"> 
                       <option value= "ri_sro" SELECTED>ri_sro</option>
                       <option value= "ri_mro" >ri_mro</option>
                       <option value= "bi_sro" >bi_sro</option>
@@ -162,7 +162,7 @@
                       <option value= "bi_sbo" >bi_sbo</option>
                       <option value= "bi_mbo" >bi_mbo</option>
                     </select>
-                    <label for="select_activationFunction">Data descirbing</label>
+                    <label for="select_dataDescribing">Data descirbing</label>
                   </div>
                   
                 </div>
@@ -353,7 +353,7 @@
               <div class="btn-group-toggle" data-toggle="buttons">
 
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="cramming_switch" onchange="showModules()">
+                  <input class="form-check-input" type="checkbox" id="cramming_switch" onchange="showModules(); ">
                   <label class="form-check-label" for="cramming_switch"></label>
                 </div>
 
@@ -368,7 +368,7 @@
                   <label class="col-md-8 fs-4">Cramming.</label>
                   <div class="form-floating mb-3">
                     <select class="form-control" id="select_crammingRule" placeholder="10" name="crammingRule" method="GET"  style="font-size:20px;"> 
-                      <option value= "ri_sro" SELECTED>ri_sro</option>
+                      <option value= "ri_sro" >ri_sro</option>
                       <option value= "ri_mro" >ri_mro</option>
                       <option value= "bi_sro" >bi_sro</option>
                       <option value= "bi_mro" >bi_mro</option>
@@ -378,7 +378,7 @@
                       <option value= "bi_mbo" >bi_mbo</option>
                       <option value= "Disabled" SELECTED>Disabled</option>
                     </select>
-                    <label for="select_crammingRule">Selecting rule</label>
+                    <label for="select_crammingRule">Cramming rule</label>
                   </div>
                 </div>
               </div>
@@ -394,7 +394,7 @@
               <div class="btn-group-toggle" data-toggle="buttons">
 
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="reorganizing_switch" onchange="showModules()">
+                  <input class="form-check-input" type="checkbox" id="reorganizing_switch" onchange="showModules(); ">
                   <label class="form-check-label" for="reorganizing_switch"></label>
                 </div>
 
@@ -409,7 +409,7 @@
                   <label class="col-md-8 fs-4">Reorganizing.</label>
                   <div class="form-floating mb-3">
                     <select class="form-control" id="select_reorganizingRule" placeholder="10" name="reorganizingRule" method="GET"  style="font-size:20px;" onclick="showReorganzingingParameters()"> 
-                      <option value= "ri_sro" SELECTED>ri_sro</option>
+                      <option value= "ri_sro" >ri_sro</option>
                       <option value= "ri_mro" >ri_mro</option>
                       <option value= "bi_sro" >bi_sro</option>
                       <option value= "bi_mro" >bi_mro</option>
