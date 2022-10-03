@@ -63,6 +63,10 @@ class ModelParameter():
 
         return dataShape
 
+class ModelParameter2LayerNet(ModelParameter):
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
 class ModelParameter2(ModelParameter):
     def __init__(self, **kwargs):
 

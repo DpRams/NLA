@@ -20,9 +20,9 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 # print(parent, root)
 
-from model_file import custoNet_s2, custoNet_s1, riro, ribo
+from model_file import custoNet_s2, custoNet_s1, riro, ribo, custoNet_SLFN
 # from model_file.riro import main
-from modelParameter import ModelParameter, ModelParameter2
+from modelParameter import ModelParameter, ModelParameter2, ModelParameter2LayerNet
 from apps import evaluating, saving 
 
 app = FastAPI()
@@ -193,23 +193,25 @@ def pipeline_model(request: Request, \
 def pipeline_model(request: Request):
 
    upload_data = os.listdir(f"{root}\\upload_data")
-   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
    
-   return templates.TemplateResponse("model_scenario_SLFN.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
+   return templates.TemplateResponse("model_scenario_SLFN.html",{"request":request, "upload_data":upload_data})
 
 @app.post("/pipeline/model/scenario/SLFN")
 def pipeline_model(request: Request, \
                      dataDirectory: str = Form(default=None, max_length=50), \
-                     modelFile: str = Form(default=None, max_length=50), \
-                     initializingNumber: str = Form(default=None, max_length=50), \
-                     lossFunction: str = Form(default=None, max_length=50), \
-                     learningGoal: str = Form(default=None, max_length=50), \
-                     learningRate: str = Form(default=None, max_length=50), \
-                     learningRateLowerBound: str = Form(default=None, max_length=50), \
-                     optimizer: str = Form(default=None, max_length=50), \
-                     matchingTimes: str = Form(default=None, max_length=50), \
-                     regularizingStrength: str = Form(default=None, max_length=50), \
-                     thresholdForError : str = Form(default=None, max_length=50)):
+                     hiddenNode : str = Form(default=None, max_length=50), \
+                     activationFunction : str = Form(default=None, max_length=50), \
+                     epoch : str = Form(default=None, max_length=50), \
+                     batchSize : str = Form(default=None, max_length=50), \
+                     learningGoal : str = Form(default=None, max_length=50), \
+                     thresholdForError : str = Form(default=None, max_length=50), \
+                     lossFunction : str = Form(default=None, max_length=50), \
+                     optimizer : str = Form(default=None, max_length=50), \
+                     learningRate : str = Form(default=None, max_length=50), \
+                     betas : str = Form(default=None, max_length=50), \
+                     eps : str = Form(default=None, max_length=50), \
+                     weightDecay : str = Form(default=None, max_length=50)):
+
 
 
    # List the upload data to Dropdownlist
@@ -220,21 +222,24 @@ def pipeline_model(request: Request, \
    dataShape = ModelParameter.get_dataShape(f"{root}\\upload_data\\{dataDirectory}")
 
    # Define modelParameter
-   model_params = ModelParameter(dataDirectory=dataDirectory, \
+   model_params = ModelParameter2LayerNet(dataDirectory=dataDirectory, \
                                  dataShape=dataShape, \
-                                 modelFile=modelFile, \
                                  inputDimension=dataShape["X"][1], \
-                                 hiddenNode=1, \
+                                 hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
-                                 initializingNumber=eval_avoidNone(initializingNumber), \
-                                 lossFunction=lossFunction, \
-                                 initializingLearningGoal=eval_avoidNone(learningGoal), \
-                                 learningRate=eval_avoidNone(learningRate), \
-                                 regularizingLearningRateLowerBound=eval_avoidNone(learningRateLowerBound), \
-                                 optimizer=optimizer, \
-                                 matchingTimes=eval_avoidNone(matchingTimes), \
-                                 regularizingStrength=eval_avoidNone(regularizingStrength), \
-                                 thresholdForError=eval_avoidNone(thresholdForError))
+                                 modelFile = "custoNet_SLFN.py", \
+                                 activationFunction = activationFunction, \
+                                 epoch = eval_avoidNone(epoch), \
+                                 batchSize = eval_avoidNone(batchSize), \
+                                 learningGoal = eval_avoidNone(learningGoal), \
+                                 thresholdForError = eval_avoidNone(thresholdForError), \
+                                 lossFunction = lossFunction, \
+                                 optimizer = optimizer, \
+                                 learningRate = eval_avoidNone(learningRate), \
+                                 betas = betas, \
+                                 eps = eval_avoidNone(eps), \
+                                 weightDecay = eval_avoidNone(weightDecay))
+
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
@@ -266,26 +271,29 @@ def pipeline_model(request: Request, \
    return templates.TemplateResponse("model_scenario_SLFN.html", \
             context={"request":request, \
                      "upload_data":upload_data, \
-                     "model_file":model_file, \
                      "dataDirectory":dataDirectory, \
                      "dataShape":dataShape, \
-                     "initializingNumber":initializingNumber, \
-                     "modelFile":modelFile, \
-                     "lossFunction":lossFunction, \
+                     "hiddenNode":hiddenNode, \
+                     "activationFunction":activationFunction, \
+                     "epoch":epoch, \
+                     "batchSize":batchSize, \
                      "learningGoal":learningGoal, \
-                     "learningRate":learningRate, \
-                     "learningRateLowerBound":learningRateLowerBound, \
+                     "thresholdForError":thresholdForError, \
+                     "lossFunction":lossFunction, \
                      "optimizer":optimizer, \
-                     "matchingTimes":matchingTimes, \
-                     "regularizingStrength":regularizingStrength, \
+                     "learningRate":learningRate, \
+                     "betas":betas, \
+                     "eps":eps, \
+                     "weightDecay":weightDecay, \
                      "model_experiments_record":model_experiments_record, \
-                     "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
-                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-                     "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
-                     "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
-                     "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
-                     "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
-                     "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
+                     # "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+                     # "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+                     # "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
+                     # "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
+                     # "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
+                     # "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
+                     # "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
+                     # 
                      })
 
 

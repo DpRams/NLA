@@ -74,7 +74,7 @@ def training_2LayerNet(MyCSI, model_params):
 
     # Reading dataset
     (x_train_scaled, y_train_scaled, x_test, y_test) = \
-    reading_dataset_Training_only_2LayerNet(MyCSI.net.model_params.dataDirectory)  
+    reading_dataset_Training_only_2LayerNet(MyCSI.net.model_params["dataDirectory"])  
 
         # Record experiments data
     experiments_record = {"train" : {"mean_acc" : 0, "acc_step" : [], "mean_loss" : 0, "loss_step" : []}, \
@@ -91,7 +91,6 @@ def training_2LayerNet(MyCSI, model_params):
 
         current_x = x_train_scaled[:i]
         current_y = y_train_scaled[:i].reshape(-1, 1)
-        current_y = np.expand_dims(current_y, 1) #turn shape [n] into [n,1] 
 
         print(f'current_x = {current_x.shape}')
         print(f'current_y = {current_y.shape}')

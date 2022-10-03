@@ -101,6 +101,12 @@
       }
     </style>
 
+  <script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+  <script type="text/javascript" src="{{ url_for('static', path='/js/script_model_2.js') }}"></script>
+
     
   </head>
   <body>
@@ -139,20 +145,6 @@
                     <label for="select_data">Data directory</label>
                   </div>
 
-                  <div class="form-floating mb-3">
-                    <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
-                      <option value= "ri_sro" SELECTED>ri_sro</option>
-                      <option value= "ri_mro" >ri_mro</option>
-                      <option value= "bi_sro" >bi_sro</option>
-                      <option value= "bi_mro" >bi_mro</option>
-                      <option value= "ri_sbo" >ri_sbo</option>
-                      <option value= "ri_mbo" >ri_mbo</option>
-                      <option value= "bi_sbo" >bi_sbo</option>
-                      <option value= "bi_mbo" >bi_mbo</option>
-                    </select>
-                    <label for="select_activationFunction">Data descirbing</label>
-                  </div>
-                  
                 </div>
             </div>
           </div>
@@ -165,12 +157,32 @@
               <label class="col-md-8 fs-5">For training</label>
 
               <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode">
+                <label for="floatingInput">Hidden node</label>
+              </div>
+
+              <div class="form-floating mb-3">
                 <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
                   <option value= "ReLU" SELECTED>ReLU</option>
                 </select>
                 <label for="select_activationFunction">Activation function</label>
               </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="epoch">
+                <label for="floatingInput">Epoch</label>
+              </div>
               
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="batchSize">
+                <label for="floatingInput">Batch size</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningGoal">
+                <label for="floatingInput">Learning goal</label>
+              </div>
+
               <label class="col-md-8 fs-5">For testing</label>
               <div class="form-floating mb-3">
 
@@ -236,37 +248,8 @@
               </div>
 
               
-              <br><br>
-
-              <div class="form-floating mb-3">
-                <select class="form-control" id="select_matchingRule" placeholder="10" name="matchingRule" method="GET"  style="font-size:20px;" onclick="showMatchingParameters()"> 
-                  <option value= "EU" >EU</option>
-                  <option value= "EU_LG" >EU_LG</option>
-                  <option value= "EU_LG_UA" >EU_LG_UA</option>
-                  <option value= "Disabled" SELECTED>Disabled</option>
-                </select>
-                <label for="select_matchingRule">Matching rule</label>
-              </div>
-
-
-
-              <div class="form-floating mb-3" id = "p_matchingTimes" style="display:none;margin:0;">
-                <input type="text" class="form-control" id="matchingTimes" placeholder="10" name="matchingTimes" onchange="commonTuningTimes(this.value)">
-                <label for="matchingTimes">Matching times</label>
-              </div>
-
-              <div class="form-floating mb-3" id = "p_matchingLearningGoal" style="display:none;margin:0;">
-                <input type="text" class="form-control" id="matchingLearningGoal" placeholder="10" name="matchingLearningGoal">
-                <label for="matchingLearningGoal">Matching learning goal</label>
-              </div>
-
-              <div class="form-floating mb-3" id = "p_matchingLearningRateLowerBound" style="display:none;margin:0;">
-                <input type="text" class="form-control" id="matchingLearningRateLowerBound" placeholder="10" name="matchingLearningRateLowerBound" onchange="commonLearningRateLowerBound(this.value)">
-                <label for="matchingLearningRateLowerBound">Matching learning rate lower bound</label>
-              </div>
-          </div>
-
           <br>
+
 
 
           <label class="col-md-8 fs-5"></label>
@@ -287,25 +270,33 @@
               <br>
               <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
               <br>
-              <text><b>Model  : <font color="blue">{{modelFile}}</font></b></text>
+              <text><b>Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
               <br>
-              <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
+              <text><b>Activation function : <font color="blue">{{activationFunction}}</font></b></text>
               <br>
-              <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
+              <text><b>Epoch : <font color="blue">{{epoch}}</font></b></text>
+              <br>
+              <text><b>Batch size : <font color="blue">{{batchSize}}</font></b></text>
               <br>
               <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
               <br>
-              <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+              <text><b>Threshold for error : <font color="blue">{{thresholdForError}}</font></b></text>
               <br>
-              <text><b>Learning rate Lower bound : <font color="blue">{{learningRateLowerBound}}</font></b></text>
+              <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
               <br>
               <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
               <br>
-              <text><b>Tuning times : <font color="blue">{{matchingTimes}}</font></b></text>
+              <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
               <br>
-              <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+              <text><b>Betas : <font color="blue">{{betas}}</font></b></text>
               <br>
-              <text><b>model_experiments_record : <font color="blue">{{model_experiments_record}}</font></b></text>
+              <text><b>Eps : <font color="blue">{{eps}}</font></b></text>
+              <br>
+              <text><b>Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
+              <br><br>
+
+              <br><br>
+              <label class="col-md-8 fs-5">Model experiments record : <font color="blue">{{model_experiments_record}}</font></label>
               <br><br>
 
             </div>
