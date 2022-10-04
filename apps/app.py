@@ -180,11 +180,11 @@ def pipeline_model(request: Request, \
                      "model_experiments_record":model_experiments_record, \
                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
                      "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-                     "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
-                     "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
-                     "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
-                     "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
-                     "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
+                     "url_path_for_trainingAccuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png'), \
+                     "url_path_for_trainingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png'), \
+                     "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/nodes.png'), \
+                     "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/prunedNodes.png'), \
+                     "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/routes.png')
                      })
 
 @app.get("/pipeline/model/scenario/SLFN")
@@ -281,14 +281,12 @@ def pipeline_model(request: Request, \
                      "eps":eps, \
                      "weightDecay":weightDecay, \
                      "model_experiments_record":model_experiments_record, \
-                     # "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
-                     # "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-                     # "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
-                     # "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
-                     # "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
-                     # "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
-                     # "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
-                     # 
+                     "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+                     "url_path_for_trainingAccuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png'), \
+                     "url_path_for_trainingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png'), \
+                     "url_path_for_validatingAccuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingAccuracy.png'), \
+                     "url_path_for_validatingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingLoss.png'), \
                      })
 
 
@@ -337,7 +335,7 @@ def pipeline_model(request: Request, \
    model_params = ModelParameter(dataDirectory=dataDirectory, \
                                  dataDescribing=dataDescribing, \
                                  dataShape=dataShape, \
-                                 modelFile="custoNet_s2.py", \
+                                 modelFile="custoNet_ASLFN.py", \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
@@ -363,7 +361,7 @@ def pipeline_model(request: Request, \
                                  regularizingLearningGoal=eval_avoidNone(regularizingLearningGoal), \
                                  regularizingLearningRateLowerBound=eval_avoidNone(regularizingLearningRateLowerBound))
 
-   # # Train model
+   # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
    if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
@@ -421,11 +419,11 @@ def pipeline_model(request: Request, \
                                              "model_experiments_record":model_experiments_record, \
                                              "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
                                              "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-                                             "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
-                                             "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
-                                             "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
-                                             "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
-                                             "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
+                                             "url_path_for_trainingAccuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png'), \
+                                             "url_path_for_trainingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png'), \
+                                             "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/nodes.png'), \
+                                             "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/prunedNodes.png'), \
+                                             "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/routes.png')
                                              
                                              })
 

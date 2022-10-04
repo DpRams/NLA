@@ -73,7 +73,6 @@ def making_figure(model_experiments_record, model_params):
 
     data_drt = model_params.kwargs["dataDirectory"]
     
-
     lr_goal = model_params.kwargs["learningGoal"]
 
     # create dir path
@@ -104,28 +103,89 @@ def making_figure(model_experiments_record, model_params):
 
     return model_fig_drt
 
-def __plot_acc(training_acc_step, drtPath):
 
-    plt.plot([i.cpu().detach() for i in training_acc_step], label = 'train') 
-    plt.title("Training accuracy")
-    plt.xlabel("Data")
-    plt.ylabel("Accuracy")
-    plt.grid(linestyle="--", linewidth=0.5)
-    fileName = "Accuracy.png"
-    plt.savefig(f"{drtPath}\\{fileName}")
-    plt.clf()
+def making_figure_2LayerNet(model_experiments_record, model_params):
+    
+    # this line is set to prevent the bug about https://blog.csdn.net/qq_42998120/article/details/107871863
+    plt.switch_backend("agg")
+
+    # print(f"查看{model_params}")
+
+    data_drt = model_params.kwargs["dataDirectory"]
+    
+    lr_goal = model_params.kwargs["learningGoal"]
+
+    # create dir path
+    timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
+    modelType = model_params.kwargs["modelFile"][:-3]
+    validAcc = str(model_experiments_record["experiments_record"]["valid"]["mean_acc"])[:5]
+    drtName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}\\" 
+
+    # create dir    
+    drtPath = Path(f"{root}\\model_fig\\{drtName}")
+    drtPath.mkdir(parents=True, exist_ok=True)
+
+    training_acc_step = model_experiments_record["experiments_record"]["train"]["acc_step"]
+    training_loss_step = model_experiments_record["experiments_record"]["train"]["loss_step"]
+    validating_acc_step = model_experiments_record["experiments_record"]["valid"]["acc_step"]
+    validating_loss_step = model_experiments_record["experiments_record"]["valid"]["loss_step"]
 
 
-def __plot_loss(training_loss_step, drtPath):
+    # making figure
+    __plot_acc(training_acc_step, drtPath)
+    __plot_loss(training_loss_step, drtPath)
+    __plot_acc(validating_acc_step, drtPath, validating=True)
+    __plot_loss(validating_loss_step, drtPath, validating=True)
 
-    plt.plot([i for i in training_loss_step], label = 'train') 
-    plt.title("Training loss")
-    plt.xlabel("Data")
-    plt.ylabel("Loss")
-    plt.grid(linestyle="--", linewidth=0.5)
-    fileName = "Loss.png"
-    plt.savefig(f"{drtPath}\\{fileName}")
-    plt.clf()
+    # model_fig_drt = drtPath # return the whole path
+    model_fig_drt = drtPath.parts[-1] # return only the last drtPath
+
+    return model_fig_drt
+
+def __plot_acc(training_acc_step, drtPath, validating=False):
+
+    if not validating:
+
+        plt.plot([i for i in training_acc_step], label = 'train') 
+        plt.title("Training accuracy")
+        plt.xlabel("Data")
+        plt.ylabel("Accuracy")
+        plt.grid(linestyle="--", linewidth=0.5)
+        fileName = "trainingAccuracy.png"
+        plt.savefig(f"{drtPath}\\{fileName}")
+        plt.clf()
+    else:
+        plt.plot([i for i in training_acc_step], label = 'val') 
+        plt.title("Validating accuracy")
+        plt.xlabel("Epoch")
+        plt.ylabel("Accuracy")
+        plt.grid(linestyle="--", linewidth=0.5)
+        fileName = "validatingAccuracy.png"
+        plt.savefig(f"{drtPath}\\{fileName}")
+        plt.clf()
+
+
+def __plot_loss(training_loss_step, drtPath, validating=False):
+
+    if not validating:
+        plt.plot([i for i in training_loss_step], label = 'train') 
+        plt.title("Training loss")
+        plt.xlabel("Data")
+        plt.ylabel("Loss")
+        plt.grid(linestyle="--", linewidth=0.5)
+        fileName = "trainingLoss.png"
+        plt.savefig(f"{drtPath}\\{fileName}")
+        plt.clf()
+
+    else:
+        plt.plot([i for i in training_loss_step], label = 'val') 
+        plt.title("Validating loss")
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+        plt.grid(linestyle="--", linewidth=0.5)
+        fileName = "validatingLoss.png"
+        plt.savefig(f"{drtPath}\\{fileName}")
+        plt.clf()
 
 def __plot_nb_node(nb_node_step, drtPath):
 
@@ -134,7 +194,7 @@ def __plot_nb_node(nb_node_step, drtPath):
     plt.xlabel("Data")
     plt.ylabel("node")
     plt.grid(linestyle="--", linewidth=0.5)
-    fileName = "Nodes.png"
+    fileName = "nodes.png"
     plt.savefig(f"{drtPath}\\{fileName}")
     plt.clf()
 
@@ -145,7 +205,7 @@ def __plot_nb_node_pruned(nb_node_pruned_step, drtPath):
     plt.xlabel("Data")
     plt.ylabel("node")
     plt.grid(linestyle="--", linewidth=0.5)
-    fileName = "Pruned_nodes.png"
+    fileName = "prunedNodes.png"
     plt.savefig(f"{drtPath}\\{fileName}")
     plt.clf()
 
@@ -159,6 +219,6 @@ def __plot_routes(routes_cnt, drtPath):
     plt.xlabel('Route')
     plt.ylabel('Count')
     plt.title('Route distribution')
-    fileName = "Routes.png"
+    fileName = "routes.png"
     plt.savefig(f"{drtPath}\\{fileName}")
     plt.clf()

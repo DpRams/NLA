@@ -87,18 +87,27 @@ def training_2LayerNet(MyNet, model_params):
 
         MyNet.train()
 
+        acc_per_epoch, loss_per_epoch = [], []
+
+
         for batch in train_loader:
             
             x, y = batch
-
+            
             MyNet.setData(x, y)
             
             output, loss = MyNet.forward()
             MyNet.backward(loss)
 
             train_acc = ((output - MyNet.y) <= MyNet.model_params["learningGoal"]).to(torch.float32).mean().cpu().detach()
-            experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
-            experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
+
+            acc_per_epoch.append(train_acc)
+            loss_per_epoch.append(loss.item())
+            
+        experiments_record["train"]["acc_step"].append(np.round(np.mean(acc_per_epoch), 3))
+        experiments_record["train"]["loss_step"].append(np.round(np.mean(loss_per_epoch), 3))
+
+        acc_per_epoch, loss_per_epoch = [], []
         
         for batch in val_loader:
 
@@ -110,8 +119,12 @@ def training_2LayerNet(MyNet, model_params):
                 output, loss = MyNet.forward()
 
                 valid_acc = ((output - MyNet.y) <= MyNet.model_params["learningGoal"]).to(torch.float32).mean().cpu().detach()
-                experiments_record["valid"]["acc_step"].append(np.round(valid_acc, 3))
-                experiments_record["valid"]["loss_step"].append(np.round(loss.item(), 3))
+
+                acc_per_epoch.append(valid_acc)
+                loss_per_epoch.append(loss.item())
+
+        experiments_record["valid"]["acc_step"].append(np.round(np.mean(acc_per_epoch), 3))
+        experiments_record["valid"]["loss_step"].append(np.round(np.mean(loss_per_epoch), 3))
 
         experiments_record["train"]["mean_acc"] = np.round(np.mean(experiments_record["train"]["acc_step"]), 3)
         experiments_record["train"]["mean_loss"] = np.round(np.mean(experiments_record["train"]["loss_step"]), 3)
@@ -120,61 +133,10 @@ def training_2LayerNet(MyNet, model_params):
 
     model_experiments_record = {"network" : MyNet, "experiments_record" : experiments_record}
 
+    # Plot graph
+    model_fig_drt = evaluating.making_figure_2LayerNet(model_experiments_record, model_params)    
 
-
-    # # Initialize record
-    # model_experiments_record = {"network" : None, "experiments_record" : None}
-
-    # # Reading dataset
-    # (x_train_scaled, y_train_scaled, x_test, y_test) = \
-    # reading_dataset_Training_only_2LayerNet(MyNet.net.model_params["dataDirectory"])  
-
-    #     # Record experiments data
-    # experiments_record = {"train" : {"mean_acc" : 0, "acc_step" : [], "mean_loss" : 0, "loss_step" : []}, \
-    #                         "valid" : {"mean_acc" : 0}, \
-    #                         "nb_node" : [], "nb_node_pruned" : [],\
-    #                         "Route" : {"Blue": 0, "Red":0, "Green":0}}
-
-    # experiments_record["nb_node"].append(MyNet.net.linear1.weight.data.shape[0])
-    
-    # for i in range(1, x_train_scaled.shape[0]):
-    
-    #     print('-----------------------------------------------------------')
-    #     print(f'訓練第幾筆資料 : {i}')
-
-    #     current_x = x_train_scaled[:i]
-    #     current_y = y_train_scaled[:i].reshape(-1, 1)
-
-    #     print(f'current_x = {current_x.shape}')
-    #     print(f'current_y = {current_y.shape}')
-
-    #     MyNet.net.setData(current_x, current_y)
-
-    #     # Append every record in one iteration
-    #     output, loss = MyNet.net.forward()
-    #     train_acc = ((output - MyNet.net.y) <= MyNet.net.model_params["initializingLearningGoal"]).to(torch.float32).mean().cpu().detach()
-    #     experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
-    #     experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
-    #     experiments_record["nb_node"].append(MyNet.net.nb_node)
-    #     experiments_record["nb_node_pruned"].append(MyNet.net.nb_node_pruned)
-    #     MyNet.net.nb_node_pruned = 0
-
-
-    # experiments_record["train"]["mean_acc"] = np.mean(experiments_record["train"]["acc_step"])
-    # experiments_record["train"]["mean_loss"] = np.mean(experiments_record["train"]["loss_step"])
-
-    # model_experiments_record = {"network" : MyNet.net, "experiments_record" : experiments_record}
-
-    # # inferencing
-    # valid_acc = evaluating.inferencing(MyNet.net, x_test, y_test)
-    # model_experiments_record["experiments_record"]["valid"]["mean_acc"] = np.round(valid_acc, 3)
-
-    # # Plot graph
-    # model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)    
-
-    # return model_experiments_record, model_params, model_fig_drt
-
-    return model_experiments_record, model_params, None
+    return model_experiments_record, model_params, model_fig_drt
 
 def main(model_params):
 
