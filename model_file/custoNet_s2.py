@@ -221,35 +221,35 @@ def training_CSINet(MyCSI, model_params):
 
 def main(model_params):
 
-    MyCSI = YourCSI_s2(dataDirectory = model_params.dataDirectory, \
-                        dataDescribing = model_params.dataDescribing, \
-                        dataShape = model_params.dataShape, \
-                        modelFile = model_params.modelFile, \
-                        inputDimension = model_params.inputDimension, \
-                        hiddenNode = model_params.hiddenNode, \
-                        outputDimension = model_params.outputDimension, \
-                        thresholdForError = model_params.thresholdForError, \
-                        activationFunction = model_params.activationFunction, \
-                        lossFunction = model_params.lossFunction, \
-                        optimizer = model_params.optimizer, \
-                        learningRate = model_params.learningRate, \
-                        betas = model_params.betas, \
-                        eps = model_params.eps, \
-                        weightDecay = model_params.weightDecay, \
-                        initializingRule = model_params.initializingRule, \
-                        initializingNumber = model_params.initializingNumber, \
-                        initializingLearningGoal = model_params.initializingLearningGoal, \
-                        selectingRule = model_params.selectingRule, \
-                        matchingRule = model_params.matchingRule, \
-                        matchingTimes = model_params.matchingTimes, \
-                        matchingLearningGoal = model_params.matchingLearningGoal, \
-                        matchingLearningRateLowerBound = model_params.matchingLearningRateLowerBound, \
-                        crammingRule = model_params.crammingRule, \
-                        reorganizingRule = model_params.reorganizingRule, \
-                        regularizingTimes = model_params.regularizingTimes, \
-                        regularizingStrength = model_params.regularizingStrength, \
-                        regularizingLearningGoal = model_params.regularizingLearningGoal, \
-                        regularizingLearningRateLowerBound = model_params.regularizingLearningRateLowerBound)
+    MyCSI = YourCSI_s2(dataDirectory = model_params.kwargs["dataDirectory"], \
+                        dataDescribing = model_params.kwargs["dataDescribing"], \
+                        dataShape = model_params.kwargs["dataShape"], \
+                        modelFile = model_params.kwargs["modelFile"], \
+                        inputDimension = model_params.kwargs["inputDimension"], \
+                        hiddenNode = model_params.kwargs["hiddenNode"], \
+                        outputDimension = model_params.kwargs["outputDimension"], \
+                        thresholdForError = model_params.kwargs["thresholdForError"], \
+                        activationFunction = model_params.kwargs["activationFunction"], \
+                        lossFunction = model_params.kwargs["lossFunction"], \
+                        optimizer = model_params.kwargs["optimizer"], \
+                        learningRate = model_params.kwargs["learningRate"], \
+                        betas = model_params.kwargs["betas"], \
+                        eps = model_params.kwargs["eps"], \
+                        weightDecay = model_params.kwargs["weightDecay"], \
+                        initializingRule = model_params.kwargs["initializingRule"], \
+                        initializingNumber = model_params.kwargs["initializingNumber"], \
+                        initializingLearningGoal = model_params.kwargs["initializingLearningGoal"], \
+                        selectingRule = model_params.kwargs["selectingRule"], \
+                        matchingRule = model_params.kwargs["matchingRule"], \
+                        matchingTimes = model_params.kwargs["matchingTimes"], \
+                        matchingLearningGoal = model_params.kwargs["matchingLearningGoal"], \
+                        matchingLearningRateLowerBound = model_params.kwargs["matchingLearningRateLowerBound"], \
+                        crammingRule = model_params.kwargs["crammingRule"], \
+                        reorganizingRule = model_params.kwargs["reorganizingRule"], \
+                        regularizingTimes = model_params.kwargs["regularizingTimes"], \
+                        regularizingStrength = model_params.kwargs["regularizingStrength"], \
+                        regularizingLearningGoal = model_params.kwargs["regularizingLearningGoal"], \
+                        regularizingLearningRateLowerBound = model_params.kwargs["regularizingLearningRateLowerBound"])
 
     print(f"查看{MyCSI.net.model_params}")
 

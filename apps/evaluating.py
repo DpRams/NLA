@@ -6,7 +6,7 @@ import os
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
-from modelParameter import ModelParameter, ModelParameter2
+from modelParameter import ModelParameter
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from pathlib import Path

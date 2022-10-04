@@ -22,7 +22,7 @@ sys.path.append(str(root))
 
 from model_file import custoNet_s2, custoNet_s1, riro, ribo, custoNet_SLFN
 # from model_file.riro import main
-from modelParameter import ModelParameter, ModelParameter2, ModelParameter2LayerNet
+from modelParameter import ModelParameter
 from apps import evaluating, saving 
 
 app = FastAPI()
@@ -222,7 +222,7 @@ def pipeline_model(request: Request, \
    dataShape = ModelParameter.get_dataShape(f"{root}\\upload_data\\{dataDirectory}")
 
    # Define modelParameter
-   model_params = ModelParameter2LayerNet(dataDirectory=dataDirectory, \
+   model_params = ModelParameter(dataDirectory=dataDirectory, \
                                  dataShape=dataShape, \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=eval_avoidNone(hiddenNode), \
@@ -340,7 +340,7 @@ def pipeline_model(request: Request, \
    dataShape = ModelParameter.get_dataShape(f"{root}\\upload_data\\{dataDirectory}")
 
    # Define modelParameter
-   model_params = ModelParameter2(dataDirectory=dataDirectory, \
+   model_params = ModelParameter(dataDirectory=dataDirectory, \
                                  dataDescribing=dataDescribing, \
                                  dataShape=dataShape, \
                                  modelFile="custoNet_s2.py", \

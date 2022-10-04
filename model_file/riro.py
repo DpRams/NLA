@@ -48,27 +48,27 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
 # 存放model, experiments_record
 def main(model_params):
 
-    lr_goals = [model_params.initializingLearningGoal]
+    lr_goals = [model_params.kwargs["initializingLearningGoal"]]
     # model_experiments_record = {"lr_goals" : {key : None for key in lr_goals}}
     model_experiments_record = {"network" : None, "experiments_record" : None}
 
     for lr_goal in sorted(lr_goals, reverse=True):
         
         # Reading dataset
-        (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.dataDirectory, model_params.initializingNumber)
+        (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test) = reading_dataset_Training(model_params.kwargs["dataDirectory"], model_params.kwargs["initializingNumber"])
         
         # Defining model
-        network = RIRO( inputDimension=model_params.inputDimension, \
-                        hiddenNode=model_params.hiddenNode, \
-                        outputDimension=model_params.outputDimension, \
-                        lossFunction=model_params.lossFunction, \
+        network = RIRO( inputDimension=model_params.kwargs["inputDimension"], \
+                        hiddenNode=model_params.kwargs["hiddenNode"], \
+                        outputDimension=model_params.kwargs["outputDimension"], \
+                        lossFunction=model_params.kwargs["lossFunction"], \
                         initializingLearningGoal=lr_goal, \
-                        learningRate=model_params.learningRate, \
-                        regularizingLearningRateLowerBound=model_params.regularizingLearningRateLowerBound, \
-                        optimizer=model_params.optimizer,  \
-                        matchingTimes=model_params.matchingTimes,  \
-                        regularizingStrength=model_params.regularizingStrength, \
-                        thresholdForError = model_params.thresholdForError)
+                        learningRate=model_params.kwargs["learningRate"], \
+                        regularizingLearningRateLowerBound=model_params.kwargs["regularizingLearningRateLowerBound"], \
+                        optimizer=model_params.kwargs["optimizer"],  \
+                        matchingTimes=model_params.kwargs["matchingTimes"],  \
+                        regularizingStrength=model_params.kwargs["regularizingStrength"], \
+                        thresholdForError = model_params.kwargs["thresholdForError"])
 
         # Initializing model
         # network = initializing(network, initial_x, initial_y)
@@ -88,7 +88,7 @@ def main(model_params):
         for i in range(1, x_train_scaled.shape[0]):
         
             print('-----------------------------------------------------------')
-            print(f"訓練第幾筆資料 : {i + model_params.initializingNumber}")
+            print(f"訓練第幾筆資料 : {i + model_params.kwargs['initializingNumber']}")
 
             sorted_index = network.selecting(x_train_scaled[i-1:], y_train_scaled[i-1:])
             current_x = np.append(current_x, x_train_scaled[sorted_index[0]]).reshape(-1, x_train_scaled.shape[1])
