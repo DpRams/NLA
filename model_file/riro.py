@@ -48,7 +48,7 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
 # 存放model, experiments_record
 def main(model_params):
 
-    lr_goals = [model_params.kwargs["initializingLearningGoal"]]
+    lr_goals = [model_params.kwargs["learningGoal"]]
     # model_experiments_record = {"lr_goals" : {key : None for key in lr_goals}}
     model_experiments_record = {"network" : None, "experiments_record" : None}
 

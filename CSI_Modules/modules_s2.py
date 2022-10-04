@@ -83,7 +83,7 @@ class Match():
         network_pre = copy.deepcopy(network)
         output, loss = network.forward()
 
-        if torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
+        if torch.all(torch.abs(output - network.y) < network.model_params["learningGoal"]):
             
             network.acceptable = True
     #         print("Matching Successful")
@@ -102,7 +102,7 @@ class Match():
                 output, loss = network.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
-                if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
+                if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.model_params["learningGoal"]):
 
                     network.acceptable = True
                     #print("Matching Successful")
@@ -147,7 +147,7 @@ class Cram():
         network_old = copy.deepcopy(network)
         output, loss = network.forward()
 
-        undesired_index = torch.nonzero(torch.abs(output - network.y) > network.model_params["initializingLearningGoal"] + 1e-3, as_tuple = False)
+        undesired_index = torch.nonzero(torch.abs(output - network.y) > network.model_params["learningGoal"] + 1e-3, as_tuple = False)
 
         """
         [ [0] [1] [3] ] shape = (3,1), 代表有3筆非0的data。 演算法基礎上應只有一筆，thus undesired_index.shape[0] == 1
@@ -225,7 +225,7 @@ class Cram():
             output, loss = network.forward()
 
             ## Determine if cramming is succesful and print out the corresponding information
-            if torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
+            if torch.all(torch.abs(output - network.y) < network.model_params["learningGoal"]):
                 network.acceptable = True
                 print("Cramming successful")
                 network.message = "Cramming successful"
@@ -307,7 +307,7 @@ class Reorganize():
         network_pre = copy.deepcopy(network)
         output, loss = network.forward()
 
-        if torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
+        if torch.all(torch.abs(output - network.y) < network.model_params["learningGoal"]):
             
             network.acceptable = True
     #         print("Matching(Re) Successful")
@@ -326,7 +326,7 @@ class Reorganize():
                 output, loss = network.forward()
 
                 # Confirm whether the loss value of the adjusted network is smaller than the current one
-                if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
+                if loss <= loss_pre and torch.all(torch.abs(output - network.y) < network.model_params["learningGoal"]):
 
                     network.acceptable = True
                     #print("Matching(Re) Successful")
@@ -383,7 +383,7 @@ class Reorganize():
             if loss <= loss_pre:
 
                 ## Identify that all forecast value has met the error term
-                if torch.all(torch.abs(output - network.y) < network.model_params["initializingLearningGoal"]):
+                if torch.all(torch.abs(output - network.y) < network.model_params["learningGoal"]):
                     
                     ## If true, multiply the learning rate by 1.2
                     network.model_params["learningRate"] *= 1.2

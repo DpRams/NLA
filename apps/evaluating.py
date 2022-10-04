@@ -48,19 +48,18 @@ def inferencing(network, x_test, y_test, validating=False):
     
     network.setData(x_test, y_test)
     output, loss = network.forward()
+
+    if not validating:
+        return np.round(loss, 3)
         
-    diff = (output - network.y)
-
-    if validating:
-        thresholdForError = network.model_params["initializingLearningGoal"]  
-        # print(f"validating = {validating}, 採用 initializingLearningGoal")
     else:
-        thresholdForError = network.model_params["thresholdForError"]
-        # print(f"validating = {validating}, 採用 thresholdForError")
+        learningGoal = network.model_params["learningGoal"]  
+        diff = output - network.y 
+        acc = (diff <= learningGoal).to(torch.float32).mean().cpu().numpy()
+        return np.round(acc, 3)
 
-    acc = (diff <= thresholdForError).to(torch.float32).mean().cpu().numpy()
-    acc = np.round(acc, 3)
-    return acc
+    
+
 
 
 # Training Accuracy, Training Loss, nb_node, nb_node_pruned 折線圖
@@ -74,10 +73,8 @@ def making_figure(model_experiments_record, model_params):
 
     data_drt = model_params.kwargs["dataDirectory"]
     
-    if "initializingLearningGoal" in model_params.kwargs.keys():
-        lr_goal = model_params.kwargs["initializingLearningGoal"]
-    else:
-        lr_goal = model_params.kwargs["learningGoal"]
+
+    lr_goal = model_params.kwargs["learningGoal"]
 
     # create dir path
     timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())

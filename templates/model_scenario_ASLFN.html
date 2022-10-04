@@ -187,9 +187,10 @@
               
               <label class="col-md-8 fs-5">For testing</label>
               <div class="form-floating mb-3">
-
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="thresholdForError">
-                <label for="floatingInput">Threshold for error</label>
+                <select class="form-control" id="select_testingMetric" placeholder="10" name="lossFunction" method="GET"  style="font-size:20px;"> 
+                  <option value= "RMSE" SELECTED>RMSE</option>
+                </select>
+                <label for="select_testingMetric">Testing metric</label>
               </div>
 
             </div>
@@ -324,8 +325,8 @@
                       </div>
       
                       <div class="form-floating mb-3"  >
-                        <input type="text" class="form-control" id="initializingLearningGoal" placeholder="10" name="initializingLearningGoal"  onchange="commonLearningGoal(this.value)">
-                        <label for="initializingLearningGoal">Initializing learning goal</label>
+                        <input type="text" class="form-control" id="learningGoal" placeholder="10" name="learningGoal"  onchange="commonLearningGoal(this.value)">
+                        <label for="learningGoal">Initializing learning goal</label>
                       </div>
                     </div>
 
@@ -512,7 +513,7 @@
               <br>
               <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
               <br>
-              <text><b>Initializing learning goal : <font color="blue">{{initializingLearningGoal}}</font></b></text>
+              <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
         
               <br><br>
               <label class="col-md-8 fs-5">Selecting.</label>

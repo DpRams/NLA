@@ -55,7 +55,7 @@ class ModelParameter():
         weightDecay
         initializingRule
         initializingNumber
-        initializingLearningGoal
+        learningGoal
         selectingRule
         matchingRule
         matchingTimes

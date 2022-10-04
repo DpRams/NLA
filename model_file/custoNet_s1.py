@@ -48,7 +48,7 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
 # 存放model, experiments_record
 def main(model_params):
 
-    lr_goals = [model_params.kwargs["initializingLearningGoal"]]
+    lr_goals = [model_params.kwargs["learningGoal"]]
     # model_experiments_record = {"lr_goals" : {key : None for key in lr_goals}}
     model_experiments_record = {"network" : None, "experiments_record" : None}
 
@@ -62,7 +62,7 @@ def main(model_params):
                             hiddenNode=model_params.hiddenNode, \
                             outputDimension=model_params.outputDimension, \
                             lossFunction=model_params.lossFunction, \
-                            initializingLearningGoal=lr_goal, \
+                            learningGoal=lr_goal, \
                             learningRate=model_params.learningRate, \
                             regularizingLearningRateLowerBound=model_params.regularizingLearningRateLowerBound, \
                             optimizer=model_params.optimizer,  \
@@ -102,7 +102,7 @@ def main(model_params):
 
             output, loss = network.net.forward()
 
-            if torch.all(torch.abs(output - network.net.y) <= network.net.model_params["initializingLearningGoal"]):
+            if torch.all(torch.abs(output - network.net.y) <= network.net.model_params["learningGoal"]):
                 network.net.acceptable = True
                 network.reorganizing()
                 experiments_record["Route"]["Blue"] += 1
@@ -131,7 +131,7 @@ def main(model_params):
 
             # Append every record in one iteration
             output, loss = network.net.forward()
-            train_acc = ((output - network.net.y) <= network.net.model_params["initializingLearningGoal"]).to(torch.float32).mean().cpu().detach()
+            train_acc = ((output - network.net.y) <= network.net.model_params["learningGoal"]).to(torch.float32).mean().cpu().detach()
             experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
             experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
             experiments_record["nb_node"].append(network.net.nb_node)

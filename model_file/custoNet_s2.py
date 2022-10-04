@@ -99,7 +99,7 @@ def training_2LayerNet(MyCSI, model_params):
 
         # Append every record in one iteration
         output, loss = MyCSI.net.forward()
-        train_acc = ((output - MyCSI.net.y) <= MyCSI.net.model_params["initializingLearningGoal"]).to(torch.float32).mean().cpu().detach()
+        train_acc = ((output - MyCSI.net.y) <= MyCSI.net.model_params["learningGoal"]).to(torch.float32).mean().cpu().detach()
         experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
         experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
         experiments_record["nb_node"].append(MyCSI.net.nb_node)
@@ -166,7 +166,7 @@ def training_CSINet(MyCSI, model_params):
 
         output, loss = MyCSI.net.forward()
 
-        if torch.all(torch.abs(output - MyCSI.net.y) <= MyCSI.net.model_params["initializingLearningGoal"]):
+        if torch.all(torch.abs(output - MyCSI.net.y) <= MyCSI.net.model_params["learningGoal"]):
             MyCSI.net.acceptable = True
             MyCSI.reorganizing()
             experiments_record["Route"]["Blue"] += 1
@@ -195,7 +195,7 @@ def training_CSINet(MyCSI, model_params):
 
         # Append every record in one iteration
         output, loss = MyCSI.net.forward()
-        train_acc = ((output - MyCSI.net.y) <= MyCSI.net.model_params["initializingLearningGoal"]).to(torch.float32).mean().cpu().detach()
+        train_acc = ((output - MyCSI.net.y) <= MyCSI.net.model_params["learningGoal"]).to(torch.float32).mean().cpu().detach()
         experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
         experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
         experiments_record["nb_node"].append(MyCSI.net.nb_node)
@@ -238,7 +238,7 @@ def main(model_params):
                         weightDecay = model_params.kwargs["weightDecay"], \
                         initializingRule = model_params.kwargs["initializingRule"], \
                         initializingNumber = model_params.kwargs["initializingNumber"], \
-                        initializingLearningGoal = model_params.kwargs["initializingLearningGoal"], \
+                        learningGoal = model_params.kwargs["learningGoal"], \
                         selectingRule = model_params.kwargs["selectingRule"], \
                         matchingRule = model_params.kwargs["matchingRule"], \
                         matchingTimes = model_params.kwargs["matchingTimes"], \

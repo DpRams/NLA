@@ -129,7 +129,7 @@ def pipeline_model(request: Request, \
                                  outputDimension=dataShape["Y"][1], \
                                  initializingNumber=eval_avoidNone(initializingNumber), \
                                  lossFunction=lossFunction, \
-                                 initializingLearningGoal=eval_avoidNone(learningGoal), \
+                                 learningGoal=eval_avoidNone(learningGoal), \
                                  learningRate=eval_avoidNone(learningRate), \
                                  regularizingLearningRateLowerBound=eval_avoidNone(learningRateLowerBound), \
                                  optimizer=optimizer, \
@@ -320,7 +320,7 @@ def pipeline_model(request: Request, \
                      weightDecay : str = Form(default=None, max_length=50), \
                      initializingRule : str = Form(default=None, max_length=50), \
                      initializingNumber : str = Form(default=None, max_length=50), \
-                     initializingLearningGoal : str = Form(default=None, max_length=50), \
+                     learningGoal : str = Form(default=None, max_length=50), \
                      selectingRule : str = Form(default=None, max_length=50), \
                      matchingRule : str = Form(default=None, max_length=50), \
                      matchingTimes : str = Form(default=None, max_length=50), \
@@ -357,7 +357,7 @@ def pipeline_model(request: Request, \
                                  weightDecay=eval_avoidNone(weightDecay), \
                                  initializingRule=initializingRule, \
                                  initializingNumber=eval_avoidNone(initializingNumber), \
-                                 initializingLearningGoal=eval_avoidNone(initializingLearningGoal), \
+                                 learningGoal=eval_avoidNone(learningGoal), \
                                  selectingRule=selectingRule, \
                                  matchingRule=matchingRule, \
                                  matchingTimes=eval_avoidNone(matchingTimes), \
@@ -414,7 +414,7 @@ def pipeline_model(request: Request, \
                                              "matchingTimes":matchingTimes, \
                                              "initializingRule":initializingRule, \
                                              "initializingNumber":initializingNumber, \
-                                             "initializingLearningGoal":initializingLearningGoal, \
+                                             "learningGoal":learningGoal, \
                                              "selectingRule":selectingRule, \
                                              "matchingRule":matchingRule, \
                                              "matchingLearningGoal":matchingLearningGoal, \
@@ -506,7 +506,7 @@ def pipeline_service(request: Request, \
                      "modelFile":modelFile, \
                      "initializingNumber":model_params.kwargs["initializingNumber"], \
                      "lossFunction":model_params.kwargs["lossFunction"], \
-                     "learningGoal":model_params.kwargs["initializingLearningGoal"], \
+                     "learningGoal":model_params.kwargs["learningGoal"], \
                      "learningRate":model_params.kwargs["learningRate"], \
                      "learningRateLowerBound":model_params.kwargs["regularizingLearningRateLowerBound"], \
                      "optimizer":model_params.kwargs["optimizer"], \
