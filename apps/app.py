@@ -494,20 +494,24 @@ def pipeline_service(request: Request, \
       StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
       name="model_fig",
    )  
+   # if modelFile ==  custoNet_SLFN.py:
+   # context = {}
+   # else if modelFile == custoNet_s2.py:
+   # context = {}
 
    return templates.TemplateResponse("service.html", \
                   context={"request":request, \
                      "upload_data":upload_data, \
                      "dataDirectory":dataDirectory, \
                      "modelFile":modelFile, \
-                     "initializingNumber":model_params.initializingNumber, \
-                     "lossFunction":model_params.lossFunction, \
-                     "learningGoal":model_params.initializingLearningGoal, \
-                     "learningRate":model_params.learningRate, \
-                     "learningRateLowerBound":model_params.regularizingLearningRateLowerBound, \
-                     "optimizer":model_params.optimizer, \
-                     "tuningTimes":model_params.matchingTimes, \
-                     "regularizingStrength":model_params.regularizingStrength, \
+                     "initializingNumber":model_params.kwargs["initializingNumber"], \
+                     "lossFunction":model_params.kwargs["lossFunction"], \
+                     "learningGoal":model_params.kwargs["initializingLearningGoal"], \
+                     "learningRate":model_params.kwargs["learningRate"], \
+                     "learningRateLowerBound":model_params.kwargs["regularizingLearningRateLowerBound"], \
+                     "optimizer":model_params.kwargs["optimizer"], \
+                     "tuningTimes":model_params.kwargs["matchingTimes"], \
+                     "regularizingStrength":model_params.kwargs["regularizingStrength"], \
                      "model_registry":model_registry, \
                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
                      "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
