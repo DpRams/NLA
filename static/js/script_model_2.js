@@ -199,13 +199,12 @@ function showModules(){
 
 function commonLearningGoal(value){
 
-  let matchingLearningGoal = document.getElementById("matchingLearningGoal");
+  let learningGoal = document.getElementById("learningGoal");
   let regularizingLearningGoal = document.getElementById("regularizingLearningGoal");
 
-  matchingLearningGoal.setAttribute("value", value);
+  learningGoal.setAttribute("value", value);
   regularizingLearningGoal.setAttribute("value", value);
 
-  
 }
 
 function commonTuningTimes(value){

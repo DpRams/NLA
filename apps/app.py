@@ -20,7 +20,7 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 # print(parent, root)
 
-from model_file import custoNet_s2, custoNet_s1, riro, ribo, custoNet_SLFN
+from model_file import custoNet_ASLFN, custoNet_s1, riro, ribo, custoNet_SLFN
 # from model_file.riro import main
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
@@ -109,8 +109,7 @@ def pipeline_model(request: Request, \
                      learningRateLowerBound: str = Form(default=None, max_length=50), \
                      optimizer: str = Form(default=None, max_length=50), \
                      matchingTimes: str = Form(default=None, max_length=50), \
-                     regularizingStrength: str = Form(default=None, max_length=50), \
-                     thresholdForError : str = Form(default=None, max_length=50)):
+                     regularizingStrength: str = Form(default=None, max_length=50)):
 
 
    # List the upload data to Dropdownlist
@@ -134,8 +133,7 @@ def pipeline_model(request: Request, \
                                  regularizingLearningRateLowerBound=eval_avoidNone(learningRateLowerBound), \
                                  optimizer=optimizer, \
                                  matchingTimes=eval_avoidNone(matchingTimes), \
-                                 regularizingStrength=eval_avoidNone(regularizingStrength), \
-                                 thresholdForError=eval_avoidNone(thresholdForError))
+                                 regularizingStrength=eval_avoidNone(regularizingStrength))
    # Train model
    model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
@@ -204,7 +202,6 @@ def pipeline_model(request: Request, \
                      epoch : str = Form(default=None, max_length=50), \
                      batchSize : str = Form(default=None, max_length=50), \
                      learningGoal : str = Form(default=None, max_length=50), \
-                     thresholdForError : str = Form(default=None, max_length=50), \
                      lossFunction : str = Form(default=None, max_length=50), \
                      optimizer : str = Form(default=None, max_length=50), \
                      learningRate : str = Form(default=None, max_length=50), \
@@ -232,7 +229,6 @@ def pipeline_model(request: Request, \
                                  epoch = eval_avoidNone(epoch), \
                                  batchSize = eval_avoidNone(batchSize), \
                                  learningGoal = eval_avoidNone(learningGoal), \
-                                 thresholdForError = eval_avoidNone(thresholdForError), \
                                  lossFunction = lossFunction, \
                                  optimizer = optimizer, \
                                  learningRate = eval_avoidNone(learningRate), \
@@ -278,7 +274,6 @@ def pipeline_model(request: Request, \
                      "epoch":epoch, \
                      "batchSize":batchSize, \
                      "learningGoal":learningGoal, \
-                     "thresholdForError":thresholdForError, \
                      "lossFunction":lossFunction, \
                      "optimizer":optimizer, \
                      "learningRate":learningRate, \
@@ -310,7 +305,6 @@ def pipeline_model(request: Request, \
                      dataDirectory : str = Form(default=None, max_length=50), \
                      dataDescribing : str = Form(default=None, max_length=50), \
                      hiddenNode : str = Form(default=None, max_length=50), \
-                     thresholdForError : str = Form(default=None, max_length=50), \
                      activationFunction : str = Form(default=None, max_length=50), \
                      lossFunction : str = Form(default=None, max_length=50), \
                      optimizer : str = Form(default=None, max_length=50), \
@@ -347,7 +341,6 @@ def pipeline_model(request: Request, \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
-                                 thresholdForError=eval_avoidNone(thresholdForError), \
                                  activationFunction=activationFunction, \
                                  lossFunction=lossFunction, \
                                  optimizer=optimizer, \
@@ -455,10 +448,10 @@ def __model_evaluating(dataDirectory, modelFile):
    model_params = checkpoints["model_params"]
    model_fig_drt = checkpoints["model_fig_drt"]
    
-   # testAccuracy 應該不能跟原始pkl檔存一起，要另外存
-   testingAccuracy = evaluating.inferencing(network, x_test, y_test)
+   # rmseError 應該不能跟原始pkl檔存一起，要另外存
+   rmseError = evaluating.inferencing(network, x_test, y_test)
 
-   return model_experiments_record, model_params, model_fig_drt, testingAccuracy
+   return model_experiments_record, model_params, model_fig_drt, rmseError
 
 def __model_deploying(modelFile):
 
@@ -486,7 +479,7 @@ def pipeline_service(request: Request, \
    upload_data = os.listdir(f"{root}\\upload_data")
    model_registry = os.listdir(f"{root}\\model_registry")
 
-   model_experiments_record, model_params, model_fig_drt, testingAccuracy = __model_evaluating(dataDirectory, modelFile)
+   model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelFile)
 
    print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
@@ -503,24 +496,25 @@ def pipeline_service(request: Request, \
                   context={"request":request, \
                      "upload_data":upload_data, \
                      "dataDirectory":dataDirectory, \
-                     "modelFile":modelFile, \
-                     "initializingNumber":model_params.kwargs["initializingNumber"], \
-                     "lossFunction":model_params.kwargs["lossFunction"], \
-                     "learningGoal":model_params.kwargs["learningGoal"], \
-                     "learningRate":model_params.kwargs["learningRate"], \
-                     "learningRateLowerBound":model_params.kwargs["regularizingLearningRateLowerBound"], \
-                     "optimizer":model_params.kwargs["optimizer"], \
-                     "tuningTimes":model_params.kwargs["matchingTimes"], \
-                     "regularizingStrength":model_params.kwargs["regularizingStrength"], \
+                     # "modelFile":modelFile, \
+                     # "initializingNumber":model_params.kwargs["initializingNumber"], \
+                     # "lossFunction":model_params.kwargs["lossFunction"], \
+                     # "learningGoal":model_params.kwargs["learningGoal"], \
+                     # "learningRate":model_params.kwargs["learningRate"], \
+                     # "learningRateLowerBound":model_params.kwargs["regularizingLearningRateLowerBound"], \
+                     # "optimizer":model_params.kwargs["optimizer"], \
+                     # "tuningTimes":model_params.kwargs["matchingTimes"], \
+                     # "regularizingStrength":model_params.kwargs["regularizingStrength"], \
                      "model_registry":model_registry, \
-                     "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
-                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-                     "testingAccuracy":testingAccuracy, \
-                     "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
-                     "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
-                     "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
-                     "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
-                     "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
+                     # "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+                     # "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+                     "rmseError":rmseError, \
+                     # "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
+                     # "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
+                     # "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
+                     # "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
+                     # "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
+                     
                      })
 
 

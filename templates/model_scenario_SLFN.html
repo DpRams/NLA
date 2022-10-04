@@ -185,9 +185,10 @@
 
               <label class="col-md-8 fs-5">For testing</label>
               <div class="form-floating mb-3">
-
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="thresholdForError">
-                <label for="floatingInput">Threshold for error</label>
+                <select class="form-control" id="select_testingMetric" placeholder="10" name="lossFunction" method="GET"  style="font-size:20px;"> 
+                  <option value= "RMSE" SELECTED>RMSE</option>
+                </select>
+                <label for="select_testingMetric">Testing metric</label>
               </div>
 
             </div>
@@ -279,8 +280,6 @@
               <text><b>Batch size : <font color="blue">{{batchSize}}</font></b></text>
               <br>
               <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
-              <br>
-              <text><b>Threshold for error : <font color="blue">{{thresholdForError}}</font></b></text>
               <br>
               <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
               <br>

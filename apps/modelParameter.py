@@ -29,7 +29,7 @@ class ModelParameter():
         * epoch
         * batchSize
         * learningGoal (Demo訂在實數output，訓練時算loss用)
-        * thresholdForError(準備移除) -> rmseError
+        * thresholdForError(準備移除) -> rmseError(應不會記錄在 modelParameter，要再想想)
         * lossFunction
         * optimizer
         * learningRate
@@ -46,7 +46,7 @@ class ModelParameter():
         hiddenNode
         outputDimension
         activationFunction
-        thresholdForError(準備移除) -> rmseError
+        thresholdForError(準備移除) -> rmseError(應不會記錄在 modelParameter，要再想想)
         lossFunction
         optimizer
         learningRate

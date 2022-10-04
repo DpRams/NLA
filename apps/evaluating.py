@@ -50,7 +50,7 @@ def inferencing(network, x_test, y_test, validating=False):
     output, loss = network.forward()
 
     if not validating:
-        return np.round(loss, 3)
+        return np.round(loss.detach().cpu().numpy(), 3)
         
     else:
         learningGoal = network.model_params["learningGoal"]  
