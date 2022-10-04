@@ -188,7 +188,6 @@ def main(model_params):
                     epoch = model_params.kwargs["epoch"], \
                     batchSize = model_params.kwargs["batchSize"], \
                     learningGoal = model_params.kwargs["learningGoal"], \
-                    thresholdForError = model_params.kwargs["thresholdForError"], \
                     lossFunction = model_params.kwargs["lossFunction"], \
                     optimizer = model_params.kwargs["optimizer"], \
                     learningRate = model_params.kwargs["learningRate"], \
