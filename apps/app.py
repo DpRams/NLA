@@ -485,34 +485,62 @@ def pipeline_service(request: Request, \
       StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
       name="model_fig",
    )  
-   # if modelFile ==  custoNet_SLFN.py:
-   # context = {}
-   # else if modelFile == custoNet_s2.py:
-   # context = {}
+
+   if "ASLFN" in modelFile:
+      url_path_for_fig_1 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png')
+      url_path_for_fig_2 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png')
+      url_path_for_fig_3 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/nodes.png')
+      url_path_for_fig_4 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/prunedNodes.png')
+      url_path_for_fig_5 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/routes.png')
+
+   else:
+      url_path_for_fig_1 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png')
+      url_path_for_fig_2 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png')
+      url_path_for_fig_3 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingAccuracy.png')
+      url_path_for_fig_4 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingLoss.png')
+      url_path_for_fig_5 = None
+
+
 
    return templates.TemplateResponse("service.html", \
                   context={"request":request, \
+                     "model_registry":model_registry, \
                      "upload_data":upload_data, \
                      "dataDirectory":dataDirectory, \
-                     # "modelFile":modelFile, \
-                     # "initializingNumber":model_params.kwargs["initializingNumber"], \
-                     # "lossFunction":model_params.kwargs["lossFunction"], \
-                     # "learningGoal":model_params.kwargs["learningGoal"], \
-                     # "learningRate":model_params.kwargs["learningRate"], \
-                     # "learningRateLowerBound":model_params.kwargs["regularizingLearningRateLowerBound"], \
-                     # "optimizer":model_params.kwargs["optimizer"], \
-                     # "tuningTimes":model_params.kwargs["matchingTimes"], \
-                     # "regularizingStrength":model_params.kwargs["regularizingStrength"], \
-                     "model_registry":model_registry, \
-                     # "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
-                     # "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+                     "dataShape":model_params.kwargs["dataShape"], \
+                     "modelFile":modelFile, \
+                     "hiddenNode":model_params.kwargs["hiddenNode"], \
+                     "activationFunction":model_params.kwargs["activationFunction"], \
+                     "epoch":template_avoidNone(model_params, "epoch"), \
+                     "batchSize":template_avoidNone(model_params, "batchSize"), \
+                     "lossFunction":model_params.kwargs["lossFunction"], \
+                     "optimizer":model_params.kwargs["optimizer"], \
+                     "learningRate":model_params.kwargs["learningRate"] if model_params.kwargs["learningRate"] else None, \
+                     "betas":model_params.kwargs["betas"], \
+                     "eps":model_params.kwargs["eps"], \
+                     "weightDecay":model_params.kwargs["weightDecay"], \
+                     "initializingRule":template_avoidNone(model_params, "initializingRule"), \
+                     "initializingNumber":template_avoidNone(model_params, "initializingNumber"), \
+                     "learningGoal":model_params.kwargs["learningGoal"], \
+                     "selectingRule":template_avoidNone(model_params, "selectingRule"), \
+                     "matchingRule":template_avoidNone(model_params, "matchingRule"), \
+                     "matchingTimes":template_avoidNone(model_params, "matchingTimes"), \
+                     "matchingLearningGoal":template_avoidNone(model_params, "matchingLearningGoal"), \
+                     "matchingLearningRateLowerBound":template_avoidNone(model_params, "matchingLearningRateLowerBound"), \
+                     "crammingingRule":template_avoidNone(model_params, "crammingingRule"), \
+                     "regularizingRule":template_avoidNone(model_params, "regularizingRule"), \
+                     "regularizingTimes":template_avoidNone(model_params, "regularizingTimes"), \
+                     "regularizingStrength":template_avoidNone(model_params, "regularizingStrength"), \
+                     "regularizingLearningGoal":template_avoidNone(model_params, "regularizingLearningGoal"), \
+                     "regularizingLearningRateLowerBound":template_avoidNone(model_params, "regularizingLearningRateLowerBound"), \
+                     "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
                      "rmseError":rmseError, \
-                     # "url_path_for_Accuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'), \
-                     # "url_path_for_Loss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Loss.png'), \
-                     # "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Nodes.png'), \
-                     # "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Pruned_nodes.png'), \
-                     # "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/Routes.png')
-                     
+                     "url_path_for_fig_1":url_path_for_fig_1, \
+                     "url_path_for_fig_2":url_path_for_fig_2, \
+                     "url_path_for_fig_3":url_path_for_fig_3, \
+                     "url_path_for_fig_4":url_path_for_fig_4, \
+                     "url_path_for_fig_5":url_path_for_fig_5, \
                      })
 
 
@@ -542,6 +570,12 @@ def eval_avoidNone(parameter):
       return eval(parameter)
    else:
       return None
+
+def template_avoidNone(model_params, keys):
+   if keys not in model_params.kwargs.keys():
+      return None
+   else:
+      return model_params.kwargs[keys]
 
 if __name__ == '__main__':
 	uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True) # 若有 rewrite file 可能不行 reload=True，不然會一直重開 by 李忠大師

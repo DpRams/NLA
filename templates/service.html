@@ -173,23 +173,57 @@
               <br><br>
               <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
               <br>
-              <text><b>Model  : <font color="blue">{{modelFile}}</font></b></text>
+              <text><b>Data shape : <font color="blue">{{dataShape}}</font></b></text>
               <br>
-              <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
+              <text><b>Model file: <font color="blue">{{modelFile}}</font></b></text>
+              <br>
+              <text><b>Hidden node  : <font color="blue">{{hiddenNode}}</font></b></text>
+              <br>
+              <text><b>Activation function  : <font color="blue">{{activationFunction}}</font></b></text>
+              <br>
+              <text><b>Epoch  : <font color="blue">{{epoch}}</font></b></text>
+              <br>
+              <text><b>Batch size  : <font color="blue">{{batchSize}}</font></b></text>
               <br>
               <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
               <br>
-              <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
+              <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
               <br>
               <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
               <br>
-              <text><b>Learning rate Lower bound : <font color="blue">{{learningRateLowerBound}}</font></b></text>
+              <text><b>Betas : <font color="blue">{{betas}}</font></b></text>
               <br>
-              <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+              <text><b>Eps : <font color="blue">{{eps}}</font></b></text>
               <br>
-              <text><b>Tuning times : <font color="blue">{{tuningTimes}}</font></b></text>
+              <text><b>Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
+              <br>
+              <text><b>Initializing rule : <font color="blue">{{initializingRule}}</font></b></text>
+              <br>
+              <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
+              <br>
+              <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
+              <br>
+              <text><b>Selecting rule : <font color="blue">{{selectingRule}}</font></b></text>
+              <br>
+              <text><b>Matching rule : <font color="blue">{{matchingRule}}</font></b></text>
+              <br>
+              <text><b>Matching times : <font color="blue">{{matchingTimes}}</font></b></text>
+              <br>
+              <text><b>Matching learning goal : <font color="blue">{{matchingLearningGoal}}</font></b></text>
+              <br>
+              <text><b>Matching learning rate Lower bound : <font color="blue">{{matchingLearningRateLowerBound}}</font></b></text>
+              <br>
+              <text><b>Cramming rule : <font color="blue">{{crammingingRule}}</font></b></text>
+              <br>
+              <text><b>Regularizing rule : <font color="blue">{{regularizingRule}}</font></b></text>
+              <br>
+              <text><b>Regularizing times : <font color="blue">{{regularizingTimes}}</font></b></text>
               <br>
               <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+              <br>
+              <text><b>Regularizing learning goal : <font color="blue">{{regularizingLearningGoal}}</font></b></text>
+              <br>
+              <text><b>Regularizing learning rate lower bound : <font color="blue">{{regularizingLearningRateLowerBound}}</font></b></text>
             </div>
           </div>
 
@@ -207,37 +241,37 @@
               <div class="p-5 mb-1 bg-light rounded-3">
 
                 <div class="gallery">
-                  <a target="_blank" href="{{url_path_for_Accuracy}}">
-                    <img src= "{{url_path_for_Accuracy}}"  alt="Training Accuracy" width="600" height="400">
+                  <a target="_blank" href="{{url_path_for_fig_1}}">
+                    <img src= "{{url_path_for_fig_1}}"  alt="Figure 1" width="600" height="400">
                   </a>
-                  <div class="desc">Training Accuracy</div>
+                  <div class="desc">Figure 1</div>
                 </div>
                 
                 <div class="gallery">
-                  <a target="_blank" href="{{url_path_for_Loss}}">
-                    <img src= "{{url_path_for_Loss}}"  alt="Training Loss" width="600" height="400">
+                  <a target="_blank" href="{{url_path_for_fig_2}}">
+                    <img src= "{{url_path_for_fig_2}}"  alt="Figure 2" width="600" height="400">
                   </a>
-                  <div class="desc">Training Loss</div>
+                  <div class="desc">Figure 2</div>
                 </div>
                 <div class="gallery">
-                  <a target="_blank" href="{{url_path_for_Nodes}}">
-                    <img src="{{url_path_for_Nodes}}"  alt="Model Nodes" width="600" height="400">
+                  <a target="_blank" href="{{url_path_for_fig_3}}">
+                    <img src="{{url_path_for_fig_3}}"  alt="Figure 3" width="600" height="400">
                   </a>
-                  <div class="desc">Model Nodes</div>
+                  <div class="desc">Figure 3</div>
                 </div>
                 
                 <div class="gallery">
-                  <a target="_blank" href="{{url_path_for_Pruned_nodes}}">
-                    <img src="{{url_path_for_Pruned_nodes}}"  alt="Pruned Nodes" width="600" height="400">
+                  <a target="_blank" href="{{url_path_for_fig_4}}">
+                    <img src="{{url_path_for_fig_4}}"  alt="Figure 4" width="600" height="400">
                   </a>
-                  <div class="desc">Pruned Nodes</div>
+                  <div class="desc">Figure 4</div>
                 </div>
 
                 <div class="gallery">
-                  <a target="_blank" href="{{url_path_for_Routes}}">
-                    <img src="{{url_path_for_Routes}}"  alt="Model Routes" width="600" height="400">
+                  <a target="_blank" href="{{url_path_for_fig_5}}">
+                    <img src="{{url_path_for_fig_5}}"  alt="Figure 5" width="600" height="400">
                   </a>
-                  <div class="desc">Model Routes</div>
+                  <div class="desc">Figure 5</div>
                 </div>
 
                 <br><br><br><br><br>
@@ -246,15 +280,6 @@
           </div>
           
           <br>
-          <div class="col-md-12">
-            <div class="h-100 p-5 bg-light border rounded-3">
-              <label class="col-md-8 fs-4">Save configuration and Performace.</label>
-              <label for="save_configuration_performance" class="btn btn-primary btn-lg">Save</label>
-              <input type="submit" id="save_configuration_performance" class="btn btn-primary btn-lg" formaction="/save/service" hidden>
-              <br><br>
-              <text>After inferencing completed, this save mechanism will execute automatically.</text>
-            </div>
-          </div>
 
         </form>
 
