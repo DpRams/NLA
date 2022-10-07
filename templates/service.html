@@ -131,7 +131,7 @@
             <div class="h-100 p-5 bg-light border rounded-3">
               <label class="col-md-8 fs-4">Deploy Model from Registry.</label>
 
-              <select name="modelFile" method="GET"  style="font-size:20px;">
+              <select name="modelPklFile" method="GET"  style="font-size:20px;">
                 {% for model in model_registry %}
                 <option value= "{{model}}"  SELECTED>{{model}}</option>"
                 {% endfor %}
@@ -175,7 +175,7 @@
               <br>
               <text><b>Data shape : <font color="blue">{{dataShape}}</font></b></text>
               <br>
-              <text><b>Model file: <font color="blue">{{modelFile}}</font></b></text>
+              <text><b>Model file(pkl): <font color="blue">{{modelPklFile}}</font></b></text>
               <br>
               <text><b>Hidden node  : <font color="blue">{{hiddenNode}}</font></b></text>
               <br>

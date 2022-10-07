@@ -471,13 +471,13 @@ def pipeline_service(request: Request):
 @app.post("/pipeline/service")
 def pipeline_service(request: Request, \
                      dataDirectory: str = Form(default=None, max_length=50), \
-                     modelFile: str = Form(default=None, max_length=50)):
+                     modelPklFile: str = Form(default=None, max_length=50)):
 
    # List the upload data to Dropdownlist
    upload_data = os.listdir(f"{root}\\upload_data")
    model_registry = os.listdir(f"{root}\\model_registry")
 
-   model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelFile)
+   model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)
 
    print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
@@ -486,7 +486,7 @@ def pipeline_service(request: Request, \
       name="model_fig",
    )  
 
-   if "ASLFN" in modelFile:
+   if "ASLFN" in modelPklFile:
       url_path_for_fig_1 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png')
       url_path_for_fig_2 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png')
       url_path_for_fig_3 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/nodes.png')
@@ -508,7 +508,7 @@ def pipeline_service(request: Request, \
                      "upload_data":upload_data, \
                      "dataDirectory":dataDirectory, \
                      "dataShape":model_params.kwargs["dataShape"], \
-                     "modelFile":modelFile, \
+                     "modelPklFile":modelPklFile, \
                      "hiddenNode":model_params.kwargs["hiddenNode"], \
                      "activationFunction":model_params.kwargs["activationFunction"], \
                      "epoch":template_avoidNone(model_params, "epoch"), \
@@ -543,6 +543,17 @@ def pipeline_service(request: Request, \
                      "url_path_for_fig_5":url_path_for_fig_5, \
                      })
 
+@app.get("/pipeline/deploy")
+def pipeline_service(request: Request):
+   
+   # 讀取資料庫，將資料回應到頁面上
+   model_deploying = [{"index":1, "name":None, "trainedDataset":None, "deployStatus":None, "serviceLink":None}, \
+                     {"index":2, "name":None, "trainedDataset":None, "deployStatus":None, "serviceLink":None}]
+
+   return templates.TemplateResponse("deploy.html", \
+                  context={"request":request, \
+                           "model_deploying":model_deploying, \
+                           })
 
 @app.post("/pipeline/deploy")
 def pipeline_deploy(request: Request, \
