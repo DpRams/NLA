@@ -563,6 +563,14 @@ def pipeline_deploy(request: Request, \
 
    return modelFile
 
+@app.get("/post_8001")
+def request_8001():
+    
+   res = requests.post("http://127.0.0.1:8001/predict", json={"foo": 1, "age": 12, "name": "xiao123"})
+   return res.json()
+
+
+
 @app.post("/save/service")
 def save_service(model_params, model_perf, model_perf_fig):
    print(f'已進入 save_service()')
