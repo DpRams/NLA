@@ -565,8 +565,10 @@ def pipeline_deploy(request: Request, \
 
 @app.get("/post_8001")
 def request_8001():
-    
-   res = requests.post("http://127.0.0.1:8001/predict", json={"foo": 1, "age": 12, "name": "xiao123"})
+   
+   rawTestingData = {"x_test" : None, "y_test" : None}
+   modelPklFile = "solar_custoNet_ASLFN_0.6_0.5_221007_101128.pkl"
+   res = requests.post("http://127.0.0.1:8001/predict", json={"dataDirectory": rawTestingData, "modelPklFile": modelPklFile})
    return res.json()
 
 

@@ -3,6 +3,8 @@ from sklearn.preprocessing import StandardScaler
 from matplotlib import pyplot as plt
 from pathlib import Path
 
+from network.net import Network
+from modelParameter import ModelParameter
 
 import uvicorn
 import numpy as np
@@ -17,30 +19,6 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
 app = FastAPI()
-
-@app.get("/predict")
-def pipeline_service(request: Request, \
-                     dataDirectory: str = Form(default=None, max_length=50), \
-                     modelPklFile: str = Form(default=None, max_length=50)):
-
-    return "GET 127.0.0.1:8001/predict"
-
-@app.post("/predict")
-def pipeline_service(request: Request):
-
-    # x_test, y_test = reading_dataset_Testing(dataDirectory)
-    # checkpoints = reading_pkl(modelPklFile)
-    # network = checkpoints["model_experiments_record"]["network"]
-    # rmseError = inferencing(network, x_test, y_test)
-
-    # json_d = request.json() # 這段有問題
-
-
-    rmseError = 0.01
-
-    return {"Message" : "POST 127.0.0.1:8001/predict", "rmseError" : rmseError}
-
-#    model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)
 
 def reading_dataset_Testing(dataDirecotry):
     
@@ -59,7 +37,7 @@ def reading_dataset_Testing(dataDirecotry):
 
 def reading_pkl(modelFile):
     
-    modelPath = f"{root}/model_registry/{modelFile}"
+    modelPath = f"{modelFile}"
     with open(modelPath, 'rb') as f:
         checkpoints = pickle.load(f)
 
@@ -84,6 +62,44 @@ def inferencing(network, x_test, y_test, validating=False):
         return np.round(acc, 3)
 
 
+global network
+
+p = Path(".").glob('**/*')
+modelPklFile = str([x for x in p if x.is_file() and str(x).endswith(".pkl")][0])
+network = reading_pkl(modelPklFile)["model_experiments_record"]["network"]
+
+@app.get("/predict")
+def pipeline_service(request: Request, \
+                     dataDirectory: str = Form(default=None, max_length=50), \
+                     modelPklFile: str = Form(default=None, max_length=50)):
+
+    return "GET 127.0.0.1:8001/predict"
+
+@app.post("/predict")
+async def pipeline_service(request: Request):
+
+    global network
+
+    # x_test, y_test = reading_dataset_Testing(dataDirectory)
+    # rmseError = inferencing(network, x_test, y_test)
+
+    json_POST = await request.json() # 補上 await 才能正確執行
+
+    rmseError = 0.01
+
+    print(network)
+    return {"Message" : "POST 127.0.0.1:8001/predict", \
+            "dataDirectory" : json_POST["dataDirectory"], \
+            "modelPklFile" : json_POST["modelPklFile"], \
+            "rmseError" : rmseError, \
+            }
+
+#    model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)
+
+
+
 
 if __name__ == '__main__':
-	uvicorn.run("app:app", host="127.0.0.1", port=8001, reload=True) # 若有 rewrite file 可能不行 reload=True，不然會一直重開 by 李忠大師
+    uvicorn.run("app:app", host="127.0.0.1", port=8001, reload=True)
+    
+    
