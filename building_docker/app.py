@@ -3,7 +3,7 @@ from sklearn.preprocessing import StandardScaler
 from matplotlib import pyplot as plt
 from pathlib import Path
 
-from network.net import Network
+from net import Network
 from modelParameter import ModelParameter
 
 import uvicorn
@@ -13,6 +13,7 @@ import pickle
 import os
 import pandas as pd
 import sys
+import time
 
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
@@ -77,21 +78,27 @@ def pipeline_service(request: Request, \
 
 @app.post("/predict")
 async def pipeline_service(request: Request):
+    
+    start = time.time()
 
     global network
-
-    # x_test, y_test = reading_dataset_Testing(dataDirectory)
-    # rmseError = inferencing(network, x_test, y_test)
+    dataDirectory = "solar"
+    x_test, y_test = reading_dataset_Testing(dataDirectory)
+    rmseError = inferencing(network, x_test, y_test)
 
     json_POST = await request.json() # 補上 await 才能正確執行
 
-    rmseError = 0.01
+    # rmseError = 0.01
 
     print(network)
+    print(rmseError)
+
+
     return {"Message" : "POST 127.0.0.1:8001/predict", \
             "dataDirectory" : json_POST["dataDirectory"], \
             "modelPklFile" : json_POST["modelPklFile"], \
-            "rmseError" : rmseError, \
+            "rmseError" : str(rmseError), \
+            "time" : str(time.time()-start)
             }
 
 #    model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)

@@ -1,11 +1,11 @@
 import torch
 import copy
-from apps import getFreerGpu
+import getFreerGpu
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 # from CSI_Modules.modules import Initialize, Select, Match, Cram, Reorganize
-from CSI_Modules.modules_s2 import Initialize, Select, Match, Cram, Reorganize
+from modules_s2 import Initialize, Select, Match, Cram, Reorganize
 
 """
 Original
