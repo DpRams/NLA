@@ -10,6 +10,7 @@ import requests
 import time
 import urllib.parse
 import autoPush
+import numpy as np
 
 # testing
 # Append absolute path to import module within different directory.
@@ -566,8 +567,12 @@ def pipeline_deploy(request: Request, \
 @app.get("/post_8001")
 def request_8001():
    
-   rawTestingData = {"x_test" : None, "y_test" : None}
-   modelPklFile = "solar_custoNet_ASLFN_0.6_0.5_221007_101128.pkl"
+   # reading_dataset_Testing 要做個調整，先對 training data 產生一個 sc，再去對 testing data 做 transform
+   x_test, y_test = evaluating.reading_dataset_Testing("solar")
+   # rawTestingData = {"a" : np.array([1,2,3]).tolist()}
+   rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
+   # modelPklFile = "solar_custoNet_ASLFN_0.6_0.5_221007_101128.pkl"
+   modelPklFile = "solar_custoNet_ASLFN_0.5_0.214_221012_213930.pkl"
    res = requests.post("http://127.0.0.1:8001/predict", json={"dataDirectory": rawTestingData, "modelPklFile": modelPklFile})
    return res.json()
 

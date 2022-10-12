@@ -21,20 +21,6 @@ sys.path.append(str(root))
 
 app = FastAPI()
 
-def reading_dataset_Testing(dataDirecotry):
-    
-    filelist = os.listdir(f"{root}/upload_data/{dataDirecotry}")
-    file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
-    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/{file_x}", f"./upload_data/{dataDirecotry}/{file_y}"
-    print(f"filePath_X = {filePath_X}\nfilePath_Y = {filePath_Y}")
-    df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
-
-    # StandardScaler
-    sc_x, sc_y = StandardScaler(), StandardScaler()
-    X_transformed = sc_x.fit_transform(df_X.to_numpy())
-    Y_transformed = sc_y.fit_transform(df_Y.to_numpy())
-
-    return (X_transformed, Y_transformed)
 
 def reading_pkl(modelFile):
     
@@ -43,7 +29,6 @@ def reading_pkl(modelFile):
         checkpoints = pickle.load(f)
 
     return checkpoints 
-
 
 
 def inferencing(network, x_test, y_test, validating=False):   
@@ -75,24 +60,17 @@ def pipeline_service(request: Request, \
                      modelPklFile: str = Form(default=None, max_length=50)):
 
     return "GET 127.0.0.1:8001/predict"
-
+# 換 pkl 測試，記得要重啟服務才會 load 新的 pkl
 @app.post("/predict")
 async def pipeline_service(request: Request):
     
     start = time.time()
 
     global network
-    dataDirectory = "solar"
-    x_test, y_test = reading_dataset_Testing(dataDirectory)
-    rmseError = inferencing(network, x_test, y_test)
 
     json_POST = await request.json() # 補上 await 才能正確執行
-
-    # rmseError = 0.01
-
-    print(network)
-    print(rmseError)
-
+    x_test, y_test = json_POST["dataDirectory"]["x_test"], json_POST["dataDirectory"]["y_test"]
+    rmseError = inferencing(network, x_test, y_test)
 
     return {"Message" : "POST 127.0.0.1:8001/predict", \
             "dataDirectory" : json_POST["dataDirectory"], \
@@ -100,9 +78,6 @@ async def pipeline_service(request: Request):
             "rmseError" : str(rmseError), \
             "time" : str(time.time()-start)
             }
-
-#    model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)
-
 
 
 
