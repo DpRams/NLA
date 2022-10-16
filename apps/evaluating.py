@@ -19,16 +19,29 @@ from network.net import Network
 
 def reading_dataset_Testing(dataDirecotry):
     
-    filelist = os.listdir(f"{root}/upload_data/{dataDirecotry}")
-    file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
-    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/{file_x}", f"./upload_data/{dataDirecotry}/{file_y}"
-    print(f"filePath_X = {filePath_X}\nfilePath_Y = {filePath_Y}")
-    df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
+    # Train
+    trainingFileList = os.listdir(f"{root}/upload_data/{dataDirecotry}/Train")
+    trainingFile_x, trainingFile_y = sorted(trainingFileList) # ordered by prefix: X_, Y_
+    trainingFilePath_X, trainingFilePath_Y = f"./upload_data/{dataDirecotry}/Train/{trainingFile_x}", f"./upload_data/{dataDirecotry}/Train/{trainingFile_y}"
+    print(f"trainingFilePath_X = {trainingFilePath_X}, trainingFilePath_Y = {trainingFilePath_Y}")
+    trainingDf_X, trainingDf_Y = pd.read_csv(trainingFilePath_X), pd.read_csv(trainingFilePath_Y)
+
+    # Test
+    testingFileList = os.listdir(f"{root}/upload_data/{dataDirecotry}/Test")
+    testingFile_x, testingFile_y = sorted(testingFileList) # ordered by prefix: X_, Y_
+    testingFilePath_X, testingFilePath_Y = f"./upload_data/{dataDirecotry}/Test/{testingFile_x}", f"./upload_data/{dataDirecotry}/Test/{testingFile_y}"
+    print(f"testingFilePath_X = {testingFilePath_X}, testingFilePath_Y = {testingFilePath_Y}")
+    testingDf_X, testingDf_Y = pd.read_csv(testingFilePath_X), pd.read_csv(testingFilePath_Y)
 
     # StandardScaler
     sc_x, sc_y = StandardScaler(), StandardScaler()
-    X_transformed = sc_x.fit_transform(df_X.to_numpy())
-    Y_transformed = sc_y.fit_transform(df_Y.to_numpy())
+    # Fit training data(transform is redundant)
+    _ = sc_x.fit_transform(trainingDf_X.to_numpy())
+    _ = sc_y.fit_transform(trainingDf_Y.to_numpy())
+
+    # Transform testing data
+    X_transformed = sc_x.transform(testingDf_X.to_numpy())
+    Y_transformed = sc_y.transform(testingDf_Y.to_numpy())
 
     return (X_transformed, Y_transformed)
 
