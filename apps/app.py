@@ -199,6 +199,7 @@ def pipeline_model(request: Request):
 def pipeline_model(request: Request, \
                      dataDirectory: str = Form(default=None, max_length=50), \
                      hiddenNode : str = Form(default=None, max_length=50), \
+                     weightInitialization : str = Form(default=None, max_length=50), \
                      activationFunction : str = Form(default=None, max_length=50), \
                      epoch : str = Form(default=None, max_length=50), \
                      batchSize : str = Form(default=None, max_length=50), \
@@ -226,6 +227,7 @@ def pipeline_model(request: Request, \
                                  hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
                                  modelFile = "custoNet_SLFN.py", \
+                                 weightInitialization = weightInitialization, \
                                  activationFunction = activationFunction, \
                                  epoch = eval_avoidNone(epoch), \
                                  batchSize = eval_avoidNone(batchSize), \
@@ -271,6 +273,7 @@ def pipeline_model(request: Request, \
                      "dataDirectory":dataDirectory, \
                      "dataShape":dataShape, \
                      "hiddenNode":hiddenNode, \
+                     "weightInitialization":weightInitialization, \
                      "activationFunction":activationFunction, \
                      "epoch":epoch, \
                      "batchSize":batchSize, \
@@ -304,6 +307,7 @@ def pipeline_model(request: Request, \
                      dataDirectory : str = Form(default=None, max_length=50), \
                      dataDescribing : str = Form(default=None, max_length=50), \
                      hiddenNode : str = Form(default=None, max_length=50), \
+                     weightInitialization : str = Form(default=None, max_length=50), \
                      activationFunction : str = Form(default=None, max_length=50), \
                      lossFunction : str = Form(default=None, max_length=50), \
                      optimizer : str = Form(default=None, max_length=50), \
@@ -340,6 +344,7 @@ def pipeline_model(request: Request, \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
+                                 weightInitialization=weightInitialization, \
                                  activationFunction=activationFunction, \
                                  lossFunction=lossFunction, \
                                  optimizer=optimizer, \
@@ -396,6 +401,7 @@ def pipeline_model(request: Request, \
                                              "dataDescribing":dataDescribing, \
                                              "dataShape":dataShape, \
                                              "hiddenNode":hiddenNode, \
+                                             "weightInitialization":weightInitialization, \
                                              "activationFunction":activationFunction, \
                                              "lossFunction":lossFunction, \
                                              "optimizer":optimizer, \
@@ -511,6 +517,7 @@ def pipeline_service(request: Request, \
                      "dataShape":model_params.kwargs["dataShape"], \
                      "modelPklFile":modelPklFile, \
                      "hiddenNode":model_params.kwargs["hiddenNode"], \
+                     "weightInitialization":model_params.kwargs["weightInitialization"], \
                      "activationFunction":model_params.kwargs["activationFunction"], \
                      "epoch":template_avoidNone(model_params, "epoch"), \
                      "batchSize":template_avoidNone(model_params, "batchSize"), \

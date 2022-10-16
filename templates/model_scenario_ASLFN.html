@@ -179,6 +179,16 @@
               <label class="col-md-8 fs-5">For training</label>
 
               <div class="form-floating mb-3">
+                <select class="form-control" id="select_weightInitialization" placeholder="10" name="weightInitialization" method="GET"  style="font-size:20px;"> 
+                  <option value= "xavierNormal" SELECTED>Xavier Normal</option>
+                  <option value= "xavierUniform" >Xavier Uniform</option>
+                  <option value= "kaimingNormal" >Kaiming Normal</option>
+                  <option value= "kaimingUniform" >Kaiming Uniform</option>
+                </select>
+                <label for="select_weightInitialization">Weight Initialization</label>
+              </div>
+
+              <div class="form-floating mb-3">
                 <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
                   <option value= "ReLU" SELECTED>ReLU</option>
                 </select>
@@ -486,6 +496,8 @@
               <label class="col-md-8 fs-5">SLFN(Two Layer)</label>
               <br>
               <text><b>Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
+              <br>
+              <text><b>Weight initialization : <font color="blue">{{weightInitialization}}</font></b></text>
               <br>
               <text><b>Activation function : <font color="blue">{{activationFunction}}</font></b></text>
 

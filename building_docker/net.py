@@ -22,9 +22,24 @@ class Network(torch.nn.Module):
         self.model_params = model_params
         self.setting_device()
 
-        # Initialize
+        # Layer Initialization
         self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.model_params["hiddenNode"]).to(self.device)
         self.linear2 = torch.nn.Linear(self.model_params["hiddenNode"], self.model_params["outputDimension"]).to(self.device)
+
+        # Weight Initialization
+        if self.model_params["weightInitialization"] == None:pass
+        elif self.model_params["weightInitialization"] == "xavierNormal":
+            self.linear1 = torch.nn.init.xavier_normal_(self.linear1)
+            self.linear2 = torch.nn.init.xavier_normal_(self.linear2)
+        elif self.model_params["weightInitialization"] == "xavierUniform":
+            self.linear1 = torch.nn.init.xavier_uniform_(self.linear1)
+            self.linear2 = torch.nn.init.xavier_uniform_(self.linear2)
+        elif self.model_params["weightInitialization"] == "kaimingNormal":
+            self.linear1 = torch.nn.init.kaiming_normal_(self.linear1)
+            self.linear2 = torch.nn.init.kaiming_normal_(self.linear2)        
+        elif self.model_params["weightInitialization"] == "kaimingUniform":
+            self.linear1 = torch.nn.init.kaiming_uniform_(self.linear1)
+            self.linear2 = torch.nn.init.kaiming_uniform_(self.linear2)
 
         # Record the experiment result
         self.nb_node_pruned = 0

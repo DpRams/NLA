@@ -228,6 +228,7 @@ def main(model_params):
                         inputDimension = model_params.kwargs["inputDimension"], \
                         hiddenNode = model_params.kwargs["hiddenNode"], \
                         outputDimension = model_params.kwargs["outputDimension"], \
+                        weightInitialization = model_params.kwargs["weightInitialization"], \
                         activationFunction = model_params.kwargs["activationFunction"], \
                         lossFunction = model_params.kwargs["lossFunction"], \
                         optimizer = model_params.kwargs["optimizer"], \
