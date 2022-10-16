@@ -44,9 +44,9 @@ class CustomDataset(Dataset):
 
 def reading_dataset_Training_only_2LayerNet(dataDirecotry, batchSize):
     
-    filelist = os.listdir(f"./upload_data/{dataDirecotry}")
+    filelist = os.listdir(f"./upload_data/{dataDirecotry}/Train")
     file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
-    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/{file_x}", f"./upload_data/{dataDirecotry}/{file_y}"
+    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/Train/{file_x}", f"./upload_data/{dataDirecotry}/Train/{file_y}"
     df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
 
     # StandardScaler

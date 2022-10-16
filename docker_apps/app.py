@@ -26,6 +26,7 @@ def reading_pkl(modelFile):
     
     modelPath = f"{modelFile}"
     with open(modelPath, 'rb') as f:
+        print(f)
         checkpoints = pickle.load(f)
 
     return checkpoints 
@@ -60,6 +61,7 @@ def pipeline_service(request: Request, \
                      modelPklFile: str = Form(default=None, max_length=50)):
 
     return "GET 127.0.0.1:8001/predict"
+    
 # 換 pkl 測試，記得要重啟服務才會 load 新的 pkl
 @app.post("/predict")
 async def pipeline_service(request: Request):

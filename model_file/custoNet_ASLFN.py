@@ -30,9 +30,9 @@ from network.net import RIRO, YourCSI_s2
 
 def reading_dataset_Training(dataDirecotry, initializingNumber):
     
-    filelist = os.listdir(f"./upload_data/{dataDirecotry}")
+    filelist = os.listdir(f"./upload_data/{dataDirecotry}/Train")
     file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
-    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/{file_x}", f"./upload_data/{dataDirecotry}/{file_y}"
+    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/Train/{file_x}", f"./upload_data/{dataDirecotry}/Train/{file_y}"
     df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
 
     # StandardScaler
@@ -49,22 +49,6 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
     
     return (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test)
 
-def reading_dataset_Training_only_2LayerNet(dataDirecotry):
-    
-    filelist = os.listdir(f"./upload_data/{dataDirecotry}")
-    file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
-    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/{file_x}", f"./upload_data/{dataDirecotry}/{file_y}"
-    df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
-
-    # StandardScaler
-    sc_x, sc_y = StandardScaler(), StandardScaler()
-    X_transformed = sc_x.fit_transform(df_X.to_numpy())
-    Y_transformed = sc_y.fit_transform(df_Y.to_numpy())
-
-    # train_test_split
-    x_train, x_test, y_train, y_test = train_test_split(X_transformed, Y_transformed, test_size=0.2, random_state=42)
-    
-    return (x_train, y_train, x_test, y_test)
 
 
 def training_2LayerNet(MyCSI, model_params):
