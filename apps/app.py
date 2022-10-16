@@ -46,43 +46,79 @@ def pipeline_platform(request: Request):
 
 @app.get("/pipeline/data")
 def pipeline_data(request: Request):
-   return templates.TemplateResponse("data.html",{"request":request})
+
+   upload_data = os.listdir(f"{root}\\upload_data")
+
+   return templates.TemplateResponse("data.html",{"request":request, "upload_data":upload_data})
 
 @app.post("/pipeline/data")
 async def pipeline_data_upload(request: Request, \
-                               directoryName: str = Form(default=None, max_length=50), \
+                               dataUse: str = Form(default=None, max_length=50), \
+                               newDirectory: str = Form(default=None, max_length=50), \
+                               existedDirectory: str = Form(default=None, max_length=50), \
                                file_x: UploadFile = File(...), file_y: UploadFile = File(...)):  
-                               # directory__Name: Union[str, None] = Query(default=None, max_length=50)
-      
-      drtPath = Path(f"{root}\\upload_data\\{directoryName}")
-      drtPath.mkdir(parents=True, exist_ok=True)
-      
-      filelist = [file_x, file_y]
-      
-      for i, file in enumerate(filelist):
-         
-         try:
-            contents = await file.read()
-            # X(labeling)
-            if i == 0:
-               with open(os.path.join(drtPath, "X_" + file.filename), 'wb') as f:
-                     f.write(contents)
-            # Y(labeling)
-            elif i == 1:
-               with open(os.path.join(drtPath, "Y_" + file.filename), 'wb') as f:
-                     f.write(contents)
-         except Exception as e:
-            print(e)
-            return {"message": "There was an error uploading the file"}
-         finally:
-            await file.close()
 
-      # pathManager.backToRoot()   
+      upload_data = os.listdir(f"{root}\\upload_data")
+
+      if dataUse == "Train" : 
+
+         drtPath = Path(f"{root}\\upload_data\\{newDirectory}\\Train")
+         drtPath.mkdir(parents=True, exist_ok=True)
+         
+         filelist = [file_x, file_y]
+         
+         for i, file in enumerate(filelist):
+            
+            try:
+               contents = await file.read()
+               # X(labeling)
+               if i == 0:
+                  with open(os.path.join(drtPath, "X_" + file.filename), 'wb') as f:
+                        f.write(contents)
+               # Y(labeling)
+               elif i == 1:
+                  with open(os.path.join(drtPath, "Y_" + file.filename), 'wb') as f:
+                        f.write(contents)
+            except Exception as e:
+               print(e)
+               return {"message": "There was an error uploading the file"}
+            finally:
+               await file.close()
+
+      elif dataUse == "Test" : 
+
+         drtPath = Path(f"{root}\\upload_data\\{existedDirectory}\\Test")
+         drtPath.mkdir(parents=True, exist_ok=True)
+         
+         filelist = [file_x, file_y]
+         
+         for i, file in enumerate(filelist):
+            
+            try:
+               contents = await file.read()
+               # X(labeling)
+               if i == 0:
+                  with open(os.path.join(drtPath, "X_" + file.filename), 'wb') as f:
+                        f.write(contents)
+               # Y(labeling)
+               elif i == 1:
+                  with open(os.path.join(drtPath, "Y_" + file.filename), 'wb') as f:
+                        f.write(contents)
+            except Exception as e:
+               print(e)
+               return {"message": "There was an error uploading the file"}
+            finally:
+               await file.close()
+
+  
+      upload_data = os.listdir(f"{root}\\upload_data")
+      directory = newDirectory if dataUse == "Train" else existedDirectory
 
       return templates.TemplateResponse("data.html", \
                                         context = \
                                        {"request": request, \
-                                        "directoryName": directoryName, \
+                                        "upload_data":upload_data, \
+                                        "directory": directory, \
                                         "filename_x" : file_x.filename, \
                                         "filename_y" : file_y.filename})
 
