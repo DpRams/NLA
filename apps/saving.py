@@ -1,5 +1,6 @@
 import time
 import pickle
+import torch
 import sys
 import numpy as np
 from pathlib import Path
@@ -30,6 +31,11 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
     checkpoint = {"model_experiments_record":model_experiments_record, "model_params":model_params, "model_fig_drt":model_fig_drt}
     with open(f"{drtPath}\\{fileName}", "wb") as f:
         pickle.dump(checkpoint, f)
+
+    # torch.save() -> .pt
+    ptFileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pt" 
+    torch.save(model_experiments_record["network"],  f"{drtPath}\\{ptFileName}")
+
 
 def writeIntoModelDeploying(modelFile):
 
