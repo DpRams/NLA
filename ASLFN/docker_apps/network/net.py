@@ -55,14 +55,20 @@ class Network(torch.nn.Module):
 
     
     # Reset the x and y data
-    def setData(self, x_train_scaled, y_train_scaled):
+    def setData(self, x_train_scaled, y_train_scaled, only_cpu=False):
         
-        self.x = torch.FloatTensor(x_train_scaled).to(self.device)
-        self.y = torch.FloatTensor(y_train_scaled).to(self.device)
+        if only_cpu:
+            self.x = torch.FloatTensor(x_train_scaled).cpu()
+            self.y = torch.FloatTensor(y_train_scaled).cpu()
 
-        return self
-    
-    
+        else:
+            self.x = torch.FloatTensor(x_train_scaled).to(self.device)
+            self.y = torch.FloatTensor(y_train_scaled).to(self.device)
+
+        # print(self.linear1.weight.data.get_device(), self.linear2.weight.data.get_device())
+        # print(self.x.get_device(), self.y.get_device())
+
+
     # Add the new data to the x and y data
     #(目前是都沒在用，但應該也沒差，因為 setData 就可以做到相同操作，只是 train 的過程中，資料新增可能要寫好懂一點)
     def addData(self, new_x_train, new_y_train):

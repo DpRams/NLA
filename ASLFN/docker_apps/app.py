@@ -35,7 +35,7 @@ def inferencing(network, x_test, y_test, validating=False):
 
     network.eval()
     
-    network.setData(x_test, y_test)
+    network.setData(x_test, y_test, only_cpu=True)
     output, loss = network.forward()
 
     if not validating:
@@ -52,6 +52,7 @@ global network
 
 p = Path(".").glob('**/*')
 modelPklFile = str([x for x in p if x.is_file() and str(x).endswith(".pt")][0])
+# network = torch.load(modelPklFile)
 network = torch.load(modelPklFile, map_location=torch.device("cpu"))
 # network = reading_pkl(modelPklFile)["model_experiments_record"]["network"]
 
@@ -79,6 +80,7 @@ async def pipeline_service(request: Request):
     json_POST = await request.json() # 補上 await 才能正確執行
     x_test, y_test = json_POST["dataDirectory"]["x_test"], json_POST["dataDirectory"]["y_test"]
     rmseError = inferencing(network, x_test, y_test)
+
 
     return {"Message" : "POST 127.0.0.1:8001/predict", \
             "dataDirectory" : json_POST["dataDirectory"], \
