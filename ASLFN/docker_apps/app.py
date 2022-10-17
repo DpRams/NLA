@@ -59,7 +59,7 @@ network = torch.load(modelPklFile, map_location=torch.device("cpu"))
 @app.get("/")
 def pipeline_service():
 
-    return "GET 127.0.0.1:8001/"
+    return "GET 127.0.0.1:8002/"
 
 
 @app.get("/predict")
@@ -67,7 +67,7 @@ def pipeline_service(request: Request, \
                      dataDirectory: str = Form(default=None, max_length=50), \
                      modelPklFile: str = Form(default=None, max_length=50)):
 
-    return "GET 127.0.0.1:8001/predict"
+    return "GET 127.0.0.1:8002/predict"
     
 # 換 pkl 測試，記得要重啟服務才會 load 新的 pkl
 @app.post("/predict")
@@ -82,9 +82,9 @@ async def pipeline_service(request: Request):
     rmseError = inferencing(network, x_test, y_test)
 
 
-    return {"Message" : "POST 127.0.0.1:8001/predict", \
-            "dataDirectory" : json_POST["dataDirectory"], \
-            "modelPklFile" : json_POST["modelPklFile"], \
+    return {"Message" : "POST 127.0.0.1:8002/predict", \
+            # "dataDirectory" : json_POST["dataDirectory"], \
+            # "modelPklFile" : json_POST["modelPklFile"], \
             "rmseError" : str(rmseError), \
             "time" : str(time.time()-start)
             }
@@ -92,6 +92,6 @@ async def pipeline_service(request: Request):
 
 
 if __name__ == '__main__':
-    uvicorn.run("app:app", host="127.0.0.1", port=8002, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=8002, reload=True)
     
     
