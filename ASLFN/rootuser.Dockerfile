@@ -15,8 +15,8 @@ WORKDIR /app
 # 把本地端myapp資料夾複製到container的當前目錄 (/app)
 ADD ./docker_apps .
 
-# 5000是我們服務所在的port
-EXPOSE 5000
+# 8002 是我們服務所在的port
+EXPOSE 8002
 
 #在系統中加入一個新system user 和 group，名稱皆為appuser
 RUN adduser --system --group --no-create-home appuser

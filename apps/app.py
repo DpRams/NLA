@@ -616,7 +616,7 @@ def request_8001():
    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
    # modelPklFile = "solar_custoNet_ASLFN_0.6_0.5_221007_101128.pkl"
    modelPklFile = "solar_custoNet_ASLFN_0.5_0.214_221012_213930.pkl"
-   res = requests.post("http://127.0.0.1:8001/predict", json={"dataDirectory": rawTestingData, "modelPklFile": modelPklFile})
+   res = requests.post("http://127.0.0.1:8002/predict", json={"dataDirectory": rawTestingData, "modelPklFile": modelPklFile})
    return res.json()
 
 
