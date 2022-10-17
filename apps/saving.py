@@ -4,6 +4,7 @@ import sys
 import numpy as np
 from pathlib import Path
 import shutil
+from network.net import Network
 
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]

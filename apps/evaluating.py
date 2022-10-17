@@ -23,14 +23,14 @@ def reading_dataset_Testing(dataDirecotry):
     trainingFileList = os.listdir(f"{root}/upload_data/{dataDirecotry}/Train")
     trainingFile_x, trainingFile_y = sorted(trainingFileList) # ordered by prefix: X_, Y_
     trainingFilePath_X, trainingFilePath_Y = f"./upload_data/{dataDirecotry}/Train/{trainingFile_x}", f"./upload_data/{dataDirecotry}/Train/{trainingFile_y}"
-    print(f"trainingFilePath_X = {trainingFilePath_X}, trainingFilePath_Y = {trainingFilePath_Y}")
+    # print(f"trainingFilePath_X = {trainingFilePath_X}, trainingFilePath_Y = {trainingFilePath_Y}")
     trainingDf_X, trainingDf_Y = pd.read_csv(trainingFilePath_X), pd.read_csv(trainingFilePath_Y)
 
     # Test
     testingFileList = os.listdir(f"{root}/upload_data/{dataDirecotry}/Test")
     testingFile_x, testingFile_y = sorted(testingFileList) # ordered by prefix: X_, Y_
     testingFilePath_X, testingFilePath_Y = f"./upload_data/{dataDirecotry}/Test/{testingFile_x}", f"./upload_data/{dataDirecotry}/Test/{testingFile_y}"
-    print(f"testingFilePath_X = {testingFilePath_X}, testingFilePath_Y = {testingFilePath_Y}")
+    # print(f"testingFilePath_X = {testingFilePath_X}, testingFilePath_Y = {testingFilePath_Y}")
     testingDf_X, testingDf_Y = pd.read_csv(testingFilePath_X), pd.read_csv(testingFilePath_Y)
 
     # StandardScaler

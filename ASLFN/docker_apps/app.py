@@ -3,7 +3,7 @@ from sklearn.preprocessing import StandardScaler
 from matplotlib import pyplot as plt
 from pathlib import Path
 
-from net import Network
+from network.net import Network
 from modelParameter import ModelParameter
 
 import uvicorn
