@@ -53,7 +53,13 @@ global network
 
 p = Path(".").glob('**/*')
 modelPklFile = str([x for x in p if x.is_file() and str(x).endswith(".pkl")][0])
+# network = torch.load(modelPklFile, map_location=torch.device("cpu"))
 network = reading_pkl(modelPklFile)["model_experiments_record"]["network"]
+
+@app.get("/")
+def pipeline_service():
+
+    return "GET 127.0.0.1:8001/"
 
 @app.get("/predict")
 def pipeline_service(request: Request, \

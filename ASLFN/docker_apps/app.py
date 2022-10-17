@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request, Form
 from sklearn.preprocessing import StandardScaler
-from matplotlib import pyplot as plt
 from pathlib import Path
 
 from network.net import Network
@@ -52,8 +51,15 @@ def inferencing(network, x_test, y_test, validating=False):
 global network
 
 p = Path(".").glob('**/*')
-modelPklFile = str([x for x in p if x.is_file() and str(x).endswith(".pkl")][0])
-network = reading_pkl(modelPklFile)["model_experiments_record"]["network"]
+modelPklFile = str([x for x in p if x.is_file() and str(x).endswith(".pt")][0])
+network = torch.load(modelPklFile, map_location=torch.device("cpu"))
+# network = reading_pkl(modelPklFile)["model_experiments_record"]["network"]
+
+@app.get("/")
+def pipeline_service():
+
+    return "GET 127.0.0.1:8001/"
+
 
 @app.get("/predict")
 def pipeline_service(request: Request, \
@@ -84,6 +90,6 @@ async def pipeline_service(request: Request):
 
 
 if __name__ == '__main__':
-    uvicorn.run("app:app", host="127.0.0.1", port=8001, reload=True)
+    uvicorn.run("app:app", host="127.0.0.1", port=8002, reload=True)
     
     
