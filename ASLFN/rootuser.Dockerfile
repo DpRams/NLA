@@ -7,13 +7,13 @@ COPY ./requirements.txt /app/requirements.txt
 
 # pip是python的套件管理工具
 RUN pip install -r /app/requirements.txt
-RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
+RUN pip3 install torch torchvision torchaudio
 
 # 切換到container裡的 /app 路徑作為工作目錄 
 WORKDIR /app
 
 # 把本地端myapp資料夾複製到container的當前目錄 (/app)
-ADD ./myapp .
+ADD ./docker_apps .
 
 # 5000是我們服務所在的port
 EXPOSE 5000
