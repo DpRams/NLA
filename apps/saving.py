@@ -21,27 +21,30 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
         lr_goal = model_params.kwargs["learningGoal"]
 
     # create dir  
-    drtPath = Path(f"{root}\\model_registry\\")
-    drtPath.mkdir(parents=True, exist_ok=True)
+    pklPath = Path(f"{root}\\model_registry\\pkl\\")
+    pklPath.mkdir(parents=True, exist_ok=True)
 
     timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
     modelType = model_params.kwargs["modelFile"][:-3]
     validAcc = str(model_experiments_record["experiments_record"]["valid"]["mean_acc"])[:5]
     fileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pkl" 
     checkpoint = {"model_experiments_record":model_experiments_record, "model_params":model_params, "model_fig_drt":model_fig_drt}
-    with open(f"{drtPath}\\{fileName}", "wb") as f:
+    with open(f"{pklPath}\\{fileName}", "wb") as f:
         pickle.dump(checkpoint, f)
 
     # torch.save() -> .pt
+    ptPath = Path(f"{root}\\model_registry\\pt\\")
+    ptPath.mkdir(parents=True, exist_ok=True)
     ptFileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pt" 
-    torch.save(model_experiments_record["network"],  f"{drtPath}\\{ptFileName}")
+    torch.save(model_experiments_record["network"],  f"{ptPath}\\{ptFileName}")
 
 
 def writeIntoModelDeploying(modelFile):
 
     # define src, dst path
-    srcPath = Path(f"{root}\\model_registry\\")
-    dstPath = Path(f"{root}\\model_deploying\\")
+    srcPath = Path(f"{root}\\model_registry\\pt")
+    # dstPath = Path(f"{root}\\model_deploying\\")
+    dstPath = Path(f"{root}\\ASLFN\\docker_apps")
 
     # create dir
     dstPath.mkdir(parents=True, exist_ok=True)

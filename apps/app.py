@@ -271,7 +271,7 @@ def pipeline_model(request: Request, \
                                  lossFunction = lossFunction, \
                                  optimizer = optimizer, \
                                  learningRate = eval_avoidNone(learningRate), \
-                                 betas = betas, \
+                                 betas = eval_avoidNone(betas), \
                                  eps = eval_avoidNone(eps), \
                                  weightDecay = eval_avoidNone(weightDecay))
 
@@ -494,10 +494,11 @@ def __model_evaluating(dataDirectory, modelFile):
 
    return model_experiments_record, model_params, model_fig_drt, rmseError
 
-def __model_deploying(modelFile):
+def __model_deploying(modelPklFile):
 
    # save model to directory : model_deploying
-   saving.writeIntoModelDeploying(modelFile)
+   modelPtFile = modelPklFile[:-3] + "pt"
+   saving.writeIntoModelDeploying(modelPtFile)
 
    # git add/commit/push automatically
    autoPush.main()
@@ -507,7 +508,7 @@ def pipeline_service(request: Request):
 
    # List the upload data to Dropdownlist
    upload_data = os.listdir(f"{root}\\upload_data")
-   model_registry = os.listdir(f"{root}\\model_registry")
+   model_registry = os.listdir(f"{root}\\model_registry\\pkl")
    
    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
 
@@ -518,7 +519,8 @@ def pipeline_service(request: Request, \
 
    # List the upload data to Dropdownlist
    upload_data = os.listdir(f"{root}\\upload_data")
-   model_registry = os.listdir(f"{root}\\model_registry")
+   model_registry = os.listdir(f"{root}\\model_registry\\pkl")
+
 
    model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)
 
@@ -601,11 +603,11 @@ def pipeline_service(request: Request):
 
 @app.post("/pipeline/deploy")
 def pipeline_deploy(request: Request, \
-                     modelFile : str = Form(default=None, max_length=50)):
+                     modelPklFile : str = Form(default=None, max_length=50)):
 
-   __model_deploying(modelFile)
+   __model_deploying(modelPklFile)
 
-   return modelFile
+   return modelPklFile
 
 @app.get("/post_8001")
 def request_8001():

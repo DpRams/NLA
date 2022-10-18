@@ -87,12 +87,22 @@ class Network(torch.nn.Module):
     # Backward operation
     def backward(self, loss):
 
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.model_params["learningRate"])
+        if self.model_params["optimizer"] == "Adam" : 
+            optimizer = torch.optim.Adam(params=self.parameters(), \
+                                            lr=self.model_params["learningRate"], \
+                                            betas=self.model_params["betas"], \
+                                            eps=self.model_params["eps"], \
+                                            weight_decay=self.model_params["weightDecay"])
+        if self.model_params["optimizer"] == "AdamW" : 
+            optimizer = torch.optim.AdamW(params=self.parameters(), \
+                                            lr=self.model_params["learningRate"], \
+                                            betas=self.model_params["betas"], \
+                                            eps=self.model_params["eps"], \
+                                            weight_decay=self.model_params["weightDecay"])
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
-        return self
 
     
 class RIRO(Network):
@@ -894,6 +904,7 @@ class CSI_function_not_objective_oriented():
 
 """
 Customize model(It could work!!!)
+Network_s2 可以刪除，目前都是都是記繼承 Network
 """
 
 class Network_s2(torch.nn.Module):
@@ -1009,8 +1020,8 @@ class YourCSI_s2():
     def reorganizing(self):
         self.net = self.net.reorganizing()
 
-# TwoLayerNet -> Network_s2
-class yourCSI_s2(Network_s2): 
+# TwoLayerNet -> Network_s2(X) Network(O)
+class yourCSI_s2(Network): 
 
     def __init__(self, **model_params):
         super().__init__(**model_params)
@@ -1080,7 +1091,7 @@ class yourCSI_s2(Network_s2):
             return self
             
 """
-copy of YourCSI
+copy of YourCSI, it's been using by scenario 1 (old version, not the SLFN or ASLFN)
 """
 
 

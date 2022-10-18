@@ -35,6 +35,7 @@ def reading_dataset_Testing(dataDirecotry):
 
     # StandardScaler
     sc_x, sc_y = StandardScaler(), StandardScaler()
+    
     # Fit training data(transform is redundant)
     _ = sc_x.fit_transform(trainingDf_X.to_numpy())
     _ = sc_y.fit_transform(trainingDf_Y.to_numpy())
@@ -47,7 +48,7 @@ def reading_dataset_Testing(dataDirecotry):
 
 def reading_pkl(modelFile):
     
-    modelPath = f"{root}/model_registry/{modelFile}"
+    modelPath = f"{root}\\model_registry\\pkl\\{modelFile}"
     with open(modelPath, 'rb') as f:
         checkpoints = pickle.load(f)
 

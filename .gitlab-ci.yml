@@ -28,7 +28,10 @@ deploy:
   script:
     - echo "deploy"
     - docker
+    - cd ASLFN
+    - docker build -t aslfn:latest -f rootuser.Dockerfile .
+    - docker run -p 8002:8002 -d aslfn:latest
   rules:
     - changes:
-      - model_deploying/*
+      - ASLFN/*
 
