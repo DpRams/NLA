@@ -50,20 +50,17 @@ def writeIntoModelDeploying(modelFile):
 
     removePreviousModelPtFile(dstPath)
 
-    # # create dir
-    # dstPath.mkdir(parents=True, exist_ok=True)
+    # create dir
+    dstPath.mkdir(parents=True, exist_ok=True)
 
-    # source = f"{srcPath}\\{modelFile}"
-    # destination = f"{dstPath}\\{modelFile}"
+    source = f"{srcPath}\\{modelFile}"
+    destination = f"{dstPath}\\{modelFile}"
 
-    # shutil.copyfile(source, destination)
+    shutil.copyfile(source, destination)
 
 def removePreviousModelPtFile(dstPath):
 
     p = Path(dstPath).glob('**/*')
-    files = [x for x in p if str(x)[-3:] == ".pt"]
-    print(files)
-
-
-
-    pass
+    file = [x for x in p if str(x)[-3:] == ".pt"]
+    if len(file) == 0 : return
+    else: file.unlink(missing_ok=True)
