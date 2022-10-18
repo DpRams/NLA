@@ -29,9 +29,8 @@ deploy:
     - echo "deploy"
     - docker
     - cd ASLFN
-    - print(123)
-    # - docker build -t aslfn:latest -f rootuser.Dockerfile .
-    # - docker run -p 8002:8002 -d aslfn:latest
+    - docker build -t aslfn:latest -f rootuser.Dockerfile .
+    - docker run -p 8002:8002 -d aslfn:latest
   rules:
     - changes:
       - ASLFN/docker_apps/*

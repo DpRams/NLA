@@ -41,15 +41,29 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
 
 def writeIntoModelDeploying(modelFile):
 
+    
+
     # define src, dst path
     srcPath = Path(f"{root}\\model_registry\\pt")
     # dstPath = Path(f"{root}\\model_deploying\\")
     dstPath = Path(f"{root}\\ASLFN\\docker_apps")
 
-    # create dir
-    dstPath.mkdir(parents=True, exist_ok=True)
+    removePreviousModelPtFile(dstPath)
 
-    source = f"{srcPath}\\{modelFile}"
-    destination = f"{dstPath}\\{modelFile}"
+    # # create dir
+    # dstPath.mkdir(parents=True, exist_ok=True)
 
-    shutil.copyfile(source, destination)
+    # source = f"{srcPath}\\{modelFile}"
+    # destination = f"{dstPath}\\{modelFile}"
+
+    # shutil.copyfile(source, destination)
+
+def removePreviousModelPtFile(dstPath):
+
+    p = Path(dstPath).glob('**/*')
+    files = [x for x in p if str(x)[-3:] == ".pt"]
+    print(files)
+
+
+
+    pass
