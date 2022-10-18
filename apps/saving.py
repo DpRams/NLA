@@ -63,4 +63,4 @@ def removePreviousModelPtFile(dstPath):
     p = Path(dstPath).glob('**/*')
     file = [x for x in p if str(x)[-3:] == ".pt"]
     if len(file) == 0 : return
-    else: file.unlink(missing_ok=True)
+    else: file[0].unlink(missing_ok=True)
