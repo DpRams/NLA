@@ -1,11 +1,11 @@
 import torch
 import copy
-from apps import getFreerGpu
+import getFreerGpu
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 # from CSI_Modules.modules import Initialize, Select, Match, Cram, Reorganize
-from CSI_Modules.modules_s2 import Initialize, Select, Match, Cram, Reorganize
+from modules_s2 import Initialize, Select, Match, Cram, Reorganize
 
 """
 Original
@@ -22,9 +22,24 @@ class Network(torch.nn.Module):
         self.model_params = model_params
         self.setting_device()
 
-        # Initialize
+        # Layer Initialization
         self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.model_params["hiddenNode"]).to(self.device)
         self.linear2 = torch.nn.Linear(self.model_params["hiddenNode"], self.model_params["outputDimension"]).to(self.device)
+
+        # Weight Initialization
+        if self.model_params["weightInitialization"] == None:pass
+        elif self.model_params["weightInitialization"] == "xavierNormal":
+            self.linear1 = torch.nn.init.xavier_normal_(self.linear1)
+            self.linear2 = torch.nn.init.xavier_normal_(self.linear2)
+        elif self.model_params["weightInitialization"] == "xavierUniform":
+            self.linear1 = torch.nn.init.xavier_uniform_(self.linear1)
+            self.linear2 = torch.nn.init.xavier_uniform_(self.linear2)
+        elif self.model_params["weightInitialization"] == "kaimingNormal":
+            self.linear1 = torch.nn.init.kaiming_normal_(self.linear1)
+            self.linear2 = torch.nn.init.kaiming_normal_(self.linear2)        
+        elif self.model_params["weightInitialization"] == "kaimingUniform":
+            self.linear1 = torch.nn.init.kaiming_uniform_(self.linear1)
+            self.linear2 = torch.nn.init.kaiming_uniform_(self.linear2)
 
         # Record the experiment result
         self.nb_node_pruned = 0
@@ -52,8 +67,8 @@ class Network(torch.nn.Module):
 
         # print(self.linear1.weight.data.get_device(), self.linear2.weight.data.get_device())
         # print(self.x.get_device(), self.y.get_device())
-    
-    
+
+
     # Add the new data to the x and y data
     #(目前是都沒在用，但應該也沒差，因為 setData 就可以做到相同操作，只是 train 的過程中，資料新增可能要寫好懂一點)
     def addData(self, new_x_train, new_y_train):
@@ -87,22 +102,12 @@ class Network(torch.nn.Module):
     # Backward operation
     def backward(self, loss):
 
-        if self.model_params["optimizer"] == "Adam" : 
-            optimizer = torch.optim.Adam(params=self.parameters(), \
-                                            lr=self.model_params["learningRate"], \
-                                            betas=self.model_params["betas"], \
-                                            eps=self.model_params["eps"], \
-                                            weight_decay=self.model_params["weightDecay"])
-        if self.model_params["optimizer"] == "AdamW" : 
-            optimizer = torch.optim.AdamW(params=self.parameters(), \
-                                            lr=self.model_params["learningRate"], \
-                                            betas=self.model_params["betas"], \
-                                            eps=self.model_params["eps"], \
-                                            weight_decay=self.model_params["weightDecay"])
-
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.model_params["learningRate"])
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+        return self
 
     
 class RIRO(Network):
@@ -904,7 +909,6 @@ class CSI_function_not_objective_oriented():
 
 """
 Customize model(It could work!!!)
-Network_s2 可以刪除，目前都是都是記繼承 Network
 """
 
 class Network_s2(torch.nn.Module):
@@ -1020,7 +1024,7 @@ class YourCSI_s2():
     def reorganizing(self):
         self.net = self.net.reorganizing()
 
-# TwoLayerNet -> Network_s2(X) Network(O)
+# TwoLayerNet -> Network_s2
 class yourCSI_s2(Network): 
 
     def __init__(self, **model_params):
@@ -1091,7 +1095,7 @@ class yourCSI_s2(Network):
             return self
             
 """
-copy of YourCSI, it's been using by scenario 1 (old version, not the SLFN or ASLFN)
+copy of YourCSI
 """
 
 
