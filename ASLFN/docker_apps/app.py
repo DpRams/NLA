@@ -84,7 +84,6 @@ async def pipeline_service(request: Request):
 
     return {"Message" : "POST 127.0.0.1:8002/predict", \
             # "dataDirectory" : json_POST["dataDirectory"], \
-            # "modelPklFile" : json_POST["modelPklFile"], \
             "rmseError" : str(rmseError), \
             "time" : str(time.time()-start)
             }
