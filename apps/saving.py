@@ -41,7 +41,9 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
 
 def writeIntoModelDeploying(modelFile):
 
-    
+    """
+    move the selected model file(pt) to \\ASLFN\\docker_apps\\
+    """
 
     # define src, dst path
     srcPath = Path(f"{root}\\model_registry\\pt")
@@ -59,6 +61,10 @@ def writeIntoModelDeploying(modelFile):
     shutil.copyfile(source, destination)
 
 def removePreviousModelPtFile(dstPath):
+
+    """
+    remove previous model file(pt)
+    """
 
     p = Path(dstPath).glob('**/*')
     file = [x for x in p if str(x)[-3:] == ".pt"]
