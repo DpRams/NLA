@@ -495,8 +495,9 @@ def __model_evaluating(dataDirectory, modelFile):
 
    return model_experiments_record, model_params, model_fig_drt, rmseError
 
-def __model_deploying(modelPklFile):
+def __model_deploying(modelId):
 
+   modelPklFile = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').iloc[int(modelId), 1]
    # save model to directory : model_deploying
    modelPtFile = modelPklFile[:-3] + "pt"
    saving.writeIntoDockerApps(modelPtFile)
@@ -605,19 +606,15 @@ def pipeline_service(request: Request):
 
 @app.post("/pipeline/deploy")
 def pipeline_deploy(request: Request, \
-                     modelPklFile: str = Form(default=None, max_length=50)):
+                     modelId: str = Form(default=None, max_length=50)):
 
+   deployRecord = dfToTemplate(changingStatusToCsv(modelId))
+   __model_deploying(modelId)
 
-
-   return modelPklFile
-
-# @app.post("/pipeline/deploy")
-# def pipeline_deploy(request: Request, \
-#                      modelPklFile : str = Form(default=None, max_length=50)):
-
-#    __model_deploying(modelPklFile)
-
-#    return modelPklFile
+   return templates.TemplateResponse("deploy.html", \
+                  context={"request":request, \
+                           "deployRecord":deployRecord, \
+                           })
 
 @app.get("/post_8001")
 def request_8001():
@@ -656,6 +653,22 @@ def template_avoidNone(model_params, keys):
       return None
    else:
       return model_params.kwargs[keys]
+
+
+def changingStatusToCsv(modelId):
+   # update deployStatus(idx : 3)
+   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
+   if deployRecord.iloc[int(modelId), 3] == "revoking" : deployRecord.iloc[int(modelId), 3] = "deploying"
+   elif deployRecord.iloc[int(modelId), 3] == "deploying" : deployRecord.iloc[int(modelId), 3] = "revoking"
+   deployRecord.to_csv(f"{root}\\model_deploying\\deployment.csv", index=None)
+
+   return deployRecord
+
+def dfToTemplate(deployRecord):
+   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').T.to_dict()
+   deployRecord = [x for x in deployRecord.values()]
+
+   return deployRecord
 
 if __name__ == '__main__':
 	uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True) # 若有 rewrite file 可能不行 reload=True，不然會一直重開 by 李忠大師
