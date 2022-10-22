@@ -34,21 +34,3 @@ function changingStatus(id){
     }
   }
 }
-
-// 這個部分用 Jinja 的 if 寫掉了
-// function loadingStatus(id){
-
-//   // loading the deployStatus from record(csv)
-
-//   let deployRevoke_switch = document.getElementById(id);
-
-//   console.log(id);
-//   console.log(deployRevoke_switch.dataset.deploystatus);
-
-//   if (deployRevoke_switch.dataset.deploystatus == "revoking"){
-//     deployRevoke_switch.checked == False
-//   }
-//   else if (deployRevoke_switch.dataset.deploystatus == "deploying"){
-//     deployRevoke_switch.checked == True
-//   }
-// }

@@ -175,42 +175,13 @@
                 <td>{{model.serviceUrl}}</td>
               </tr>
               {% endfor %}
-              <!-- <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr> -->
+              
             </tbody>
           </table>
 
-          <input type="text" class="form-control" id="modelPklFile-id" name="modelPklFile" value="">
+          <input type="text" class="form-control" id="modelPklFile-id" name="modelPklFile" value="" hidden>
 
 
-          <!-- <div class="col-md-12">
-            <div class="h-100 p-5 bg-light border rounded-3">
-              <label class="col-md-8 fs-4">Deploy Model from Registry.</label>
-
-              <select name="modelPklFile" method="GET"  style="font-size:20px;">
-                {% for model in model_registry %}
-                <option value= "{{model}}"  SELECTED>{{model}}</option>"
-                {% endfor %}
-              </select>
-
-            </div>
-          </div>
-
-          <br>
-
-          <label class="col-md-8 fs-5"></label>
-          <label for="deploy" class="btn btn-outline-primary btn-lg" >Deploy(test)</label>
-          <input type="submit" id="deploy" class="btn btn-outline-primary btn-lg" formaction="/pipeline/deploy" hidden onclick="return confirm('是否部署該模型');"> -->
 
           <br><br>
 
