@@ -128,13 +128,13 @@
 
         <br><br>
 
-        <form action="/pipeline/deploy" method="post" enctype="multipart/form-data">
+        <form name="deployManagement" action="/pipeline/deploy" method="post" enctype="multipart/form-data">
           
           <table class="table table-striped">
             <thead>
               <tr> 
                 <th scope="col">ID</th>
-                <th scope="col">Deploy switch</th>
+                <th scope="col">Revoke/Deploy</th>
                 <th scope="col">Model name</th>
                 <th scope="col">Trained dataset</th>
                 <th scope="col">Deploy status</th>
@@ -150,9 +150,9 @@
 
                 {% if 'revoking' in model.deployStatus %}
 
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" data-deploystatus="{{model.deployStatus}}" onchange="checkStatus(this.id)">
-                    <label class="form-check-label" for="deployRevoke_switch"></label>
+                  <div class="form-check form-switch" >
+                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" formaction="/pipeline/deploy" data-deploystatus="{{model.deployStatus}}" onchange="changingStatus(this.id)">
+
                   </div>
 
                 {% endif %}
@@ -160,7 +160,7 @@
                 {% if 'deploying' in model.deployStatus %}
 
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" data-deploystatus="{{model.deployStatus}}" onchange="checkStatus(this.id)" checked="">
+                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" formaction="/pipeline/deploy" data-deploystatus="{{model.deployStatus}}" onchange="changingStatus(this.id)" checked="">
                     <label class="form-check-label" for="deployRevoke_switch"></label>
                   </div>
 

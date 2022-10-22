@@ -596,7 +596,7 @@ def pipeline_service(request: Request):
    # 讀取資料庫，將資料回應到頁面上
    deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').T.to_dict()
    deployRecord = [x for x in deployRecord.values()]
-   print(deployRecord)
+   # print(deployRecord)
 
    return templates.TemplateResponse("deploy.html", \
                   context={"request":request, \
@@ -605,11 +605,19 @@ def pipeline_service(request: Request):
 
 @app.post("/pipeline/deploy")
 def pipeline_deploy(request: Request, \
-                     modelPklFile : str = Form(default=None, max_length=50)):
+                     ):
 
-   __model_deploying(modelPklFile)
 
-   return modelPklFile
+
+   return "Success"
+
+# @app.post("/pipeline/deploy")
+# def pipeline_deploy(request: Request, \
+#                      modelPklFile : str = Form(default=None, max_length=50)):
+
+#    __model_deploying(modelPklFile)
+
+#    return modelPklFile
 
 @app.get("/post_8001")
 def request_8001():
