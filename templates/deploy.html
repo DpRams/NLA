@@ -133,31 +133,44 @@
           <table class="table table-striped">
             <thead>
               <tr> 
-                <th scope="col">#</th>
+                <th scope="col">ID</th>
                 <th scope="col">Deploy switch</th>
                 <th scope="col">Model name</th>
                 <th scope="col">Trained dataset</th>
                 <th scope="col">Deploy status</th>
-                <th scope="col">Service link</th>
+                <th scope="col">Service url</th>
               </tr>
             </thead>
             <tbody>
 
-              {% for model in model_deploying %}
+              {% for model in deployRecord %}
               <tr>
-                <th scope="row">{{model.index}}</th>
+                <th scope="row">{{model.id}}</th>
                 <td>
 
+                {% if 'revoking' in model.deployStatus %}
+
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch" onchange="checkStatus()">
+                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" data-deploystatus="{{model.deployStatus}}" onchange="checkStatus(this.id)">
                     <label class="form-check-label" for="deployRevoke_switch"></label>
                   </div>
-                  
+
+                {% endif %}
+                
+                {% if 'deploying' in model.deployStatus %}
+
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" data-deploystatus="{{model.deployStatus}}" onchange="checkStatus(this.id)" checked="">
+                    <label class="form-check-label" for="deployRevoke_switch"></label>
+                  </div>
+
+                {% endif %}
+
                 </td>
-                <td>{{model.name}}</td>
+                <td>{{model.modelName}}</td>
                 <td>{{model.trainedDataset}}</td>
                 <td>{{model.deployStatus}}</td>
-                <td>{{model.serviceLink}}</td>
+                <td>{{model.serviceUrl}}</td>
               </tr>
               {% endfor %}
               <!-- <tr>

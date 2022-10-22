@@ -11,6 +11,7 @@ import time
 import urllib.parse
 import autoPush
 import numpy as np
+import pandas as pd
 
 # testing
 # Append absolute path to import module within different directory.
@@ -593,12 +594,13 @@ def pipeline_service(request: Request, \
 def pipeline_service(request: Request):
    
    # 讀取資料庫，將資料回應到頁面上
-   model_deploying = [{"index":1, "name":None, "trainedDataset":None, "deployStatus":None, "serviceLink":None}, \
-                     {"index":2, "name":None, "trainedDataset":None, "deployStatus":None, "serviceLink":None}]
+   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').T.to_dict()
+   deployRecord = [x for x in deployRecord.values()]
+   print(deployRecord)
 
    return templates.TemplateResponse("deploy.html", \
                   context={"request":request, \
-                           "model_deploying":model_deploying, \
+                           "deployRecord":deployRecord, \
                            })
 
 @app.post("/pipeline/deploy")
