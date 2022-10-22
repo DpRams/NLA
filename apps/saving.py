@@ -3,6 +3,7 @@ import pickle
 import torch
 import sys
 import numpy as np
+import pandas as pd
 from pathlib import Path
 import shutil
 from network.net import Network
@@ -38,8 +39,14 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
     ptFileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pt" 
     torch.save(model_experiments_record["network"],  f"{ptPath}\\{ptFileName}")
 
+    # write data to deployment.csv
+    df = pd.read_csv(f"{root}\\model_deploying\\deployment.csv")
+    Id = len(df)
+    df.loc[-1] = [Id, fileName, data_drt, "revoking", "None"]
+    df.to_csv(f"{root}\\model_deploying\\deployment.csv", index=None)
 
-def writeIntoModelDeploying(modelFile):
+
+def writeIntoDockerApps(modelFile):
 
     """
     move the selected model file(pt) to \\ASLFN\\docker_apps\\

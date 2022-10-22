@@ -1,5 +1,3 @@
 id,modelName,trainedDataset,deployStatus,serviceUrl
-1,model1,solar,revoking,None
-2,model2,hospice,revoking,None
-3,model3,hospice_all,revoking,None
-4,model4,hospice_all,deploying,http://127.0.0.1:8002/predict
+0,solar_custoNet_SLFN_0.6_0.729_221022_182027.pkl,solar,revoking,None
+1,hospice_custoNet_ASLFN_0.1_1.0_221022_182139.pkl,hospice,revoking,None

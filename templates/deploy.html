@@ -151,7 +151,7 @@
                 {% if 'revoking' in model.deployStatus %}
 
                   <div class="form-check form-switch" >
-                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" formaction="/pipeline/deploy" data-deploystatus="{{model.deployStatus}}" onchange="changingStatus(this.id)">
+                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" formaction="/pipeline/deploy" data-deploystatus="{{model.deployStatus}}" data-modelname="{{model.modelName}}"  onchange="changingStatus(this.id)">
 
                   </div>
 
@@ -160,13 +160,15 @@
                 {% if 'deploying' in model.deployStatus %}
 
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" formaction="/pipeline/deploy" data-deploystatus="{{model.deployStatus}}" onchange="changingStatus(this.id)" checked="">
+                    <input class="form-check-input" type="checkbox" id="deployRevoke_switch_{{model.id}}" formaction="/pipeline/deploy" data-deploystatus="{{model.deployStatus}}" data-modelname="{{model.modelName}}" onchange="changingStatus(this.id)" checked="">
                     <label class="form-check-label" for="deployRevoke_switch"></label>
                   </div>
 
                 {% endif %}
 
                 </td>
+
+                
                 <td>{{model.modelName}}</td>
                 <td>{{model.trainedDataset}}</td>
                 <td>{{model.deployStatus}}</td>
@@ -188,8 +190,10 @@
             </tbody>
           </table>
 
+          <input type="text" class="form-control" id="modelPklFile-id" name="modelPklFile" value="">
 
-          <div class="col-md-12">
+
+          <!-- <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
               <label class="col-md-8 fs-4">Deploy Model from Registry.</label>
 
@@ -206,7 +210,7 @@
 
           <label class="col-md-8 fs-5"></label>
           <label for="deploy" class="btn btn-outline-primary btn-lg" >Deploy(test)</label>
-          <input type="submit" id="deploy" class="btn btn-outline-primary btn-lg" formaction="/pipeline/deploy" hidden onclick="return confirm('是否部署該模型');">
+          <input type="submit" id="deploy" class="btn btn-outline-primary btn-lg" formaction="/pipeline/deploy" hidden onclick="return confirm('是否部署該模型');"> -->
 
           <br><br>
 

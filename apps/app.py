@@ -499,7 +499,7 @@ def __model_deploying(modelPklFile):
 
    # save model to directory : model_deploying
    modelPtFile = modelPklFile[:-3] + "pt"
-   saving.writeIntoModelDeploying(modelPtFile)
+   saving.writeIntoDockerApps(modelPtFile)
 
    # git add/commit/push automatically
    autoPush.main()
@@ -605,11 +605,11 @@ def pipeline_service(request: Request):
 
 @app.post("/pipeline/deploy")
 def pipeline_deploy(request: Request, \
-                     ):
+                     modelPklFile: str = Form(default=None, max_length=50)):
 
 
 
-   return "Success"
+   return modelPklFile
 
 # @app.post("/pipeline/deploy")
 # def pipeline_deploy(request: Request, \
