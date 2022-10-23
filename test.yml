@@ -1,0 +1,7 @@
+- stages:
+  - build
+  - test
+  - deploy
+- build:
+    stage: build
+    tags: AILab

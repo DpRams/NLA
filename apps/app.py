@@ -26,6 +26,7 @@ from model_file import custoNet_ASLFN, custoNet_s1, riro, ribo, custoNet_SLFN
 # from model_file.riro import main
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
+from checkPort import findPortAvailable
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -502,6 +503,11 @@ def __model_deploying(modelId):
    modelPtFile = modelPklFile[:-3] + "pt"
    saving.writeIntoDockerApps(modelPtFile)
 
+   # find Available Port 
+   availablePort = findPortAvailable()
+
+   # write available port to .gitlab-ci.yml
+
    # git add/commit/push automatically
    autoPush.main()
 
@@ -627,7 +633,9 @@ def pipeline_deploy(request: Request, \
    # print(modelId, deployStatus)
    deployRecord = dfToTemplate(changingStatusToCsv(modelId))
 
-   if deployStatus == "deploying":__model_deploying(modelId)
+   if deployStatus == "deploying":
+      pass
+      # __model_deploying(modelId)
    elif deployStatus == "revoking":__model_revoking(modelId)
 
    return templates.TemplateResponse("deploy.html", \
