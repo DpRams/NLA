@@ -505,6 +505,9 @@ def __model_deploying(modelId):
    # git add/commit/push automatically
    autoPush.main()
 
+def __model_revoking(modelId):
+   pass
+
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
 
@@ -604,17 +607,34 @@ def pipeline_service(request: Request):
                            "deployRecord":deployRecord, \
                            })
 
+# @app.post("/pipeline/deploy?modelId={modelId}&deployStatus={deployStatus}")
+# def pipeline_deploy(request: Request, \
+#                      modelId: str = Form(default=None, max_length=50), \
+#                      deployStatus: str = Form(default=None, max_length=50)):
+
+#    print(modelId, deployStatus)
+#    deployRecord = dfToTemplate(changingStatusToCsv(modelId))
+#    return templates.TemplateResponse("deploy.html", \
+#                context={"request":request, \
+#                         "deployRecord":deployRecord, \
+#                         })
+
 @app.post("/pipeline/deploy")
 def pipeline_deploy(request: Request, \
-                     modelId: str = Form(default=None, max_length=50)):
+                     modelId: str = Form(default=None, max_length=50), \
+                     deployStatus: str = Form(default=None, max_length=50)):
 
+   # print(modelId, deployStatus)
    deployRecord = dfToTemplate(changingStatusToCsv(modelId))
-   __model_deploying(modelId)
+
+   if deployStatus == "deploying":__model_deploying(modelId)
+   elif deployStatus == "revoking":__model_revoking(modelId)
 
    return templates.TemplateResponse("deploy.html", \
-                  context={"request":request, \
-                           "deployRecord":deployRecord, \
-                           })
+               context={"request":request, \
+                        "deployRecord":deployRecord, \
+                        })
+
 
 @app.get("/post_8001")
 def request_8001():
