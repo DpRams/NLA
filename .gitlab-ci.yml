@@ -10,8 +10,8 @@ revoke:
   script:
   - echo "revoke"
   - docker
-  - docker rm bce90b708136
   - docker stop bce90b708136
+  - docker rm bce90b708136
   - python C:\Users\user\rams\projcet\apps\updateDeploymentCsv.py -m 1 -a "revoking"
   stage: revoke
   tags:

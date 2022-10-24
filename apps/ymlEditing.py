@@ -33,7 +33,7 @@ def revokingModelToYml(modelId):
                "test": {"stage": "test", "tags": ["AILab"], "only": ["scenario_2"], "script": ["echo \"testing\""]},
                "revoke": {"stage": "revoke", "tags": ["AILab"], \
                           "script": ["echo \"revoke\"", "docker", \
-                                    f"docker rm {containerID}", f"docker stop {containerID}", \
+                                    f"docker stop {containerID}", f"docker rm {containerID}", \
                                     f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeploymentCsv.py -m {modelId} -a \"revoking\""]
                                     }}
 
