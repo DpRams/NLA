@@ -1,6 +1,9 @@
 
+from pathlib import Path
+root = Path(__file__).resolve().parents[1]
+
 def getContainerIDPort():
-    with open(".\\apps\\dockerTmp", "r", encoding="utf-16") as file:
+    with open(f"{root}\\apps\\dockerTmp", "r", encoding="utf-16") as file:
         dockerTmp = file.read()
         dockerTmp = dockerTmp.split("   ")
         containerID = dockerTmp[0]

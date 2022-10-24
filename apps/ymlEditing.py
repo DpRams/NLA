@@ -13,11 +13,11 @@ def findPortAvailableToYml(modelId):
     ymlDict = {"stages": ["build", "test", "deploy"],
                "build": {"stage": "build", "tags": ["AILab"], "only": ["scenario_2"], "script": ["echo \"build\""]},
                "test": {"stage": "test", "tags": ["AILab"], "only": ["scenario_2"], "script": ["echo \"testing\""]},
-               "deploy": {"stage": "deploy", "tags": ["AILab"],
+               "deploy": {"stage": "deploy", "tags": ["AILab"], \
                           "script": ["echo \"deploy\"", "docker", "cd ASLFN", "docker build -t aslfn:latest -f rootuser.Dockerfile .", \
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d aslfn:latest", \
-                                    f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp", \
-                                    f"python updateDeploymentCsv.py -m {modelId}"],
+                                    f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp"], \
+                          "after_script":[f"python updateDeploymentCsv.py -m {modelId}"], \
                           "rules": [{"changes": ["ASLFN/docker_apps/*"]}]}}
 
     with open(".\\.gitlab-ci.yml", 'w') as file:

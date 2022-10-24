@@ -1,7 +1,6 @@
 import pandas as pd
 from pathlib import Path
-file = Path(__file__).resolve()
-parent, root = file.parent, file.parents[1]
+root = Path(__file__).resolve().parents[1]
 
 from readingDockerTmp import getContainerIDPort
 import argparse

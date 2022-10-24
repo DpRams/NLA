@@ -7,6 +7,8 @@ build:
   tags:
   - AILab
 deploy:
+  after_script:
+  - python updateDeploymentCsv.py -m 0
   rules:
   - changes:
     - ASLFN/docker_apps/*
@@ -15,10 +17,9 @@ deploy:
   - docker
   - cd ASLFN
   - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8874:8002 -d aslfn:latest
+  - docker run -p 8685:8002 -d aslfn:latest
   - cd C:\Users\user\rams\projcet\apps
   - docker ps -l | findstr aslfn > dockerTmp
-  - python updateDeploymentCsv.py -m 1
   stage: deploy
   tags:
   - AILab
