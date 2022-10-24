@@ -548,20 +548,25 @@ def pipeline_service(request: Request):
 
    # List the upload data to Dropdownlist
    deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
-   predictAPI = deployRecord.where((deployRecord["deployStatus"] == "revoking"))["modelName"].to_list() # 待改成 deploying
-   
-   return templates.TemplateResponse("service.html",{"request":request, "predictAPI":predictAPI})
+   modelId = deployRecord.index[(deployRecord["deployStatus"] == "deploying")]
+   predictAPI_lst = [modelName for (i, modelName) in deployRecord.loc[modelId, "modelName"].items()] 
+
+   return templates.TemplateResponse("service.html",{"request":request, "predictAPI_lst":predictAPI_lst})
 
 @app.post("/pipeline/service")
 def pipeline_service(request: Request, \
                      predictAPI: str = Form(default=None, max_length=50)):
 
    deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
+   # GET
+   modelId = deployRecord.index[(deployRecord["deployStatus"] == "deploying")]
+   predictAPI_lst = [modelName for (i, modelName) in deployRecord.loc[modelId, "modelName"].items()] 
+
+   # POST
    modelId = deployRecord.index[(deployRecord["modelName"] == predictAPI)]
    dataDirectory = deployRecord.loc[modelId, "trainedDataset"].item()
    modelPklFile = predictAPI
    servicePort = deployRecord.loc[modelId, "containerPort"].item()
-
 
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory) 
    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
@@ -595,6 +600,7 @@ def pipeline_service(request: Request, \
 
    return templates.TemplateResponse("service.html", \
                   context={"request":request, \
+                     "predictAPI_lst":predictAPI_lst, \
                      "dataDirectory":dataDirectory, \
                      "dataShape":model_params.kwargs["dataShape"], \
                      "modelPklFile":modelPklFile, \

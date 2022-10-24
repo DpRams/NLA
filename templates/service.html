@@ -147,13 +147,13 @@
 
                 <label class="col-md-8 fs-4">Select Predict API to get records and results.</label>
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_predictApi" placeholder="10" name="predictApi" method="GET"
+                  <select class="form-control" id="select_predictAPI" placeholder="10" name="predictAPI" method="POST"
                     style="font-size:20px;">
-                    {% for api in predictAPI %}
+                    {% for api in predictAPI_lst %}
                     <option value="{{api}}" SELECTED>{{api}}</option>"
                     {% endfor %}
                   </select>
-                  <label for="select_predictApi">Predict APIs</label>
+                  <label for="select_predictAPI">Predict APIs</label>
                 </div>
 
               </div>
