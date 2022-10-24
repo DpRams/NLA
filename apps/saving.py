@@ -42,7 +42,7 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
     # write data to deployment.csv
     df = pd.read_csv(f"{root}\\model_deploying\\deployment.csv")
     Id = len(df)
-    df.loc[-1] = [Id, fileName, data_drt, "revoking", "None"]
+    df.loc[-1] = [Id, fileName, data_drt, "revoking", "None", "None"]
     df.to_csv(f"{root}\\model_deploying\\deployment.csv", index=None)
 
 
