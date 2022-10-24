@@ -15,7 +15,7 @@ deploy:
   - docker
   - cd ASLFN
   - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8835:8835 -d aslfn:latest
+  - docker run -p 8344:8344 -d aslfn:latest
   stage: deploy
   tags:
   - AILab
