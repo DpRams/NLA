@@ -15,8 +15,9 @@ deploy:
   - docker
   - cd ASLFN
   - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8676:8002 -d aslfn:latest
-  - docker ps -l | findstr aslfn > ./apps/dockerTmp
+  - docker run -p 8823:8002 -d aslfn:latest
+  - cd C:\Users\user\rams\projcet\apps
+  - docker ps -l | findstr aslfn > dockerTmp
   stage: deploy
   tags:
   - AILab

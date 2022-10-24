@@ -1,5 +1,3 @@
-
-
 def getContainerIDPort():
     with open(".\\apps\\dockerTmp", "r", encoding="utf-16") as file:
         dockerTmp = file.read()
