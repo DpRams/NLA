@@ -504,7 +504,7 @@ def __model_deploying(modelId):
    saving.writeIntoDockerApps(modelPtFile)
 
    # find Available Port and write into .gitlab-ci.yml file
-   findPortAvailableToYml()
+   findPortAvailableToYml(modelId)
 
    # git add/commit/push automatically
    autoPush.main()

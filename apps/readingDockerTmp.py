@@ -1,3 +1,4 @@
+
 def getContainerIDPort():
     with open(".\\apps\\dockerTmp", "r", encoding="utf-16") as file:
         dockerTmp = file.read()
@@ -14,5 +15,5 @@ def getPortFromString(string):
     rightIdx = string.find("-")
     return string[leftIdx+1:rightIdx]
 
-containerID, containerPort = getContainerIDPort()
-print(containerID, containerPort)
+# containerID, containerPort = getContainerIDPort()
+# print(containerID, containerPort)
