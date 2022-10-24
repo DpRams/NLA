@@ -13,7 +13,7 @@ revoke:
   - docker rm bce90b708136
   - docker stop bce90b708136
   - python C:\Users\user\rams\projcet\apps\updateDeploymentCsv.py -m 1 -a "revoking"
-  stage: deploy
+  stage: revoke
   tags:
   - AILab
 stages:

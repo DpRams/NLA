@@ -31,7 +31,7 @@ def revokingModelToYml(modelId):
     ymlDict = {"stages": ["build", "test", "revoke"],
                "build": {"stage": "build", "tags": ["AILab"], "only": ["scenario_2"], "script": ["echo \"build\""]},
                "test": {"stage": "test", "tags": ["AILab"], "only": ["scenario_2"], "script": ["echo \"testing\""]},
-               "revoke": {"stage": "deploy", "tags": ["AILab"], \
+               "revoke": {"stage": "revoke", "tags": ["AILab"], \
                           "script": ["echo \"revoke\"", "docker", \
                                     f"docker rm {containerID}", f"docker stop {containerID}", \
                                     f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeploymentCsv.py -m {modelId} -a \"revoking\""]
