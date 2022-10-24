@@ -17,7 +17,7 @@ def findPortAvailableToYml(modelId):
                           "script": ["echo \"deploy\"", "docker", "cd ASLFN", "docker build -t aslfn:latest -f rootuser.Dockerfile .", \
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d aslfn:latest", \
                                     f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp"], \
-                          "after_script":[f"python updateDeploymentCsv.py -m {modelId}"], \
+                          "after_script":[f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeploymentCsv.py -m {modelId}"], \
                           "rules": [{"changes": ["ASLFN/docker_apps/*"]}]}}
 
     with open(".\\.gitlab-ci.yml", 'w') as file:
