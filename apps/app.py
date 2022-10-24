@@ -635,7 +635,7 @@ def pipeline_deploy(request: Request, \
 
    if deployStatus == "deploying":
       pass
-      # __model_deploying(modelId)
+      __model_deploying(modelId)
    elif deployStatus == "revoking":__model_revoking(modelId)
 
    return templates.TemplateResponse("deploy.html", \
