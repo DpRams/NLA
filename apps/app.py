@@ -481,7 +481,24 @@ def __model_training(model_params):
 
    return model_experiments_record, model_params, model_fig_drt
 
+# call container service to get rmseError
 def __model_evaluating(dataDirectory, modelFile):
+   
+   x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory)
+   checkpoints = evaluating.reading_pkl(modelFile)
+
+   network = checkpoints["model_experiments_record"]["network"]
+   model_experiments_record = checkpoints["model_experiments_record"]
+   model_params = checkpoints["model_params"]
+   model_fig_drt = checkpoints["model_fig_drt"]
+   
+   # rmseError 應該不能跟原始pkl檔存一起，要另外存
+   # rmseError = evaluating.inferencing(network, x_test, y_test)
+
+   return model_experiments_record, model_params, model_fig_drt
+
+# call local pkl to predict and get rmseError
+def __model_evaluating_old_service(dataDirectory, modelFile):
    
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory)
    checkpoints = evaluating.reading_pkl(modelFile)
@@ -525,26 +542,33 @@ def __model_revoking(modelId):
    # git add/commit/push automatically
    autoPush.main()
 
+# new /service
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
 
    # List the upload data to Dropdownlist
-   upload_data = os.listdir(f"{root}\\upload_data")
-   model_registry = os.listdir(f"{root}\\model_registry\\pkl")
+   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
+   predictAPI = deployRecord.where((deployRecord["deployStatus"] == "revoking"))["modelName"].to_list() # 待改成 deploying
    
-   return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
+   return templates.TemplateResponse("service.html",{"request":request, "predictAPI":predictAPI})
 
 @app.post("/pipeline/service")
 def pipeline_service(request: Request, \
-                     dataDirectory: str = Form(default=None, max_length=50), \
-                     modelPklFile: str = Form(default=None, max_length=50)):
+                     predictAPI: str = Form(default=None, max_length=50)):
 
-   # List the upload data to Dropdownlist
-   upload_data = os.listdir(f"{root}\\upload_data")
-   model_registry = os.listdir(f"{root}\\model_registry\\pkl")
+   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
+   modelId = deployRecord.index[(deployRecord["modelName"] == predictAPI)]
+   dataDirectory = deployRecord.loc[modelId, "trainedDataset"].item()
+   modelPklFile = predictAPI
+   servicePort = deployRecord.loc[modelId, "containerPort"].item()
 
 
-   model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)
+   x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory) 
+   rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
+   res = requests.post(f"http://127.0.0.1:{servicePort}/predict", json={"dataDirectory": rawTestingData})
+   rmseError = res.json()["rmseError"]
+
+   model_experiments_record, model_params, model_fig_drt = __model_evaluating(dataDirectory, modelPklFile)
 
    print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
@@ -571,8 +595,6 @@ def pipeline_service(request: Request, \
 
    return templates.TemplateResponse("service.html", \
                   context={"request":request, \
-                     "model_registry":model_registry, \
-                     "upload_data":upload_data, \
                      "dataDirectory":dataDirectory, \
                      "dataShape":model_params.kwargs["dataShape"], \
                      "modelPklFile":modelPklFile, \
@@ -610,6 +632,95 @@ def pipeline_service(request: Request, \
                      "url_path_for_fig_4":url_path_for_fig_4, \
                      "url_path_for_fig_5":url_path_for_fig_5, \
                      })
+
+
+
+# old /service
+# @app.get("/pipeline/service")
+# def pipeline_service(request: Request):
+
+#    # List the upload data to Dropdownlist
+#    upload_data = os.listdir(f"{root}\\upload_data")
+#    model_registry = os.listdir(f"{root}\\model_registry\\pkl")
+   
+#    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
+
+# @app.post("/pipeline/service")
+# def pipeline_service(request: Request, \
+#                      dataDirectory: str = Form(default=None, max_length=50), \
+#                      modelPklFile: str = Form(default=None, max_length=50)):
+
+#    # List the upload data to Dropdownlist
+#    upload_data = os.listdir(f"{root}\\upload_data")
+#    model_registry = os.listdir(f"{root}\\model_registry\\pkl")
+
+
+#    model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)
+
+#    print(f"model_fig_drt = {model_fig_drt}")
+#    app.mount(
+#       f"/model_fig",
+#       StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
+#       name="model_fig",
+#    )  
+
+#    if "ASLFN" in modelPklFile:
+#       url_path_for_fig_1 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png')
+#       url_path_for_fig_2 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png')
+#       url_path_for_fig_3 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/nodes.png')
+#       url_path_for_fig_4 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/prunedNodes.png')
+#       url_path_for_fig_5 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/routes.png')
+
+#    else:
+#       url_path_for_fig_1 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png')
+#       url_path_for_fig_2 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png')
+#       url_path_for_fig_3 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingAccuracy.png')
+#       url_path_for_fig_4 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingLoss.png')
+#       url_path_for_fig_5 = None
+
+
+
+#    return templates.TemplateResponse("service.html", \
+#                   context={"request":request, \
+#                      "model_registry":model_registry, \
+#                      "upload_data":upload_data, \
+#                      "dataDirectory":dataDirectory, \
+#                      "dataShape":model_params.kwargs["dataShape"], \
+#                      "modelPklFile":modelPklFile, \
+#                      "hiddenNode":model_params.kwargs["hiddenNode"], \
+#                      "weightInitialization":model_params.kwargs["weightInitialization"], \
+#                      "activationFunction":model_params.kwargs["activationFunction"], \
+#                      "epoch":template_avoidNone(model_params, "epoch"), \
+#                      "batchSize":template_avoidNone(model_params, "batchSize"), \
+#                      "lossFunction":model_params.kwargs["lossFunction"], \
+#                      "optimizer":model_params.kwargs["optimizer"], \
+#                      "learningRate":model_params.kwargs["learningRate"] if model_params.kwargs["learningRate"] else None, \
+#                      "betas":model_params.kwargs["betas"], \
+#                      "eps":model_params.kwargs["eps"], \
+#                      "weightDecay":model_params.kwargs["weightDecay"], \
+#                      "initializingRule":template_avoidNone(model_params, "initializingRule"), \
+#                      "initializingNumber":template_avoidNone(model_params, "initializingNumber"), \
+#                      "learningGoal":model_params.kwargs["learningGoal"], \
+#                      "selectingRule":template_avoidNone(model_params, "selectingRule"), \
+#                      "matchingRule":template_avoidNone(model_params, "matchingRule"), \
+#                      "matchingTimes":template_avoidNone(model_params, "matchingTimes"), \
+#                      "matchingLearningGoal":template_avoidNone(model_params, "matchingLearningGoal"), \
+#                      "matchingLearningRateLowerBound":template_avoidNone(model_params, "matchingLearningRateLowerBound"), \
+#                      "crammingingRule":template_avoidNone(model_params, "crammingingRule"), \
+#                      "regularizingRule":template_avoidNone(model_params, "regularizingRule"), \
+#                      "regularizingTimes":template_avoidNone(model_params, "regularizingTimes"), \
+#                      "regularizingStrength":template_avoidNone(model_params, "regularizingStrength"), \
+#                      "regularizingLearningGoal":template_avoidNone(model_params, "regularizingLearningGoal"), \
+#                      "regularizingLearningRateLowerBound":template_avoidNone(model_params, "regularizingLearningRateLowerBound"), \
+#                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
+#                      "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
+#                      "rmseError":rmseError, \
+#                      "url_path_for_fig_1":url_path_for_fig_1, \
+#                      "url_path_for_fig_2":url_path_for_fig_2, \
+#                      "url_path_for_fig_3":url_path_for_fig_3, \
+#                      "url_path_for_fig_4":url_path_for_fig_4, \
+#                      "url_path_for_fig_5":url_path_for_fig_5, \
+#                      })
 
 @app.get("/pipeline/deploy")
 def pipeline_service(request: Request):
