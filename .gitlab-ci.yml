@@ -8,7 +8,7 @@ build:
   - AILab
 deploy:
   after_script:
-  - python C:\Users\user\rams\projcet\apps\updateDeploymentCsv.py -m 2 -a "deploying"
+  - python C:\Users\user\rams\projcet\apps\updateDeploymentCsv.py -m 4 -a "deploying"
   rules:
   - changes:
     - ASLFN/docker_apps/deployTmp
@@ -17,7 +17,7 @@ deploy:
   - docker
   - cd ASLFN
   - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8250:8002 -d aslfn:latest
+  - docker run -p 8261:8002 -d aslfn:latest
   - cd C:\Users\user\rams\projcet\apps
   - docker ps -l | findstr aslfn > dockerTmp
   stage: deploy
