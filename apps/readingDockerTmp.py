@@ -14,5 +14,5 @@ def getPortFromString(string):
     rightIdx = string.find("-")
     return string[leftIdx+1:rightIdx]
 
-# containerID, containerPort = getContainerIDPort()
-# print(containerID, containerPort)
+containerID, containerPort = getContainerIDPort()
+print(containerID, containerPort)
