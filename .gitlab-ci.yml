@@ -7,12 +7,15 @@ build:
   tags:
   - AILab
 revoke:
+  rules:
+  - changes:
+    - apps/revokeTmp
   script:
   - echo "revoke"
   - docker
-  - docker stop 584822c216c3
-  - docker rm 584822c216c3
-  - python C:\Users\user\rams\projcet\apps\updateDeploymentCsv.py -m 1 -a "revoking"
+  - docker stop 97d12299ce82
+  - docker rm 97d12299ce82
+  - python C:\Users\user\rams\projcet\apps\updateDeploymentCsv.py -m 2 -a "revoking"
   stage: revoke
   tags:
   - AILab

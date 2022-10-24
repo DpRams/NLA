@@ -1,3 +1,0 @@
-# Form data requires "python-multipart" to be installed.
-python-multipart
-uvicorn

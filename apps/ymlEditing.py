@@ -34,7 +34,8 @@ def revokingModelToYml(modelId):
                "revoke": {"stage": "revoke", "tags": ["AILab"], \
                           "script": ["echo \"revoke\"", "docker", \
                                     f"docker stop {containerID}", f"docker rm {containerID}", \
-                                    f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeploymentCsv.py -m {modelId} -a \"revoking\""]
+                                    f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeploymentCsv.py -m {modelId} -a \"revoking\""], \
+                          "rules": [{"changes": ["apps/revokeTmp"]}]
                                     }}
 
     with open(".\\.gitlab-ci.yml", 'w') as file:
