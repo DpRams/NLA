@@ -642,15 +642,15 @@ def pipeline_deploy(request: Request, \
                         })
 
 
-@app.get("/post_8001")
-def request_8001():
+@app.get("/post_8002/{data}")
+def request_8002(data:str):
    
    # reading_dataset_Testing 要做個調整，先對 training data 產生一個 sc，再去對 testing data 做 transform
-   x_test, y_test = evaluating.reading_dataset_Testing("solar") 
+   x_test, y_test = evaluating.reading_dataset_Testing(data) 
    # rawTestingData = {"a" : np.array([1,2,3]).tolist()}
    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
    # modelPklFile = "solar_custoNet_ASLFN_0.6_0.5_221007_101128.pkl"
-   res = requests.post("http://127.0.0.1:8002/predict", json={"dataDirectory": rawTestingData})
+   res = requests.post("http://127.0.0.1:8360/predict", json={"dataDirectory": rawTestingData})
    return res.json()
 
 

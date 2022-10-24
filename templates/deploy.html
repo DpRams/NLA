@@ -138,7 +138,8 @@
                 <th scope="col">Model name</th>
                 <th scope="col">Trained dataset</th>
                 <th scope="col">Deploy status</th>
-                <th scope="col">Service url</th>
+                <th scope="col">Container ID</th>
+                <th scope="col">Container Port</th>
               </tr>
             </thead>
             <tbody>
@@ -172,7 +173,8 @@
                 <td>{{model.modelName}}</td>
                 <td>{{model.trainedDataset}}</td>
                 <td>{{model.deployStatus}}</td>
-                <td>{{model.serviceUrl}}</td>
+                <td>{{model.containerID}}</td>
+                <td>{{model.containerPort}}</td>
               </tr>
               {% endfor %}
 
