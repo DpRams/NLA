@@ -6,7 +6,7 @@ from pathlib import Path
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 
-def findPortAvailableToYml(modelId):
+def deployingModelToYml(modelId):
 
     availablePort = findPortAvailable()
     SERVICEPORT = 8002 # fixed

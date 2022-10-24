@@ -26,7 +26,7 @@ from model_file import custoNet_ASLFN, custoNet_s1, riro, ribo, custoNet_SLFN
 # from model_file.riro import main
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
-from ymlEditing import findPortAvailableToYml, revokingModelToYml
+from ymlEditing import deployingModelToYml, revokingModelToYml
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -504,10 +504,10 @@ def __model_deploying(modelId):
    saving.writeIntoDockerApps(modelPtFile)
 
    # find Available Port and write into .gitlab-ci.yml file
-   findPortAvailableToYml(modelId)
+   deployingModelToYml(modelId)
 
    # 感覺會有因為沒有檔案變動而無法 commit 的狀況，可能要寫個額外的檔案變動，避免錯誤
-   with open(f"{root}\\ASLFN\\docker_apps\\revokeTmp", "w", encoding="utf-8") as file:
+   with open(f"{root}\\ASLFN\\docker_apps\\deployTmp", "w", encoding="utf-8") as file:
       file.write(f"避免沒有其他檔案更動而生成的檔案 : {time.time()}")
 
    # git add/commit/push automatically
