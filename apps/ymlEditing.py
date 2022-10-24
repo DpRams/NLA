@@ -19,7 +19,7 @@ def deployingModelToYml(modelId):
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d aslfn:latest", \
                                     f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp"], \
                           "after_script":[f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeploymentCsv.py -m {modelId} -a \"deploying\""], \
-                          "rules": [{"changes": ["ASLFN/docker_apps/*"]}]}}
+                          "rules": [{"changes": ["ASLFN/docker_apps/deployTmp"]}]}}
 
     with open(".\\.gitlab-ci.yml", 'w') as file:
         yaml.dump(ymlDict, file)
