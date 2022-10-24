@@ -26,7 +26,7 @@ from model_file import custoNet_ASLFN, custoNet_s1, riro, ribo, custoNet_SLFN
 # from model_file.riro import main
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
-from checkPort import findPortAvailable
+from ymlEditing import findPortAvailableToYml
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -503,10 +503,8 @@ def __model_deploying(modelId):
    modelPtFile = modelPklFile[:-3] + "pt"
    saving.writeIntoDockerApps(modelPtFile)
 
-   # find Available Port 
-   availablePort = findPortAvailable()
-
-   # write available port to .gitlab-ci.yml
+   # find Available Port and write into .gitlab-ci.yml file
+   findPortAvailableToYml()
 
    # git add/commit/push automatically
    autoPush.main()
