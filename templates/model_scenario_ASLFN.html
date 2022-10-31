@@ -175,8 +175,13 @@
           <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
 
-              <label class="col-md-8 fs-4">ASLFN(Two Layer).</label>
+              <label class="col-md-8 fs-4">ASLFN(Adaptive SLFN).</label>
               <label class="col-md-8 fs-5">For training</label>
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode">
+                <label for="floatingInput">Hidden layer node</label>
+              </div>
 
               <div class="form-floating mb-3">
                 <select class="form-control" id="select_weightInitialization" placeholder="10" name="weightInitialization" method="GET"  style="font-size:20px;"> 
@@ -314,11 +319,6 @@
                 <div class="h-100 p-5 bg-light border rounded-3">
 
                   <label class="col-md-8 fs-4">Initializing.</label>
-
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode">
-                    <label for="floatingInput">Hidden node</label>
-                  </div>
 
                   <div class="form-floating mb-3">
                     <select class="form-control" id="select_initializingRule" placeholder="10" name="initializingRule" method="GET"  style="font-size:20px;" onclick="showInitializingParameters()"> 
