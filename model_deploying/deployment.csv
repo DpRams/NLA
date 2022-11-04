@@ -6,11 +6,11 @@ id,modelName,trainedDataset,deployStatus,containerID,containerPort
 4,hospice_custoNet_ASLFN_0.1_1.0_221024_200614.pkl,hospice,revoking,None,None
 5,hospice_custoNet_ASLFN_0.1_1.0_221024_200818.pkl,hospice,revoking,None,None
 6,solar_custoNet_SLFN_0.2_0.848_221025_140304.pkl,solar,revoking,None,None
-7,hospice_custoNet_ASLFN_0.1_0.857_221025_140417.pkl,hospice,revoking,05f3771d7268,8711
+7,hospice_custoNet_ASLFN_0.1_0.857_221025_140417.pkl,hospice,revoking,None,None
 8,hospice_custoNet_ASLFN_0.1_1.0_221031_144137.pkl,hospice,revoking,None,None
 9,solar_custoNet_ASLFN_0.6_0.929_221031_150627.pkl,solar,revoking,None,None
 10,solar_custoNet_ASLFN_0.6_0.929_221031_150715.pkl,solar,revoking,None,None
 11,solar_custoNet_ASLFN_0.6_0.929_221031_150911.pkl,solar,revoking,None,None
 12,solar_custoNet_ASLFN_0.6_0.857_221031_150941.pkl,solar,revoking,None,None
-13,solar_custoNet_SLFN_0.1_0.795_221104_213604.pkl,solar,deploying,e3df5df0188d,8792
+13,solar_custoNet_SLFN_0.1_0.795_221104_213604.pkl,solar,revoking,e3df5df0188d,8792
 14,solar_custoNet_ASLFN_0.6_0.857_221104_213744.pkl,solar,revoking,None,None
