@@ -106,6 +106,12 @@
 
     <!-- <script type="text/javascript" src="{{ url_for('static', path='/js/script_deploy.js') }}"></script> -->
     <script type="text/javascript" src="/static/js/script_deploy.js"></script>
+    <script>
+      function autoRefresh() {
+        window.location = window.location.href;
+      }
+      setInterval('autoRefresh()', 5000);
+  </script>
 
     
   </head>

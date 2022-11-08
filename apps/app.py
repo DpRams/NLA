@@ -62,6 +62,10 @@ async def pipeline_data_upload(request: Request, \
 
       upload_data = os.listdir(f"{root}\\upload_data")
 
+      # Data validation
+      
+
+      # Data uploading and definition 
       if dataUse == "Train" : 
 
          drtPath = Path(f"{root}\\upload_data\\{newDirectory}\\Train")
