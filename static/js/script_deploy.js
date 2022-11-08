@@ -16,14 +16,15 @@ function changingStatus(id){
     let is_sure = window.confirm("是否要部署該模型?");
     if (is_sure == true){
       
-      model_id.value = deployRevoke_switch.dataset.modelid
-      deployStatus_id.value = statusTransforming(deployRevoke_switch.dataset.deploystatus)
+      model_id.value = deployRevoke_switch.dataset.modelid;
+      deployStatus_id.value = statusTransforming(deployRevoke_switch.dataset.deploystatus);
       // console.log(model_id.value)
       // console.log(deployStatus_id.value)
       document.deployManagement.submit();
+      deployRevoke_switch.disabled = true;
 
     }else {
-      deployRevoke_switch.checked = false
+      deployRevoke_switch.checked = false;
     }
   
   // true -(unchecked)> false 
@@ -36,6 +37,7 @@ function changingStatus(id){
       // console.log(model_id.value)
       // console.log(deployStatus_id.value)
       document.deployManagement.submit();
+      deployRevoke_switch.disabled = true;
 
     }else {
       deployRevoke_switch.checked = true
