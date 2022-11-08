@@ -13,4 +13,4 @@ id,modelName,trainedDataset,deployStatus,containerID,containerPort
 11,solar_custoNet_ASLFN_0.6_0.929_221031_150911.pkl,solar,revoking,None,None
 12,solar_custoNet_ASLFN_0.6_0.857_221031_150941.pkl,solar,revoking,None,None
 13,solar_custoNet_SLFN_0.1_0.795_221104_213604.pkl,solar,revoking,None,None
-14,solar_custoNet_ASLFN_0.6_0.857_221104_213744.pkl,solar,deploying,None,None
+14,solar_custoNet_ASLFN_0.6_0.857_221104_213744.pkl,solar,revoking,a4d338c1666c,8684
