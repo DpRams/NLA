@@ -520,6 +520,10 @@ def __model_evaluating_old_service(dataDirectory, modelFile):
 def __model_deploying(modelId):
 
    modelPklFile = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').iloc[int(modelId), 1]
+   print(f"modelPklFile = {modelPklFile}")
+   # mongoDB import(worked)
+   modelPklFile = requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["modelName"]
+   print(f"modelPklFile = {modelPklFile}")
    # save model to directory : model_deploying
    modelPtFile = modelPklFile[:-3] + "pt"
    saving.writeIntoDockerApps(modelPtFile)
@@ -553,7 +557,11 @@ def pipeline_service(request: Request):
    # List the upload data to Dropdownlist
    deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
    modelId = deployRecord.index[(deployRecord["deployStatus"] == "deploying")]
-   predictAPI_lst = [modelName for (i, modelName) in deployRecord.loc[modelId, "modelName"].items()] 
+   predictAPI_lst = [modelName for (i, modelName) in deployRecord.loc[modelId, "modelName"].items()]
+   # mongoDB import(worked)
+   key = "deployStatus"
+   value = "deploying"
+   predictAPI_lst = [data["modelName"] for data in requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()]
 
    return templates.TemplateResponse("service.html",{"request":request, "predictAPI_lst":predictAPI_lst})
 

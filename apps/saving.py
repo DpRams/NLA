@@ -4,6 +4,7 @@ import torch
 import sys
 import numpy as np
 import pandas as pd
+import requests
 from pathlib import Path
 import shutil
 from network.net import Network
@@ -44,6 +45,13 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
     Id = len(df)
     df.loc[-1] = [Id, fileName, data_drt, "revoking", "None", "None"]
     df.to_csv(f"{root}\\model_deploying\\deployment.csv", index=None)
+
+    # insert data into mongoDB
+    Id = requests.get(f"http://127.0.0.1:8001/model/deployments/counts").json()
+    res = requests.post("http://127.0.0.1:8001/model/deployments", json={"modelId" : Id, "modelName" : fileName, \
+                    "trainedDataset":data_drt, "deployStatus":"revoking", "containerID": "None", \
+                        "containerPort" : "None"})
+
 
 
 def writeIntoDockerApps(modelFile):
