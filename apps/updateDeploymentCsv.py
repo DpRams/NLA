@@ -23,13 +23,13 @@ def updateInfoDeploying(modelId):
     print("Before MongoDB update")
 
     deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
-                            json={"modelId" : modelId, \
+                            json={"modelId" : int(modelId), \
                                     "keyToBeChanged" : "containerID", \
                                     "valueToBeChanged" : containerID}).json()
     print(deployRecord)
 
     deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
-                        json={"modelId" : modelId, \
+                        json={"modelId" : int(modelId), \
                                 "keyToBeChanged" : "containerPort", \
                                 "valueToBeChanged" : containerPort}).json()
 
