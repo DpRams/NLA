@@ -784,8 +784,7 @@ def pipeline_service(request: Request):
 def pipeline_deploy(request: Request, \
                      modelId: int = Form(default=None), \
                      deployStatus: str = Form(default=None, max_length=50)):
-   print(f"deployStatus = {deployStatus}")
-   print(f"modelId = {modelId}")
+
    # print(modelId, deployStatus)
    deployRecord = dfToTemplate(changingStatusToCsv(modelId))
    # mongoDB import
