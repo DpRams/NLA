@@ -31,11 +31,14 @@ def updateInfoRevoking(modelId):
                             json={"modelId" : int(modelId), \
                                     "keyToBeChanged" : "containerID", \
                                     "valueToBeChanged" : "None"}).json()
+    print(deployRecord)
 
     deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
                         json={"modelId" : int(modelId), \
                                 "keyToBeChanged" : "containerPort", \
                                 "valueToBeChanged" : "None"}).json()
+    print(deployRecord)
+    
 
 if args.action == "deploying":
     updateInfoDeploying(args.modelId)

@@ -1,4 +1,5 @@
 import yaml
+import requests
 import sys
 import pandas as pd
 from checkPort import findPortAvailable
@@ -26,7 +27,7 @@ def deployingModelToYml(modelId):
 
 def revokingModelToYml(modelId):
 
-    containerID = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').iloc[int(modelId), 4]
+    containerID = requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["containerID"]
 
     ymlDict = {"stages": ["build", "test", "revoke"],
                "build": {"stage": "build", "tags": ["AILab"], "only": ["scenario_2"], "script": ["echo \"build\""]},
