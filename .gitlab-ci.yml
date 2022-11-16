@@ -6,23 +6,27 @@ build:
   stage: build
   tags:
   - AILab
-revoke:
+deploy:
+  after_script:
+  - python C:\Users\user\rams\projcet\apps\updateDeploymentCsv.py -m 0 -a "deploying"
   rules:
   - changes:
-    - apps/revokeTmp
+    - ASLFN/docker_apps/deployTmp
   script:
-  - echo "revoke"
+  - echo "deploy"
   - docker
-  - docker stop 950c96ee4865
-  - docker rm 950c96ee4865
-  - python C:\Users\user\rams\projcet\apps\updateDeploymentCsv.py -m 0 -a "revoking"
-  stage: revoke
+  - cd ASLFN
+  - docker build -t aslfn:latest -f rootuser.Dockerfile .
+  - docker run -p 8038:8002 -d aslfn:latest
+  - cd C:\Users\user\rams\projcet\apps
+  - docker ps -l | findstr aslfn > dockerTmp
+  stage: deploy
   tags:
   - AILab
 stages:
 - build
 - test
-- revoke
+- deploy
 test:
   only:
   - scenario_2
