@@ -570,10 +570,10 @@ def pipeline_service(request: Request, \
 
    # POST
    # mongoDB import
-   modelId = requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()[0]["modelId"]
-   dataDirectory = requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()[0]["trainedDataset"]
+   modelId = requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelName&value={predictAPI}").json()[0]["modelId"]
+   dataDirectory = requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelName&value={predictAPI}").json()[0]["trainedDataset"]
    modelPklFile = predictAPI
-   servicePort = requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()[0]["containerPort"]
+   servicePort = requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelName&value={predictAPI}").json()[0]["containerPort"]
 
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory) 
    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
@@ -630,8 +630,8 @@ def pipeline_service(request: Request, \
                      "matchingTimes":template_avoidNone(model_params, "matchingTimes"), \
                      "matchingLearningGoal":template_avoidNone(model_params, "matchingLearningGoal"), \
                      "matchingLearningRateLowerBound":template_avoidNone(model_params, "matchingLearningRateLowerBound"), \
-                     "crammingingRule":template_avoidNone(model_params, "crammingingRule"), \
-                     "regularizingRule":template_avoidNone(model_params, "regularizingRule"), \
+                     "crammingRule":template_avoidNone(model_params, "crammingRule"), \
+                     "reorganizingRule":template_avoidNone(model_params, "reorganizingRule"), \
                      "regularizingTimes":template_avoidNone(model_params, "regularizingTimes"), \
                      "regularizingStrength":template_avoidNone(model_params, "regularizingStrength"), \
                      "regularizingLearningGoal":template_avoidNone(model_params, "regularizingLearningGoal"), \
