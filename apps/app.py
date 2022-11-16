@@ -574,11 +574,22 @@ def pipeline_service(request: Request, \
    modelId = deployRecord.index[(deployRecord["deployStatus"] == "deploying")]
    predictAPI_lst = [modelName for (i, modelName) in deployRecord.loc[modelId, "modelName"].items()] 
 
+   # mongoDB import(worked)
+   key = "deployStatus"
+   value = "deploying"
+   predictAPI_lst = [data["modelName"] for data in requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()]
+
    # POST
    modelId = deployRecord.index[(deployRecord["modelName"] == predictAPI)]
    dataDirectory = deployRecord.loc[modelId, "trainedDataset"].item()
    modelPklFile = predictAPI
    servicePort = deployRecord.loc[modelId, "containerPort"].item()
+
+   # mongoDB import
+   modelId = requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()[0]["modelId"]
+   dataDirectory = requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()[0]["trainedDataset"]
+   modelPklFile = predictAPI
+   servicePort = requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()[0]["containerPort"]
 
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory) 
    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
@@ -746,7 +757,11 @@ def pipeline_service(request: Request):
    # 讀取資料庫，將資料回應到頁面上
    deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').T.to_dict()
    deployRecord = [x for x in deployRecord.values()]
-   # print(deployRecord)
+
+   # mongoDB import(worked)
+   deployRecord = requests.get(f"http://127.0.0.1:8001/model/deployments/all").json()
+
+
 
    return templates.TemplateResponse("deploy.html", \
                   context={"request":request, \
@@ -767,11 +782,16 @@ def pipeline_service(request: Request):
 
 @app.post("/pipeline/deploy")
 def pipeline_deploy(request: Request, \
-                     modelId: str = Form(default=None, max_length=50), \
+                     modelId: int = Form(default=None), \
                      deployStatus: str = Form(default=None, max_length=50)):
-
+   print(f"deployStatus = {deployStatus}")
+   print(f"modelId = {modelId}")
    # print(modelId, deployStatus)
    deployRecord = dfToTemplate(changingStatusToCsv(modelId))
+   # mongoDB import
+   deployRecord = requests.get(f"http://127.0.0.1:8001/model/deployments/all").json()
+
+
 
    if deployStatus == "deploying":
       __model_deploying(modelId)
@@ -824,6 +844,23 @@ def template_avoidNone(model_params, keys):
 
 
 def changingStatusToCsv(modelId):
+
+   print(f"modelId = {modelId}")
+   # mongoDB import
+   if requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["deployStatus"] == "deploying":
+
+      deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
+                                    json={"modelId" : modelId, \
+                                          "keyToBeChanged" : "deployStatus", \
+                                          "valueToBeChanged" : "revoking"}).json()
+
+   elif requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["deployStatus"] == "revoking":
+
+      deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
+                                    json={"modelId" : modelId, \
+                                          "keyToBeChanged" : "deployStatus", \
+                                          "valueToBeChanged" : "revoking"}).json()
+
    # update deployStatus(idx : 3)
    deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
    if deployRecord.iloc[int(modelId), 3] == "revoking" : deployRecord.iloc[int(modelId), 3] = "deploying"

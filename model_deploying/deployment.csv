@@ -1,5 +1,5 @@
 id,modelName,trainedDataset,deployStatus,containerID,containerPort
-0,solar_custoNet_SLFN_0.6_0.729_221022_182027.pkl,solar,revoking,None,None
+0,solar_custoNet_SLFN_0.6_0.729_221022_182027.pkl,solar,deploying,None,None
 1,hospice_custoNet_ASLFN_0.1_1.0_221022_182139.pkl,hospice,revoking,None,None
 2,solar_custoNet_SLFN_0.6_0.887_221024_150202.pkl,solar,revoking,None,None
 3,hospice_custoNet_ASLFN_0.6_1.0_221024_150236.pkl,hospice,revoking,None,None
