@@ -860,7 +860,7 @@ def changingStatusToCsv(modelId):
       deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
                                     json={"modelId" : modelId, \
                                           "keyToBeChanged" : "deployStatus", \
-                                          "valueToBeChanged" : "revoking"}).json()
+                                          "valueToBeChanged" : "deploying"}).json()
 
    # update deployStatus(idx : 3)
    deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
