@@ -420,7 +420,7 @@ def pipeline_model(request: Request, \
       elif model_experiments_record == "Cramming 失敗" : 
          training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
 
-      return templates.TemplateResponse("model_scenario_1.html", \
+      return templates.TemplateResponse("model_scenario_ASLFN.html", \
             context={"request":request,  \
                      "upload_data":upload_data, \
                      "interrupted_message":training_error_msg})
@@ -519,11 +519,8 @@ def __model_evaluating_old_service(dataDirectory, modelFile):
 
 def __model_deploying(modelId):
 
-   modelPklFile = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').iloc[int(modelId), 1]
-   print(f"modelPklFile = {modelPklFile}")
    # mongoDB import(worked)
    modelPklFile = requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["modelName"]
-   print(f"modelPklFile = {modelPklFile}")
    # save model to directory : model_deploying
    modelPtFile = modelPklFile[:-3] + "pt"
    saving.writeIntoDockerApps(modelPtFile)
@@ -554,10 +551,6 @@ def __model_revoking(modelId):
 @app.get("/pipeline/service")
 def pipeline_service(request: Request):
 
-   # List the upload data to Dropdownlist
-   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
-   modelId = deployRecord.index[(deployRecord["deployStatus"] == "deploying")]
-   predictAPI_lst = [modelName for (i, modelName) in deployRecord.loc[modelId, "modelName"].items()]
    # mongoDB import(worked)
    key = "deployStatus"
    value = "deploying"
@@ -569,22 +562,13 @@ def pipeline_service(request: Request):
 def pipeline_service(request: Request, \
                      predictAPI: str = Form(default=None, max_length=50)):
 
-   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
    # GET
-   modelId = deployRecord.index[(deployRecord["deployStatus"] == "deploying")]
-   predictAPI_lst = [modelName for (i, modelName) in deployRecord.loc[modelId, "modelName"].items()] 
-
    # mongoDB import(worked)
    key = "deployStatus"
    value = "deploying"
    predictAPI_lst = [data["modelName"] for data in requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()]
 
    # POST
-   modelId = deployRecord.index[(deployRecord["modelName"] == predictAPI)]
-   dataDirectory = deployRecord.loc[modelId, "trainedDataset"].item()
-   modelPklFile = predictAPI
-   servicePort = deployRecord.loc[modelId, "containerPort"].item()
-
    # mongoDB import
    modelId = requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()[0]["modelId"]
    dataDirectory = requests.get(f"http://127.0.0.1:8001/model/deployments?key={key}&value={value}").json()[0]["trainedDataset"]
@@ -663,104 +647,11 @@ def pipeline_service(request: Request, \
                      })
 
 
-
-# old /service
-# @app.get("/pipeline/service")
-# def pipeline_service(request: Request):
-
-#    # List the upload data to Dropdownlist
-#    upload_data = os.listdir(f"{root}\\upload_data")
-#    model_registry = os.listdir(f"{root}\\model_registry\\pkl")
-   
-#    return templates.TemplateResponse("service.html",{"request":request, "upload_data":upload_data, "model_registry":model_registry})
-
-# @app.post("/pipeline/service")
-# def pipeline_service(request: Request, \
-#                      dataDirectory: str = Form(default=None, max_length=50), \
-#                      modelPklFile: str = Form(default=None, max_length=50)):
-
-#    # List the upload data to Dropdownlist
-#    upload_data = os.listdir(f"{root}\\upload_data")
-#    model_registry = os.listdir(f"{root}\\model_registry\\pkl")
-
-
-#    model_experiments_record, model_params, model_fig_drt, rmseError = __model_evaluating(dataDirectory, modelPklFile)
-
-#    print(f"model_fig_drt = {model_fig_drt}")
-#    app.mount(
-#       f"/model_fig",
-#       StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
-#       name="model_fig",
-#    )  
-
-#    if "ASLFN" in modelPklFile:
-#       url_path_for_fig_1 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png')
-#       url_path_for_fig_2 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png')
-#       url_path_for_fig_3 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/nodes.png')
-#       url_path_for_fig_4 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/prunedNodes.png')
-#       url_path_for_fig_5 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/routes.png')
-
-#    else:
-#       url_path_for_fig_1 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png')
-#       url_path_for_fig_2 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png')
-#       url_path_for_fig_3 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingAccuracy.png')
-#       url_path_for_fig_4 = app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingLoss.png')
-#       url_path_for_fig_5 = None
-
-
-
-#    return templates.TemplateResponse("service.html", \
-#                   context={"request":request, \
-#                      "model_registry":model_registry, \
-#                      "upload_data":upload_data, \
-#                      "dataDirectory":dataDirectory, \
-#                      "dataShape":model_params.kwargs["dataShape"], \
-#                      "modelPklFile":modelPklFile, \
-#                      "hiddenNode":model_params.kwargs["hiddenNode"], \
-#                      "weightInitialization":model_params.kwargs["weightInitialization"], \
-#                      "activationFunction":model_params.kwargs["activationFunction"], \
-#                      "epoch":template_avoidNone(model_params, "epoch"), \
-#                      "batchSize":template_avoidNone(model_params, "batchSize"), \
-#                      "lossFunction":model_params.kwargs["lossFunction"], \
-#                      "optimizer":model_params.kwargs["optimizer"], \
-#                      "learningRate":model_params.kwargs["learningRate"] if model_params.kwargs["learningRate"] else None, \
-#                      "betas":model_params.kwargs["betas"], \
-#                      "eps":model_params.kwargs["eps"], \
-#                      "weightDecay":model_params.kwargs["weightDecay"], \
-#                      "initializingRule":template_avoidNone(model_params, "initializingRule"), \
-#                      "initializingNumber":template_avoidNone(model_params, "initializingNumber"), \
-#                      "learningGoal":model_params.kwargs["learningGoal"], \
-#                      "selectingRule":template_avoidNone(model_params, "selectingRule"), \
-#                      "matchingRule":template_avoidNone(model_params, "matchingRule"), \
-#                      "matchingTimes":template_avoidNone(model_params, "matchingTimes"), \
-#                      "matchingLearningGoal":template_avoidNone(model_params, "matchingLearningGoal"), \
-#                      "matchingLearningRateLowerBound":template_avoidNone(model_params, "matchingLearningRateLowerBound"), \
-#                      "crammingingRule":template_avoidNone(model_params, "crammingingRule"), \
-#                      "regularizingRule":template_avoidNone(model_params, "regularizingRule"), \
-#                      "regularizingTimes":template_avoidNone(model_params, "regularizingTimes"), \
-#                      "regularizingStrength":template_avoidNone(model_params, "regularizingStrength"), \
-#                      "regularizingLearningGoal":template_avoidNone(model_params, "regularizingLearningGoal"), \
-#                      "regularizingLearningRateLowerBound":template_avoidNone(model_params, "regularizingLearningRateLowerBound"), \
-#                      "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
-#                      "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-#                      "rmseError":rmseError, \
-#                      "url_path_for_fig_1":url_path_for_fig_1, \
-#                      "url_path_for_fig_2":url_path_for_fig_2, \
-#                      "url_path_for_fig_3":url_path_for_fig_3, \
-#                      "url_path_for_fig_4":url_path_for_fig_4, \
-#                      "url_path_for_fig_5":url_path_for_fig_5, \
-#                      })
-
 @app.get("/pipeline/deploy")
 def pipeline_service(request: Request):
    
-   # 讀取資料庫，將資料回應到頁面上
-   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').T.to_dict()
-   deployRecord = [x for x in deployRecord.values()]
-
    # mongoDB import(worked)
    deployRecord = requests.get(f"http://127.0.0.1:8001/model/deployments/all").json()
-
 
 
    return templates.TemplateResponse("deploy.html", \
@@ -768,28 +659,16 @@ def pipeline_service(request: Request):
                            "deployRecord":deployRecord, \
                            })
 
-# @app.post("/pipeline/deploy?modelId={modelId}&deployStatus={deployStatus}")
-# def pipeline_deploy(request: Request, \
-#                      modelId: str = Form(default=None, max_length=50), \
-#                      deployStatus: str = Form(default=None, max_length=50)):
-
-#    print(modelId, deployStatus)
-#    deployRecord = dfToTemplate(changingStatusToCsv(modelId))
-#    return templates.TemplateResponse("deploy.html", \
-#                context={"request":request, \
-#                         "deployRecord":deployRecord, \
-#                         })
 
 @app.post("/pipeline/deploy")
 def pipeline_deploy(request: Request, \
                      modelId: int = Form(default=None), \
                      deployStatus: str = Form(default=None, max_length=50)):
 
-   # print(modelId, deployStatus)
-   deployRecord = dfToTemplate(changingStatusToCsv(modelId))
+
+   changingStatus(modelId)
    # mongoDB import
    deployRecord = requests.get(f"http://127.0.0.1:8001/model/deployments/all").json()
-
 
 
    if deployStatus == "deploying":
@@ -842,13 +721,11 @@ def template_avoidNone(model_params, keys):
       return model_params.kwargs[keys]
 
 
-def changingStatusToCsv(modelId):
+def changingStatus(modelId):
 
-   print(f"modelId = {modelId}")
    # mongoDB import
    if requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["deployStatus"] == "deploying":
-      
-      print(f"changingStatusToCsv deploying")
+
       deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
                                     json={"modelId" : modelId, \
                                           "keyToBeChanged" : "deployStatus", \
@@ -856,25 +733,13 @@ def changingStatusToCsv(modelId):
 
    elif requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["deployStatus"] == "revoking":
 
-      print(f"changingStatusToCsv revoking")
       deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
                                     json={"modelId" : modelId, \
                                           "keyToBeChanged" : "deployStatus", \
                                           "valueToBeChanged" : "deploying"}).json()
 
-   # update deployStatus(idx : 3)
-   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv')
-   if deployRecord.iloc[int(modelId), 3] == "revoking" : deployRecord.iloc[int(modelId), 3] = "deploying"
-   elif deployRecord.iloc[int(modelId), 3] == "deploying" : deployRecord.iloc[int(modelId), 3] = "revoking"
-   deployRecord.to_csv(f"{root}\\model_deploying\\deployment.csv", index=None)
-
    return deployRecord
 
-def dfToTemplate(deployRecord):
-   deployRecord = pd.read_csv(f'{root}\\model_deploying\\deployment.csv').T.to_dict()
-   deployRecord = [x for x in deployRecord.values()]
-
-   return deployRecord
 
 if __name__ == '__main__':
 	uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True) # 若有 rewrite file 可能不行 reload=True，不然會一直重開 by 李忠大師
