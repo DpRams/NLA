@@ -1,2 +1,2 @@
 id,modelName,trainedDataset,deployStatus,containerID,containerPort
-0,solar_custoNet_SLFN_0.6_0.75_221116_204225.pkl,solar,revoking,None,None
+0,solar_custoNet_SLFN_0.6_0.888_221116_205312.pkl,solar,deploying,None,None

@@ -17,7 +17,7 @@ deploy:
   - docker
   - cd ASLFN
   - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8566:8002 -d aslfn:latest
+  - docker run -p 8738:8002 -d aslfn:latest
   - cd C:\Users\user\rams\projcet\apps
   - docker ps -l | findstr aslfn > dockerTmp
   stage: deploy
