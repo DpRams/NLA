@@ -40,18 +40,11 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
     ptFileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pt" 
     torch.save(model_experiments_record["network"],  f"{ptPath}\\{ptFileName}")
 
-    # write data to deployment.csv
-    df = pd.read_csv(f"{root}\\model_deploying\\deployment.csv")
-    Id = len(df)
-    df.loc[-1] = [Id, fileName, data_drt, "revoking", "None", "None"]
-    df.to_csv(f"{root}\\model_deploying\\deployment.csv", index=None)
-
     # insert data into mongoDB
     Id = requests.get(f"http://127.0.0.1:8001/model/deployments/counts").json()
     res = requests.post("http://127.0.0.1:8001/model/deployments", json={"modelId" : Id, "modelName" : fileName, \
                     "trainedDataset":data_drt, "deployStatus":"revoking", "containerID": "None", \
                         "containerPort" : "None"})
-
 
 
 def writeIntoDockerApps(modelFile):
