@@ -847,7 +847,8 @@ def changingStatusToCsv(modelId):
    print(f"modelId = {modelId}")
    # mongoDB import
    if requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["deployStatus"] == "deploying":
-
+      
+      print(f"changingStatusToCsv deploying")
       deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
                                     json={"modelId" : modelId, \
                                           "keyToBeChanged" : "deployStatus", \
@@ -855,6 +856,7 @@ def changingStatusToCsv(modelId):
 
    elif requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelId&value={modelId}").json()[0]["deployStatus"] == "revoking":
 
+      print(f"changingStatusToCsv revoking")
       deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
                                     json={"modelId" : modelId, \
                                           "keyToBeChanged" : "deployStatus", \
