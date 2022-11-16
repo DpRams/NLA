@@ -1,2 +1,3 @@
 id,modelName,trainedDataset,deployStatus,containerID,containerPort
 0,hospice_custoNet_ASLFN_0.6_1.0_221116_213330.pkl,hospice,revoking,None,None
+1,hospice_all_custoNet_SLFN_0.6_0.508_221116_214004.pkl,hospice_all,revoking,None,None
