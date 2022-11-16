@@ -20,6 +20,8 @@ def updateInfoDeploying(modelId):
     deployRecord.iloc[int(modelId), 5] = containerPort
     deployRecord.to_csv(f"{root}\\model_deploying\\deployment.csv", index=None)
 
+    print("Before MongoDB update")
+
     deployRecord = requests.put(f"http://127.0.0.1:8001/model/deployments", \
                             json={"modelId" : modelId, \
                                     "keyToBeChanged" : "containerID", \
@@ -29,6 +31,8 @@ def updateInfoDeploying(modelId):
                         json={"modelId" : modelId, \
                                 "keyToBeChanged" : "containerPort", \
                                 "valueToBeChanged" : containerPort}).json()
+
+    print("After MongoDB update")
 
 def updateInfoRevoking(modelId):
 
