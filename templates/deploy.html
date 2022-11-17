@@ -188,8 +188,20 @@
                 <td>{{model.modelName}}</td>
                 <td>{{model.trainedDataset}}</td>
                 <td>{{model.deployStatus}}</td>
+
+                {% if 'revoking' in model.deployStatus %}
+
                 <td>{{model.containerID}}</td>
                 <td>{{model.containerPort}}</td>
+
+                {% endif %}
+
+                {% if 'deploying' in model.deployStatus %}
+
+                <td> <font color="blue">{{model.containerID}}</font> </td>
+                <td> <font color="blue">{{model.containerPort}}</font></td>
+
+                {% endif %}
               </tr>
               {% endfor %}
 
