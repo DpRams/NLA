@@ -21,6 +21,7 @@ file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
+from model_file import ASLFN, SLFN
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
 from ymlEditing import deployingModelToYml, revokingModelToYml
