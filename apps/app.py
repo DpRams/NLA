@@ -20,10 +20,7 @@ from pathlib import Path
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
-# print(parent, root)
 
-from model_file import custoNet_ASLFN, custoNet_s1, riro, ribo, custoNet_SLFN
-# from model_file.riro import main
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
 from ymlEditing import deployingModelToYml, revokingModelToYml
@@ -268,7 +265,7 @@ def pipeline_model(request: Request, \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
-                                 modelFile = "custoNet_SLFN.py", \
+                                 modelFile = "SLFN.py", \
                                  weightInitialization = weightInitialization, \
                                  activationFunction = activationFunction, \
                                  epoch = eval_avoidNone(epoch), \
@@ -382,7 +379,7 @@ def pipeline_model(request: Request, \
    model_params = ModelParameter(dataDirectory=dataDirectory, \
                                  dataDescribing=dataDescribing, \
                                  dataShape=dataShape, \
-                                 modelFile="custoNet_ASLFN.py", \
+                                 modelFile="ASLFN.py", \
                                  inputDimension=dataShape["X"][1], \
                                  hiddenNode=eval_avoidNone(hiddenNode), \
                                  outputDimension=dataShape["Y"][1], \
@@ -689,7 +686,7 @@ def request_8002(data:str):
    x_test, y_test = evaluating.reading_dataset_Testing(data) 
    # rawTestingData = {"a" : np.array([1,2,3]).tolist()}
    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
-   # modelPklFile = "solar_custoNet_ASLFN_0.6_0.5_221007_101128.pkl"
+   # modelPklFile = "solar_ASLFN_0.6_0.5_221007_101128.pkl"
    res = requests.post("http://127.0.0.1:8360/predict", json={"dataDirectory": rawTestingData})
    return res.json()
 

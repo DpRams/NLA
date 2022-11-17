@@ -50,61 +50,6 @@ def reading_dataset_Training(dataDirecotry, initializingNumber):
     return (initial_x, initial_y, x_train_scaled, y_train_scaled, x_test, y_test)
 
 
-
-# def training_2LayerNet(MyCSI, model_params):
-
-#     # Initialize record
-#     model_experiments_record = {"network" : None, "experiments_record" : None}
-
-#     # Reading dataset
-#     (x_train_scaled, y_train_scaled, x_test, y_test) = \
-#     reading_dataset_Training_only_2LayerNet(MyCSI.net.model_params["dataDirectory"])  
-
-#         # Record experiments data
-#     experiments_record = {"train" : {"mean_acc" : 0, "acc_step" : [], "mean_loss" : 0, "loss_step" : []}, \
-#                             "valid" : {"mean_acc" : 0}, \
-#                             "nb_node" : [], "nb_node_pruned" : [],\
-#                             "Route" : {"Blue": 0, "Red":0, "Green":0}}
-
-#     experiments_record["nb_node"].append(MyCSI.net.linear1.weight.data.shape[0])
-    
-#     for i in range(1, x_train_scaled.shape[0]):
-    
-#         print('-----------------------------------------------------------')
-#         print(f'訓練第幾筆資料 : {i}')
-
-#         current_x = x_train_scaled[:i]
-#         current_y = y_train_scaled[:i].reshape(-1, 1)
-
-#         print(f'current_x = {current_x.shape}')
-#         print(f'current_y = {current_y.shape}')
-
-#         MyCSI.net.setData(current_x, current_y)
-
-#         # Append every record in one iteration
-#         output, loss = MyCSI.net.forward()
-#         train_acc = ((output - MyCSI.net.y) <= MyCSI.net.model_params["learningGoal"]).to(torch.float32).mean().cpu().detach()
-#         experiments_record["train"]["acc_step"].append(np.round(train_acc, 3))
-#         experiments_record["train"]["loss_step"].append(np.round(loss.item(), 3))
-#         experiments_record["nb_node"].append(MyCSI.net.nb_node)
-#         experiments_record["nb_node_pruned"].append(MyCSI.net.nb_node_pruned)
-#         MyCSI.net.nb_node_pruned = 0
-
-
-#     experiments_record["train"]["mean_acc"] = np.mean(experiments_record["train"]["acc_step"])
-#     experiments_record["train"]["mean_loss"] = np.mean(experiments_record["train"]["loss_step"])
-
-#     model_experiments_record = {"network" : MyCSI.net, "experiments_record" : experiments_record}
-
-#     # inferencing
-#     valid_acc = evaluating.inferencing(MyCSI.net, x_test, y_test)
-#     model_experiments_record["experiments_record"]["valid"]["mean_acc"] = np.round(valid_acc, 3)
-
-#     # Plot graph
-#     model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)    
-
-#     return model_experiments_record, model_params, model_fig_drt
-
 def training_CSINet(MyCSI, model_params):
     
     # Initialize record
