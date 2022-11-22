@@ -1,4 +1,4 @@
-# auto restart container which is labeled as "deploying", due to the reason that shut down the service(docker) would not update the info in MongoDB  
+# auto restart model container which is labeled as "deploying", due to the reason that shut down the service(docker) would not update the info in MongoDB  
 
 import requests
 import subprocess
@@ -14,5 +14,7 @@ def main():
     else:
         return
  
+
+ ### 之後也可以寫自動開啟 project(nginx, mongoDB, api) 的指令
 
 

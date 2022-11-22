@@ -42,7 +42,7 @@ autoStartContainer.main()
 def read_root():
    return {"Hello": "World"}
 
-# developing
+
 @app.get("/pipeline/platform")
 def pipeline_platform(request: Request):
    return templates.TemplateResponse("platform.html",{"request":request})
@@ -63,8 +63,23 @@ async def pipeline_data_upload(request: Request, \
 
       upload_data = os.listdir(f"{root}\\upload_data")
 
+### developing
+
       # Data validation
-      
+      async def dataValidating():
+         # print(file_x, file_y)
+         filename = file_x.filename
+         contents = await file_x.read()
+         print(filename, contents)
+
+         filename = file_y.filename
+         contents = await file_y.read()
+         print(filename, contents)
+
+
+      dataValidating()
+
+### 
 
       # Data uploading and definition 
       if dataUse == "Train" : 
