@@ -110,7 +110,7 @@
       function autoRefresh() {
         window.location = window.location.href;
       }
-      setInterval('autoRefresh()', 15000);
+      setInterval('autoRefresh()', 5000);
       document.addEventListener("DOMContentLoaded", function(event) { 
             var scrollpos = localStorage.getItem('scrollpos');
             if (scrollpos) window.scrollTo(0, scrollpos);
