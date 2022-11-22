@@ -18,7 +18,8 @@ def deployingModelToYml(modelId):
                "deploy": {"stage": "deploy", "tags": ["AILab"], \
                           "script": ["echo \"deploy\"", "docker", "cd ASLFN", "docker build -t aslfn:latest -f rootuser.Dockerfile .", \
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d aslfn:latest", \
-                                    f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp"], \
+                                    f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp", \
+                                    'docker rmi $(docker images -f "dangling=true" -q)'], \
                           "after_script":[f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeployment.py -m {modelId} -a \"deploying\""], \
                           "rules": [{"changes": ["ASLFN/docker_apps/deployTmp"]}]}}
 

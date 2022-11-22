@@ -10,6 +10,7 @@ import requests
 import time
 import urllib.parse
 import autoPush
+import autoStartContainer
 import numpy as np
 import pandas as pd
 
@@ -33,6 +34,8 @@ app.mount(
     StaticFiles(directory=Path(__file__).parent.parent.absolute() / "static"),
     name="static",
 )
+
+autoStartContainer.main()
 
 # Function
 @app.get("/")
@@ -195,7 +198,6 @@ def pipeline_model(request: Request, \
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
 
-   print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
       f"/model_fig",
       StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
@@ -299,7 +301,6 @@ def pipeline_model(request: Request, \
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
 
-   print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
       f"/model_fig",
       StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
@@ -426,7 +427,6 @@ def pipeline_model(request: Request, \
    # Save model config a& Perf.
    save_model(model_experiments_record, model_params, model_fig_drt)
 
-   print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
       f"/model_fig",
       StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
@@ -580,7 +580,6 @@ def pipeline_service(request: Request, \
 
    model_experiments_record, model_params, model_fig_drt = __model_evaluating(dataDirectory, modelPklFile)
 
-   print(f"model_fig_drt = {model_fig_drt}")
    app.mount(
       f"/model_fig",
       StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
