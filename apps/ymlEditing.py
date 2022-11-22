@@ -16,8 +16,7 @@ def deployingModelToYml(modelId):
                "deploy": {"stage": "deploy", "tags": ["AILab"], \
                           "script": ["echo \"deploy\"", "docker", "cd ASLFN", "docker build -t aslfn:latest -f rootuser.Dockerfile .", \
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d aslfn:latest", \
-                                    f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp", \
-                                    'docker rmi $(docker images -f "dangling=true" -q)'], \
+                                    f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp"], \
                           "after_script":[f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeployment.py -m {modelId} -a \"deploying\""], \
                           "rules": [{"changes": ["ASLFN/docker_apps/deployTmp"]}]}}
 
@@ -46,7 +45,7 @@ def revokingModelToYml(modelId):
                                     f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeployment.py -m {modelId} -a \"revoking\""], \
                           "rules": [{"changes": ["apps/revokeTmp"]}]
                                     }}
-                                    
+
     # ymlDict = {"stages": ["build", "test", "revoke"],
     #            "build": {"stage": "build", "tags": ["AILab"], "only": ["scenario_2"], "script": ["echo \"build\""]},
     #            "test": {"stage": "test", "tags": ["AILab"], "only": ["scenario_2"], "script": ["echo \"testing\""]},
