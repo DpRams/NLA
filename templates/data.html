@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.98.0">
-  <title>Jumbotron example · Bootstrap v5.2</title>
+  <title>Learning Algorithm as a Service</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/jumbotron/">
 
@@ -104,49 +104,16 @@
               d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"
               fill="currentColor"></path>
           </svg>
-          <span class="fs-4">A Platform </span>
+          <span class="fs-4">Learning Algorithm as a Service </span>
         </a>
       </header>
 
 
       <div class="p-5 mb-1 bg-light rounded-3">
         <div class="container-fluid py-0">
-          <h1 class="display-6 fw-bold">Data Upload</h1>
-          <p class="col-md-8 fs-5">Upload data.</p>
-          <br><br>
+          <h1 class="display-6 fw-bold">Data Pipeline</h1>
+          <br>
           <form action="/pipeline/data" method="post" enctype="multipart/form-data">
-
-            <div class="col-md-12">
-              <div class="h-100 p-5 bg-light border rounded-3">
-
-                <label class="col-md-8 fs-4"><b>Supported Data format : CSV (Comma-Separated Values) E.g., </b></label>
-
-                <div class="row align-items-md-stretch">
-
-                  <div class="col-md-6">
-                    <div class="h-100 p-5 bg-light  rounded-3">
-                      <h2>X: </h2>
-                      <!-- <img src="{{ url_for('static', path='/img/csv_eg_x.png') }}" alt="data format supported"
-                        width="450" height="200" style="display:block;"> -->
-                      <img src="/static/img/csv_eg_x.png" alt="data format supported"
-                        width="450" height="200" style="display:block;">
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="h-100 p-5 bg-light  rounded-3">
-                      <h2>Y: </h2>
-                      <!-- <img src="{{ url_for('static', path='/img/csv_eg_y.png') }}" alt="data format supported"
-                        width="100" height="200" style="display:block;"> -->
-                      <img src="/static/img/csv_eg_y.png" alt="data format supported"
-                        width="100" height="200" style="display:block;">
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
 
             <br>
 
@@ -154,7 +121,16 @@
               <div class="col-md-12">
                 <div class="h-100 p-5 bg-light border rounded-3">
 
-                  <label class="col-md-8 fs-4">Select the use of data.</label>
+                  <label class="col-md-8 fs-4 fw-bold">Data preparation</label>
+                  <br><br>
+                  <p class="col-md-12 fs-6">Data preparation is the process of preparing raw data 
+                    so that it is suitable for further processing and analysis.
+                  </p>
+
+                  <p class="col-md-12 fs-6">1. Train and test datasets are the two key concepts of 
+                    machine learning, where the training dataset is used to fit the model, and the 
+                    test dataset is used to evaluate the model.
+                  </p>
 
                   <div class="form-floating mb-3">
                     <select class="form-control" id="select_dataUse" placeholder="10" name="dataUse" method="GET"
@@ -162,7 +138,49 @@
                       <option value="Train" SELECTED>Train</option>
                       <option value="Test">Test</option>
                     </select>
-                    <label for="select_dataUse">Data directory</label>
+                    <label for="select_dataUse">Dataset</label>
+                  </div>
+
+                  <p class="col-md-12 fs-6">2. Data subject refers to any individual person who 
+                    can be identified, directly or indirectly, via an identifier such as a name, 
+                    an ID number, location data, or via factors specific to the person’s physical, 
+                    physiological, genetic, mental, economic, cultural or social identity.
+                  </p>
+
+                  <div id="selectDirectory" style="display:none">
+                      <!-- <label class="col-md-8 fs-4">Select existed Data directory.</label> -->
+                      <div class="form-floating mb-3">
+                        <select class="form-control" id="select_existedDirectory" placeholder="10" name="existedDirectory"
+                          method="GET" style="font-size:20px;">
+                          {% for dataDir in upload_data %}
+                          <option value="{{dataDir}}" SELECTED>{{dataDir}}</option>"
+                          {% endfor %}
+                        </select>
+                        <label for="select_existedDirectory">Data subject</label>
+                      </div>
+                  </div>
+      
+                  <div id="createDirectory" style="display:block">
+                      <!-- <label class="col-md-8 fs-4">Create a directory to save files uploaded.</label> -->
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="10" name="newDirectory">
+                        <label for="floatingInput">Data subject</label>
+                      </div>
+                  </div>
+
+                  <div >
+                    <p class="col-md-12 fs-6">3. The independent variable(X) is the cause. Its 
+                      value is independent of other variables in your study.
+                    </p>
+                    <label for="data_x" class="btn btn-outline-primary btn-lg">Select csv file for independent variable(X) with header</label>
+                    <input type="file" id="data_x" name="file_x" hidden>
+                    <br><br>
+                    <p class="col-md-12 fs-6">4. The dependent variable(Y) is the effect. Its 
+                      value depends on changes in the independent variable(X).
+                    </p>
+                    <label for="data_y" class="btn btn-outline-primary btn-lg">Select csv file for dependent variable(Y) with header</label>
+                    <input type="file" id="data_y" name="file_y" hidden>
+                    <br>
                   </div>
 
                 </div>
@@ -171,65 +189,57 @@
 
             <br>
 
-            <div class="row" id="selectDirectory" style="display:none">
-              <div class="col-md-12">
-                <div class="h-100 p-5 bg-light border rounded-3">
+            <label class="col-md-8 fs-5"></label>
+            <label for="save_data" class="btn btn-outline-primary btn-lg">Upload</label>
+            <input type="submit" id="save_data" class="btn btn-outline-primary btn-lg" hidden>
 
-                  <label class="col-md-8 fs-4">Select existed Data directory.</label>
+            <br><br>
 
-                  <div class="form-floating mb-3">
-                    <select class="form-control" id="select_existedDirectory" placeholder="10" name="existedDirectory"
-                      method="GET" style="font-size:20px;">
-                      {% for dataDir in upload_data %}
-                      <option value="{{dataDir}}" SELECTED>{{dataDir}}</option>"
-                      {% endfor %}
-                    </select>
-                    <label for="select_existedDirectory">Data directory</label>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-
-
-            <div class="col-md-12" id="createDirectory" style="display:block">
-              <div class="h-100 p-5 bg-light border rounded-3">
-                <label class="col-md-8 fs-4">Create a directory to save files uploaded.</label>
-                <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="newDirectory">
-                  <label for="floatingInput">New directory</label>
-                </div>
-              </div>
-            </div>
-            <br>
             <div class="col-md-12">
               <div class="h-100 p-5 bg-light border rounded-3">
+                <text>Independent variable(X) x csv file : <font color="blue"><b>{{filename_x}}</b></font></text>
+                <br>
+                <text>Dependent variable(Y) csv file : <font color="blue"><b>{{filename_y}}</b></font></text>
+                <br>
+                <text>Data subject : <font color="blue"><b>{{directory}}</b></font></text>
+              </div>
+            </div>
 
-                <label class="col-md-8 fs-4">Choose x attributes file in the csv format from local directory.</label>
-                <label for="data_x" class="btn btn-outline-primary btn-lg">Choose</label>
-                <input type="file" id="data_x" name="file_x" hidden>
-                <br>
-                <text>Current x attributes file : <font color="blue"><b>{{filename_x}}</b></font></text>
-                <br><br>
-                <label class="col-md-8 fs-4">Choose y attributes file in the csv format from local directory.</label>
-                <label for="data_y" class="btn btn-outline-primary btn-lg">Choose</label>
-                <input type="file" id="data_y" name="file_y" hidden>
-                <br>
-                <text>Current y attributes file : <font color="blue"><b>{{filename_y}}</b></font></text>
-              </div>
-            </div>
-            <br>
-            <div class="col-md-12">
-              <div class="h-100 p-5 bg-light border rounded-3">
-                <label class="col-md-8 fs-4">Upload file to Server</label>
-                <label for="save_data" class="btn btn-outline-primary btn-lg">Upload</label>
-                <input type="submit" id="save_data" class="btn btn-outline-primary btn-lg" hidden>
-                <br>
-                <text>Save file to Server in <font color="blue"><b>{{directory}}</b></font> directory.</text>
-              </div>
-            </div>
           </form>
+
+          <br>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+
+              <label class="col-md-8 fs-4"><b>Supported Data format : CSV (Comma-Separated Values) E.g., </b></label>
+
+              <div class="row align-items-md-stretch">
+
+                <div class="col-md-6">
+                  <div class="h-100 p-5 bg-light  rounded-3">
+                    <h2>X: </h2>
+                    <!-- <img src="{{ url_for('static', path='/img/csv_eg_x.png') }}" alt="data format supported"
+                      width="450" height="200" style="display:block;"> -->
+                    <img src="/static/img/csv_eg_x.png" alt="data format supported"
+                      width="450" height="200" style="display:block;">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="h-100 p-5 bg-light  rounded-3">
+                    <h2>Y: </h2>
+                    <!-- <img src="{{ url_for('static', path='/img/csv_eg_y.png') }}" alt="data format supported"
+                      width="100" height="200" style="display:block;"> -->
+                    <img src="/static/img/csv_eg_y.png" alt="data format supported"
+                      width="100" height="200" style="display:block;">
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
 
         </div>
       </div>
