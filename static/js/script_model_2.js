@@ -1,21 +1,26 @@
 function showLossFunctionEquation(){
 
     let select_loss = document.getElementById("select_loss");
+    // let loss_equation = document.getElementById("lossEquation");
     let MSE_equation = document.getElementById("MSE");
     let RMSE_equation = document.getElementById("RMSE");
     let CROSSENTROPYLOSS_equation_b = document.getElementById("CROSSENTROPYLOSS_b");
     let CROSSENTROPYLOSS_equation_m = document.getElementById("CROSSENTROPYLOSS_m");
 
+    // loss_equation.style.display = "none";
     MSE_equation.style.display = "none";
     RMSE_equation.style.display = "none";
     CROSSENTROPYLOSS_equation_b.style.display = "none";
     CROSSENTROPYLOSS_equation_m.style.display = "none";
 
     if (select_loss.value == "MSE"){
+      // loss_equation.style.display = "block";
       MSE_equation.style.display = "block";
     }else if (select_loss.value == "RMSE"){
+      // loss_equation.style.display = "block";
       RMSE_equation.style.display = "block";
     }else if (select_loss.value == "CROSSENTROPYLOSS"){
+      // loss_equation.style.display = "block";
       CROSSENTROPYLOSS_equation_b.style.display = "block";
       CROSSENTROPYLOSS_equation_m.style.display = "block";
     }

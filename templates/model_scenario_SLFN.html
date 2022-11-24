@@ -125,9 +125,13 @@
 
     <div class="p-5 mb-1 bg-light rounded-3">
       <div class="container-fluid py-0">
-        <h1 class="display-6 fw-bold">Model Pipeline</h1>
-        <p class="col-md-8 fs-5">Define your own SLFN and train.</p> 
-        <br><br>
+        <h1 class="display-6 fw-bold">SLFN</h1>
+        <br>
+        <p class="col-md-12 fs-6">Single-hidden layer feedforward neural network (SLFN) is among 
+          the most often used neural network architectures. It has been extensively utilized to 
+          resolve classification and regression issues in a variety of domains thanks to its nonlinear 
+          modeling capability.
+        </p>
         
         <form  method="post" enctype="multipart/form-data"> <!-- action="/pipeline/model"/ -->
 
@@ -135,8 +139,11 @@
             <div class="col-md-12">
                 <div class="h-100 p-5 bg-light border rounded-3">
                   
-                  <label class="col-md-8 fs-4">Select Data directory from Server.</label>
-
+                  <label class="col-md-8 fs-4 fw-bold">Data preparation</label>
+                  <br><br>
+                  <p class="col-md-12 fs-6">1. Data preparation is the process of preparing raw data 
+                    so that it is suitable for further processing and analysis.
+                  </p>
                   <div class="form-floating mb-3">
                     <select class="form-control" id="select_data" placeholder="10" name="dataDirectory" method="GET"  style="font-size:20px;"> 
                       {% for dataDir in upload_data %}
@@ -154,13 +161,23 @@
                     <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
 
-              <label class="col-md-8 fs-4">SLFN(Single-hidden layer feedforward neural network).</label>
-              <label class="col-md-8 fs-5">For training</label>
+              <label class="col-md-8 fs-4 fw-bold">SLFN</label>
+              <label class="col-md-8 fs-5 fw-bold">Training parameters</label>
 
+              <br><br>
+              <p class="col-md-12 fs-6">2. Hidden Layers are layers of nodes between input 
+                and output layers(Ref). The hidden layer node defined here is a hyperparameter 
+                for training model.
+              </p>
+             
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode">
                 <label for="floatingInput">Hidden layer node</label>
               </div>
+              <p class="col-md-12 fs-6">3. Weight initialization is a procedure to set the 
+                weights of a neural network to small random values that define the starting 
+                point for the optimization (learning or training) of the neural network model.
+              </p>
 
               <div class="form-floating mb-3">
                 <select class="form-control" id="select_weightInitialization" placeholder="10" name="weightInitialization" method="GET"  style="font-size:20px;"> 
@@ -172,6 +189,12 @@
                 <label for="select_weightInitialization">Weight Initialization</label>
               </div>
 
+              <p class="col-md-12 fs-6">4. In artificial neural networks, the activation 
+                function of a node defines the output of that node given an input or set 
+                of inputs. There are typical activation functions, including Rectified 
+                linear unit(ReLU), sigmoid, Hyperbolic tangent(tanh).
+              </p>
+
               <div class="form-floating mb-3">
                 <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:20px;"> 
                   <option value= "ReLU" SELECTED>ReLU</option>
@@ -179,24 +202,46 @@
                 <label for="select_activationFunction">Activation function</label>
               </div>
 
+              <p class="col-md-12 fs-6">5. The number of epochs is a hyperparameter of 
+                gradient descent that controls the number of complete passes through 
+                the training dataset.
+              </p>
+
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="epoch">
                 <label for="floatingInput">Epoch</label>
               </div>
               
+              <p class="col-md-12 fs-6">6. The batch size is a hyperparameter of gradient 
+                descent that controls the number of training samples to work through before 
+                the model’s internal parameters are updated.
+              </p>
+
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="batchSize">
                 <label for="floatingInput">Batch size</label>
               </div>
+
+              <p class="col-md-12 fs-6">7. The learning goal is a hyperparameter of model 
+                learning utilized to determine whether or not the error is within the 
+                acceptable bounds.
+              </p>
 
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningGoal">
                 <label for="floatingInput">Learning goal</label>
               </div>
 
-              <label class="col-md-8 fs-5">For testing</label>
+              <label class="col-md-8 fs-5 fw-bold">Testing parameter</label>
+              <br><br>
+              <p class="col-md-12 fs-6">8. Performance metrics are a part of every machine 
+                learning pipeline. They tell you if you’re making progress, and put a number 
+                on it. All machine learning models, whether it’s linear regression, or a SOTA 
+                technique like BERT, need a metric to judge performance.
+              </p>
+
               <div class="form-floating mb-3">
-                <select class="form-control" id="select_testingMetric" placeholder="10" name="lossFunction" method="GET"  style="font-size:20px;"> 
+                <select class="form-control" id="select_testingMetric" name="testingMetric" placeholder="10" name="lossFunction" method="GET"  style="font-size:20px;"> 
                   <option value= "RMSE" SELECTED>RMSE</option>
                 </select>
                 <label for="select_testingMetric">Testing metric</label>
@@ -210,7 +255,20 @@
           <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
 
-              <label class="col-md-8 fs-4">Back Propagation.</label>
+              <label class="col-md-8 fs-4 fw-bold">Back Propagation</label>
+              <br><br>
+              <p class="col-md-12 fs-6">Backpropagation is the essence of neural network 
+                training. It is the method of fine-tuning the weights of a neural network 
+                based on the error rate obtained in the previous epoch (i.e., iteration). 
+                Proper tuning of the weights allows you to reduce error rates and make the 
+                model reliable by increasing its generalization.
+              </p>
+
+              <p class="col-md-12 fs-6">9. At its core, a loss function is incredibly simple: 
+                It’s a method of evaluating how well your algorithm models your dataset. If 
+                your predictions are totally off, your loss function will output a higher number. 
+                If they’re pretty good, it’ll output a lower number.
+              </p>
 
               <div class="form-floating mb-3">
                 <select class="form-control" id="select_loss" placeholder="10" name="lossFunction" method="GET"  style="font-size:20px;" onclick="showLossFunctionEquation()"> 
@@ -222,14 +280,17 @@
               </div>
 
               <div>
-                <label class="col-md-8 fs-5">Function equation</label>
+                <label id="lossEquation" class="col-md-8 fs-6" style="display:none">Function equation</label>
                 <p id="MSE" style="display:none"><span class="math display">\[MSE=\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2\]</span ></p>
                 <p id="RMSE" style="display:none"><span class="math display">\[RMSE=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2}\]</span ></p>
                 <p id="CROSSENTROPYLOSS_b" style="display:none"><span class="math display">\[CrossEntropyLoss(binary)=-{(y\log(p) + (1 - y)\log(1 - p))}\]</span ></p>
                 <p id="CROSSENTROPYLOSS_m" style="display:none"><span class="math display">\[CrossEntropyLoss(multiclass)=-\sum_{c=1}^My_{o,c}\log(p_{o,c})\]</span ></p>
               </div>
 
-              <br>
+              <p class="col-md-12 fs-6">10. An optimizer is a function or an algorithm that 
+                modifies the attributes of the neural network, such as weights and learning 
+                rate. Thus, it helps in reducing the overall loss and improve the accuracy.
+              </p>
 
               <div class="form-floating mb-3">
                 <select class="form-control" id="select_optim" placeholder="10" name="optimizer" method="GET"  style="font-size:20px;" onclick="showOptimizerParameters()"> 
@@ -239,30 +300,44 @@
                 <label for="select_optim">Optimizer</label>
               </div>
 
+              <p class="col-md-12 fs-6">11. It is a parameter that provides the model a scale 
+                of how much model weights should be updated.
+              </p>
+
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate">
                 <label for="floatingInput">Learning rate</label>
               </div>
+
+              <p class="col-md-12 fs-6">12. The betas is a parameter of Adam / AdamW optimizer, 
+                using for computing running averages of gradient and its square(default: (0.9, 0.999)).
+              </p>
 
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas">
                 <label for="floatingInput">Betas</label>
               </div>
 
+              <p class="col-md-12 fs-6">13. The eps is a parameter of Adam / AdamW optimizer that is 
+                added to the denominator to improve numerical stability (default: 1e-8).
+              </p>
+
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps">
                 <label for="floatingInput">Eps</label>
               </div>
 
+              <p class="col-md-12 fs-6">14. The weight decay is a parameter of Adam / AdamW optimizer 
+                that is L2 penalty (default: 0) in Adam and a coefficient (default: 1e-2) in AdamW.
+              </p>
+
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay">
                 <label for="floatingInput">Weight decay</label>
               </div>
-
+          </div>
               
           <br>
-
-
 
           <label class="col-md-8 fs-5"></label>
           <label for="define_model" class="btn btn-outline-primary btn-lg">Train</label>
@@ -270,47 +345,10 @@
 
           <br><br>
 
+
           <div class="col-md-12">
-            <div class="h-100 p-5 bg-light border rounded-3">
-
-              <text><b>Interrupted message : <font color="blue">{{interrupted_message}}</font></b></text>
-              
-              <br><br>
-              <label class="col-md-8 fs-3">Training configuration</label>
-              <br><br>
-              <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
-              <br>
-              <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
-              <br>
-              <text><b>Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
-              <br>
-              <text><b>Weight initialization : <font color="blue">{{weightInitialization}}</font></b></text>
-              <br>
-              <text><b>Activation function : <font color="blue">{{activationFunction}}</font></b></text>
-              <br>
-              <text><b>Epoch : <font color="blue">{{epoch}}</font></b></text>
-              <br>
-              <text><b>Batch size : <font color="blue">{{batchSize}}</font></b></text>
-              <br>
-              <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
-              <br>
-              <text><b>Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
-              <br>
-              <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
-              <br>
-              <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
-              <br>
-              <text><b>Betas : <font color="blue">{{betas}}</font></b></text>
-              <br>
-              <text><b>Eps : <font color="blue">{{eps}}</font></b></text>
-              <br>
-              <text><b>Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
-              <br><br>
-
-              <br><br>
-              <label class="col-md-8 fs-5">Model experiments record : <font color="blue">{{model_experiments_record}}</font></label>
-              <br><br>
-
+            <div class="h-100 p-4 bg-light border rounded-3">
+              <text><b>System message : <font color="blue">{{interrupted_message}}</font></b></text>
             </div>
           </div>
 
@@ -318,7 +356,7 @@
 
           <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
-              <label class="col-md-8 fs-3">Model Performance</label>
+              <label class="col-md-8 fs-3 fw-bold ">Model Performance</label>
               <br><br>
               <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
               <br>
@@ -326,13 +364,6 @@
               <br>
               <div class="p-5 mb-1 bg-light rounded-3">
       
-                <!-- <div class="gallery">
-                  <a target="_blank" href="{{ url_for('static', path='/img/acc.png') }}">
-                    <img src="{{ url_for('static', path='/img/acc.png') }}"  alt="Training Accuracy" width="600" height="400">
-                  </a>
-                  <div class="desc">Training Accuracy</div>
-                </div> -->
-
                 <div class="gallery">
                   <a target="_blank" href="{{url_path_for_trainingAccuracy}}">
                     <img src= "{{url_path_for_trainingAccuracy}}"  alt="Training Accuracy" width="600" height="400">
@@ -367,9 +398,53 @@
               <br><br><br><br><br>
             </div>
           </div>
+
+          <br>
+
+          <div class="col-md-12">
+            <div class="h-100 p-5 bg-light border rounded-3">
+              
+              <br><br>
+              <label class="col-md-8 fs-3 fw-bold">Training configuration</label>
+              <br><br>
+              <text><b>1. Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
+              <br>
+              <text><b>1-1. Data Shape : <font color="blue">{{dataShape}}</font></b></text>
+              <br>
+              <text><b>2. Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
+              <br>
+              <text><b>3. Weight initialization : <font color="blue">{{weightInitialization}}</font></b></text>
+              <br>
+              <text><b>4. Activation function : <font color="blue">{{activationFunction}}</font></b></text>
+              <br>
+              <text><b>5. Epoch : <font color="blue">{{epoch}}</font></b></text>
+              <br>
+              <text><b>6. Batch size : <font color="blue">{{batchSize}}</font></b></text>
+              <br>
+              <text><b>7. Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
+              <br>
+              <text><b>8. Testing metric : <font color="blue">{{testingMetric}}</font></b></text>
+              <br>
+              <text><b>9. Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
+              <br>
+              <text><b>10. Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+              <br>
+              <text><b>11. Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+              <br>
+              <text><b>12. Betas : <font color="blue">{{betas}}</font></b></text>
+              <br>
+              <text><b>13. Eps : <font color="blue">{{eps}}</font></b></text>
+              <br>
+              <text><b>14. Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
+
+              <!-- <br><br>
+              <label class="col-md-8 fs-5">Model experiments record : <font color="blue">{{model_experiments_record}}</font></label> -->
+
+            </div>
+          </div>
         
 
-          <text>After training completed, this save mechanism will execute automatically.</text>
+          <text>After training completed, this model & metadata would save automatically</text>
         </form>
 
       </div>

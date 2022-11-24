@@ -261,6 +261,7 @@ def pipeline_model(request: Request, \
                      epoch : str = Form(default=None, max_length=50), \
                      batchSize : str = Form(default=None, max_length=50), \
                      learningGoal : str = Form(default=None, max_length=50), \
+                     testingMetric : str = Form(default=None, max_length=50), \
                      lossFunction : str = Form(default=None, max_length=50), \
                      optimizer : str = Form(default=None, max_length=50), \
                      learningRate : str = Form(default=None, max_length=50), \
@@ -289,6 +290,7 @@ def pipeline_model(request: Request, \
                                  epoch = eval_avoidNone(epoch), \
                                  batchSize = eval_avoidNone(batchSize), \
                                  learningGoal = eval_avoidNone(learningGoal), \
+                                 testingMetric = testingMetric, \
                                  lossFunction = lossFunction, \
                                  optimizer = optimizer, \
                                  learningRate = eval_avoidNone(learningRate), \
@@ -334,6 +336,7 @@ def pipeline_model(request: Request, \
                      "epoch":epoch, \
                      "batchSize":batchSize, \
                      "learningGoal":learningGoal, \
+                     "testingMetric":testingMetric, \
                      "lossFunction":lossFunction, \
                      "optimizer":optimizer, \
                      "learningRate":learningRate, \
