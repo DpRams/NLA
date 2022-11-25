@@ -9,13 +9,14 @@ services:
         - "80:80"
 
     mongo : 
-      image : 110356021/mongo:latest
+      image : mongo:latest
       hostname: mongo
       container_name: mongo
       ports : 
         - "27017:27017"
       volumes:
         - mongodbdata:/data/db
+
     mongodb-python-api : 
       image : 110356021/mongodb-python-api:latest
       hostname: mongodb-python-api
