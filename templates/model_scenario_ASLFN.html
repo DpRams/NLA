@@ -163,8 +163,8 @@
                   <label class="col-md-8 fs-4">Select Data directory from Server.</label>
 
                   <div class="form-floating mb-3">
-                    <select class="form-control" id="select_data" placeholder="10" name="dataDirectory" method="GET"
-                      style="font-size:20px;">
+                    <select class="form-select" id="select_data" placeholder="10" name="dataDirectory" method="GET"
+                      style="font-size:15px;">
                       {% for dataDir in upload_data %}
                       <option value="{{dataDir}}" SELECTED>{{dataDir}}</option>"
                       {% endfor %}
@@ -173,8 +173,8 @@
                   </div>
 
                   <div class="form-floating mb-3">
-                    <select class="form-control" id="select_dataDescribing" placeholder="10" name="dataDescribing"
-                      method="GET" style="font-size:20px;">
+                    <select class="form-select" id="select_dataDescribing" placeholder="10" name="dataDescribing"
+                      method="GET" style="font-size:15px;">
                       <option value="ri_sro" SELECTED>ri_sro</option>
                       <option value="ri_mro">ri_mro</option>
                       <option value="bi_sro">bi_sro</option>
@@ -206,8 +206,8 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_weightInitialization" placeholder="10"
-                    name="weightInitialization" method="GET" style="font-size:20px;">
+                  <select class="form-select" id="select_weightInitialization" placeholder="10"
+                    name="weightInitialization" method="GET" style="font-size:15px;">
                     <option value="xavierNormal" SELECTED>Xavier Normal</option>
                     <option value="xavierUniform">Xavier Uniform</option>
                     <option value="kaimingNormal">Kaiming Normal</option>
@@ -217,8 +217,8 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_activationFunction" placeholder="10" name="activationFunction"
-                    method="GET" style="font-size:20px;">
+                  <select class="form-select" id="select_activationFunction" placeholder="10" name="activationFunction"
+                    method="GET" style="font-size:15px;">
                     <option value="ReLU" SELECTED>ReLU</option>
                   </select>
                   <label for="select_activationFunction">Activation function</label>
@@ -226,8 +226,8 @@
 
                 <label class="col-md-8 fs-5">For testing</label>
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_testingMetric" placeholder="10" name="lossFunction"
-                    method="GET" style="font-size:20px;">
+                  <select class="form-select" id="select_testingMetric" placeholder="10" name="lossFunction"
+                    method="GET" style="font-size:15px;">
                     <option value="RMSE" SELECTED>RMSE</option>
                   </select>
                   <label for="select_testingMetric">Testing metric</label>
@@ -244,8 +244,8 @@
                 <label class="col-md-8 fs-4">Matching(Back Propagation).</label>
 
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_loss" placeholder="10" name="lossFunction" method="GET"
-                    style="font-size:20px;" onclick="showLossFunctionEquation()">
+                  <select class="form-select" id="select_loss" placeholder="10" name="lossFunction" method="GET"
+                    style="font-size:15px;" onclick="showLossFunctionEquation()">
                     <option value="RMSE" SELECTED>RMSE</option>
                     <option value="MSE">MSE</option>
                     <option value="CROSSENTROPYLOSS">CROSSENTROPYLOSS</option>
@@ -268,8 +268,8 @@
                 <br>
 
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_optim" placeholder="10" name="optimizer" method="GET"
-                    style="font-size:20px;" onclick="showOptimizerParameters()">
+                  <select class="form-select" id="select_optim" placeholder="10" name="optimizer" method="GET"
+                    style="font-size:15px;" onclick="showOptimizerParameters()">
                     <option value="Adam" SELECTED>Adam</option>
                     <option value="AdamW">AdamW</option>
                   </select>
@@ -300,8 +300,8 @@
                 <br><br>
 
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_matchingRule" placeholder="10" name="matchingRule"
-                    method="GET" style="font-size:20px;" onclick="showMatchingParameters()">
+                  <select class="form-select" id="select_matchingRule" placeholder="10" name="matchingRule"
+                    method="GET" style="font-size:15px;" onclick="showMatchingParameters()">
                     <option value="EU">EU</option>
                     <option value="EU_LG">EU_LG</option>
                     <option value="EU_LG_UA">EU_LG_UA</option>
@@ -343,8 +343,8 @@
                 <label class="col-md-8 fs-4">Initializing.</label>
 
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_initializingRule" placeholder="10" name="initializingRule"
-                    method="GET" style="font-size:20px;" onclick="showInitializingParameters()">
+                  <select class="form-select" id="select_initializingRule" placeholder="10" name="initializingRule"
+                    method="GET" style="font-size:15px;" onclick="showInitializingParameters()">
                     <option value="LinearRegression">LinearRegression</option>
                     <option value="Disabled" SELECTED>Disabled</option>
                   </select>
@@ -368,8 +368,8 @@
                 <br><br>
                 <label class="col-md-8 fs-4">Selecting.</label>
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_selectingRule" placeholder="10" name="selectingRule"
-                    method="GET" style="font-size:20px;">
+                  <select class="form-select" id="select_selectingRule" placeholder="10" name="selectingRule"
+                    method="GET" style="font-size:15px;">
                     <option value="POS">POS</option>
                     <option value="LTS">LTS</option>
                     <option value="Disabled" SELECTED>Disabled</option>
@@ -403,8 +403,8 @@
 
                     <label class="col-md-8 fs-4">Cramming.</label>
                     <div class="form-floating mb-3">
-                      <select class="form-control" id="select_crammingRule" placeholder="10" name="crammingRule"
-                        method="GET" style="font-size:20px;">
+                      <select class="form-select" id="select_crammingRule" placeholder="10" name="crammingRule"
+                        method="GET" style="font-size:15px;">
                         <option value="ri_sro">ri_sro</option>
                         <option value="ri_mro">ri_mro</option>
                         <option value="bi_sro">bi_sro</option>
@@ -446,8 +446,8 @@
 
                     <label class="col-md-8 fs-4">Reorganizing.</label>
                     <div class="form-floating mb-3">
-                      <select class="form-control" id="select_reorganizingRule" placeholder="10" name="reorganizingRule"
-                        method="GET" style="font-size:20px;" onclick="showReorganzingingParameters()">
+                      <select class="form-select" id="select_reorganizingRule" placeholder="10" name="reorganizingRule"
+                        method="GET" style="font-size:15px;" onclick="showReorganzingingParameters()">
                         <option value="ri_sro">ri_sro</option>
                         <option value="ri_mro">ri_mro</option>
                         <option value="bi_sro">bi_sro</option>

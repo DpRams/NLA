@@ -136,24 +136,36 @@
       <div class="p-5 mb-1 bg-light rounded-3">
         <div class="container-fluid py-0">
           <h1 class="display-6 fw-bold">Service</h1>
-          <p class="col-md-8 fs-5">Examine the training record and testing result by Predict APIs.</p>
-
           <br><br>
+          <p class="col-md-12 fs-6">Artificial intelligence as a service (AIaaS) is 
+            defined as a service that outsources AI to enable individuals and companies 
+            to explore and scale AI techniques at a minimal cost.</p>
 
           <form action="/pipeline/service" method="post" enctype="multipart/form-data">
 
             <div class="col-md-12">
               <div class="h-100 p-5 bg-light border rounded-3">
 
-                <label class="col-md-8 fs-4">Select Predict API to get records and results.</label>
+                <label class="col-md-8 fs-4 fw-bold">Data preparation</label>
+                <br><br>
+                <p class="col-md-12 fs-6">Data preparation is the process of preparing raw data 
+                  so that it is suitable for further processing and analysis.
+                </p>
+
+                <p class="col-md-12 fs-6">1. Prepare your testing data here -> <a href="/pipeline/data"> Data Pipeline</a>
+                </p>
+
+                <p class="col-md-12 fs-6">2. Select an API to get prediction.
+                </p>
+
                 <div class="form-floating mb-3">
-                  <select class="form-control" id="select_predictAPI" placeholder="10" name="predictAPI" method="POST"
-                    style="font-size:20px;">
+                  <select class="form-select" id="select_predictAPI" placeholder="10" name="predictAPI" method="POST"
+                    style="font-size:15px;">
                     {% for api in predictAPI_lst %}
                     <option value="{{api}}" SELECTED>{{api}}</option>"
                     {% endfor %}
                   </select>
-                  <label for="select_predictAPI">Predict APIs</label>
+                  <label for="select_predictAPI">API</label>
                 </div>
 
               </div>
@@ -169,7 +181,60 @@
 
             <div class="col-md-12">
               <div class="h-100 p-5 bg-light border rounded-3">
-                <label class="col-md-8 fs-3">Training configuration</label>
+                <label class="col-md-8 fs-4 fw-bold">Model Performance</label>
+                <br><br>
+                <text><b>RMSE(Root Mean Squared Error) : <font color="blue">{{rmseError}}</font></b></text>
+                <br>
+                <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
+                <br>
+                <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
+                <br>
+                <div class="p-5 mb-1 bg-light rounded-3">
+
+                  <div class="gallery">
+                    <a target="_blank" href="{{url_path_for_fig_1}}">
+                      <img src="{{url_path_for_fig_1}}" alt="Figure 1" width="600" height="400">
+                    </a>
+                    <div class="desc">Figure 1</div>
+                  </div>
+
+                  <div class="gallery">
+                    <a target="_blank" href="{{url_path_for_fig_2}}">
+                      <img src="{{url_path_for_fig_2}}" alt="Figure 2" width="600" height="400">
+                    </a>
+                    <div class="desc">Figure 2</div>
+                  </div>
+                  <div class="gallery">
+                    <a target="_blank" href="{{url_path_for_fig_3}}">
+                      <img src="{{url_path_for_fig_3}}" alt="Figure 3" width="600" height="400">
+                    </a>
+                    <div class="desc">Figure 3</div>
+                  </div>
+
+                  <div class="gallery">
+                    <a target="_blank" href="{{url_path_for_fig_4}}">
+                      <img src="{{url_path_for_fig_4}}" alt="Figure 4" width="600" height="400">
+                    </a>
+                    <div class="desc">Figure 4</div>
+                  </div>
+
+                  <div class="gallery">
+                    <a target="_blank" href="{{url_path_for_fig_5}}">
+                      <img src="{{url_path_for_fig_5}}" alt="Figure 5" width="600" height="400">
+                    </a>
+                    <div class="desc">Figure 5</div>
+                  </div>
+
+                  <br><br><br><br><br>
+
+                </div>
+              </div>
+
+            <br>
+
+            <div class="col-md-12">
+              <div class="h-100 p-5 bg-light border rounded-3">
+                <label class="col-md-8 fs-4 fw-bold">Training configuration</label>
                 <br><br>
                 <text><b>Data directory : <font color="blue">{{dataDirectory}}</font></b></text>
                 <br>
@@ -232,56 +297,7 @@
             </div>
 
             <br><br>
-            <div class="col-md-12">
-              <div class="h-100 p-5 bg-light border rounded-3">
-                <label class="col-md-8 fs-3">Model Performance</label>
-                <br><br>
-                <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
-                <br>
-                <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
-                <br>
-                <text><b>RMSE(Root Mean Squared Error) : <font color="blue">{{rmseError}}</font></b></text>
-                <br>
-                <div class="p-5 mb-1 bg-light rounded-3">
 
-                  <div class="gallery">
-                    <a target="_blank" href="{{url_path_for_fig_1}}">
-                      <img src="{{url_path_for_fig_1}}" alt="Figure 1" width="600" height="400">
-                    </a>
-                    <div class="desc">Figure 1</div>
-                  </div>
-
-                  <div class="gallery">
-                    <a target="_blank" href="{{url_path_for_fig_2}}">
-                      <img src="{{url_path_for_fig_2}}" alt="Figure 2" width="600" height="400">
-                    </a>
-                    <div class="desc">Figure 2</div>
-                  </div>
-                  <div class="gallery">
-                    <a target="_blank" href="{{url_path_for_fig_3}}">
-                      <img src="{{url_path_for_fig_3}}" alt="Figure 3" width="600" height="400">
-                    </a>
-                    <div class="desc">Figure 3</div>
-                  </div>
-
-                  <div class="gallery">
-                    <a target="_blank" href="{{url_path_for_fig_4}}">
-                      <img src="{{url_path_for_fig_4}}" alt="Figure 4" width="600" height="400">
-                    </a>
-                    <div class="desc">Figure 4</div>
-                  </div>
-
-                  <div class="gallery">
-                    <a target="_blank" href="{{url_path_for_fig_5}}">
-                      <img src="{{url_path_for_fig_5}}" alt="Figure 5" width="600" height="400">
-                    </a>
-                    <div class="desc">Figure 5</div>
-                  </div>
-
-                  <br><br><br><br><br>
-
-                </div>
-              </div>
 
               <br>
 

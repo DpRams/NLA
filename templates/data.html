@@ -133,8 +133,8 @@
                   </p>
 
                   <div class="form-floating mb-3">
-                    <select class="form-control" id="select_dataUse" placeholder="10" name="dataUse" method="GET"
-                      style="font-size:20px;" onchange="createOrSelect()">
+                    <select class="form-select" id="select_dataUse" placeholder="10" name="dataUse" method="GET"
+                      style="font-size:15px;" onchange="createOrSelect()">
                       <option value="Train" SELECTED>Train</option>
                       <option value="Test">Test</option>
                     </select>
@@ -150,8 +150,8 @@
                   <div id="selectDirectory" style="display:none">
                       <!-- <label class="col-md-8 fs-4">Select existed Data directory.</label> -->
                       <div class="form-floating mb-3">
-                        <select class="form-control" id="select_existedDirectory" placeholder="10" name="existedDirectory"
-                          method="GET" style="font-size:20px;">
+                        <select class="form-select" id="select_existedDirectory" placeholder="10" name="existedDirectory"
+                          method="GET" style="font-size:15px;">
                           {% for dataDir in upload_data %}
                           <option value="{{dataDir}}" SELECTED>{{dataDir}}</option>"
                           {% endfor %}
