@@ -590,11 +590,14 @@ def pipeline_service(request: Request, \
    dataDirectory = requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelName&value={predictAPI}").json()[0]["trainedDataset"]
    modelPklFile = predictAPI
    servicePort = requests.get(f"http://127.0.0.1:8001/model/deployments?key=modelName&value={predictAPI}").json()[0]["containerPort"]
-
+   
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory) 
    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
+
+   a = time.time()
    res = requests.post(f"http://127.0.0.1:{servicePort}/predict", json={"dataDirectory": rawTestingData})
    rmseError = res.json()["rmseError"]
+   print(f"MongoDB : {time.time()-a}")
 
    model_experiments_record, model_params, model_fig_drt = __model_evaluating(dataDirectory, modelPklFile)
 
