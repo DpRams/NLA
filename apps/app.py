@@ -501,7 +501,7 @@ def __model_training(model_params):
 
    return model_experiments_record, model_params, model_fig_drt
 
-# call container service to get rmseError
+# call container service to get rmseError 
 def __model_evaluating(dataDirectory, modelFile):
    
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory)
@@ -594,10 +594,10 @@ def pipeline_service(request: Request, \
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory) 
    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
 
-   a = time.time()
+   # a = time.time()
    res = requests.post(f"http://127.0.0.1:{servicePort}/predict", json={"dataDirectory": rawTestingData})
    rmseError = res.json()["rmseError"]
-   print(f"MongoDB : {time.time()-a}")
+   # print(f"MongoDB : {time.time()-a}")
 
    model_experiments_record, model_params, model_fig_drt = __model_evaluating(dataDirectory, modelPklFile)
 

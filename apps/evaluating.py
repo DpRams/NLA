@@ -50,10 +50,10 @@ def reading_pkl(modelFile):
     
     modelPath = f"{root}\\model_registry\\pkl\\{modelFile}"
 
-    a = time.time()
+    # a = time.time()
     with open(modelPath, 'rb') as f:
         checkpoints = pickle.load(f)
-    print(f"PKL : {time.time()-a}")
+    # print(f"PKL : {time.time()-a}")
 
     return checkpoints 
 
