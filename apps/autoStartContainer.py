@@ -5,8 +5,15 @@ import subprocess
 
 
 def main():
+
+    # start project(mongo, mongodb-python-api, nginx)
+    p = subprocess.Popen(f"docker-compose start", shell=True, stdout=subprocess.PIPE)
+    stdout, stderr = p.communicate()
+
+    # get ASLFN container ID from mongo
     containerToBeRestart = (" ").join([model["containerID"] for model in requests.get(f"http://127.0.0.1:8001/model/deployments?key=deployStatus&value=deploying").json()])
     
+    # start ASLFN container
     if containerToBeRestart != "":
         p = subprocess.Popen(f"docker start {containerToBeRestart}", shell=True, stdout=subprocess.PIPE)
         stdout, stderr = p.communicate()
@@ -14,7 +21,5 @@ def main():
     else:
         return
  
-
- ### 之後也可以寫自動開啟 project(nginx, mongoDB, api) 的指令
 
 
