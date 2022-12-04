@@ -16,6 +16,12 @@ services:
         - "27017:27017"
       volumes:
         - mongodbdata:/data/db
+        - ./mongo/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
+      command: [--auth]
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: rootPassword
+        MONGO_INITDB_DATABASE: model
 
     mongodb-python-api : 
       image : 110356021/mongodb-python-api:latest
