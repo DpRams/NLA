@@ -368,6 +368,7 @@ def pipeline_model(request: Request, \
                      hiddenNode : str = Form(default=None, max_length=50), \
                      weightInitialization : str = Form(default=None, max_length=50), \
                      activationFunction : str = Form(default=None, max_length=50), \
+                     testingMetric : str = Form(default=None, max_length=50), \
                      lossFunction : str = Form(default=None, max_length=50), \
                      optimizer : str = Form(default=None, max_length=50), \
                      learningRate : str = Form(default=None, max_length=50), \
@@ -405,6 +406,7 @@ def pipeline_model(request: Request, \
                                  outputDimension=dataShape["Y"][1], \
                                  weightInitialization=weightInitialization, \
                                  activationFunction=activationFunction, \
+                                 testingMetric=testingMetric, \
                                  lossFunction=lossFunction, \
                                  optimizer=optimizer, \
                                  learningRate=eval_avoidNone(learningRate), \
@@ -461,6 +463,7 @@ def pipeline_model(request: Request, \
                                              "hiddenNode":hiddenNode, \
                                              "weightInitialization":weightInitialization, \
                                              "activationFunction":activationFunction, \
+                                             "testingMetric":testingMetric, \
                                              "lossFunction":lossFunction, \
                                              "optimizer":optimizer, \
                                              "learningRate":learningRate, \

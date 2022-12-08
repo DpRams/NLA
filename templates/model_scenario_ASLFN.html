@@ -142,52 +142,58 @@
       <div class="p-5 mb-1 bg-light rounded-5">
         <div class="container-fluid py-0">
           <h1 class="display-6 fw-bold">ASLFN</h1>
-          <p class="col-md-8 fs-5">Customize your own ASLFN</p>
-          <p class="col-md-8 fs-6">Customize your own ASLFN</p>
-          <br><br>
+          <br>
+          <p class="col-md-12 fs-6">(等文獻回顧後更新)Adaptive Single-hidden layer feedforward neural network (ASLFN) is among 
+            the most often used neural network architectures. It has been extensively utilized to 
+            resolve classification and regression issues in a variety of domains thanks to its nonlinear 
+            modeling capability.
+          </p>
 
           
 
 
           <form method="post" enctype="multipart/form-data">
 
-            <!-- <div >
-            <div id="data_mask"class="color" style="position:relative;width:auto;height:auto;z-index:999;color:grey; opacity:0.65; pointer-events:none;">
-            </div>
-          </div> -->
-
             <div class="row">
               <div class="col-md-12">
-                <div class="h-100 p-5 bg-light border rounded-3">
+                  <div class="h-100 p-5 bg-light border rounded-3">
+                    
+                    <label class="col-md-8 fs-4 fw-bold">Data preparation</label>
+                    <br><br>
+                    <p class="col-md-12 fs-6">Data preparation is the process of preparing raw data 
+                      so that it is suitable for further processing and analysis.
+                    </p>
+  
+                    <p class="col-md-12 fs-6">1. Data subject refers to any individual person who can 
+                      be identified, directly or indirectly, via an identifier such as a name, an ID 
+                      number, location data, or via factors specific to the person’s physical, 
+                      physiological, genetic, mental, economic, cultural or social identity.
+                    </p>
+                    <div class="form-floating mb-3">
+                      <select class="form-select" id="select_data" placeholder="10" name="dataDirectory" method="GET"  style="font-size:15px;"> 
+                        {% for dataDir in upload_data %}
+                        <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+                        {% endfor %}
+                      </select>
+                      <label for="select_data">Data subject</label>
+                    </div>
 
-                  <label class="col-md-8 fs-4">Select Data directory from Server.</label>
-
-                  <div class="form-floating mb-3">
-                    <select class="form-select" id="select_data" placeholder="10" name="dataDirectory" method="GET"
-                      style="font-size:15px;">
-                      {% for dataDir in upload_data %}
-                      <option value="{{dataDir}}" SELECTED>{{dataDir}}</option>"
-                      {% endfor %}
-                    </select>
-                    <label for="select_data">Data subject</label>
+                    <div class="form-floating mb-3">
+                      <select class="form-select" id="select_dataDescribing" placeholder="10" name="dataDescribing"
+                        method="GET" style="font-size:15px;">
+                        <option value="ri_sro" SELECTED>ri_sro</option>
+                        <option value="ri_mro">ri_mro</option>
+                        <option value="bi_sro">bi_sro</option>
+                        <option value="bi_mro">bi_mro</option>
+                        <option value="ri_sbo">ri_sbo</option>
+                        <option value="ri_mbo">ri_mbo</option>
+                        <option value="bi_sbo">bi_sbo</option>
+                        <option value="bi_mbo">bi_mbo</option>
+                      </select>
+                      <label for="select_dataDescribing">Data descirbing</label>
+                    </div>
+  
                   </div>
-
-                  <div class="form-floating mb-3">
-                    <select class="form-select" id="select_dataDescribing" placeholder="10" name="dataDescribing"
-                      method="GET" style="font-size:15px;">
-                      <option value="ri_sro" SELECTED>ri_sro</option>
-                      <option value="ri_mro">ri_mro</option>
-                      <option value="bi_sro">bi_sro</option>
-                      <option value="bi_mro">bi_mro</option>
-                      <option value="ri_sbo">ri_sbo</option>
-                      <option value="ri_mbo">ri_mbo</option>
-                      <option value="bi_sbo">bi_sbo</option>
-                      <option value="bi_mbo">bi_mbo</option>
-                    </select>
-                    <label for="select_dataDescribing">Data descirbing</label>
-                  </div>
-
-                </div>
               </div>
             </div>
 
@@ -197,13 +203,24 @@
             <div class="col-md-12">
               <div class="h-100 p-5 bg-light border rounded-3">
 
-                <label class="col-md-8 fs-4">ASLFN(Adaptive SLFN).</label>
-                <label class="col-md-8 fs-5">For training</label>
+                <label class="col-md-8 fs-4 fw-bold">ASLFN</label>
+                <label class="col-md-8 fs-5 fw-bold">Training parameters</label>
 
+                <br><br>
+                <p class="col-md-12 fs-6">2. Hidden Layers are layers of nodes between input 
+                  and output layers(Ref). The hidden layer node defined here is a hyperparameter 
+                  for training model.
+                </p>
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode">
                   <label for="floatingInput">Hidden layer node</label>
                 </div>
+
+                <p class="col-md-12 fs-6">3. Weight initialization is a procedure to set the 
+                  weights of a neural network to small random values that define the starting 
+                  point for the optimization (learning or training) of the neural network model.
+                </p>
+
 
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_weightInitialization" placeholder="10"
@@ -216,6 +233,12 @@
                   <label for="select_weightInitialization">Weight Initialization</label>
                 </div>
 
+                <p class="col-md-12 fs-6">4. In artificial neural networks, the activation 
+                  function of a node defines the output of that node given an input or set 
+                  of inputs. There are typical activation functions, including Rectified 
+                  linear unit(ReLU), sigmoid, Hyperbolic tangent(tanh).
+                </p>
+
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_activationFunction" placeholder="10" name="activationFunction"
                     method="GET" style="font-size:15px;">
@@ -224,7 +247,13 @@
                   <label for="select_activationFunction">Activation function</label>
                 </div>
 
-                <label class="col-md-8 fs-5">For testing</label>
+                <label class="col-md-8 fs-5 fw-bold">Testing parameter</label>
+                <br><br>
+                <p class="col-md-12 fs-6">5. Performance metrics are a part of every machine 
+                  learning pipeline. They tell you if you’re making progress, and put a number 
+                  on it. All machine learning models, whether it’s linear regression, or a SOTA 
+                  technique like BERT, need a metric to judge performance.
+                </p>
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_testingMetric" placeholder="10" name="lossFunction"
                     method="GET" style="font-size:15px;">
@@ -241,7 +270,20 @@
             <div class="col-md-12">
               <div class="h-100 p-5 bg-light border rounded-3">
 
-                <label class="col-md-8 fs-4">Matching(Back Propagation).</label>
+                <label class="col-md-8 fs-4 fw-bold">Back Propagation </label>
+                <br><br>
+                <p class="col-md-12 fs-6">Backpropagation is the essence of neural network 
+                  training. It is the method of fine-tuning the weights of a neural network 
+                  based on the error rate obtained in the previous epoch (i.e., iteration). 
+                  Proper tuning of the weights allows you to reduce error rates and make the 
+                  model reliable by increasing its generalization.
+                </p>
+
+                <p class="col-md-12 fs-6">6. At its core, a loss function is incredibly simple: 
+                  It’s a method of evaluating how well your algorithm models your dataset. If 
+                  your predictions are totally off, your loss function will output a higher number. 
+                  If they’re pretty good, it’ll output a lower number.
+                </p>
 
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_loss" placeholder="10" name="lossFunction" method="GET"
@@ -254,18 +296,19 @@
                 </div>
 
                 <div>
-                  <label class="col-md-8 fs-5">Function equation</label>
-                  <p id="MSE" style="display:none"><span
-                      class="math display">\[MSE=\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2\]</span></p>
-                  <p id="RMSE" style="display:none"><span
-                      class="math display">\[RMSE=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2}\]</span></p>
-                  <p id="CROSSENTROPYLOSS_b" style="display:none"><span
-                      class="math display">\[CrossEntropyLoss(binary)=-{(y\log(p) + (1 - y)\log(1 - p))}\]</span></p>
-                  <p id="CROSSENTROPYLOSS_m" style="display:none"><span
-                      class="math display">\[CrossEntropyLoss(multiclass)=-\sum_{c=1}^My_{o,c}\log(p_{o,c})\]</span></p>
+                  <label id="lossEquation" class="col-md-8 fs-6" style="display:none"></label>
+                  <p id="MSE" style="display:none"><span class="math display">\[MSE=\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2\]</span ></p>
+                  <p id="RMSE" style="display:none"><span class="math display">\[RMSE=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(\hat{y_i}-y_i)^2}\]</span ></p>
+                  <p id="CROSSENTROPYLOSS_b" style="display:none"><span class="math display">\[CrossEntropyLoss(binary)=-{(y\log(p) + (1 - y)\log(1 - p))}\]</span ></p>
+                  <p id="CROSSENTROPYLOSS_m" style="display:none"><span class="math display">\[CrossEntropyLoss(multiclass)=-\sum_{c=1}^My_{o,c}\log(p_{o,c})\]</span ></p>
                 </div>
 
                 <br>
+
+                <p class="col-md-12 fs-6">7. An optimizer is a function or an algorithm that 
+                  modifies the attributes of the neural network, such as weights and learning 
+                  rate. Thus, it helps in reducing the overall loss and improve the accuracy.
+                </p>
 
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_optim" placeholder="10" name="optimizer" method="GET"
@@ -276,58 +319,40 @@
                   <label for="select_optim">Optimizer</label>
                 </div>
 
+                <p class="col-md-12 fs-6">8. It is a parameter that provides the model a scale 
+                  of how much model weights should be updated.
+                </p>
+
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate">
                   <label for="floatingInput">Learning rate</label>
                 </div>
+
+                <p class="col-md-12 fs-6">9. The betas is a parameter of Adam / AdamW optimizer, 
+                  using for computing running averages of gradient and its square(default: (0.9, 0.999)).
+                </p>
 
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas">
                   <label for="floatingInput">Betas</label>
                 </div>
 
+                <p class="col-md-12 fs-6">10. The eps is a parameter of Adam / AdamW optimizer that is 
+                  added to the denominator to improve numerical stability (default: 1e-8).
+                </p>
+
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps">
                   <label for="floatingInput">Eps</label>
                 </div>
 
+                <p class="col-md-12 fs-6">11. The weight decay is a parameter of Adam / AdamW optimizer 
+                  that is L2 penalty (default: 0) in Adam and a coefficient (default: 1e-2) in AdamW.
+                </p>
+
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay">
                   <label for="floatingInput">Weight decay</label>
-                </div>
-
-
-                <br><br>
-
-                <div class="form-floating mb-3">
-                  <select class="form-select" id="select_matchingRule" placeholder="10" name="matchingRule"
-                    method="GET" style="font-size:15px;" onclick="showMatchingParameters()">
-                    <option value="EU">EU</option>
-                    <option value="EU_LG">EU_LG</option>
-                    <option value="EU_LG_UA">EU_LG_UA</option>
-                    <option value="Disabled" SELECTED>Disabled</option>
-                  </select>
-                  <label for="select_matchingRule">Matching rule</label>
-                </div>
-
-
-
-                <div class="form-floating mb-3" id="p_matchingTimes" style="display:none;margin:0;">
-                  <input type="text" class="form-control" id="matchingTimes" placeholder="10" name="matchingTimes"
-                    onchange="commonTuningTimes(this.value)">
-                  <label for="matchingTimes">Matching times</label>
-                </div>
-
-                <div class="form-floating mb-3" id="p_matchingLearningGoal" style="display:none;margin:0;">
-                  <input type="text" class="form-control" id="matchingLearningGoal" placeholder="10"
-                    name="matchingLearningGoal" onchange="commonLearningGoal(this.value)">
-                  <label for="matchingLearningGoal">Matching learning goal</label>
-                </div>
-
-                <div class="form-floating mb-3" id="p_matchingLearningRateLowerBound" style="display:none;margin:0;">
-                  <input type="text" class="form-control" id="matchingLearningRateLowerBound" placeholder="10"
-                    name="matchingLearningRateLowerBound" onchange="commonLearningRateLowerBound(this.value)">
-                  <label for="matchingLearningRateLowerBound">Matching learning rate lower bound</label>
                 </div>
 
 
@@ -340,7 +365,68 @@
             <div class="col-md-12">
               <div class="h-100 p-5 bg-light border rounded-3">
 
-                <label class="col-md-8 fs-4">Initializing.</label>
+                <label class="col-md-8 fs-4 fw-bold">Matching</label>
+                <br><br>
+                <p class="col-md-12 fs-6">(文獻回顧後更新)Matching is 
+                  ....
+                </p>
+
+                <p class="col-md-12 fs-6">12. (文獻回顧後更新)
+                </p>
+
+                <div class="form-floating mb-3">
+                  <select class="form-select" id="select_matchingRule" placeholder="10" name="matchingRule"
+                    method="GET" style="font-size:15px;" onclick="showMatchingParameters()">
+                    <option value="EU">EU</option>
+                    <option value="EU_LG">EU_LG</option>
+                    <option value="EU_LG_UA">EU_LG_UA</option>
+                    <option value="Disabled" SELECTED>Disabled</option>
+                  </select>
+                  <label for="select_matchingRule">Matching rule</label>
+                </div>
+                
+                <p class="col-md-12 fs-6">13. (文獻回顧後更新)</p>
+                <div class="form-floating mb-3" id="p_matchingTimes" style="display:none;margin:0;">
+                  <input type="text" class="form-control" id="matchingTimes" placeholder="10" name="matchingTimes"
+                    onchange="commonTuningTimes(this.value)">
+                  <label for="matchingTimes">Matching times</label>
+                </div>
+
+                <p class="col-md-12 fs-6">14. (文獻回顧後更新)
+                </p>
+                <div class="form-floating mb-3" id="p_matchingLearningGoal" style="display:none;margin:0;">
+
+                  <input type="text" class="form-control" id="matchingLearningGoal" placeholder="10"
+                    name="matchingLearningGoal" onchange="commonLearningGoal(this.value)">
+                  <label for="matchingLearningGoal">Matching learning goal</label>
+                </div>
+
+                <p class="col-md-12 fs-6">15. (文獻回顧後更新)
+                </p>
+                <div class="form-floating mb-3" id="p_matchingLearningRateLowerBound" style="display:none;margin:0;">
+
+                  <input type="text" class="form-control" id="matchingLearningRateLowerBound" placeholder="10"
+                    name="matchingLearningRateLowerBound" onchange="commonLearningRateLowerBound(this.value)">
+                  <label for="matchingLearningRateLowerBound">Matching learning rate lower bound</label>
+                </div>
+
+              </div>
+
+            </div>
+
+            <br>
+
+            <div class="col-md-12">
+              <div class="h-100 p-5 bg-light border rounded-3">
+
+                <label class="col-md-8 fs-4 fw-bold">Initializing</label>
+                <br><br>
+                <p class="col-md-12 fs-6">(文獻回顧後更新)Initializing is 
+                  ....
+                </p>
+
+                <p class="col-md-12 fs-6">16. (文獻回顧後更新)
+                </p>
 
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_initializingRule" placeholder="10" name="initializingRule"
@@ -352,21 +438,31 @@
                 </div>
 
                 <div id="regressionParameters" style="display:none;margin:0;">
+                  <p class="col-md-12 fs-6">17. (文獻回顧後更新)
+                  </p>
                   <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="floatingInput" placeholder="10"
                       name="initializingNumber">
                     <label for="floatingInput">Initializing number</label>
                   </div>
 
+                  <p class="col-md-12 fs-6">18. (文獻回顧後更新)
+                  </p>
                   <div class="form-floating mb-3">
+
                     <input type="text" class="form-control" id="learningGoal" placeholder="10" name="learningGoal"
                       onchange="commonLearningGoal(this.value)">
                     <label for="learningGoal">Learning goal</label>
                   </div>
                 </div>
-
+                <br>
+                <label class="col-md-8 fs-4 fw-bold">Selecting</label>
                 <br><br>
-                <label class="col-md-8 fs-4">Selecting.</label>
+                <p class="col-md-12 fs-6">(文獻回顧後更新)Selecting is 
+                  ....
+                </p>
+                <p class="col-md-12 fs-6">19. (文獻回顧後更新)
+                </p>
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_selectingRule" placeholder="10" name="selectingRule"
                     method="GET" style="font-size:15px;">
@@ -401,7 +497,14 @@
                   style="position:relative;width:auto;height:auto;z-index:999;color:grey; opacity:0.65; pointer-events:none;">
                   <div class="h-100 p-5 bg-light border rounded-3">
 
-                    <label class="col-md-8 fs-4">Cramming.</label>
+                    <label class="col-md-8 fs-4 fw-bold">Cramming</label>
+                    <br><br>
+                    <p class="col-md-12 fs-6">(文獻回顧後更新)Cramming is 
+                      ....
+                    </p>
+
+                    <p class="col-md-12 fs-6">20. (文獻回顧後更新)
+                    </p>
                     <div class="form-floating mb-3">
                       <select class="form-select" id="select_crammingRule" placeholder="10" name="crammingRule"
                         method="GET" style="font-size:15px;">
@@ -444,7 +547,13 @@
                   style="position:relative;width:auto;height:auto;z-index:999;color:grey; opacity:0.65; pointer-events:none;">
                   <div class="h-100 p-5 bg-light border rounded-3">
 
-                    <label class="col-md-8 fs-4">Reorganizing.</label>
+                    <label class="col-md-8 fs-4 fw-bold">Reorganizing</label>
+                    <br><br>
+                    <p class="col-md-12 fs-6">(文獻回顧後更新)Reorganizing is 
+                      ....
+                    </p>
+                    <p class="col-md-12 fs-6">21. (文獻回顧後更新)
+                    </p>
                     <div class="form-floating mb-3">
                       <select class="form-select" id="select_reorganizingRule" placeholder="10" name="reorganizingRule"
                         method="GET" style="font-size:15px;" onclick="showReorganzingingParameters()">
@@ -461,26 +570,38 @@
                       <label for="select_reorganizingRule">Reorganizing rule</label>
                     </div>
 
+
                     <div id="reorganizingParamaters" style="display:none;margin:0;">
+                      <p class="col-md-12 fs-6">22. (文獻回顧後更新)
+                      </p>
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="regularizingTimes" placeholder="10"
                           name="regularizingTimes">
                         <label for="regularizingTimes">Regularizing times</label>
                       </div>
 
+                      <p class="col-md-12 fs-6">23. (文獻回顧後更新)
+                      </p>
                       <div class="form-floating mb-3">
+
                         <input type="text" class="form-control" id="floatingInput" placeholder="10"
                           name="regularizingStrength">
                         <label for="floatingInput">Regularizing strength</label>
                       </div>
 
+                      <p class="col-md-12 fs-6">24. (文獻回顧後更新)
+                      </p>
                       <div class="form-floating mb-3">
+
                         <input type="text" class="form-control" id="regularizingLearningGoal" placeholder="10"
                           name="regularizingLearningGoal">
                         <label for="regularizingLearningGoal">Regularizing learning goal</label>
                       </div>
 
+                      <p class="col-md-12 fs-6">25. (文獻回顧後更新)
+                      </p>
                       <div class="form-floating mb-3">
+
                         <input type="text" class="form-control" id="regularizingLearningRateLowerBound" placeholder="10"
                           name="regularizingLearningRateLowerBound">
                         <label for="regularizingLearningRateLowerBound">Regularizing learning rate lower bound</label>
@@ -499,124 +620,23 @@
               formaction="/pipeline/model/scenario/ASLFN" hidden>
             <br><br>
 
+
             <div class="col-md-12">
-              <div class="h-100 p-5 bg-light border rounded-3">
-
-                <text><b>Hint message : <font color="blue">若要啟用 Cramming 或 Reorganizing，請確保 Rule 與 Data describing 設置相同
-                    </font></b></text>
-                <!-- 上面這行可以寫個後端判斷，是否達成條件，未達成則顯示上述訊息 -->
-                <br><br>
-                <text><b>Interrupted message : <font color="blue">{{interrupted_message}}</font></b></text>
-
+              <div class="h-100 p-4 bg-light border rounded-3">
+                <text><b>System message : <font color="blue">{{interrupted_message}}</font></b></text>
               </div>
             </div>
 
             <br>
-
-            <div class="col-md-12">
-              <div class="h-100 p-5 bg-light border rounded-3">
-                <label class="col-md-8 fs-3">Training configuration</label>
-                <br><br>
-
-                <label class="col-md-8 fs-5">Data.</label>
-                <br>
-                <text><b>Data subject : <font color="blue">{{dataDirectory}}</font></b></text>
-                <br>
-                <text><b>Data descirbing : <font color="blue">{{dataDescribing}}</font></b></text>
-                <br>
-                <text><b>Data Shape : <font color="blue">{{dataShape}}</font></b></text>
-                <br><br>
-
-                <label class="col-md-8 fs-5">SLFN(Two Layer)</label>
-                <br>
-                <text><b>Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
-                <br>
-                <text><b>Weight initialization : <font color="blue">{{weightInitialization}}</font></b></text>
-                <br>
-                <text><b>Activation function : <font color="blue">{{activationFunction}}</font></b></text>
-
-                <br><br>
-                <label class="col-md-8 fs-5">Back Propagation.</label>
-                <br>
-                <text><b>Loss function : <font color="blue">{{lossFunction}}</font></b></text>
-                <br>
-                <text><b>Optimizer : <font color="blue">{{optimizer}}</font></b></text>
-                <br>
-                <text><b>Learning rate : <font color="blue">{{learningRate}}</font></b></text>
-                <br>
-                <text><b>Betas : <font color="blue">{{betas}}</font></b></text>
-                <br>
-                <text><b>Eps : <font color="blue">{{eps}}</font></b></text>
-                <br>
-                <text><b>Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
-                <br>
-                <text><b>Epoch upper bound : <font color="blue">{{matchingTimes}}</font></b></text>
-
-                <br><br>
-                <label class="col-md-8 fs-5">Initializing.</label>
-                <br>
-                <text><b>Rule : <font color="blue">{{initializingRule}}</font></b></text>
-                <br>
-                <text><b>Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
-                <br>
-                <text><b>Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
-
-                <br><br>
-                <label class="col-md-8 fs-5">Selecting.</label>
-                <br>
-                <text><b>Rule : <font color="blue">{{selectingRule}}</font></b></text>
-
-                <br><br>
-                <label class="col-md-8 fs-5">Matching.</label>
-                <br>
-                <text><b>Rule : <font color="blue">{{matchingRule}}</font></b></text>
-                <br>
-                <text><b>Matching learning goal : <font color="blue">{{matchingLearningGoal}}</font></b></text>
-                <br>
-                <text><b>Matching learning rate lower bound : <font color="blue">{{matchingLearningRateLowerBound}}
-                    </font>
-                  </b></text>
-
-                <br><br>
-                <label class="col-md-8 fs-5">Cramming.</label>
-                <br>
-                <text><b>Rule : <font color="blue">{{crammingRule}}</font></b></text>
-
-                <br><br>
-                <label class="col-md-8 fs-5">Reorganizing.</label>
-                <br>
-                <text><b>Rule : <font color="blue">{{reorganizingRule}}</font></b></text>
-                <br>
-                <text><b>Regularizing times : <font color="blue">{{regularizingTimes}}</font></b></text>
-                <br>
-                <text><b>Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
-                <br>
-                <text><b>Regularizing learning goal : <font color="blue">{{regularizingLearningGoal}}</font></b></text>
-                <br>
-                <text><b>Regularizing learning rate lower bound : <font color="blue">
-                      {{regularizingLearningRateLowerBound}}
-                    </font></b></text>
-
-                <br><br>
-                <label class="col-md-8 fs-5">Model experiments record : <font color="blue">{{model_experiments_record}}
-                  </font></label>
-                <br><br>
-
-              </div>
-            </div>
-
-            <br>
-
             <div class="col-md-12">
               <div class="h-100 p-5 bg-light border rounded-3">
 
-                <label class="col-md-8 fs-3">Model Performance</label>
+                <label class="col-md-8 fs-3 fw-bold ">Model Performance</label>
                 <br><br>
                 <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
                 <br>
                 <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
                 <br>
-
 
                 <div class="p-5 mb-1 bg-light rounded-3">
 
@@ -659,8 +679,69 @@
               </div>
             </div>
 
-            <br><br>
-            <text>After training completed, this save mechanism will execute automatically.</text>
+            <br>
+
+            <div class="col-md-12">
+              <div class="h-100 p-5 bg-light border rounded-3">
+
+                <label class="col-md-8 fs-3 fw-bold">Training configuration</label>
+                <br><br>
+                <text><b>1. Data subject : <font color="blue">{{dataDirectory}}</font></b></text>
+                <br>
+                <text><b>1-1. Data Shape : <font color="blue">{{dataShape}}</font></b></text>
+                <br>
+                <text><b>2. Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
+                <br>
+                <text><b>3. Weight initialization : <font color="blue">{{weightInitialization}}</font></b></text>
+                <br>
+                <text><b>4. Activation function : <font color="blue">{{activationFunction}}</font></b></text>
+                <br>
+                <text><b>5. Testing metric : <font color="blue">{{testingMetric}}</font></b></text>
+                <br>
+                <text><b>6. Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
+                <br>
+                <text><b>7. Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+                <br>
+                <text><b>8. Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+                <br>
+                <text><b>9. Betas : <font color="blue">{{betas}}</font></b></text>
+                <br>
+                <text><b>10. Eps : <font color="blue">{{eps}}</font></b></text>
+                <br>
+                <text><b>11. Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
+                <br>
+                <text><b>12. Matching rule : <font color="blue">{{matchingRule}}</font></b></text>
+                <br>
+                <text><b>13. Matching times : <font color="blue">{{matchingTimes}}</font></b></text>
+                <br>
+                <text><b>14. Matching learning goal : <font color="blue">{{matchingLearningGoal}}</font></b></text>
+                <br>
+                <text><b>15. Matching learning rate lower bound : <font color="blue">{{matchingLearningRateLowerBound}}</font></b></text>
+                <br>
+                <text><b>16. Initializing rule : <font color="blue">{{initializingRule}}</font></b></text>
+                <br>
+                <text><b>17. Initializing number : <font color="blue">{{initializingNumber}}</font></b></text>
+                <br>
+                <text><b>18. Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
+                <br>
+                <text><b>19. Selecting rule : <font color="blue">{{selectingRule}}</font></b></text>
+                <br>
+                <text><b>20. Cramming rule : <font color="blue">{{crammingRule}}</font></b></text>
+                <br>
+                <text><b>21. Reorganizing rule : <font color="blue">{{reorganizingRule}}</font></b></text>
+                <br>
+                <text><b>22. Regularizing times : <font color="blue">{{regularizingTimes}}</font></b></text>
+                <br>
+                <text><b>23. Regularizing strength : <font color="blue">{{regularizingStrength}}</font></b></text>
+                <br>
+                <text><b>24. Regularizing learning goal : <font color="blue">{{regularizingLearningGoal}}</font></b></text>
+                <br>
+                <text><b>25. Regularizing learning rate lower bound : <font color="blue">{{regularizingLearningGoal}}</font></b></text>
+
+              </div>
+            </div>
+
+            <text>After training completed, this model & metadata would save automatically</text>
 
         </div>
 
@@ -668,7 +749,7 @@
         
         <label class="col-md-8 fs-5"></label>
         <label class="btn btn-outline-primary btn-lg" onclick="window.location.href='/pipeline/deploy';">Deploy Pipeline</label>
-        
+
       </div>
     </div>
 

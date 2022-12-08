@@ -106,7 +106,7 @@
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
 
-  <script type="text/javascript" src="{{ url_for('static', path='/js/script_model_2.js') }}"></script>
+<script type="text/javascript" src="/static/js/script_model_2.js"></script>
 
     
   </head>
@@ -277,10 +277,11 @@
               </p>
 
               <div class="form-floating mb-3">
-                <select class="form-select" id="select_loss" placeholder="10" name="lossFunction" method="GET"  style="font-size:15px;" onclick="showLossFunctionEquation()"> 
-                  <option value= "RMSE" SELECTED>RMSE</option>
-                  <option value= "MSE" >MSE</option>
-                  <option value= "CROSSENTROPYLOSS" >CROSSENTROPYLOSS</option>
+                <select class="form-select" id="select_loss" placeholder="10" name="lossFunction" method="GET"
+                  style="font-size:15px;" onclick="showLossFunctionEquation()">
+                  <option value="RMSE" SELECTED>RMSE</option>
+                  <option value="MSE">MSE</option>
+                  <option value="CROSSENTROPYLOSS">CROSSENTROPYLOSS</option>
                 </select>
                 <label for="select_loss">Loss function</label>
               </div>
@@ -410,7 +411,6 @@
           <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
               
-              <br><br>
               <label class="col-md-8 fs-3 fw-bold">Training configuration</label>
               <br><br>
               <text><b>1. Data subject : <font color="blue">{{dataDirectory}}</font></b></text>
@@ -442,9 +442,6 @@
               <text><b>13. Eps : <font color="blue">{{eps}}</font></b></text>
               <br>
               <text><b>14. Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
-
-              <!-- <br><br>
-              <label class="col-md-8 fs-5">Model experiments record : <font color="blue">{{model_experiments_record}}</font></label> -->
 
             </div>
           </div>
