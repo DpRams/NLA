@@ -42,6 +42,13 @@ autoStartContainer.main()
 def read_root():
    return {"Hello": "World"}
 
+@app.get("/entry")
+def entry(request: Request):
+   return templates.TemplateResponse("entry.html",{"request":request})
+
+@app.get("/pipeline/develop")
+def pipeline_platform(request: Request):
+   return templates.TemplateResponse("develop.html",{"request":request})
 
 @app.get("/pipeline/platform")
 def pipeline_platform(request: Request):
