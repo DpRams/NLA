@@ -2,6 +2,7 @@
 
 import requests
 import subprocess
+import time
 
 
 def main():
@@ -9,6 +10,8 @@ def main():
     # start project(mongo, mongodb-python-api, nginx)
     p = subprocess.Popen(f"docker-compose up -d", shell=True, stdout=subprocess.PIPE)
     stdout, stderr = p.communicate()
+
+    time.sleep(5)
 
     # get ASLFN container ID from mongo
     if requests.get(f"http://127.0.0.1:8001/model/deployments/counts").json() != 0:
