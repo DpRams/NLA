@@ -155,8 +155,8 @@ class yourCSI_s2(Network):
 
         if self.model_params["selectingRule"] != "Disabled":
             selecting_fn = eval(str("Select.")+str(self.model_params["selectingRule"]))
-            sorted_index = selecting_fn(self, x_train_scaled, y_train_scaled)
-            return sorted_index
+            selecting_index = selecting_fn(self, x_train_scaled, y_train_scaled)
+            return selecting_index
         else:
             pass
       

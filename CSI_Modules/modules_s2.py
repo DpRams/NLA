@@ -1,8 +1,5 @@
 import torch
 import copy
-from apps import getFreerGpu
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 
 
@@ -49,18 +46,10 @@ class Select():
     # 還沒改成 POS
     def POS(network, x_train_scaled, y_train_scaled):
         
-        residual = []
-        temp_network = copy.deepcopy(network)
+        max_len = x_train_scaled.shape[0]
+        POS_index = [i for i in range(max_len)]
 
-        # Put each data into network to calculate the loss value
-        for i in range(x_train_scaled.shape[0]):
-            temp_network.setData(x_train_scaled[i].reshape(1,-1), y_train_scaled[i].reshape(-1, 1))
-            residual.append((temp_network.forward()[1].item(),i))
-        
-        
-        # Sort the data according to the residual value from smallest to largest, and save the data index in sorted_index
-        sorted_index = [sorted_data[1] for sorted_data in sorted(residual, key = lambda x : x[0])]
-        return sorted_index
+        return POS_index
 
 class Match():
 
