@@ -7,11 +7,8 @@ import sys
 import pandas as pd
 import numpy as np
 
-from tqdm.notebook import tqdm
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression
-from matplotlib import pyplot as plt
 from pathlib import Path
 
 file = Path(__file__).resolve()
@@ -19,13 +16,9 @@ parent, root = file.parent, file.parents[1]
 # sys.path.append(str(parent))
 sys.path.append(str(root))
 
-from apps import evaluating, saving
+from apps import evaluating
 from network.net import RIRO, YourCSI_s2
 
-
-"""
-與riro同等層級，用作training。
-"""
 
 
 def reading_dataset_Training(dataDirecotry, initializingNumber):

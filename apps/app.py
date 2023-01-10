@@ -1,14 +1,11 @@
-from typing import List, Union
-from fastapi import FastAPI, Request, File, UploadFile, Form, Query
+from fastapi import FastAPI, Request, File, UploadFile, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 import uvicorn
 import os
-import shutil
 import requests
 import time
-import urllib.parse
 import autoPush
 import autoStartContainer
 import numpy as np
@@ -155,102 +152,6 @@ async def pipeline_data_upload(request: Request, \
 def pipeline_model(request: Request):
 
    return templates.TemplateResponse("model.html",{"request":request})
-
-@app.get("/pipeline/model/scenario/1")
-def pipeline_model(request: Request):
-
-   upload_data = os.listdir(f"{root}\\upload_data")
-   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
-   
-   return templates.TemplateResponse("model_scenario_1.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
-
-@app.post("/pipeline/model/scenario/1")
-def pipeline_model(request: Request, \
-                     dataDirectory: str = Form(default=None, max_length=50), \
-                     modelFile: str = Form(default=None, max_length=50), \
-                     initializingNumber: str = Form(default=None, max_length=50), \
-                     lossFunction: str = Form(default=None, max_length=50), \
-                     learningGoal: str = Form(default=None, max_length=50), \
-                     learningRate: str = Form(default=None, max_length=50), \
-                     learningRateLowerBound: str = Form(default=None, max_length=50), \
-                     optimizer: str = Form(default=None, max_length=50), \
-                     matchingTimes: str = Form(default=None, max_length=50), \
-                     regularizingStrength: str = Form(default=None, max_length=50)):
-
-
-   # List the upload data to Dropdownlist
-   upload_data = os.listdir(f"{root}\\upload_data")
-   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
-
-   # Get data shape
-   dataShape = ModelParameter.get_dataShape(f"{root}\\upload_data\\{dataDirectory}")
-
-   # Define modelParameter
-   model_params = ModelParameter(dataDirectory=dataDirectory, \
-                                 dataShape=dataShape, \
-                                 modelFile=modelFile, \
-                                 inputDimension=dataShape["X"][1], \
-                                 hiddenNode=1, \
-                                 outputDimension=dataShape["Y"][1], \
-                                 initializingNumber=eval_avoidNone(initializingNumber), \
-                                 lossFunction=lossFunction, \
-                                 learningGoal=eval_avoidNone(learningGoal), \
-                                 learningRate=eval_avoidNone(learningRate), \
-                                 regularizingLearningRateLowerBound=eval_avoidNone(learningRateLowerBound), \
-                                 optimizer=optimizer, \
-                                 matchingTimes=eval_avoidNone(matchingTimes), \
-                                 regularizingStrength=eval_avoidNone(regularizingStrength))
-   # Train model
-   model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
-
-   if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
-      training_error_msg = ""
-
-      if model_experiments_record == "Initializing 失敗" : 
-         training_error_msg = "Initializing 失敗，請將超參數 Initializing number 減少，或是將超參數 Learning goal 增加"
-      elif model_experiments_record == "Cramming 失敗" : 
-         training_error_msg = "Cramming 失敗，請將超參數 Learning goal 增加"
-
-      return templates.TemplateResponse("model_scenario_1.html", \
-            context={"request":request,  \
-                     "upload_data":upload_data, \
-                     "model_file":model_file, \
-                     "interrupted_message":training_error_msg})
-
-   # Save model config a& Perf.
-   save_model(model_experiments_record, model_params, model_fig_drt)
-
-   app.mount(
-      f"/model_fig",
-      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
-      name="model_fig",
-   )  
-   print(app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'))
-   
-   return templates.TemplateResponse("model_scenario_1.html", \
-            context={"request":request, \
-                     "upload_data":upload_data, \
-                     "model_file":model_file, \
-                     "dataDirectory":dataDirectory, \
-                     "dataShape":dataShape, \
-                     "initializingNumber":initializingNumber, \
-                     "modelFile":modelFile, \
-                     "lossFunction":lossFunction, \
-                     "learningGoal":learningGoal, \
-                     "learningRate":learningRate, \
-                     "learningRateLowerBound":learningRateLowerBound, \
-                     "optimizer":optimizer, \
-                     "matchingTimes":matchingTimes, \
-                     "regularizingStrength":regularizingStrength, \
-                     "model_experiments_record":model_experiments_record, \
-                     "trainingAccuracy":model_experiments_record["experiments_record"]["train"]["mean_acc"], \
-                     "validatingAccuracy":model_experiments_record["experiments_record"]["valid"]["mean_acc"], \
-                     "url_path_for_trainingAccuracy":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingAccuracy.png'), \
-                     "url_path_for_trainingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png'), \
-                     "url_path_for_Nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/nodes.png'), \
-                     "url_path_for_Pruned_nodes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/prunedNodes.png'), \
-                     "url_path_for_Routes":app.url_path_for('model_fig', path=f'/{model_fig_drt}/routes.png')
-                     })
 
 @app.get("/pipeline/model/scenario/SLFN")
 def pipeline_model(request: Request):
