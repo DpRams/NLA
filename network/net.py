@@ -127,11 +127,12 @@ class YourCSI_s2():
     def cramming(self):
         self.net.cramming()
 
-    def matching_reorganizing(self):
-        self.net = self.net.matching_reorganizing()
+    # 外層呼叫不到，因此，不須於此層定義。230110 : 可先觀察有無需要，先保留
+    # def matching_reorganizing(self):
+    #     self.net = self.net.matching_reorganizing()
             
-    def regularizing(self):
-        self.net = self.net.regularizing()
+    # def regularizing(self):
+    #     self.net = self.net.regularizing()
 
     def reorganizing(self):
         self.net = self.net.reorganizing()
@@ -181,21 +182,24 @@ class yourCSI_s2(Network):
             print("不啟用 cramming")
             return self
 
-    def matching_reorganizing(self):
+    # 外層呼叫不到，因此，不須於此層定義。230110 : 可先觀察有無需要，先保留
+    # def matching_reorganizing(self):
 
-        if self.model_params["matchingRule"] != "Disabled":
-            matching_reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["matchingRule"]))
-            return matching_reorganizing_fn(self)
-        else:
-            pass
+    #     if self.model_params["matchingRule"] != "Disabled":
+    #         matching_reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["matchingRule"]))
+    #         return matching_reorganizing_fn(self)
+    #     else:
+    #         pass
          
-    def regularizing(self):
+    # def regularizing(self):
 
-        if self.model_params["reorganizingRule"] != "Disabled":
-            regularizing_fn = eval(str("Reorganize.")+str(self.model_params["regularizingTimes"]))
-            return regularizing_fn(self)
-        else:
-            pass
+    #     if self.model_params["reorganizingRule"] != "Disabled":
+    #         regularizing_fn = eval(str("Reorganize.")+str(self.model_params["regularizingTimes"]))
+    #         print(f"str(regularizing_fn) = {eval(str('Reorganize.')+str(self.model_params['regularizingTimes']))}")
+    #         print(f"eval(regularizing_fn) = {regularizing_fn}")
+    #         return regularizing_fn(self)
+    #     else:
+    #         pass
 
     def reorganizing(self):
 
