@@ -5,10 +5,10 @@ revoke:
   script:
   - echo "revoke"
   - docker
-  - docker stop None
-  - docker rm None
+  - docker stop bc5e3b4eb49c
+  - docker rm bc5e3b4eb49c
   - python C:\Users\ASUS\Desktop\NCCU\Thesis\first-try\apps\updateDeployment.py -m
-    1 -a "revoking"
+    0 -a "revoking"
   stage: revoke
   tags:
   - laptop-ASUS
