@@ -1,7 +1,7 @@
 deploy:
   after_script:
   - python C:\Users\ASUS\Desktop\NCCU\Thesis\first-try\apps\updateDeployment.py -m
-    0 -a "deploying"
+    1 -a "deploying"
   rules:
   - changes:
     - ASLFN/docker_apps/deployTmp
@@ -10,7 +10,7 @@ deploy:
   - docker
   - cd ASLFN
   - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8315:8002 -d aslfn:latest
+  - docker run -p 8780:8002 -d aslfn:latest
   - cd C:\Users\ASUS\Desktop\NCCU\Thesis\first-try\apps
   - docker ps -l | findstr aslfn > dockerTmp
   stage: deploy
