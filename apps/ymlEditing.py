@@ -19,7 +19,7 @@ def deployingModelToYml(modelId):
                           "script": ["echo \"deploy\"", "docker", "cd ASLFN", "docker build -t aslfn:latest -f rootuser.Dockerfile .", \
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d aslfn:latest", \
                                     f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp"], \
-                          "after_script":[f"python", f"python3", f"python3 {root}\\apps\\updateDeployment.py -m {modelId} -a \"deploying\""], \
+                          "after_script":[f"python3", f"python3 {root}\\apps\\updateDeployment.py -m {modelId} -a \"deploying\""], \
                           "rules": [{"changes": ["ASLFN/docker_apps/deployTmp"]}]}}
 
     # ymlDict = {"stages": ["build", "test", "deploy"],
