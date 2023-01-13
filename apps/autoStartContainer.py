@@ -7,6 +7,10 @@ import time
 
 def main():
 
+    # create volume
+    p = subprocess.Popen(f"docker volume create --name=mongodbdata", shell=True, stdout=subprocess.PIPE)
+    stdout, stderr = p.communicate()
+
     # start project(mongo, mongodb-python-api, nginx)
     p = subprocess.Popen(f"docker-compose up -d", shell=True, stdout=subprocess.PIPE)
     stdout, stderr = p.communicate()

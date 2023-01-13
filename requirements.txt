@@ -1,0 +1,10 @@
+numpy
+pandas
+scikit-learn
+fastapi
+uvicorn
+python-multipart
+matplotlib
+# pip3
+yaml 
+# pip3 install torch torchvision torchaudio

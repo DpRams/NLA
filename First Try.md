@@ -1,6 +1,5 @@
-# First Try
+# Requirements
 
-
-### AIaaS
-
-### MLOps
+fastapi
+uvicorn
+python-multipart
