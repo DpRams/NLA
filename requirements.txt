@@ -7,4 +7,5 @@ python-multipart
 matplotlib
 pyyaml
 jinja2
+requests
 # pip3 install torch torchvision torchaudio
