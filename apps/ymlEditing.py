@@ -17,7 +17,7 @@ def deployingModelToYml(modelId):
                           "script": ["echo \"deploy\"", "docker", "cd ASLFN", "docker build -t aslfn:latest -f rootuser.Dockerfile .", \
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d aslfn:latest", \
                                     f"cd {root}\\apps", "docker ps -l | findstr aslfn > dockerTmp"], \
-                          "after_script":[f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeployment.py -m {modelId} -a \"deploying\""], \
+                          "after_script":[f"python {root}\\apps\\updateDeployment.py -m {modelId} -a \"deploying\""], \
                           "rules": [{"changes": ["ASLFN/docker_apps/deployTmp"]}]}}
 
     # ymlDict = {"stages": ["build", "test", "deploy"],
@@ -42,7 +42,7 @@ def revokingModelToYml(modelId):
                "revoke": {"stage": "revoke", "tags": ["AILab"], \
                           "script": ["echo \"revoke\"", "docker", \
                                     f"docker stop {containerID}", f"docker rm {containerID}", \
-                                    f"python C:\\Users\\user\\rams\\projcet\\apps\\updateDeployment.py -m {modelId} -a \"revoking\""], \
+                                    f"python {root}\\apps\\updateDeployment.py -m {modelId} -a \"revoking\""], \
                           "rules": [{"changes": ["apps/revokeTmp"]}]
                                     }}
 
