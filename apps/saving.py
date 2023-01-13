@@ -13,7 +13,7 @@ file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
-def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt):
+def writeIntoModelRegistry(network, model_experiments_record, model_params, model_fig_drt):
 
     data_drt = model_params.kwargs["dataDirectory"]
     
@@ -38,7 +38,7 @@ def writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt
     ptPath = Path(f"{root}\\model_registry\\pt\\")
     ptPath.mkdir(parents=True, exist_ok=True)
     ptFileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pt" 
-    torch.save(model_experiments_record["network"],  f"{ptPath}\\{ptFileName}")
+    torch.save(network, f"{ptPath}\\{ptFileName}")
 
     # insert data into mongoDB
     Id = requests.get(f"http://127.0.0.1:8001/model/deployments/counts").json()

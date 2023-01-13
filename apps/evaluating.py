@@ -57,6 +57,18 @@ def reading_pkl(modelFile):
 
     return checkpoints 
 
+def reading_pt(modelFile):
+    
+    modelFile = modelFile[:-3] + "pt"
+    modelPath = f"{root}\\model_registry\\pt\\{modelFile}"
+
+    if torch.cuda.is_available():
+        network = torch.load(modelPath)
+    else:
+        network = torch.load(modelPath, map_location ='cpu')
+
+    return network
+
 
 
 def inferencing(network, x_test, y_test, validating=False):   

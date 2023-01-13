@@ -207,7 +207,7 @@ def pipeline_model(request: Request, \
                                  weightDecay = eval_avoidNone(weightDecay))
 
    # Train model
-   model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
+   network, model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
    if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
       training_error_msg = ""
@@ -224,7 +224,7 @@ def pipeline_model(request: Request, \
                      "interrupted_message":training_error_msg})
 
    # Save model config a& Perf.
-   save_model(model_experiments_record, model_params, model_fig_drt)
+   save_model(network, model_experiments_record, model_params, model_fig_drt)
 
    app.mount(
       f"/model_fig",
@@ -337,7 +337,7 @@ def pipeline_model(request: Request, \
                                  regularizingLearningRateLowerBound=eval_avoidNone(regularizingLearningRateLowerBound))
 
    # Train model
-   model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
+   network, model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
    if model_experiments_record == "Initializing 失敗" or model_experiments_record == "Cramming 失敗":
       training_error_msg = ""
@@ -353,7 +353,7 @@ def pipeline_model(request: Request, \
                      "interrupted_message":training_error_msg})
 
    # Save model config a& Perf.
-   save_model(model_experiments_record, model_params, model_fig_drt)
+   save_model(network, model_experiments_record, model_params, model_fig_drt)
 
    app.mount(
       f"/model_fig",
@@ -408,17 +408,18 @@ def __model_training(model_params):
 
    model_file_str = model_params.kwargs["modelFile"].split(".")[0] # riro.py -> riro
    model = eval(model_file_str) # str to module through eval function : riro, ribo, biro, bibo
-   model_experiments_record, model_params, model_fig_drt = model.main(model_params)
+   network, model_experiments_record, model_params, model_fig_drt = model.main(model_params)
 
-   return model_experiments_record, model_params, model_fig_drt
+   return network, model_experiments_record, model_params, model_fig_drt
 
 # call container service to get rmseError 
 def __model_evaluating(dataDirectory, modelFile):
    
    x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory)
    checkpoints = evaluating.reading_pkl(modelFile)
+   network = evaluating.reading_pt(modelFile)
 
-   network = checkpoints["model_experiments_record"]["network"]
+   # network = checkpoints["model_experiments_record"]["network"]
    model_experiments_record = checkpoints["model_experiments_record"]
    model_params = checkpoints["model_params"]
    model_fig_drt = checkpoints["model_fig_drt"]
@@ -632,9 +633,9 @@ def save_service(model_params, model_perf, model_perf_fig):
    print(f'model_perf_fig = {model_perf_fig}')
 
 @app.post("/save/model")
-def save_model(model_experiments_record=None, model_params=None, model_fig_drt=None):
+def save_model(network=None, model_experiments_record=None, model_params=None, model_fig_drt=None):
 
-   saving.writeIntoModelRegistry(model_experiments_record, model_params, model_fig_drt)
+   saving.writeIntoModelRegistry(network, model_experiments_record, model_params, model_fig_drt)
 
 def eval_avoidNone(parameter):
    # eval processing, can't using function when input is None

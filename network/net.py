@@ -28,7 +28,10 @@ class Network(torch.nn.Module):
     def setting_device(self):
 
         FreerGpuId = getFreerGpu.getting_freer_gpu()
-        device = torch.device(f"cuda:{FreerGpuId}")
+        if FreerGpuId == -1:
+            device = torch.device(f"cuda:{FreerGpuId}")
+        else:
+            device = torch.device(f"cpu")
         self.device = device
 
         return self
