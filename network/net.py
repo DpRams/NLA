@@ -149,7 +149,6 @@ class yourCSI_s2(Network):
         super().__init__(**model_params)
 
     def initializing(self, initial_x, initial_y):
-
         if self.model_params["initializingRule"] != "Disabled":
             initializing_fn = eval(str("Initialize.")+str(self.model_params["initializingRule"]))
             initializing_fn(self, initial_x, initial_y)
@@ -158,7 +157,7 @@ class yourCSI_s2(Network):
             return self
 
     def selecting(self, x_train_scaled, y_train_scaled):
-
+        print(self.linear1.weight.data.size())
         if self.model_params["selectingRule"] != "Disabled":
             selecting_fn = eval(str("Select.")+str(self.model_params["selectingRule"]))
             selecting_index = selecting_fn(self, x_train_scaled, y_train_scaled)
@@ -174,14 +173,20 @@ class yourCSI_s2(Network):
         if self.model_params["matchingRule"] != "Disabled":
             # matching_fn = eval(str("Match.")+str(self.model_params["matchingRule"]))
             matching_fn = requests.post
-            urls = "http://127.0.0.1:8005/train"
+            urls = "http://127.0.0.1:8005/train/matching"
             old_network = odct_tensor2list(self)
-            print(old_network)
-            print(self.model_params)
-            json_data = {"network": old_network, "model_params" : self.model_params}
+            json_data = {"network": old_network, \
+                        "model_params" : self.model_params, \
+                        "data" : (self.x.tolist(), self.y.tolist()), \
+                        "nb_node" : self.nb_node, \
+                        "nb_node_pruned" : self.nb_node_pruned, \
+                        "acceptable" : self.acceptable}
             res = matching_fn(url=urls, json=json_data)
-            new_network_weight, new_network_model_param = res["new_network"], res["model_params"]
-            self.load_state_dict(new_network_weight, strict=False)
+            new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
+            self.acceptable = acceptable
+            self.nb_node = nb_node
+            self.nb_node_pruned = nb_node_pruned
+            self.load_state_dict(odct_list2tensor(new_network_weight), strict=False)
             self.model_params = new_network_model_param
 
             return self
@@ -193,12 +198,29 @@ class yourCSI_s2(Network):
     def cramming(self):
 
         if self.model_params["crammingRule"] != "Disabled":
-            cramming_fn = eval(str("Cram.")+str(self.model_params["crammingRule"]))
-            # if cramming_fn not exist : cramming_fn = 
-            # def cramming_fn():
-            #   return 
-            # requests.post(f"http://127.0.0.1:{servicePort}/predict", json={"dataDirectory": rawTestingData})
-            return cramming_fn(self)
+            # cramming_fn = eval(str("Cram.")+str(self.model_params["crammingRule"]))
+            cramming_fn = requests.post
+            urls = "http://127.0.0.1:8005/train/cramming"
+            old_network = odct_tensor2list(self)
+            print(old_network)
+            print(self.model_params)
+            json_data = {"network": old_network, \
+                        "model_params" : self.model_params, \
+                        "data" : (self.x.tolist(), self.y.tolist()), \
+                        "nb_node" : self.nb_node, \
+                        "nb_node_pruned" : self.nb_node_pruned, \
+                        "acceptable" : self.acceptable}
+            res = cramming_fn(url=urls, json=json_data)
+            new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
+            self.acceptable = acceptable
+            self.nb_node = nb_node
+            self.nb_node_pruned = nb_node_pruned
+            self.load_state_dict(odct_list2tensor(new_network_weight), strict=False)
+            self.model_params = new_network_model_param
+            # self = yourCSI_s2()??
+            
+            return self
+            # return cramming_fn(self)
         else:
             print("不啟用 cramming")
             return self
@@ -226,6 +248,26 @@ class yourCSI_s2(Network):
 
         if self.model_params["reorganizingRule"] != "Disabled":
             reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["reorganizingRule"]))
+            # reorganizing_fn = requests.post
+            # urls = "http://127.0.0.1:8005/train/reorganizing"
+            # old_network = odct_tensor2list(self)
+            # print(old_network)
+            # print(self.model_params)
+            # json_data = {"network": old_network, \
+            #             "model_params" : self.model_params, \
+            #             "data" : (self.x.tolist(), self.y.tolist()), \
+            #             "nb_node" : self.nb_node, \
+            #             "nb_node_pruned" : self.nb_node_pruned, \
+            #             "acceptable" : self.acceptable}
+            # res = reorganizing_fn(url=urls, json=json_data)
+            # new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
+            # self.acceptable = acceptable
+            # self.nb_node = nb_node
+            # self.nb_node_pruned = nb_node_pruned
+            # self.load_state_dict(odct_list2tensor(new_network_weight), strict=False)
+            # self.model_params = new_network_model_param
+
+            # return self
             return reorganizing_fn(self)
         else:
             print("不啟用 reorganizing")

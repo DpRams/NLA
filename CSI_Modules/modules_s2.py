@@ -1,5 +1,6 @@
 import torch
 import copy
+import numpy as np
 from sklearn.linear_model import LinearRegression
 
 
@@ -16,11 +17,23 @@ class Initialize():
         # Use Linear regression to find the initial W1, b1, W2, b2
         reg = LinearRegression().fit(initial_x, res_y)
 
+        inputDim = network.model_params["inputDimension"]
+        hiddenNode = network.model_params["hiddenNode"]
+        outputDim = network.model_params["outputDimension"]
+
         # Set up the initial parameter of the network(through torch.nn.Parameter, we can turn non-trainable tensor into trainable tensor)
-        network.linear1.weight = torch.nn.Parameter(torch.FloatTensor(reg.coef_).to(network.device))
-        network.linear1.bias = torch.nn.Parameter(torch.FloatTensor(reg.intercept_).to(network.device))
-        network.linear2.weight = torch.nn.Parameter(torch.FloatTensor([[1]]).to(network.device))
-        network.linear2.bias = torch.nn.Parameter(torch.FloatTensor(min_y).to(network.device))
+        linear1_weight = np.array(reg.coef_)
+        linear1_weight.resize((hiddenNode, inputDim), refcheck=False)
+        linear1_bias = np.array(reg.intercept_)
+        linear1_bias.resize((hiddenNode), refcheck=False)        
+        linear2_weight = np.array([[1]])
+        linear2_weight.resize((outputDim, hiddenNode), refcheck=False)
+        linear2_bias = min_y
+
+        network.linear1.weight = torch.nn.Parameter(torch.FloatTensor(linear1_weight).to(network.device))
+        network.linear1.bias = torch.nn.Parameter(torch.FloatTensor(linear1_bias).to(network.device))
+        network.linear2.weight = torch.nn.Parameter(torch.FloatTensor(linear2_weight).to(network.device))
+        network.linear2.bias = torch.nn.Parameter(torch.FloatTensor(linear2_bias).to(network.device))
 
         network.acceptable = True
 

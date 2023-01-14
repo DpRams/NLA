@@ -335,7 +335,6 @@ def pipeline_model(request: Request, \
                                  regularizingStrength=eval_avoidNone(regularizingStrength), \
                                  regularizingLearningGoal=eval_avoidNone(regularizingLearningGoal), \
                                  regularizingLearningRateLowerBound=eval_avoidNone(regularizingLearningRateLowerBound))
-
    # Train model
    network, model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
