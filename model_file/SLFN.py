@@ -124,12 +124,12 @@ def training_2LayerNet(MyNet, model_params):
         experiments_record["valid"]["mean_acc"] = np.round(np.mean(experiments_record["valid"]["acc_step"]), 3)
         experiments_record["valid"]["mean_loss"] = np.round(np.mean(experiments_record["valid"]["loss_step"]), 3)
 
-    model_experiments_record = {"network" : MyNet, "experiments_record" : experiments_record}
+    model_experiments_record = {"experiments_record" : experiments_record}
 
     # Plot graph
     model_fig_drt = evaluating.making_figure_2LayerNet(model_experiments_record, model_params)    
 
-    return model_experiments_record, model_params, model_fig_drt
+    return MyNet, model_experiments_record, model_params, model_fig_drt
 
 def main(model_params):
 
@@ -153,6 +153,6 @@ def main(model_params):
 
     print(f"查看{MyNet.model_params}")
 
-    model_experiments_record, model_params, model_fig_drt = training_2LayerNet(MyNet, model_params)
+    network, model_experiments_record, model_params, model_fig_drt = training_2LayerNet(MyNet, model_params)
 
-    return model_experiments_record, model_params, model_fig_drt
+    return network, model_experiments_record, model_params, model_fig_drt

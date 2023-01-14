@@ -128,7 +128,7 @@ def training_CSINet(MyCSI, model_params):
     experiments_record["train"]["mean_acc"] = np.mean(experiments_record["train"]["acc_step"])
     experiments_record["train"]["mean_loss"] = np.mean(experiments_record["train"]["loss_step"])
 
-    model_experiments_record = {"network" : MyCSI.net, "experiments_record" : experiments_record}
+    model_experiments_record = {"experiments_record" : experiments_record}
 
     # inferencing
     valid_acc = evaluating.inferencing(MyCSI.net, x_test, y_test, validating=True)
@@ -137,7 +137,7 @@ def training_CSINet(MyCSI, model_params):
     # Plot graph
     model_fig_drt = evaluating.making_figure(model_experiments_record, model_params)    
     
-    return model_experiments_record, model_params, model_fig_drt
+    return MyCSI.net, model_experiments_record, model_params, model_fig_drt
 
 
 
@@ -173,7 +173,7 @@ def main(model_params):
                         regularizingLearningGoal = model_params.kwargs["regularizingLearningGoal"], \
                         regularizingLearningRateLowerBound = model_params.kwargs["regularizingLearningRateLowerBound"])
 
-    print(f"查看{MyCSI.net.model_params}")
+    print(f"查看 {MyCSI.net.model_params}")
 
     if MyCSI.net.model_params["initializingRule"] == "Disabled":
         # training_2LayerNet(MyCSI, model_params)
@@ -181,6 +181,6 @@ def main(model_params):
     elif MyCSI.net.model_params["initializingRule"] == "LinearRegression":
         # 其實不需要把 model_params 再傳進去，這裡遇到的問題是，riro, custoNet_s1 其實在 making_figure() 輸入 ModelParameter 物件
         # 但此處 如果是輸入 MyCSI.net.model_params 則變成 "字典"，因此需要再做統整(物件比較好)。
-        model_experiments_record, model_params, model_fig_drt = training_CSINet(MyCSI, model_params) 
+        network, model_experiments_record, model_params, model_fig_drt = training_CSINet(MyCSI, model_params) 
 
-    return model_experiments_record, model_params, model_fig_drt
+    return network, model_experiments_record, model_params, model_fig_drt

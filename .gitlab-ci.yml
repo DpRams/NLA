@@ -1,6 +1,8 @@
 deploy:
   after_script:
-  - python C:\Users\user\rams\projcet\apps\updateDeployment.py -m 0 -a "deploying"
+  - echo $env:PATH
+  - python C:\Users\ASUS\Desktop\NCCU\Thesis\first-try\apps\updateDeployment.py -m
+    0 -a "deploying"
   rules:
   - changes:
     - ASLFN/docker_apps/deployTmp
@@ -9,11 +11,11 @@ deploy:
   - docker
   - cd ASLFN
   - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8381:8002 -d aslfn:latest
-  - cd C:\Users\user\rams\projcet\apps
+  - docker run -p 8198:8002 -d aslfn:latest
+  - cd C:\Users\ASUS\Desktop\NCCU\Thesis\first-try\apps
   - docker ps -l | findstr aslfn > dockerTmp
   stage: deploy
   tags:
-  - AILab
+  - laptop-ASUS
 stages:
 - deploy
