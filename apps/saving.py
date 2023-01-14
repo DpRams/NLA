@@ -41,7 +41,7 @@ def writeIntoModelRegistry(network, model_experiments_record, model_params, mode
     torch.save(network, f"{ptPath}\\{ptFileName}")
 
     # insert data into mongoDB
-    Id = requests.get(f"http://127.0.0.1:8001/model/deployments/counts").json()
+    Id = requests.get(f"http://127.0.0.1:8001/model/deployments/id/max").json()
     res = requests.post("http://127.0.0.1:8001/model/deployments", json={"modelId" : Id, "modelName" : fileName, \
                     "trainedDataset":data_drt, "deployStatus":"revoking", "containerID": "None", \
                         "containerPort" : "None"})
