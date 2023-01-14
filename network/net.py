@@ -2,6 +2,8 @@ import torch
 import copy
 from apps import getFreerGpu
 from CSI_Modules.modules_s2 import Initialize, Select, Match, Cram, Reorganize
+import requests
+
 
 """
 Original
@@ -167,8 +169,20 @@ class yourCSI_s2(Network):
         還沒寫如何因應只選 EU 的可能性
         """
         if self.model_params["matchingRule"] != "Disabled":
-            matching_fn = eval(str("Match.")+str(self.model_params["matchingRule"]))
-            return matching_fn(self)
+            # matching_fn = eval(str("Match.")+str(self.model_params["matchingRule"]))
+            matching_fn = requests.post
+            urls = "http://127.0.0.1:8005/train"
+            old_network = odct_tensor2list(self)
+            print(old_network)
+            print(self.model_params)
+            json_data = {"network": old_network, "model_params" : self.model_params}
+            res = matching_fn(url=urls, json=json_data)
+            new_network_weight, new_network_model_param = res["new_network"], res["model_params"]
+            self.load_state_dict(new_network_weight, strict=False)
+            self.model_params = new_network_model_param
+
+            return self
+            # return matching_fn(self)
         else:
             print("不啟用 matching")
             return self
@@ -177,6 +191,10 @@ class yourCSI_s2(Network):
 
         if self.model_params["crammingRule"] != "Disabled":
             cramming_fn = eval(str("Cram.")+str(self.model_params["crammingRule"]))
+            # if cramming_fn not exist : cramming_fn = 
+            # def cramming_fn():
+            #   return 
+            # requests.post(f"http://127.0.0.1:{servicePort}/predict", json={"dataDirectory": rawTestingData})
             return cramming_fn(self)
         else:
             print("不啟用 cramming")
@@ -210,3 +228,21 @@ class yourCSI_s2(Network):
             print("不啟用 reorganizing")
             return self
             
+
+# def get_module_fn():
+    
+def odct_tensor2list(network):
+
+    old_network = {}
+    for dct in network.state_dict().items():
+        key, value = dct
+        old_network[key] = value.tolist()
+    return old_network
+
+def odct_list2tensor(old_network_weight):
+
+    network_weight = {}
+    for dct in old_network_weight.items():
+        key, value = dct
+        network_weight[key] = torch.FloatTensor(value)
+    return network_weight
