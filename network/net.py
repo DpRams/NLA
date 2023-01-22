@@ -27,13 +27,19 @@ class Network(torch.nn.Module):
         self.nb_node_pruned = 0
         self.nb_node = self.model_params["hiddenNode"]
 
+        self.acceptable = False
+    
+    def getting_new_net_size(self):
+        self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.nb_node).to(self.device)
+        self.linear2 = torch.nn.Linear(self.nb_node, self.model_params["outputDimension"]).to(self.device)
+
     def setting_device(self):
 
         FreerGpuId = getFreerGpu.getting_freer_gpu()
         if FreerGpuId == -1:
-            device = torch.device(f"cuda:{FreerGpuId}")
-        else:
             device = torch.device(f"cpu")
+        else:
+            device = torch.device(f"cuda:{FreerGpuId}")
         self.device = device
 
         return self
@@ -157,7 +163,6 @@ class yourCSI_s2(Network):
             return self
 
     def selecting(self, x_train_scaled, y_train_scaled):
-        print(self.linear1.weight.data.size())
         if self.model_params["selectingRule"] != "Disabled":
             selecting_fn = eval(str("Select.")+str(self.model_params["selectingRule"]))
             selecting_index = selecting_fn(self, x_train_scaled, y_train_scaled)
@@ -171,26 +176,30 @@ class yourCSI_s2(Network):
         還沒寫如何因應只選 EU 的可能性
         """
         if self.model_params["matchingRule"] != "Disabled":
-            # matching_fn = eval(str("Match.")+str(self.model_params["matchingRule"]))
-            matching_fn = requests.post
-            urls = "http://127.0.0.1:8005/train/matching"
-            old_network = odct_tensor2list(self)
-            json_data = {"network": old_network, \
-                        "model_params" : self.model_params, \
-                        "data" : (self.x.tolist(), self.y.tolist()), \
-                        "nb_node" : self.nb_node, \
-                        "nb_node_pruned" : self.nb_node_pruned, \
-                        "acceptable" : self.acceptable}
-            res = matching_fn(url=urls, json=json_data)
-            new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
-            self.acceptable = acceptable
-            self.nb_node = nb_node
-            self.nb_node_pruned = nb_node_pruned
-            self.load_state_dict(odct_list2tensor(new_network_weight), strict=False)
-            self.model_params = new_network_model_param
+            try:
+                matching_fn = eval(str("Match.")+str(self.model_params["matchingRule"]))
+                return matching_fn(self)
+            except:
+                # matching_fn = requests.post
+                # urls = "http://127.0.0.1:8006/train/matching"
+                # old_network = tensor_transforming.odct_tensor2list(self)
+                # json_data = {"network": old_network, \
+                #             "model_params" : self.model_params, \
+                #             "data" : (self.x.tolist(), self.y.tolist()), \
+                #             "nb_node" : self.nb_node, \
+                #             "nb_node_pruned" : self.nb_node_pruned, \
+                #             "acceptable" : self.acceptable}
+                # res = matching_fn(url=urls, json=json_data)
+                # new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
+                # self.acceptable = acceptable
+                # self.nb_node = nb_node
+                # self.nb_node_pruned = nb_node_pruned
+                # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
+                # self.model_params = new_network_model_param
 
-            return self
-            # return matching_fn(self)
+                self = developer_modules(self, modules_name="matching")
+                return self
+            
         else:
             print("不啟用 matching")
             return self
@@ -198,29 +207,31 @@ class yourCSI_s2(Network):
     def cramming(self):
 
         if self.model_params["crammingRule"] != "Disabled":
-            # cramming_fn = eval(str("Cram.")+str(self.model_params["crammingRule"]))
-            cramming_fn = requests.post
-            urls = "http://127.0.0.1:8005/train/cramming"
-            old_network = odct_tensor2list(self)
-            print(old_network)
-            print(self.model_params)
-            json_data = {"network": old_network, \
-                        "model_params" : self.model_params, \
-                        "data" : (self.x.tolist(), self.y.tolist()), \
-                        "nb_node" : self.nb_node, \
-                        "nb_node_pruned" : self.nb_node_pruned, \
-                        "acceptable" : self.acceptable}
-            res = cramming_fn(url=urls, json=json_data)
-            new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
-            self.acceptable = acceptable
-            self.nb_node = nb_node
-            self.nb_node_pruned = nb_node_pruned
-            self.load_state_dict(odct_list2tensor(new_network_weight), strict=False)
-            self.model_params = new_network_model_param
-            # self = yourCSI_s2()??
+            try:
+                cramming_fn = eval(str("Cram.")+str(self.model_params["crammingRule"]))
+                return cramming_fn(self)
+            except:
+                # cramming_fn = requests.post
+                # urls = "http://127.0.0.1:8006/train/cramming"
+                # old_network = tensor_transforming.odct_tensor2list(self)
+                # json_data = {"network": old_network, \
+                #             "model_params" : self.model_params, \
+                #             "data" : (self.x.tolist(), self.y.tolist()), \
+                #             "nb_node" : self.nb_node, \
+                #             "nb_node_pruned" : self.nb_node_pruned, \
+                #             "acceptable" : self.acceptable}
+                # res = cramming_fn(url=urls, json=json_data)
+                # new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
+                # self.acceptable = acceptable
+                # self.nb_node = nb_node
+                # self.nb_node_pruned = nb_node_pruned
+                # self.model_params = new_network_model_param
+                # self.getting_new_net_size()
+                # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
+
+                self = developer_modules(self, modules_name="cramming")
+                return self
             
-            return self
-            # return cramming_fn(self)
         else:
             print("不啟用 cramming")
             return self
@@ -247,28 +258,31 @@ class yourCSI_s2(Network):
     def reorganizing(self):
 
         if self.model_params["reorganizingRule"] != "Disabled":
-            reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["reorganizingRule"]))
-            # reorganizing_fn = requests.post
-            # urls = "http://127.0.0.1:8005/train/reorganizing"
-            # old_network = odct_tensor2list(self)
-            # print(old_network)
-            # print(self.model_params)
-            # json_data = {"network": old_network, \
-            #             "model_params" : self.model_params, \
-            #             "data" : (self.x.tolist(), self.y.tolist()), \
-            #             "nb_node" : self.nb_node, \
-            #             "nb_node_pruned" : self.nb_node_pruned, \
-            #             "acceptable" : self.acceptable}
-            # res = reorganizing_fn(url=urls, json=json_data)
-            # new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
-            # self.acceptable = acceptable
-            # self.nb_node = nb_node
-            # self.nb_node_pruned = nb_node_pruned
-            # self.load_state_dict(odct_list2tensor(new_network_weight), strict=False)
-            # self.model_params = new_network_model_param
+            try:
+                reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["reorganizingRule"]))
+                return reorganizing_fn(self)
+            except:
+                # reorganizing_fn = requests.post
+                # urls = "http://127.0.0.1:8006/train/reorganizing"
+                # old_network = tensor_transforming.odct_tensor2list(self)
+                # json_data = {"network": old_network, \
+                #             "model_params" : self.model_params, \
+                #             "data" : (self.x.tolist(), self.y.tolist()), \
+                #             "nb_node" : self.nb_node, \
+                #             "nb_node_pruned" : self.nb_node_pruned, \
+                #             "acceptable" : self.acceptable}
+                # res = reorganizing_fn(url=urls, json=json_data)
+                # new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
+                # self.acceptable = acceptable
+                # self.nb_node = nb_node
+                # self.nb_node_pruned = nb_node_pruned
+                # self.model_params = new_network_model_param
+                # self.getting_new_net_size()
+                # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
 
-            # return self
-            return reorganizing_fn(self)
+                self = developer_modules(self, modules_name="reorganizing")
+                return self
+                
         else:
             print("不啟用 reorganizing")
             return self
@@ -276,18 +290,42 @@ class yourCSI_s2(Network):
 
 # def get_module_fn():
     
-def odct_tensor2list(network):
+class tensor_transforming():
 
-    old_network = {}
-    for dct in network.state_dict().items():
-        key, value = dct
-        old_network[key] = value.tolist()
-    return old_network
+    def odct_tensor2list(network):
 
-def odct_list2tensor(old_network_weight):
+        old_network = {}
+        for dct in network.state_dict().items():
+            key, value = dct
+            old_network[key] = value.tolist()
+        return old_network
 
-    network_weight = {}
-    for dct in old_network_weight.items():
-        key, value = dct
-        network_weight[key] = torch.FloatTensor(value)
-    return network_weight
+    def odct_list2tensor(old_network_weight):
+
+        network_weight = {}
+        for dct in old_network_weight.items():
+            key, value = dct
+            network_weight[key] = torch.FloatTensor(value)
+        return network_weight
+    
+def developer_modules(network, modules_name=None):
+
+    modules_fn = requests.post
+    urls = f"http://127.0.0.1:8006/train/{modules_name}"
+    old_network = tensor_transforming.odct_tensor2list(network)
+    json_data = {"network": old_network, \
+                "model_params" : network.model_params, \
+                "data" : (network.x.tolist(), network.y.tolist()), \
+                "nb_node" : network.nb_node, \
+                "nb_node_pruned" : network.nb_node_pruned, \
+                "acceptable" : network.acceptable}
+    res = modules_fn(url=urls, json=json_data)
+    new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
+    network.acceptable = acceptable
+    network.nb_node = nb_node
+    network.nb_node_pruned = nb_node_pruned
+    network.model_params = new_network_model_param
+    network.getting_new_net_size()
+    network.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
+
+    return network
