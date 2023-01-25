@@ -10,6 +10,7 @@ import autoPush
 import autoStartContainer
 import numpy as np
 import pandas as pd
+import readingDockerTmp
 
 # testing
 # Append absolute path to import module within different directory.
@@ -204,7 +205,8 @@ def pipeline_model(request: Request, \
                                  learningRate = eval_avoidNone(learningRate), \
                                  betas = eval_avoidNone(betas), \
                                  eps = eval_avoidNone(eps), \
-                                 weightDecay = eval_avoidNone(weightDecay))
+                                 weightDecay = eval_avoidNone(weightDecay), \
+                                 timestamp=time.strftime("%y%m%d_%H%M%S", time.localtime()))
 
    # Train model
    network, model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
@@ -265,9 +267,15 @@ def pipeline_model(request: Request, \
 def pipeline_model(request: Request):
 
    upload_data = os.listdir(f"{root}\\upload_data")
-   model_file = [pythonFile for pythonFile in os.listdir(f"{root}\\model_file") if pythonFile.endswith(".py")]
+   developer_matching = readingDockerTmp.getModulesOnDocker(module_kind="matching")["module_name"]
+   developer_cramming = readingDockerTmp.getModulesOnDocker(module_kind="cramming")["module_name"]
+   developer_reorganizing = readingDockerTmp.getModulesOnDocker(module_kind="reorganizing")["module_name"]
    
-   return templates.TemplateResponse("model_scenario_ASLFN.html",{"request":request, "upload_data":upload_data, "model_file":model_file})
+   return templates.TemplateResponse("model_scenario_ASLFN.html",{"request":request, \
+                                                                  "upload_data":upload_data, \
+                                                                  "developer_matching":developer_matching, \
+                                                                  "developer_cramming":developer_cramming, \
+                                                                  "developer_reorganizing":developer_reorganizing})
 
 @app.post("/pipeline/model/scenario/ASLFN")
 def pipeline_model(request: Request, \
@@ -300,6 +308,9 @@ def pipeline_model(request: Request, \
 
    # List the upload data to Dropdownlist
    upload_data = os.listdir(f"{root}\\upload_data")
+   developer_matching = readingDockerTmp.getModulesOnDocker(module_kind="matching")["module_name"]
+   developer_cramming = readingDockerTmp.getModulesOnDocker(module_kind="cramming")["module_name"]
+   developer_reorganizing = readingDockerTmp.getModulesOnDocker(module_kind="reorganizing")["module_name"]
 
    # Get data shape
    dataShape = ModelParameter.get_dataShape(f"{root}\\upload_data\\{dataDirectory}")
@@ -334,7 +345,8 @@ def pipeline_model(request: Request, \
                                  regularizingTimes=eval_avoidNone(regularizingTimes), \
                                  regularizingStrength=eval_avoidNone(regularizingStrength), \
                                  regularizingLearningGoal=eval_avoidNone(regularizingLearningGoal), \
-                                 regularizingLearningRateLowerBound=eval_avoidNone(regularizingLearningRateLowerBound))
+                                 regularizingLearningRateLowerBound=eval_avoidNone(regularizingLearningRateLowerBound), \
+                                 timestamp=time.strftime("%y%m%d_%H%M%S", time.localtime()))
    # Train model
    network, model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
 
@@ -364,6 +376,9 @@ def pipeline_model(request: Request, \
    return templates.TemplateResponse("model_scenario_ASLFN.html", \
                                     context={"request":request, \
                                              "upload_data":upload_data, \
+                                             "developer_matching":developer_matching, \
+                                             "developer_cramming":developer_cramming, \
+                                             "developer_reorganizing":developer_reorganizing, \
                                              "dataDirectory":dataDirectory, \
                                              "dataDescribing":dataDescribing, \
                                              "dataShape":dataShape, \
@@ -427,22 +442,6 @@ def __model_evaluating(dataDirectory, modelFile):
    # rmseError = evaluating.inferencing(network, x_test, y_test)
 
    return model_experiments_record, model_params, model_fig_drt
-
-# call local pkl to predict and get rmseError
-def __model_evaluating_old_service(dataDirectory, modelFile):
-   
-   x_test, y_test = evaluating.reading_dataset_Testing(dataDirectory)
-   checkpoints = evaluating.reading_pkl(modelFile)
-
-   network = checkpoints["model_experiments_record"]["network"]
-   model_experiments_record = checkpoints["model_experiments_record"]
-   model_params = checkpoints["model_params"]
-   model_fig_drt = checkpoints["model_fig_drt"]
-   
-   # rmseError 應該不能跟原始pkl檔存一起，要另外存
-   rmseError = evaluating.inferencing(network, x_test, y_test)
-
-   return model_experiments_record, model_params, model_fig_drt, rmseError
 
 def __model_deploying(modelId):
 

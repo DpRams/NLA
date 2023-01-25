@@ -105,10 +105,10 @@ def making_figure(model_experiments_record, model_params):
     lr_goal = model_params.kwargs["learningGoal"]
 
     # create dir path
-    timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
+    timestamp = model_params.kwargs["timestamp"]
     modelType = model_params.kwargs["modelFile"][:-3]
     validAcc = str(model_experiments_record["experiments_record"]["valid"]["mean_acc"])[:5]
-    drtName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}\\" 
+    drtName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timestamp}\\" 
 
     # create dir    
     drtPath = Path(f"{root}\\model_fig\\{drtName}")
@@ -145,10 +145,10 @@ def making_figure_2LayerNet(model_experiments_record, model_params):
     lr_goal = model_params.kwargs["learningGoal"]
 
     # create dir path
-    timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
+    timestamp = model_params.kwargs["timestamp"]
     modelType = model_params.kwargs["modelFile"][:-3]
     validAcc = str(model_experiments_record["experiments_record"]["valid"]["mean_acc"])[:5]
-    drtName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}\\" 
+    drtName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timestamp}\\" 
 
     # create dir    
     drtPath = Path(f"{root}\\model_fig\\{drtName}")

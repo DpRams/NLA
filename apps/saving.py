@@ -26,10 +26,10 @@ def writeIntoModelRegistry(network, model_experiments_record, model_params, mode
     pklPath = Path(f"{root}\\model_registry\\pkl\\")
     pklPath.mkdir(parents=True, exist_ok=True)
 
-    timeStamp = time.strftime("%y%m%d_%H%M%S", time.localtime())
+    timestamp = model_params.kwargs["timestamp"]
     modelType = model_params.kwargs["modelFile"][:-3]
     validAcc = str(model_experiments_record["experiments_record"]["valid"]["mean_acc"])[:5]
-    fileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pkl" 
+    fileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timestamp}.pkl" 
     checkpoint = {"model_experiments_record":model_experiments_record, "model_params":model_params, "model_fig_drt":model_fig_drt}
     with open(f"{pklPath}\\{fileName}", "wb") as f:
         pickle.dump(checkpoint, f)
@@ -37,7 +37,7 @@ def writeIntoModelRegistry(network, model_experiments_record, model_params, mode
     # torch.save() -> .pt
     ptPath = Path(f"{root}\\model_registry\\pt\\")
     ptPath.mkdir(parents=True, exist_ok=True)
-    ptFileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timeStamp}.pt" 
+    ptFileName = f"{data_drt}_{modelType}_{lr_goal}_{validAcc}_{timestamp}.pt" 
     torch.save(network, f"{ptPath}\\{ptFileName}")
 
     # insert data into mongoDB

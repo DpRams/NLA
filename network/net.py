@@ -1,6 +1,6 @@
 import torch
 import copy
-from apps import getFreerGpu
+from apps import getFreerGpu, readingDockerTmp
 from CSI_Modules.modules_s2 import Initialize, Select, Match, Cram, Reorganize
 import requests
 
@@ -197,7 +197,7 @@ class yourCSI_s2(Network):
                 # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
                 # self.model_params = new_network_model_param
 
-                self = developer_modules(self, modules_name="matching")
+                self = developer_modules(self, the_finding_module_name=self.model_params["matchingRule"])
                 return self
             
         else:
@@ -229,7 +229,7 @@ class yourCSI_s2(Network):
                 # self.getting_new_net_size()
                 # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
 
-                self = developer_modules(self, modules_name="cramming")
+                self = developer_modules(self, the_finding_module_name=self.model_params["crammingRule"])
                 return self
             
         else:
@@ -280,7 +280,7 @@ class yourCSI_s2(Network):
                 # self.getting_new_net_size()
                 # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
 
-                self = developer_modules(self, modules_name="reorganizing")
+                self = developer_modules(self, the_finding_module_name=self.model_params["reorganizingRule"])
                 return self
                 
         else:
@@ -308,10 +308,11 @@ class tensor_transforming():
             network_weight[key] = torch.FloatTensor(value)
         return network_weight
     
-def developer_modules(network, modules_name=None):
+def developer_modules(network, the_finding_module_name=None):
 
     modules_fn = requests.post
-    urls = f"http://127.0.0.1:8006/train/{modules_name}"
+    specific_module_dict = readingDockerTmp.getModulesOnDocker(module_name=the_finding_module_name)
+    urls = f"http://127.0.0.1:{specific_module_dict['container_port']}/train/{specific_module_dict['module_name']}"  
     old_network = tensor_transforming.odct_tensor2list(network)
     json_data = {"network": old_network, \
                 "model_params" : network.model_params, \
