@@ -138,13 +138,6 @@ class YourCSI_s2():
     def cramming(self):
         self.net.cramming()
 
-    # 外層呼叫不到，因此，不須於此層定義。230110 : 可先觀察有無需要，先保留
-    # def matching_reorganizing(self):
-    #     self.net = self.net.matching_reorganizing()
-            
-    # def regularizing(self):
-    #     self.net = self.net.regularizing()
-
     def reorganizing(self):
         self.net = self.net.reorganizing()
 
@@ -180,23 +173,6 @@ class yourCSI_s2(Network):
                 matching_fn = eval(str("Match.")+str(self.model_params["matchingRule"]))
                 return matching_fn(self)
             except:
-                # matching_fn = requests.post
-                # urls = "http://127.0.0.1:8006/train/matching"
-                # old_network = tensor_transforming.odct_tensor2list(self)
-                # json_data = {"network": old_network, \
-                #             "model_params" : self.model_params, \
-                #             "data" : (self.x.tolist(), self.y.tolist()), \
-                #             "nb_node" : self.nb_node, \
-                #             "nb_node_pruned" : self.nb_node_pruned, \
-                #             "acceptable" : self.acceptable}
-                # res = matching_fn(url=urls, json=json_data)
-                # new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
-                # self.acceptable = acceptable
-                # self.nb_node = nb_node
-                # self.nb_node_pruned = nb_node_pruned
-                # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
-                # self.model_params = new_network_model_param
-
                 self = developer_modules(self, the_finding_module_name=self.model_params["matchingRule"])
                 return self
             
@@ -211,49 +187,12 @@ class yourCSI_s2(Network):
                 cramming_fn = eval(str("Cram.")+str(self.model_params["crammingRule"]))
                 return cramming_fn(self)
             except:
-                # cramming_fn = requests.post
-                # urls = "http://127.0.0.1:8006/train/cramming"
-                # old_network = tensor_transforming.odct_tensor2list(self)
-                # json_data = {"network": old_network, \
-                #             "model_params" : self.model_params, \
-                #             "data" : (self.x.tolist(), self.y.tolist()), \
-                #             "nb_node" : self.nb_node, \
-                #             "nb_node_pruned" : self.nb_node_pruned, \
-                #             "acceptable" : self.acceptable}
-                # res = cramming_fn(url=urls, json=json_data)
-                # new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
-                # self.acceptable = acceptable
-                # self.nb_node = nb_node
-                # self.nb_node_pruned = nb_node_pruned
-                # self.model_params = new_network_model_param
-                # self.getting_new_net_size()
-                # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
-
                 self = developer_modules(self, the_finding_module_name=self.model_params["crammingRule"])
                 return self
             
         else:
             print("不啟用 cramming")
             return self
-
-    # 外層呼叫不到，因此，不須於此層定義。230110 : 可先觀察有無需要，先保留
-    # def matching_reorganizing(self):
-
-    #     if self.model_params["matchingRule"] != "Disabled":
-    #         matching_reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["matchingRule"]))
-    #         return matching_reorganizing_fn(self)
-    #     else:
-    #         pass
-         
-    # def regularizing(self):
-
-    #     if self.model_params["reorganizingRule"] != "Disabled":
-    #         regularizing_fn = eval(str("Reorganize.")+str(self.model_params["regularizingTimes"]))
-    #         print(f"str(regularizing_fn) = {eval(str('Reorganize.')+str(self.model_params['regularizingTimes']))}")
-    #         print(f"eval(regularizing_fn) = {regularizing_fn}")
-    #         return regularizing_fn(self)
-    #     else:
-    #         pass
 
     def reorganizing(self):
 
@@ -262,24 +201,6 @@ class yourCSI_s2(Network):
                 reorganizing_fn = eval(str("Reorganize.")+str(self.model_params["reorganizingRule"]))
                 return reorganizing_fn(self)
             except:
-                # reorganizing_fn = requests.post
-                # urls = "http://127.0.0.1:8006/train/reorganizing"
-                # old_network = tensor_transforming.odct_tensor2list(self)
-                # json_data = {"network": old_network, \
-                #             "model_params" : self.model_params, \
-                #             "data" : (self.x.tolist(), self.y.tolist()), \
-                #             "nb_node" : self.nb_node, \
-                #             "nb_node_pruned" : self.nb_node_pruned, \
-                #             "acceptable" : self.acceptable}
-                # res = reorganizing_fn(url=urls, json=json_data)
-                # new_network_weight, new_network_model_param, nb_node, nb_node_pruned, acceptable = res.json()["new_network"], res.json()["model_params"], res.json()["nb_node"], res.json()["nb_node_pruned"], res.json()["acceptable"]
-                # self.acceptable = acceptable
-                # self.nb_node = nb_node
-                # self.nb_node_pruned = nb_node_pruned
-                # self.model_params = new_network_model_param
-                # self.getting_new_net_size()
-                # self.load_state_dict(tensor_transforming.odct_list2tensor(new_network_weight), strict=False)
-
                 self = developer_modules(self, the_finding_module_name=self.model_params["reorganizingRule"])
                 return self
                 
@@ -309,8 +230,15 @@ class tensor_transforming():
         return network_weight
     
 def developer_modules(network, the_finding_module_name=None):
-
+    
     modules_fn = requests.post
+    # if the_finding_module_name == "matching-ramsay":
+    #     urls = f"http://127.0.0.1:8011/train/matching-ramsay" 
+    # elif the_finding_module_name == "reorganizing-ramsay":
+    #     urls = f"http://127.0.0.1:8010/train/reorganizing-ramsay" 
+    # elif the_finding_module_name == "cramming-ramsay":
+    #     urls = f"http://127.0.0.1:8009/train/cramming-ramsay" 
+    # else:
     specific_module_dict = readingDockerTmp.getModulesOnDocker(module_name=the_finding_module_name)
     urls = f"http://127.0.0.1:{specific_module_dict['container_port']}/train/{specific_module_dict['module_name']}"  
     old_network = tensor_transforming.odct_tensor2list(network)
