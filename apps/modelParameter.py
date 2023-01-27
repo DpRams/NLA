@@ -5,74 +5,58 @@ class ModelParameter():
     def __init__(self, **kwargs) -> None:
         
         """
-        ---Scenario 1 parameter---
-        * dataDirectory
-        * dataShape
-        * modelFile
-        * inputDimension
-        * hiddenNode
-        * outputDimension
-        * thresholdForError
-        * initializingNumber
-        * lossFunction
-        * learningGoal -> initializingLearningGoal
-        * learningRate
-        * learningRateLowerBound -> regularizingLearningRateLowerBound
-        * optimizer
-        * tuningTimes -> matchingTimes
-        * regularizingStrength
-
         ---SLFN parameter---
         * dataDirectory
         * hiddenNode
+        * weightInitialization
         * activationFunction
         * epoch
         * batchSize
-        * learningGoal (Demo訂在實數output，訓練時算loss用)
-        * thresholdForError(準備移除) -> rmseError(應不會記錄在 modelParameter，要再想想)
+        * learningGoal
+        * testingMetric
         * lossFunction
         * optimizer
         * learningRate
         * betas
         * eps
         * weightDecay
+        * timestamp
 
         ---ASLFN parameter---
-        dataDirectory
-        dataDescribing
-        dataShape
-        modelFile
-        inputDimension
-        hiddenNode
-        outputDimension
-        activationFunction
-        thresholdForError(準備移除) -> rmseError(應不會記錄在 modelParameter，要再想想)
-        lossFunction
-        optimizer
-        learningRate
-        betas
-        eps
-        weightDecay
-        initializingRule
-        initializingNumber
-        learningGoal
-        selectingRule
-        matchingRule
-        matchingTimes
-        matchingLearningGoal
-        matchingLearningRateLowerBound
-        crammingRule
-        reorganizingRule
-        regularizingTimes
-        regularizingStrength
-        regularizingLearningGoal
-        regularizingLearningRateLowerBound
+        * dataDirectory
+        * dataDescribing
+        * dataShape
+        * modelFile
+        * inputDimension
+        * hiddenNode
+        * outputDimension
+        * activationFunction
+        * testingMetric
+        * lossFunction
+        * optimizer
+        * learningRate
+        * betas
+        * eps
+        * weightDecay
+        * initializingRule
+        * initializingNumber
+        * learningGoal
+        * selectingRule
+        * matchingRule
+        * matchingTimes
+        * matchingLearningGoal
+        * matchingLearningRateLowerBound
+        * crammingRule
+        * reorganizingRule
+        * regularizingTimes
+        * regularizingStrength
+        * regularizingLearningGoal
+        * regularizingLearningRateLowerBound
+        * timestamp
         """
-    
 
         self.kwargs = kwargs
         
-
 
     def info(self):
         
