@@ -3,6 +3,7 @@
 import requests
 import subprocess
 import time
+import readingDockerTmp
 
 
 def main():
@@ -13,6 +14,16 @@ def main():
 
     # start project(mongo, mongodb-python-api, nginx)
     p = subprocess.Popen(f"docker-compose up -d", shell=True, stdout=subprocess.PIPE)
+    stdout, stderr = p.communicate()
+
+    # start developer_modules_container
+    developer_matching = readingDockerTmp.getModulesOnDocker(module_kind="matching")["module_name"]
+    developer_cramming = readingDockerTmp.getModulesOnDocker(module_kind="cramming")["module_name"]
+    developer_reorganizing = readingDockerTmp.getModulesOnDocker(module_kind="reorganizing")["module_name"]
+
+    modules_to_start = f"{' '.join(developer_matching)} {' '.join(developer_cramming)} {' '.join(developer_reorganizing)}"
+
+    p = subprocess.Popen(f"docker start {modules_to_start}", shell=True, stdout=subprocess.PIPE)
     stdout, stderr = p.communicate()
 
     time.sleep(5)
