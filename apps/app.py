@@ -54,10 +54,25 @@ def entry(request: Request):
 def pipeline_platform(request: Request):
    return templates.TemplateResponse("develop.html",{"request":request})
 
+@app.post("/pipeline/develop")
+async def pipeline_platform(request: Request, \
+                     uploaded_module_matching: UploadFile = File(default=None), \
+                     uploaded_module_cramming: UploadFile = File(default=None), \
+                     uploaded_module_reorganizing: UploadFile = File(default=None)):
+   print(uploaded_module_matching.filename)
+   print(uploaded_module_cramming.filename)
+   print(uploaded_module_reorganizing.filename)
+
+   uploaded_path = f"{root}\\developer_upload\\"
+
+   if 
+
+   return templates.TemplateResponse("develop.html",{"request":request})
+
 @app.get("/pipeline/develop/matching", responses={200:{"description":"An example of matching modules"}})
 async def develop_matching():
    # Get filenames from the database
-   path = Path("developer_example\\matching")
+   path = Path("developer_example\\matching-ramsay")
    file_list = [str(file) for file in path.glob("**/*")]
    return zipfiles(file_list)
 
@@ -652,26 +667,6 @@ def pipeline_deploy(request: Request, \
                         "deployRecord":deployRecord, \
                         })
 
-
-# @app.get("/post_8002/{data}")
-# def request_8002(data:str):
-   
-#    # reading_dataset_Testing 要做個調整，先對 training data 產生一個 sc，再去對 testing data 做 transform
-#    x_test, y_test = evaluating.reading_dataset_Testing(data) 
-#    # rawTestingData = {"a" : np.array([1,2,3]).tolist()}
-#    rawTestingData = {"x_test" : x_test.tolist(), "y_test" : y_test.tolist()}
-#    # modelPklFile = "solar_ASLFN_0.6_0.5_221007_101128.pkl"
-#    res = requests.post("http://127.0.0.1:8360/predict", json={"dataDirectory": rawTestingData})
-#    return res.json()
-
-
-
-# @app.post("/save/service")
-# def save_service(model_params, model_perf, model_perf_fig):
-#    print(f'已進入 save_service()')
-#    print(f'model_params = {model_params}')
-#    print(f'model_perf = {model_perf}')
-#    print(f'model_perf_fig = {model_perf_fig}')
 
 @app.post("/save/model")
 def save_model(network=None, model_experiments_record=None, model_params=None, model_fig_drt=None):
