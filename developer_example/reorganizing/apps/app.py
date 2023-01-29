@@ -13,22 +13,6 @@ app = FastAPI()
 作為 module API，等待被呼叫訓練使用
 """
 
-def odct_tensor2list(network):
-
-    old_network = {}
-    for dct in network.state_dict().items():
-        key, value = dct
-        old_network[key] = value.tolist()
-    return old_network
-
-def odct_list2tensor(network_weight):
-
-    network_weight = {}
-    for dct in network_weight.items():
-        key, value = dct
-        network_weight[key] = torch.FloatTensor(value)
-    return network_weight
-
 ###################################
 # 以下皆為待填區域
 
@@ -106,3 +90,18 @@ async def pipeline_service(request: Request):
 if __name__ == '__main__':
 	uvicorn.run("app:app", host="0.0.0.0", port=8005, reload=True)
 
+def odct_tensor2list(network):
+
+    old_network = {}
+    for dct in network.state_dict().items():
+        key, value = dct
+        old_network[key] = value.tolist()
+    return old_network
+
+def odct_list2tensor(network_weight):
+
+    network_weight = {}
+    for dct in network_weight.items():
+        key, value = dct
+        network_weight[key] = torch.FloatTensor(value)
+    return network_weight
