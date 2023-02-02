@@ -59,15 +59,37 @@ async def pipeline_platform(request: Request, \
                      uploaded_module_matching: UploadFile = File(default=None), \
                      uploaded_module_cramming: UploadFile = File(default=None), \
                      uploaded_module_reorganizing: UploadFile = File(default=None)):
-   print(uploaded_module_matching.filename)
-   print(uploaded_module_cramming.filename)
-   print(uploaded_module_reorganizing.filename)
+   # print(uploaded_module_matching.filename)
+   # print(uploaded_module_cramming.filename)
+   # print(uploaded_module_reorganizing.filename)
 
+   uploaded_modules = [uploaded_module_matching, uploaded_module_cramming, uploaded_module_reorganizing]
    uploaded_path = f"{root}\\developer_upload\\"
+   uploaded_success = []
 
-   if 
+   def is_zip(filename):
+      try:
+         return filename.endswith(".zip")
+      except:
+         print(filename)
+   
+   for module in uploaded_modules:    
+      if is_zip(module.filename):
+         try:
+            contents = module.file.read()
+            with open(f"{uploaded_path}{module.filename}", 'wb') as f:
+               f.write(contents)
+         except Exception:
+            return {"message": "There was an error uploading the file"}
+         finally:
+            module.file.close()
+            uploaded_success.append(module)
+      else: continue
 
-   return templates.TemplateResponse("develop.html",{"request":request})
+   res = ", ".join([module.filename for module in uploaded_success])
+   return {"message": f"Successfully uploaded {res}"}
+
+   # return templates.TemplateResponse("develop.html",{"request":request})
 
 @app.get("/pipeline/develop/matching", responses={200:{"description":"An example of matching modules"}})
 async def develop_matching():
