@@ -59,3 +59,24 @@ def revokingModelToYml(modelId):
     #                                 }}
     with open(".\\.gitlab-ci.yml", 'w') as file:
         yaml.dump(ymlDict, file)
+
+
+def deployingModuleToYml(module_name, testing=True):
+
+    module_id = module_name.split("-")[1] 
+    if testing:
+        module_name = f"testing-{module_id}"
+
+    availablePort = findPortAvailable()
+    SERVICEPORT = 8005 # fixed
+
+    ymlDict = {"stages": ["deploy"],
+               "deploy": {"stage": "deploy", "tags": runner_tags, \
+                          "script": ["echo \"deploy\"", "docker", "cd developer_upload", \
+                                     "tar -xf {module_name}.zip", "cd {module_name}", \
+                                     "docker build -t {module_name}:latest -f rootuser.Dockerfile .", \
+                                    f"docker run -p {availablePort}:{SERVICEPORT} -d {module_name}:latest"], \
+                          "rules": [{"changes": ["developer_upload"]}]}}
+
+    with open(".\\.gitlab-ci.yml", 'w') as file:
+        yaml.dump(ymlDict, file)

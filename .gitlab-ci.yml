@@ -1,19 +1,15 @@
 deploy:
-  after_script:
-  - echo $env:PATH
-  - python C:\Users\ASUS\Desktop\NCCU\Thesis\first-try\apps\updateDeployment.py -m
-    7 -a "deploying"
   rules:
   - changes:
-    - ASLFN/docker_apps/deployTmp
+    - developer_upload
   script:
   - echo "deploy"
   - docker
-  - cd ASLFN
-  - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8573:8002 -d aslfn:latest
-  - cd C:\Users\ASUS\Desktop\NCCU\Thesis\first-try\apps
-  - docker ps -l | findstr aslfn > dockerTmp
+  - cd developer_upload
+  - tar -xf {module_name}.zip
+  - cd {module_name}
+  - docker build -t {module_name}:latest -f rootuser.Dockerfile .
+  - docker run -p 8159:8005 -d testing-yetta:latest
   stage: deploy
   tags:
   - laptop-ASUS

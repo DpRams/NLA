@@ -29,7 +29,7 @@ sys.path.append(str(root))
 from model_file import ASLFN, SLFN
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
-from ymlEditing import deployingModelToYml, revokingModelToYml
+from ymlEditing import deployingModelToYml, revokingModelToYml, deployingModuleToYml
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -87,6 +87,10 @@ async def pipeline_platform(request: Request, \
       else: continue
 
    res = ", ".join([module.filename for module in uploaded_success])
+   
+   for module_name in [module.filename.rstrip(".zip") for module in uploaded_success]:
+      deployingModuleToYml(module_name)
+      autoPush.main()
    return {"message": f"Successfully uploaded {res}"}
 
    # return templates.TemplateResponse("develop.html",{"request":request})

@@ -1,1 +1,1 @@
-740c5a50e1ef   reorganizing-ramsay:v1                "python3 /app/app.py"    45 hours ago   Up 8 hours   0.0.0.0:8008->8005/tcp     reorganizing-ramsay
+740c5a50e1ef   reorganizing-ramsay:v1                "python3 /app/app.py"    6 days ago     Up 24 hours   0.0.0.0:8008->8005/tcp     reorganizing-ramsay
