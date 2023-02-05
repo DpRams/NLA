@@ -2,6 +2,7 @@ import yaml
 import requests
 import sys
 import pandas as pd
+import time
 from checkPort import findPortAvailable
 from pathlib import Path
 file = Path(__file__).resolve()
@@ -73,10 +74,14 @@ def deployingModuleToYml(module_name, testing=True):
     ymlDict = {"stages": ["deploy"],
                "deploy": {"stage": "deploy", "tags": runner_tags, \
                           "script": ["echo \"deploy\"", "docker", "cd developer_upload", \
-                                     "tar -xf {module_name}.zip", "cd {module_name}", \
-                                     "docker build -t {module_name}:latest -f rootuser.Dockerfile .", \
+                                     f"tar -xf {module_name}.zip", f"cd {module_name}", \
+                                     f"docker build -t {module_name}:latest -f rootuser.Dockerfile .", \
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d {module_name}:latest"], \
                           "rules": [{"changes": ["developer_upload"]}]}}
 
     with open(".\\.gitlab-ci.yml", 'w') as file:
         yaml.dump(ymlDict, file)
+
+    with open("developer_upload\\timeTmp", 'w') as file:
+        file.write(time.strftime("%y%m%d_%H%M%S", time.localtime()))
+        file.close()

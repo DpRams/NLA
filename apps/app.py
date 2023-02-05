@@ -89,7 +89,7 @@ async def pipeline_platform(request: Request, \
    res = ", ".join([module.filename for module in uploaded_success])
    
    for module_name in [module.filename.rstrip(".zip") for module in uploaded_success]:
-      deployingModuleToYml(module_name)
+      deployingModuleToYml(module_name, testing=False)
       autoPush.main()
    return {"message": f"Successfully uploaded {res}"}
 
