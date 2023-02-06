@@ -39,7 +39,7 @@ app.mount(
     name="static",
 )
 
-autoStartContainer.main()
+# autoStartContainer.main()
 
 # Function
 @app.get("/")
@@ -98,8 +98,13 @@ async def pipeline_platform(request: Request, \
 @app.get("/pipeline/develop/matching", responses={200:{"description":"An example of matching modules"}})
 async def develop_matching():
    # Get filenames from the database
-   path = Path("developer_example\\matching-ramsay")
+   path = Path("developer_example\\matching")
    file_list = [str(file) for file in path.glob("**/*")]
+   # os.chdir(f"{root}\\developer_example\\")
+   # path = Path("\\matching-ramsay")
+   # file_list = [str(file) for file in path.glob("**/*")]
+   # print(file_list)
+   # os.chdir(f"{root}")
    return zipfiles(file_list)
 
 @app.get("/pipeline/develop/cramming", responses={200:{"description":"An example of cramming modules"}})
@@ -119,7 +124,7 @@ async def develop_reorganizing():
 def zipfiles(file_list):
    io = BytesIO()
    zip_sub_dir = "developer_example"
-   zip_filename = "%s.zip" % zip_sub_dir
+   zip_filename = f"{zip_sub_dir}.zip"
    with zipfile.ZipFile(io, mode='w', compression=zipfile.ZIP_DEFLATED) as zip:
       for fpath in file_list:
          zip.write(fpath)
