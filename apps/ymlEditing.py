@@ -64,9 +64,8 @@ def revokingModelToYml(modelId):
 
 def deployingModuleToYml(module_name, testing=True):
 
-    module_id = module_name.split("-")[1] 
     if testing:
-        module_name = f"testing-{module_id}"
+        module_name = f"testing-{module_name}"
 
     availablePort = findPortAvailable()
     SERVICEPORT = 8005 # fixed
