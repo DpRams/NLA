@@ -26,8 +26,8 @@ def reorganizing(network):
 
     return network
 
-# Step 3. 將資料夾名稱更改為 module_name 的變數值，如 : matching-jason
-# Step 4. 上傳資料夾
+# Step 3. 將資料夾名稱更改為 module_name 的變數值，如 : reorganizing-jason
+# Step 4. 上傳 reorganizing-jason 資料夾的壓縮檔(.zip)
 # 以上皆為待填區域
 ###################################
 

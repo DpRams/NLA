@@ -26,9 +26,8 @@ def cramming(network):
 
     return network
 
-
 # Step 3. 將資料夾名稱更改為 module_name 的變數值，如 : cramming-jason
-# Step 4. 上傳資料夾
+# Step 4. 上傳 cramming-jason 資料夾的壓縮檔(.zip)
 # 以上皆為待填區域
 ###################################
 
