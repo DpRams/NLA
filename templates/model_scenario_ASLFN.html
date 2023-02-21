@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.98.0">
-  <title>Learning Algorithm as a Service</title>
+  <title>Teaching Assistant as a Service</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/jumbotron/">
 
@@ -135,7 +135,7 @@
               d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"
               fill="currentColor"></path>
           </svg>
-          <span class="fs-4">Learning Algorithm as a Service </span>
+          <span class="fs-4">Teaching Assistant as a Service </span>
         </a>
       </header>
 
@@ -143,7 +143,7 @@
         <div class="container-fluid py-0">
           <h1 class="display-6 fw-bold">ASLFN</h1>
           <br>
-          <p class="col-md-12 fs-6">(等文獻回顧後更新)Adaptive Single-hidden layer feedforward neural network (ASLFN) is among 
+          <p class="col-md-12 fs-6">Adaptive Single-hidden layer feedforward neural network (ASLFN) is among 
             the most often used neural network architectures. It has been extensively utilized to 
             resolve classification and regression issues in a variety of domains thanks to its nonlinear 
             modeling capability.
@@ -163,11 +163,12 @@
                     <p class="col-md-12 fs-6">Data preparation is the process of preparing raw data 
                       so that it is suitable for further processing and analysis.
                     </p>
-  
-                    <p class="col-md-12 fs-6">1. Data subject refers to any individual person who can 
-                      be identified, directly or indirectly, via an identifier such as a name, an ID 
-                      number, location data, or via factors specific to the person’s physical, 
-                      physiological, genetic, mental, economic, cultural or social identity.
+                    
+                    <button class="btn btn-primary btn-lg" type="button"
+                    onclick="window.location.href='/pipeline/data';">Try it!</button>
+                  
+                    <br><br>
+                    <p class="col-md-12 fs-6">1. Any previously defined data subjects are referred to as data options. 
                     </p>
                     <div class="form-floating mb-3">
                       <select class="form-select" id="select_data" placeholder="10" name="dataDirectory" method="GET"  style="font-size:15px;"> 
@@ -175,20 +176,20 @@
                         <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
                         {% endfor %}
                       </select>
-                      <label for="select_data">Data subject</label>
+                      <label for="select_data">Data option</label>
                     </div>
 
                     <div class="form-floating mb-3">
                       <select class="form-select" id="select_dataDescribing" placeholder="10" name="dataDescribing"
                         method="GET" style="font-size:15px;">
                         <option value="ri_sro" SELECTED>ri_sro</option>
-                        <option value="ri_mro">ri_mro</option>
+                        <!-- <option value="ri_mro">ri_mro</option>
                         <option value="bi_sro">bi_sro</option>
                         <option value="bi_mro">bi_mro</option>
                         <option value="ri_sbo">ri_sbo</option>
                         <option value="ri_mbo">ri_mbo</option>
                         <option value="bi_sbo">bi_sbo</option>
-                        <option value="bi_mbo">bi_mbo</option>
+                        <option value="bi_mbo">bi_mbo</option> -->
                       </select>
                       <label for="select_dataDescribing">Data descirbing</label>
                     </div>
@@ -290,7 +291,7 @@
                     style="font-size:15px;" onclick="showLossFunctionEquation()">
                     <option value="RMSE" SELECTED>RMSE</option>
                     <option value="MSE">MSE</option>
-                    <option value="CROSSENTROPYLOSS">CROSSENTROPYLOSS</option>
+                    <!-- <option value="CROSSENTROPYLOSS">CROSSENTROPYLOSS</option> -->
                   </select>
                   <label for="select_loss">Loss function</label>
                 </div>
@@ -367,18 +368,17 @@
 
                 <label class="col-md-8 fs-4 fw-bold">Matching</label>
                 <br><br>
-                <p class="col-md-12 fs-6">(文獻回顧後更新)Matching is 
-                  ....
+                <p class="col-md-12 fs-6">The matching module helps tune weight to obtain an acceptable SLFN.
                 </p>
 
-                <p class="col-md-12 fs-6">12. (文獻回顧後更新)
-                </p>
+                <!-- <p class="col-md-12 fs-6">12. (文獻回顧後更新)
+                </p> -->
 
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_matchingRule" placeholder="10" name="matchingRule"
                     method="GET" style="font-size:15px;" onclick="showMatchingParameters()">
-                    <option value="EU">EU</option>
-                    <option value="EU_LG">EU_LG</option>
+                    <!-- <option value="EU">EU</option>
+                    <option value="EU_LG">EU_LG</option> -->
                     <option value="EU_LG_UA">EU_LG_UA</option>
                     <!-- <option value="matching-ramsay">matching-ramsay</option> -->
                     {% for modules in developer_matching %}
@@ -389,15 +389,15 @@
                   <label for="select_matchingRule">Matching rule</label>
                 </div>
                 
-                <p class="col-md-12 fs-6">13. (文獻回顧後更新)</p>
+                <!-- <p class="col-md-12 fs-6">13. (文獻回顧後更新)</p> -->
                 <div class="form-floating mb-3" id="p_matchingTimes" style="display:none;margin:0;">
                   <input type="text" class="form-control" id="matchingTimes" placeholder="10" name="matchingTimes"
                     onchange="commonTuningTimes(this.value)">
                   <label for="matchingTimes">Matching times</label>
                 </div>
 
-                <p class="col-md-12 fs-6">14. (文獻回顧後更新)
-                </p>
+                <!-- <p class="col-md-12 fs-6">14. (文獻回顧後更新)
+                </p> -->
                 <div class="form-floating mb-3" id="p_matchingLearningGoal" style="display:none;margin:0;">
 
                   <input type="text" class="form-control" id="matchingLearningGoal" placeholder="10"
@@ -405,8 +405,8 @@
                   <label for="matchingLearningGoal">Matching learning goal</label>
                 </div>
 
-                <p class="col-md-12 fs-6">15. (文獻回顧後更新)
-                </p>
+                <!-- <p class="col-md-12 fs-6">15. (文獻回顧後更新)
+                </p> -->
                 <div class="form-floating mb-3" id="p_matchingLearningRateLowerBound" style="display:none;margin:0;">
 
                   <input type="text" class="form-control" id="matchingLearningRateLowerBound" placeholder="10"
@@ -425,12 +425,11 @@
 
                 <label class="col-md-8 fs-4 fw-bold">Initializing</label>
                 <br><br>
-                <p class="col-md-12 fs-6">(文獻回顧後更新)Initializing is 
-                  ....
+                <p class="col-md-12 fs-6">The initial weights and biases of the SLFN are assigned by this module. Regarding the regression and classification problem, the initializing module picks up proper training data to set up an acceptable SLFN with one hidden node that makes specific conditions true.
                 </p>
 
-                <p class="col-md-12 fs-6">16. (文獻回顧後更新)
-                </p>
+                <!-- <p class="col-md-12 fs-6">16. (文獻回顧後更新)
+                </p> -->
 
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_initializingRule" placeholder="10" name="initializingRule"
@@ -441,16 +440,16 @@
                 </div>
 
                 <div id="regressionParameters" style="display:none;margin:0;">
-                  <p class="col-md-12 fs-6">17. (文獻回顧後更新)
-                  </p>
+                  <!-- <p class="col-md-12 fs-6">17. (文獻回顧後更新)
+                  </p> -->
                   <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="floatingInput" placeholder="10"
                       name="initializingNumber">
                     <label for="floatingInput">Initializing number</label>
                   </div>
 
-                  <p class="col-md-12 fs-6">18. (文獻回顧後更新)
-                  </p>
+                  <!-- <p class="col-md-12 fs-6">18. (文獻回顧後更新)
+                  </p> -->
                   <div class="form-floating mb-3">
 
                     <input type="text" class="form-control" id="learningGoal" placeholder="10" name="learningGoal"
@@ -461,11 +460,10 @@
                 <br>
                 <label class="col-md-8 fs-4 fw-bold">Selecting</label>
                 <br><br>
-                <p class="col-md-12 fs-6">(文獻回顧後更新)Selecting is 
-                  ....
+                <p class="col-md-12 fs-6">Select the first few training data that are sorted in some way (e.g., squared residuals of all training data in ascending order).
                 </p>
-                <p class="col-md-12 fs-6">19. (文獻回顧後更新)
-                </p>
+                <!-- <p class="col-md-12 fs-6">19. (文獻回顧後更新)
+                </p> -->
                 <div class="form-floating mb-3">
                   <select class="form-select" id="select_selectingRule" placeholder="10" name="selectingRule"
                     method="GET" style="font-size:15px;">
@@ -501,23 +499,22 @@
 
                     <label class="col-md-8 fs-4 fw-bold">Cramming</label>
                     <br><br>
-                    <p class="col-md-12 fs-6">(文獻回顧後更新)Cramming is 
-                      ....
+                    <p class="col-md-12 fs-6">The cramming module can deal with only one unacceptable set of training data and add one extra hidden node to the existing SLFN to obtain a new acceptable SLFN.
                     </p>
 
-                    <p class="col-md-12 fs-6">20. (文獻回顧後更新)
-                    </p>
+                    <!-- <p class="col-md-12 fs-6">20. (文獻回顧後更新)
+                    </p> -->
                     <div class="form-floating mb-3">
                       <select class="form-select" id="select_crammingRule" placeholder="10" name="crammingRule"
                         method="GET" style="font-size:15px;">
                         <option value="ri_sro">ri_sro</option>
-                        <option value="ri_mro">ri_mro</option>
+                        <!-- <option value="ri_mro">ri_mro</option>
                         <option value="bi_sro">bi_sro</option>
                         <option value="bi_mro">bi_mro</option>
                         <option value="ri_sbo">ri_sbo</option>
                         <option value="ri_mbo">ri_mbo</option>
                         <option value="bi_sbo">bi_sbo</option>
-                        <option value="bi_mbo">bi_mbo</option>
+                        <option value="bi_mbo">bi_mbo</option> -->
                         <!-- <option value="cramming-ramsay">cramming-ramsay</option> -->
                         {% for modules in developer_cramming %}
                         <option value= "{{modules}}" SELECTED>{{modules}}</option>
@@ -555,22 +552,21 @@
 
                     <label class="col-md-8 fs-4 fw-bold">Reorganizing</label>
                     <br><br>
-                    <p class="col-md-12 fs-6">(文獻回顧後更新)Reorganizing is 
-                      ....
+                    <p class="col-md-12 fs-6">The reorganizing module helps identify and remove the potentially irrelevant hidden nodes within SLFN.
                     </p>
-                    <p class="col-md-12 fs-6">21. (文獻回顧後更新)
-                    </p>
+                    <!-- <p class="col-md-12 fs-6">21. (文獻回顧後更新)
+                    </p> -->
                     <div class="form-floating mb-3">
                       <select class="form-select" id="select_reorganizingRule" placeholder="10" name="reorganizingRule"
                         method="GET" style="font-size:15px;" onclick="showReorganzingingParameters()">
                         <option value="ri_sro">ri_sro</option>
-                        <option value="ri_mro">ri_mro</option>
+                        <!-- <option value="ri_mro">ri_mro</option>
                         <option value="bi_sro">bi_sro</option>
                         <option value="bi_mro">bi_mro</option>
                         <option value="ri_sbo">ri_sbo</option>
                         <option value="ri_mbo">ri_mbo</option>
                         <option value="bi_sbo">bi_sbo</option>
-                        <option value="bi_mbo">bi_mbo</option>
+                        <option value="bi_mbo">bi_mbo</option> -->
                         <!-- <option value="reorganizing-ramsay">reorganizing-ramsay</option> -->
                         {% for modules in developer_reorganizing %}
                         <option value= "{{modules}}" SELECTED>{{modules}}</option>
@@ -582,16 +578,16 @@
 
 
                     <div id="reorganizingParamaters" style="display:none;margin:0;">
-                      <p class="col-md-12 fs-6">22. (文獻回顧後更新)
-                      </p>
+                      <!-- <p class="col-md-12 fs-6">22. (文獻回顧後更新)
+                      </p> -->
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="regularizingTimes" placeholder="10"
                           name="regularizingTimes">
                         <label for="regularizingTimes">Regularizing times</label>
                       </div>
 
-                      <p class="col-md-12 fs-6">23. (文獻回顧後更新)
-                      </p>
+                      <!-- <p class="col-md-12 fs-6">23. (文獻回顧後更新)
+                      </p> -->
                       <div class="form-floating mb-3">
 
                         <input type="text" class="form-control" id="floatingInput" placeholder="10"
@@ -599,8 +595,8 @@
                         <label for="floatingInput">Regularizing strength</label>
                       </div>
 
-                      <p class="col-md-12 fs-6">24. (文獻回顧後更新)
-                      </p>
+                      <!-- <p class="col-md-12 fs-6">24. (文獻回顧後更新)
+                      </p> -->
                       <div class="form-floating mb-3">
 
                         <input type="text" class="form-control" id="regularizingLearningGoal" placeholder="10"
@@ -608,8 +604,8 @@
                         <label for="regularizingLearningGoal">Regularizing learning goal</label>
                       </div>
 
-                      <p class="col-md-12 fs-6">25. (文獻回顧後更新)
-                      </p>
+                      <!-- <p class="col-md-12 fs-6">25. (文獻回顧後更新)
+                      </p> -->
                       <div class="form-floating mb-3">
 
                         <input type="text" class="form-control" id="regularizingLearningRateLowerBound" placeholder="10"
@@ -758,7 +754,7 @@
         </form>
         
         <label class="col-md-8 fs-5"></label>
-        <label class="btn btn-outline-primary btn-lg" onclick="window.location.href='/pipeline/deploy';">Deploy Pipeline</label>
+        <label class="btn btn-outline-primary btn-lg" onclick="window.location.href='/pipeline/deploy';">Deployment pipeline</label>
 
       </div>
     </div>

@@ -39,7 +39,7 @@ app.mount(
     name="static",
 )
 
-# autoStartContainer.main()
+autoStartContainer.main()
 
 # Function
 @app.get("/")

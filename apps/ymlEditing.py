@@ -64,8 +64,10 @@ def revokingModelToYml(modelId):
 
 def deployingModuleToYml(module_name, testing=True):
 
+    module_id = module_name.split("-")[1]
+    module_short = module_name[:2] # ma, cr, re
     if testing:
-        module_name = f"testing-{module_name}"
+        module_name = f"testing-{module_short}-{module_id}" # testing-ma-ramsay
 
     availablePort = findPortAvailable()
     SERVICEPORT = 8005 # fixed
