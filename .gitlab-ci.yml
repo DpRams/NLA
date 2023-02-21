@@ -1,15 +1,18 @@
 deploy:
+  after_script:
+  - echo $env:PATH
+  - python C:\Users\user\rams\projcet\apps\updateDeployment.py -m 2 -a "deploying"
   rules:
   - changes:
-    - developer_upload
+    - ASLFN/docker_apps/deployTmp
   script:
   - echo "deploy"
   - docker
-  - cd developer_upload
-  - tar -xf {module_name}.zip
-  - cd {module_name}
-  - docker build -t {module_name}:latest -f rootuser.Dockerfile .
-  - docker run -p 8159:8005 -d testing-yetta:latest
+  - cd ASLFN
+  - docker build -t aslfn:latest -f rootuser.Dockerfile .
+  - docker run -p 8571:8002 -d aslfn:latest
+  - cd C:\Users\user\rams\projcet\apps
+  - docker ps -l | findstr aslfn > dockerTmp
   stage: deploy
   tags:
   - laptop-ASUS
