@@ -5,9 +5,9 @@ revoke:
   script:
   - echo "revoke"
   - docker
-  - docker stop c01f2b79f1e9
-  - docker rm c01f2b79f1e9
-  - python C:\Users\user\rams\projcet\apps\updateDeployment.py -m 2 -a "revoking"
+  - docker stop 1f51ae2b2a22
+  - docker rm 1f51ae2b2a22
+  - python C:\Users\user\rams\projcet\apps\updateDeployment.py -m 18 -a "revoking"
   stage: revoke
   tags:
   - AILab
