@@ -8,7 +8,7 @@ from pathlib import Path
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 
-runner_tags = ["AILab"] # AILab, laptop-ASUS
+runner_tags = ["laptop-ASUS"] # AILab
 
 def deployingModelToYml(modelId):
 

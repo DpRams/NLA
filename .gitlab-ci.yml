@@ -1,15 +1,20 @@
-revoke:
+deploy:
+  after_script:
+  - echo $env:PATH
+  - python C:\Users\user\rams\projcet\apps\updateDeployment.py -m 1 -a "deploying"
   rules:
   - changes:
-    - apps/revokeTmp
+    - ASLFN/docker_apps/deployTmp
   script:
-  - echo "revoke"
+  - echo "deploy"
   - docker
-  - docker stop 1f51ae2b2a22
-  - docker rm 1f51ae2b2a22
-  - python C:\Users\user\rams\projcet\apps\updateDeployment.py -m 18 -a "revoking"
-  stage: revoke
+  - cd ASLFN
+  - docker build -t aslfn:latest -f rootuser.Dockerfile .
+  - docker run -p 8468:8002 -d aslfn:latest
+  - cd C:\Users\user\rams\projcet\apps
+  - docker ps -l | findstr aslfn > dockerTmp
+  stage: deploy
   tags:
-  - AILab
+  - laptop-ASUS
 stages:
-- revoke
+- deploy

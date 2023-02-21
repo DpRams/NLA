@@ -26,7 +26,7 @@ def main():
     p = subprocess.Popen(f"docker start {modules_to_start}", shell=True, stdout=subprocess.PIPE)
     stdout, stderr = p.communicate()
 
-    time.sleep(5)
+    # time.sleep(5)
 
     # get ASLFN container ID from mongo
     if requests.get(f"http://127.0.0.1:8001/model/deployments/counts").json() != 0:
