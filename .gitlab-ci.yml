@@ -1,18 +1,15 @@
 deploy:
-  after_script:
-  - echo $env:PATH
-  - python C:\Users\user\rams\projcet\apps\updateDeployment.py -m 2 -a "deploying"
   rules:
   - changes:
-    - ASLFN/docker_apps/deployTmp
+    - developer_upload
   script:
   - echo "deploy"
   - docker
-  - cd ASLFN
-  - docker build -t aslfn:latest -f rootuser.Dockerfile .
-  - docker run -p 8486:8002 -d aslfn:latest
-  - cd C:\Users\user\rams\projcet\apps
-  - docker ps -l | findstr aslfn > dockerTmp
+  - cd developer_upload
+  - tar -xf matching-yetta.zip
+  - cd matching-yetta
+  - docker build -t matching-yetta:latest -f rootuser.Dockerfile .
+  - docker run -p 8317:8005 -d matching-yetta:latest
   stage: deploy
   tags:
   - AILab
