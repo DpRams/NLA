@@ -8,7 +8,7 @@ deploy:
   - cd developer_upload\matching-yetta
   - tar -xf matching-yetta.zip
   - docker build -t matching-yetta:latest -f rootuser.Dockerfile .
-  - 'docker run --name matching-yetta -p 8271:8005 -d matching-yetta:latest '
+  - 'docker run --name matching-yetta -p 8143:8005 -d matching-yetta:latest '
   stage: deploy
   tags:
   - AILab
