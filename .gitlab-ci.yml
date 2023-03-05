@@ -9,7 +9,7 @@ deploy:
   - tar -xf matching-yetta.zip
   - cd matching-yetta
   - docker build -t matching-yetta:latest -f rootuser.Dockerfile .
-  - docker run -p 8121:8005 -d matching-yetta:latest
+  - docker run -p 8915:8005 -d matching-yetta:latest
   stage: deploy
   tags:
   - AILab
