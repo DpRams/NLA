@@ -140,7 +140,7 @@ async def pipeline_service(request: Request):
             "acceptable" : CSI.net.acceptable}
 
 if __name__ == '__main__':
-	uvicorn.run("app:app", host="127.0.0.1", port=8011, reload=True)
+	uvicorn.run("app:app", host="127.0.0.1", port=8005, reload=True)
 
 def odct_tensor2list(network):
 
