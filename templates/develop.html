@@ -87,7 +87,6 @@
     }
   </style>
 
-
 </head>
 
 <body>
@@ -146,7 +145,7 @@
                 <label class="col-md-12 fs-2 fw-bold" Align="center">Upload your module</label>
                 
                 <br><br>
-                <p class="display-6 fw-bold" Align="center">
+                <!-- <p class="display-6 fw-bold" Align="center">
                   <label for="module_matching" class="btn btn-primary btn-lg">Matching</label>
                   <input type="file" id="module_matching" name="uploaded_module_matching" hidden>
                 </p>
@@ -157,13 +156,33 @@
                 </p>
 
                 <p class="display-6 fw-bold" Align="center">
-                  <label for="module_reorganizing" class="btn btn-primary btn-lg">Reorganizing</label>
-                  <input type="file" id="module_reorganizing" name="uploaded_module_reorganizing" hidden>
+                  <label for="module_reorganizing" class="form-label"></label>
+                  <input type="file" id="module_reorganizing" name="uploaded_module_reorganizing" >
+                </p> -->
+
+                <p class="display-6 fw-bold" Align="center">
+                  <div class="mb-3">
+                    <label for="module_matching" class="form-label">Matching</label>
+                    <input class="form-control" type="file" id="module_matching" name="uploaded_module_matching">
+                  </div>
+                </p>
+                <p class="display-6 fw-bold" Align="center">
+                  <div class="mb-3">
+                    <label for="module_cramming" class="form-label">Cramming</label>
+                    <input class="form-control" type="file" id="module_cramming" name="uploaded_module_cramming">
+                  </div>
+                </p>
+
+                <p class="display-6 fw-bold" Align="center">
+                  <div class="mb-3">
+                    <label for="module_reorganizing" class="form-label">Reorganizing</label>
+                    <input class="form-control" type="file" id="module_reorganizing" name="uploaded_module_reorganizing">
+                  </div>
                 </p>
                 
                 <p class="display-6 fw-bold" Align="center">
-                  <label for="save_data" class="btn btn-outline-primary btn-lg">Submit</label>
-                  <input type="submit" id="save_data" class="btn btn-outline-primary btn-lg" hidden>
+                  <label for="submit_module" class="btn btn-outline-primary btn-lg">Submit</label>
+                  <input type="submit" id="submit_module" class="btn btn-outline-primary btn-lg" hidden>
                 </p>
 
               </form>
@@ -175,15 +194,14 @@
         </div>
       </div>
 
+      <script type="text/javascript" src="/static/js/script_develop.js"></script>
+
 
       <footer class="pt-3 mt-4 text-muted border-top">
         © 2022
       </footer>
     </div>
   </main>
-
-
-
 
 
 </body>

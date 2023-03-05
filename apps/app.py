@@ -39,7 +39,7 @@ app.mount(
     name="static",
 )
 
-autoStartContainer.main()
+# autoStartContainer.main()
 
 # Function
 @app.get("/")
@@ -59,39 +59,42 @@ async def pipeline_platform(request: Request, \
                      uploaded_module_matching: UploadFile = File(default=None), \
                      uploaded_module_cramming: UploadFile = File(default=None), \
                      uploaded_module_reorganizing: UploadFile = File(default=None)):
-   # print(uploaded_module_matching.filename)
-   # print(uploaded_module_cramming.filename)
-   # print(uploaded_module_reorganizing.filename)
 
-   uploaded_modules = [uploaded_module_matching, uploaded_module_cramming, uploaded_module_reorganizing]
-   uploaded_path = f"{root}\\developer_upload\\"
-   uploaded_success = []
+   module = uploaded_module_matching if uploaded_module_matching \
+                     else uploaded_module_cramming if uploaded_module_cramming \
+                     else uploaded_module_reorganizing
+   
+   module_name = module.filename.rstrip(".zip")
+   dir_path = Path(f"{root}\\developer_upload\\{module_name}")
+   if not dir_path.exists(): dir_path.mkdir(parents=True)
 
-   def is_zip(filename):
+   dir_path_str = str(dir_path)
+   
+   __is_success = None
+
+   def __is_zip(filename):
       try:
          return filename.endswith(".zip")
       except:
          print(filename)
-   
-   for module in uploaded_modules:    
-      if is_zip(module.filename):
-         try:
-            contents = module.file.read()
-            with open(f"{uploaded_path}{module.filename}", 'wb') as f:
-               f.write(contents)
-         except Exception:
-            return {"message": "There was an error uploading the file"}
-         finally:
-            module.file.close()
-            uploaded_success.append(module)
-      else: continue
 
-   res = ", ".join([module.filename for module in uploaded_success])
+   if __is_zip(module.filename):
+      try:
+         contents = module.file.read()
+         with open(f"{dir_path_str}\\{module.filename}", 'wb') as f:
+            f.write(contents)
+      except Exception:
+         return {"message": "There was an error uploading the file"}
+      finally:
+         module.file.close()
+         __is_success = True
+   else:
+      return {"message": "The uploaded file is not a .zip file"}
    
-   for module_name in [module.filename.rstrip(".zip") for module in uploaded_success]:
+   if __is_success:
       deployingModuleToYml(module_name, testing=False)
       autoPush.main()
-   return {"message": f"Successfully uploaded {res}"}
+   return {"message": f"Successfully uploaded {module.filename}"}
 
    # return templates.TemplateResponse("develop.html",{"request":request})
 
