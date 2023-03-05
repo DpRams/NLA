@@ -78,7 +78,7 @@ def deployingModuleToYml(module_name, testing=True):
                                      f"tar -xf {module_name}.zip", f"cd {module_name}", \
                                      f"docker build -t {module_name}:latest -f rootuser.Dockerfile .", \
                                     f"docker run -p {availablePort}:{SERVICEPORT} -d {module_name}:latest"], \
-                          "rules": [{"changes": ["developer_upload"]}]}}
+                          "rules": [{"changes": ["developer_upload/timeTmp"]}]}}
 
     with open(".\\.gitlab-ci.yml", 'w') as file:
         yaml.dump(ymlDict, file)

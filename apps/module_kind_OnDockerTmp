@@ -1,1 +1,1 @@
-5de3e6671cfc   110356021/reorganizing-ramsay:v1      "python3 /app/app.py"    4 weeks ago   Up 5 minutes               0.0.0.0:8008->8005/tcp     reorganizing-ramsay
+5de3e6671cfc   110356021/reorganizing-ramsay:v1      "python3 /app/app.py"    4 weeks ago   Up About an hour           0.0.0.0:8008->8005/tcp     reorganizing-ramsay
