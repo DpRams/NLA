@@ -162,19 +162,19 @@ async def pipeline_data_upload(request: Request, \
 
 ### developing
 
-      # Data validation
-      async def dataValidating():
-         # print(file_x, file_y)
-         filename = file_x.filename
-         contents = await file_x.read()
-         print(filename, contents)
+      # # Data validation
+      # async def dataValidating():
+      #    # print(file_x, file_y)
+      #    filename = file_x.filename
+      #    contents = await file_x.read()
+      #    print(filename, contents)
 
-         filename = file_y.filename
-         contents = await file_y.read()
-         print(filename, contents)
+      #    filename = file_y.filename
+      #    contents = await file_y.read()
+      #    print(filename, contents)
 
 
-      dataValidating()
+      # dataValidating()
 
 ### 
 
