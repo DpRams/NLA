@@ -85,6 +85,13 @@
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
     }
+
+    .transparent-box {
+      background-color: rgba(255, 255, 255, 0.5);
+      /* This sets the background color to white with 50% opacity */
+      padding: 33.5px;
+      /* This adds padding to the box to maintain its space */
+    }
   </style>
 
 </head>
@@ -116,20 +123,37 @@
               <label class="col-md-12 fs-2 fw-bold" Align="center">Download module templates</label>
               
               <br><br>
+
               <p class="display-6 fw-bold" Align="center">
-                <button class="btn btn-primary btn-lg" type="button"
-                onclick="window.location.href='/pipeline/develop/matching';">Matching</button>
+                <div class="mb-3" Align="center">
+                  <label class="form-label">Matching</label>
+                  <br>
+                  <button class="btn btn-primary btn" type="button"
+                  onclick="window.location.href='/pipeline/develop/matching';">Download codes</button>
+                </div>
               </p>
 
               <p class="display-6 fw-bold" Align="center">
-                <button class="btn btn-primary btn-lg" type="button"
-                onclick="window.location.href='/pipeline/develop/cramming';">Cramming</button>
+                <div class="mb-3" Align="center">
+                  <label class="form-label">Cramming</label>
+                  <br>
+                  <button class="btn btn-primary btn" type="button"
+                  onclick="window.location.href='/pipeline/develop/cramming';">Download codes</button>
+                </div>
               </p>
 
               <p class="display-6 fw-bold" Align="center">
-                <button class="btn btn-primary btn-lg" type="button"
-                onclick="window.location.href='/pipeline/develop/reorganizing';">Reorganizing</button>
+                <div class="mb-3" Align="center">
+                  <label class="form-label">Reorganizing</label>
+                  <br>
+                  <button class="btn btn-primary btn" type="button"
+                  onclick="window.location.href='/pipeline/develop/reorganizing';">Download codes</button>
+                </div>
               </p>
+
+              <div class="transparent-box">
+                
+              </div>
             </div>
           </div>
 
@@ -145,36 +169,22 @@
                 <label class="col-md-12 fs-2 fw-bold" Align="center">Upload your module</label>
                 
                 <br><br>
-                <!-- <p class="display-6 fw-bold" Align="center">
-                  <label for="module_matching" class="btn btn-primary btn-lg">Matching</label>
-                  <input type="file" id="module_matching" name="uploaded_module_matching" hidden>
-                </p>
 
                 <p class="display-6 fw-bold" Align="center">
-                  <label for="module_cramming" class="btn btn-primary btn-lg">Cramming</label>
-                  <input type="file" id="module_cramming" name="uploaded_module_cramming" hidden>
-                </p>
-
-                <p class="display-6 fw-bold" Align="center">
-                  <label for="module_reorganizing" class="form-label"></label>
-                  <input type="file" id="module_reorganizing" name="uploaded_module_reorganizing" >
-                </p> -->
-
-                <p class="display-6 fw-bold" Align="center">
-                  <div class="mb-3">
+                  <div class="mb-3" Align="center">
                     <label for="module_matching" class="form-label">Matching</label>
                     <input class="form-control" type="file" id="module_matching" name="uploaded_module_matching">
                   </div>
                 </p>
                 <p class="display-6 fw-bold" Align="center">
-                  <div class="mb-3">
+                  <div class="mb-3" Align="center">
                     <label for="module_cramming" class="form-label">Cramming</label>
                     <input class="form-control" type="file" id="module_cramming" name="uploaded_module_cramming">
                   </div>
                 </p>
 
                 <p class="display-6 fw-bold" Align="center">
-                  <div class="mb-3">
+                  <div class="mb-3" Align="center">
                     <label for="module_reorganizing" class="form-label">Reorganizing</label>
                     <input class="form-control" type="file" id="module_reorganizing" name="uploaded_module_reorganizing">
                   </div>

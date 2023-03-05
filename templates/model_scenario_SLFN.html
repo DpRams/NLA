@@ -106,8 +106,7 @@
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
 
-<script type="text/javascript" src="/static/js/script_model_2.js"></script>
-
+  <script type="text/javascript" src="/static/js/script_model_2.js"></script>
     
   </head>
   <body>
@@ -133,7 +132,7 @@
           modeling capability.
         </p>
         
-        <form  method="post" enctype="multipart/form-data"> <!-- action="/pipeline/model"/ -->
+        <form method="post" enctype="multipart/form-data"> <!-- action="/pipeline/model"/ -->
 
           <div class="row">
             <div class="col-md-12">
@@ -182,7 +181,7 @@
               </p>
              
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode" value="10">
                 <label for="floatingInput">Hidden layer node</label>
               </div>
               <p class="col-md-12 fs-6">3. Weight initialization is a procedure to set the 
@@ -219,7 +218,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="epoch">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="epoch" value="10">
                 <label for="floatingInput">Epoch</label>
               </div>
               
@@ -229,7 +228,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="batchSize">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="batchSize" value="10">
                 <label for="floatingInput">Batch size</label>
               </div>
 
@@ -239,7 +238,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningGoal">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningGoal" value="0.5">
                 <label for="floatingInput">Learning goal</label>
               </div>
 
@@ -317,7 +316,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate" value="0.001">
                 <label for="floatingInput">Learning rate</label>
               </div>
 
@@ -326,7 +325,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas" value="(0.9, 0.999)">
                 <label for="floatingInput">Betas</label>
               </div>
 
@@ -335,7 +334,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps" value="1e-08">
                 <label for="floatingInput">Eps</label>
               </div>
 
@@ -344,7 +343,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay" value="0.01">
                 <label for="floatingInput">Weight decay</label>
               </div>
           </div>
@@ -352,8 +351,8 @@
           <br>
 
           <label class="col-md-8 fs-5"></label>
-          <label for="define_model" class="btn btn-outline-primary btn-lg">Train</label>
-          <input type="submit" id="define_model" class="btn btn-outline-primary btn-lg" formaction="/pipeline/model/scenario/SLFN" hidden>
+          <label for="model_training" class="btn btn-outline-primary btn-lg">Train</label>
+          <input type="submit" id="model_training" class="btn btn-outline-primary btn-lg" formaction="/pipeline/model/scenario/SLFN" onclick="checkFields(event);" hidden>
 
           <br><br>
 
@@ -460,6 +459,28 @@
 
       </div>
     </div>
+
+    <script type="text/javascript">
+  
+      function checkFields(event) {
+        const inputs = document.querySelectorAll('input[type="text"]');
+        console.log(inputs);
+
+        let alertShown = false;
+        for (let i = 0; i < inputs.length; i++) {
+
+          if (inputs[i].value === "") {
+            alert('Please fill out all fields');
+            event.preventDefault(); // prevent form submission
+            return;
+          }
+          
+        }
+        alert('The model is training!');
+      }
+
+    </script>
+  
 
     <footer class="pt-3 mt-4 text-muted border-top">
       © 2022
