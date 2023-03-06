@@ -5,10 +5,10 @@ deploy:
   script:
   - echo "deploy"
   - docker
-  - cd developer_upload\matching-yetta
-  - tar -xf matching-yetta.zip
-  - docker build -t matching-yetta:latest -f rootuser.Dockerfile .
-  - 'docker run --name matching-yetta -p 8143:8005 -d matching-yetta:latest '
+  - cd developer_upload\reorganizing-louis
+  - tar -xf reorganizing-louis.zip
+  - docker build -t reorganizing-louis:latest -f rootuser.Dockerfile .
+  - 'docker run --name reorganizing-louis -p 8973:8005 -d reorganizing-louis:latest '
   stage: deploy
   tags:
   - AILab
