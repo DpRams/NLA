@@ -181,7 +181,7 @@
               </p>
              
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode" value="10">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode" value="10" required>
                 <label for="floatingInput">Hidden layer node</label>
               </div>
               <p class="col-md-12 fs-6">3. Weight initialization is a procedure to set the 
@@ -218,7 +218,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="epoch" value="10">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="epoch" value="10" required>
                 <label for="floatingInput">Epoch</label>
               </div>
               
@@ -228,7 +228,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="batchSize" value="10">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="batchSize" value="10" required>
                 <label for="floatingInput">Batch size</label>
               </div>
 
@@ -238,7 +238,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningGoal" value="0.5">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningGoal" value="0.5" required>
                 <label for="floatingInput">Learning goal</label>
               </div>
 
@@ -316,7 +316,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate" value="0.001">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate" value="0.001" required>
                 <label for="floatingInput">Learning rate</label>
               </div>
 
@@ -325,7 +325,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas" value="(0.9, 0.999)">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas" value="(0.9, 0.999)" required>
                 <label for="floatingInput">Betas</label>
               </div>
 
@@ -334,7 +334,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps" value="1e-08">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps" value="1e-08" required>
                 <label for="floatingInput">Eps</label>
               </div>
 
@@ -343,7 +343,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay" value="0.01">
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay" value="0.01" required>
                 <label for="floatingInput">Weight decay</label>
               </div>
           </div>
@@ -462,22 +462,22 @@
 
     <script type="text/javascript">
   
-      function checkFields(event) {
-        const inputs = document.querySelectorAll('input[type="text"]');
-        console.log(inputs);
+      // function checkFields(event) {
+      //   const inputs = document.querySelectorAll('input[type="text"]');
+      //   console.log(inputs);
 
-        let alertShown = false;
-        for (let i = 0; i < inputs.length; i++) {
+      //   let alertShown = false;
+      //   for (let i = 0; i < inputs.length; i++) {
 
-          if (inputs[i].value === "") {
-            alert('Please fill out all fields');
-            event.preventDefault(); // prevent form submission
-            return;
-          }
+      //     if (inputs[i].value === "") {
+      //       alert('Please fill out all fields');
+      //       event.preventDefault(); // prevent form submission
+      //       return;
+      //     }
           
-        }
-        alert('The model is training!');
-      }
+      //   }
+      //   alert('The model is training!');
+      // }
 
     </script>
   

@@ -213,7 +213,7 @@
                   for training model.
                 </p>
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode" value="10">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode" value="10" required>
                   <label for="floatingInput">Hidden layer node</label>
                 </div>
 
@@ -325,7 +325,7 @@
                 </p>
 
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate" value="0.001">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate" value="0.001" required>
                   <label for="floatingInput">Learning rate</label>
                 </div>
 
@@ -334,7 +334,7 @@
                 </p>
 
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas" value="(0.9, 0.999)">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas" value="(0.9, 0.999)" required>
                   <label for="floatingInput">Betas</label>
                 </div>
 
@@ -343,7 +343,7 @@
                 </p>
 
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps" value="1e-08">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps" value="1e-08" required>
                   <label for="floatingInput">Eps</label>
                 </div>
 
@@ -352,7 +352,7 @@
                 </p>
 
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay" value="0.01">
+                  <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay" value="0.01" required>
                   <label for="floatingInput">Weight decay</label>
                 </div>
 
@@ -379,12 +379,11 @@
                     method="GET" style="font-size:15px;" > <!-- onclick="showMatchingParameters()" -->
                     <!-- <option value="EU">EU</option>
                     <option value="EU_LG">EU_LG</option> -->
-                    <option value="EU_LG_UA">EU_LG_UA</option>
+                    <option value="EU_LG_UA" SELECTED>EU_LG_UA</option>
                     <!-- <option value="matching-ramsay">matching-ramsay</option> -->
                     {% for modules in developer_matching %}
-                    <option value= "{{modules}}" SELECTED>{{modules}}</option>
+                    <option value= "{{modules}}">{{modules}}</option>
                     {% endfor %}
-                    <option value="Disabled" SELECTED>Disabled</option>
                   </select>
                   <label for="select_matchingRule">Matching rule</label>
                 </div>
@@ -392,7 +391,7 @@
                 <!-- <p class="col-md-12 fs-6">13. (文獻回顧後更新)</p> -->
                 <div class="form-floating mb-3" id="p_matchingTimes" > <!-- style="display:none;margin:0;" -->
                   <input type="text" class="form-control" id="matchingTimes" placeholder="10" name="matchingTimes"
-                    onchange="commonTuningTimes(this.value)" value="50">
+                    onchange="commonTuningTimes(this.value)" value="50" required>
                   <label for="matchingTimes">Matching times</label>
                 </div>
 
@@ -401,7 +400,7 @@
                 <div class="form-floating mb-3" id="p_matchingLearningGoal" > <!-- style="display:none;margin:0;" -->
 
                   <input type="text" class="form-control" id="matchingLearningGoal" placeholder="10"
-                    name="matchingLearningGoal" onchange="commonLearningGoal(this.value)" value="0.5">
+                    name="matchingLearningGoal" onchange="commonLearningGoal(this.value)" value="0.5" required>
                   <label for="matchingLearningGoal">Matching learning goal</label>
                 </div>
 
@@ -410,7 +409,7 @@
                 <div class="form-floating mb-3" id="p_matchingLearningRateLowerBound" > <!-- style="display:none;margin:0;" -->
 
                   <input type="text" class="form-control" id="matchingLearningRateLowerBound" placeholder="10"
-                    name="matchingLearningRateLowerBound" onchange="commonLearningRateLowerBound(this.value)" value="0.001">
+                    name="matchingLearningRateLowerBound" onchange="commonLearningRateLowerBound(this.value)" value="0.001" required>
                   <label for="matchingLearningRateLowerBound">Matching learning rate lower bound</label>
                 </div>
 
@@ -445,7 +444,7 @@
                   </p> -->
                   <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="floatingInput" placeholder="10"
-                      name="initializingNumber" value="10">
+                      name="initializingNumber" value="10" required>
                     <label for="floatingInput">Initializing number</label>
                   </div>
 
@@ -454,7 +453,7 @@
                   <div class="form-floating mb-3">
 
                     <input type="text" class="form-control" id="learningGoal" placeholder="10" name="learningGoal"
-                      onchange="commonLearningGoal(this.value)" value="0.5">
+                      onchange="commonLearningGoal(this.value)" value="0.5" required>
                     <label for="learningGoal">Learning goal</label>
                   </div>
                 </div>
@@ -469,7 +468,7 @@
                   <select class="form-select" id="select_selectingRule" placeholder="10" name="selectingRule"
                     method="GET" style="font-size:15px;">
                     <option value="POS">POS</option>
-                    <option value="LTS">LTS</option>
+                    <option value="LTS" selected>LTS</option>
                   </select>
                   <label for="select_selectingRule">Selecting rule</label>
                 </div>
@@ -485,7 +484,7 @@
                 <div class="btn-group-toggle" data-toggle="buttons">
 
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="cramming_switch" onchange="showModules(); ">
+                    <input class="form-check-input" type="checkbox" id="cramming_switch" onchange="showModules();">
                     <label class="form-check-label" for="cramming_switch"></label>
                   </div>
 
@@ -538,7 +537,7 @@
                 <div class="btn-group-toggle" data-toggle="buttons">
 
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="reorganizing_switch" onchange="showModules(); ">
+                    <input class="form-check-input" type="checkbox" id="reorganizing_switch" onchange="showModules();">
                     <label class="form-check-label" for="reorganizing_switch"></label>
                   </div>
 
@@ -583,7 +582,7 @@
                       </p> -->
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="regularizingTimes" placeholder="10"
-                          name="regularizingTimes" value="50">
+                          name="regularizingTimes" value="50" required>
                         <label for="regularizingTimes">Regularizing times</label>
                       </div>
 
@@ -592,7 +591,7 @@
                       <div class="form-floating mb-3">
 
                         <input type="text" class="form-control" id="floatingInput" placeholder="10"
-                          name="regularizingStrength" value="0.001">
+                          name="regularizingStrength" value="0.001" required>
                         <label for="floatingInput">Regularizing strength</label>
                       </div>
 
@@ -601,7 +600,7 @@
                       <div class="form-floating mb-3">
 
                         <input type="text" class="form-control" id="regularizingLearningGoal" placeholder="10"
-                          name="regularizingLearningGoal" value="0.5">
+                          name="regularizingLearningGoal" value="0.5" required> 
                         <label for="regularizingLearningGoal">Regularizing learning goal</label>
                       </div>
 
@@ -610,7 +609,7 @@
                       <div class="form-floating mb-3">
 
                         <input type="text" class="form-control" id="regularizingLearningRateLowerBound" placeholder="10"
-                          name="regularizingLearningRateLowerBound" value="0.001">
+                          name="regularizingLearningRateLowerBound" value="0.001" required>
                         <label for="regularizingLearningRateLowerBound">Regularizing learning rate lower bound</label>
                       </div>
                     </div>
@@ -624,7 +623,7 @@
             <label class="col-md-8 fs-5"></label>
             <label for="model_training" class="btn btn-outline-primary btn-lg">Train</label>
             <input class="form-control-sm" type="submit" id="model_training" class="btn btn-outline-primary btn-lg"
-              formaction="/pipeline/model/scenario/ASLFN" onclick="checkFields(event);" hidden>
+              formaction="/pipeline/model/scenario/ASLFN" onclick="checkFields();" hidden>
             <br><br>
 
 
@@ -762,21 +761,22 @@
 
     <script type="text/javascript">
   
-      function checkFields(event) {
-        const inputs = document.querySelectorAll('input[type="text"]');
-        console.log(inputs);
+      // function checkFields() {
+      //   const inputs = document.querySelectorAll('input[type="text"]');
+      //   console.log(inputs);
+      //   let alertShown = true 
+      //   for (let i = 0; i < inputs.length; i++) {
 
-        for (let i = 0; i < inputs.length; i++) {
-
-          if (inputs[i].value === "") {
-            alert('Please fill out all fields');
-            event.preventDefault(); // prevent form submission
-            return;
-          }
+      //     if (inputs[i].value !== "") {
+      //       alertShown = false
+      //     }
           
-        }
-        alert('The model is training!');
-      }
+      //   }
+      //   if (alertShown) {
+      //     alert('The model is training!');
+      //   }
+        
+      // }
 
     </script>
 

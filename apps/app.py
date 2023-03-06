@@ -453,7 +453,10 @@ def pipeline_model(request: Request, \
       return templates.TemplateResponse("model_scenario_ASLFN.html", \
             context={"request":request,  \
                      "upload_data":upload_data, \
-                     "interrupted_message":training_error_msg})
+                     "interrupted_message":training_error_msg, \
+                     "developer_matching":developer_matching, \
+                     "developer_cramming":developer_cramming, \
+                     "developer_reorganizing":developer_reorganizing})
 
    # Save model config a& Perf.
    save_model(network, model_experiments_record, model_params, model_fig_drt)

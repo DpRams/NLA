@@ -163,7 +163,7 @@
                   <div id="createDirectory" style="display:block">
                       <!-- <label class="col-md-8 fs-4">Create a directory to save files uploaded.</label> -->
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="10" name="newDirectory">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="10" name="newDirectory" required>
                         <label for="floatingInput">Data subject</label>
                       </div>
                   </div>
@@ -178,7 +178,7 @@
                     <p class="display-6 fw-bold" Align="center">
                       <div class="mb-3" Align="center">
                         <label for="data_x" class="form-label">Select csv file with header for independent variable(X)</label>
-                        <input class="form-control" type="file" id="data_x" name="file_x">
+                        <input class="form-control" type="file" id="data_x" name="file_x" required>
                       </div>
                     </p>
 
@@ -193,7 +193,7 @@
                     <p class="display-6 fw-bold" Align="center">
                       <div class="mb-3" Align="center">
                         <label for="data_y" class="form-label">Select csv file  with header for dependent variable(Y)</label>
-                        <input class="form-control" type="file" id="data_y" name="file_y">
+                        <input class="form-control" type="file" id="data_y" name="file_y" required> 
                       </div>
                     </p>
 
@@ -208,8 +208,7 @@
 
             <label class="col-md-8 fs-5"></label>
             <label for="save_data" class="btn btn-outline-primary btn-lg">Upload</label>
-            <input type="submit" id="save_data" class="btn btn-outline-primary btn-lg" formaction="/pipeline/data" 
-                  onclick="checkFields(event); checkFileInputs(event);" hidden>
+            <input type="submit" id="save_data" class="btn btn-outline-primary btn-lg" formaction="/pipeline/data" hidden>
 
             <br><br>
 
@@ -267,34 +266,6 @@
 
         </div>
       </div>
-
-      <script type="text/javascript">
-        function checkFileInputs(event) {
-          let fileInputs = document.querySelectorAll('input[type="file"]');
-          console.log(fileInputs);
-          for (let i = 0; i < fileInputs.length; i++) {
-            if (fileInputs[i].value === '') {
-              alert('At least one file input does not have a file selected');
-              event.preventDefault(); // prevent form submission
-              return;
-            }
-          }
-          alert('All file inputs have a file selected');
-        }
-        function checkInputs(event) {
-          let textInputs = document.querySelectorAll('input[type="text"]');
-          console.log(textInputs);
-          textInputs.forEach(input => {
-            if (input.value.trim() === '') {
-              alert('Please fill out all fields');
-              event.preventDefault(); // prevent form submission
-              return;
-            }
-          });
-          alert('The dataset is uploading');
-        }
-        
-      </script>
 
       <footer class="pt-3 mt-4 text-muted border-top">
         © 2022

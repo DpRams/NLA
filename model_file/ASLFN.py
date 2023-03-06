@@ -95,7 +95,7 @@ def training_CSINet(MyCSI, model_params):
 
         else:
             
-            if RIRO.is_initializingNumber_too_big_to_initializing(i): return "Initializing 失敗", "Initializing 失敗", "Initializing 失敗"
+            if RIRO.is_initializingNumber_too_big_to_initializing(i): return ("Initializing 失敗", "Initializing 失敗", "Initializing 失敗", "Initializing 失敗")
 
             MyCSI.net.acceptable = False
             MyCSI.matching()
@@ -109,7 +109,7 @@ def training_CSINet(MyCSI, model_params):
                 MyCSI = copy.deepcopy(MyCSI_pre)
                 MyCSI.cramming()
                 # print("Cramming End")
-                if RIRO.is_learningGoal_too_small_to_cramming(MyCSI): return "Cramming 失敗", "Cramming 失敗", "Cramming 失敗"
+                if RIRO.is_learningGoal_too_small_to_cramming(MyCSI): return ("Cramming 失敗", "Cramming 失敗", "Cramming 失敗", "Cramming 失敗")
                 
                 # network = reorganizing(network)
                 MyCSI.reorganizing()
