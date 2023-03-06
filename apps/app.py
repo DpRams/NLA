@@ -55,7 +55,7 @@ def pipeline_platform(request: Request):
    return templates.TemplateResponse("develop.html",{"request":request})
 
 @app.post("/pipeline/develop")
-async def pipeline_platform(request: Request, \
+def pipeline_platform(request: Request, \
                      uploaded_module_matching: UploadFile = File(default=None), \
                      uploaded_module_cramming: UploadFile = File(default=None), \
                      uploaded_module_reorganizing: UploadFile = File(default=None)):
