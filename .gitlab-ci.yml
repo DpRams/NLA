@@ -5,10 +5,10 @@ deploy:
   script:
   - echo "deploy"
   - docker
-  - cd developer_upload\reorganizing-louis
-  - tar -xf reorganizing-louis.zip
-  - docker build -t reorganizing-louis:latest -f rootuser.Dockerfile .
-  - 'docker run --name reorganizing-louis -p 8623:8005 -d reorganizing-louis:latest '
+  - cd developer_upload\cramming-julian
+  - tar -xf cramming-julian.zip
+  - docker build -t cramming-julian:latest -f rootuser.Dockerfile .
+  - 'docker run --name cramming-julian -p 8479:8005 -d cramming-julian:latest '
   stage: deploy
   tags:
   - AILab
