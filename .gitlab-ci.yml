@@ -5,10 +5,10 @@ deploy:
   script:
   - echo "deploy"
   - docker
-  - cd developer_upload\matching-iverson
-  - tar -xf matching-iverson.zip
-  - docker build -t matching-iverson:latest -f rootuser.Dockerfile .
-  - 'docker run --name matching-iverson -p 8110:8005 -d matching-iverson:latest '
+  - cd developer_upload\matching-yetta
+  - tar -xf matching-yetta.zip
+  - docker build -t matching-yetta:latest -f rootuser.Dockerfile .
+  - 'docker run --name matching-yetta -p 8830:8005 -d matching-yetta:latest '
   stage: deploy
   tags:
   - AILab
