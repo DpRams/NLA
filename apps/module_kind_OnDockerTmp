@@ -1,3 +1,3 @@
-023ba954e5db   reorganizing-susan:latest             "python3 /app/app.py"    About a minute ago   Up About a minute   0.0.0.0:8079->8005/tcp     reorganizing-susan
-73b90c03fbd1   reorganizing-louis:latest             "python3 /app/app.py"    About a minute ago   Up About a minute   0.0.0.0:8973->8005/tcp     reorganizing-louis
-5de3e6671cfc   110356021/reorganizing-ramsay:v1      "python3 /app/app.py"    4 weeks ago          Up 30 hours         0.0.0.0:8008->8005/tcp     reorganizing-ramsay
+a5a9d36aafbe   reorganizing-louis:latest             "python3 /app/app.py"    2 hours ago   Up 2 hours    0.0.0.0:8875->8005/tcp     reorganizing-louis
+dafc674dc37d   reorganizing-susan:latest             "python3 /app/app.py"    2 hours ago   Up 2 hours    0.0.0.0:8233->8005/tcp     reorganizing-susan
+5de3e6671cfc   110356021/reorganizing-ramsay:v1      "python3 /app/app.py"    4 weeks ago   Up 32 hours   0.0.0.0:8008->8005/tcp     reorganizing-ramsay

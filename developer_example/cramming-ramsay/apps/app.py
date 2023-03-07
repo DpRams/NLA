@@ -115,7 +115,7 @@ def cramming(network):
 # 以上皆為待填區域
 ###################################
 
-@app.post("/train/cramming-ramsay")
+@app.post(f"/train/{module_name}")
 async def pipeline_service(request: Request):
 
     network_related_info = await request.json()
