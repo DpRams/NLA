@@ -5,10 +5,10 @@ deploy:
   script:
   - echo "deploy"
   - docker
-  - cd developer_upload\matching-yetta
-  - tar -xf matching-yetta.zip
-  - docker build -t matching-yetta:latest -f rootuser.Dockerfile .
-  - 'docker run --name matching-yetta -p 8830:8005 -d matching-yetta:latest '
+  - cd developer_upload\matching-zoe
+  - tar -xf matching-zoe.zip
+  - docker build -t matching-zoe:latest -f rootuser.Dockerfile .
+  - 'docker run --name matching-zoe -p 8546:8005 -d matching-zoe:latest '
   stage: deploy
   tags:
   - AILab
