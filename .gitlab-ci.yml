@@ -5,10 +5,10 @@ deploy:
   script:
   - echo "deploy"
   - docker
-  - cd developer_upload\cramming-leo
-  - tar -xf cramming-leo.zip
-  - docker build -t cramming-leo:latest -f rootuser.Dockerfile .
-  - 'docker run --name cramming-leo -p 8147:8005 -d cramming-leo:latest '
+  - cd developer_upload\matching-iverson
+  - tar -xf matching-iverson.zip
+  - docker build -t matching-iverson:latest -f rootuser.Dockerfile .
+  - 'docker run --name matching-iverson -p 8110:8005 -d matching-iverson:latest '
   stage: deploy
   tags:
   - AILab
