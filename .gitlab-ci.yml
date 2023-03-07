@@ -5,10 +5,10 @@ deploy:
   script:
   - echo "deploy"
   - docker
-  - cd developer_upload\matching-zoe
-  - tar -xf matching-zoe.zip
-  - docker build -t matching-zoe:latest -f rootuser.Dockerfile .
-  - 'docker run --name matching-zoe -p 8546:8005 -d matching-zoe:latest '
+  - cd developer_upload\reorganizing-dorothy
+  - tar -xf reorganizing-dorothy.zip
+  - docker build -t reorganizing-dorothy:latest -f rootuser.Dockerfile .
+  - 'docker run --name reorganizing-dorothy -p 8089:8005 -d reorganizing-dorothy:latest '
   stage: deploy
   tags:
   - AILab
