@@ -26,7 +26,7 @@ file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
-from model_file import ASLFN, SLFN
+from model_file import ASLFN, SLFN, hw1
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
 from ymlEditing import deployingModelToYml, revokingModelToYml, deployingModuleToYml
@@ -245,6 +245,20 @@ async def pipeline_data_upload(request: Request, \
 def pipeline_model(request: Request):
 
    return templates.TemplateResponse("model.html",{"request":request})
+
+@app.get("/pipeline/model/hw1")
+def pipeline_model(request: Request):
+
+   upload_data = os.listdir(f"{root}\\upload_data")
+   
+   return templates.TemplateResponse("hw1.html",{"request":request, "upload_data":upload_data})
+
+@app.post("/pipeline/model/hw1")
+def pipeline_model(request: Request):
+
+   upload_data = os.listdir(f"{root}\\upload_data")
+   
+   return templates.TemplateResponse("hw1.html",{"request":request, "upload_data":upload_data})
 
 @app.get("/pipeline/model/scenario/SLFN")
 def pipeline_model(request: Request):
