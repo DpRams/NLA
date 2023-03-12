@@ -145,8 +145,10 @@
                     so that it is suitable for further processing and analysis.
                   </p>
 
-                  <button class="btn btn-primary btn-lg" type="button"
-                  onclick="window.location.href='/pipeline/data';">Try it!</button>
+                  <div class="mb-1" Align="center">
+                    <button class="btn btn-primary btn-lg" type="button"
+                    onclick="window.location.href='/pipeline/data';">Try it!</button>
+                  </div>
                   
                   <br><br>
 
@@ -169,7 +171,7 @@
           </div>
           <br>
 
-                    <div class="col-md-12">
+          <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
 
               <label class="col-md-8 fs-4 fw-bold">SLFN</label>
@@ -209,11 +211,12 @@
               <div class="form-floating mb-3">
                 <select class="form-select" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:15px;"> 
                   <option value= "ReLU" SELECTED>ReLU</option>
+                  <option value= "tanh" >tanh</option>
                 </select>
                 <label for="select_activationFunction">Activation function</label>
               </div>
 
-              <p class="col-md-12 fs-6">9. At its core, a loss function is incredibly simple: 
+              <p class="col-md-12 fs-6">5. At its core, a loss function is incredibly simple: 
                 It’s a method of evaluating how well your algorithm models your dataset. If 
                 your predictions are totally off, your loss function will output a higher number. 
                 If they’re pretty good, it’ll output a lower number.
@@ -222,8 +225,7 @@
               <div class="form-floating mb-3">
                 <select class="form-select" id="select_loss" placeholder="10" name="lossFunction" method="GET"
                   style="font-size:15px;" onclick="showLossFunctionEquation()">
-                  <option value="RMSE" SELECTED>RMSE</option>
-                  <option value="MSE">MSE</option>
+                  <option value="MSE" SELECTED>MSE</option>
                   <!-- <option value="CROSSENTROPYLOSS">CROSSENTROPYLOSS</option> -->
                 </select>
                 <label for="select_loss">Loss function</label>
@@ -243,13 +245,12 @@
                   <option value="0" SELECTED>None</option>
                   <option value="0.001">L2 norm with lambda = 0.001</option>
                   <option value="0.0001">L2 norm with lambda = 0.0001</option>
-                  <!-- <option value="CROSSENTROPYLOSS">CROSSENTROPYLOSS</option> -->
                 </select>
                 <label for="select_RegularizationTerm">Regularization term</label>
               </div>
 
 
-              <p class="col-md-12 fs-6">10. An optimizer is a function or an algorithm that 
+              <p class="col-md-12 fs-6">6. An optimizer is a function or an algorithm that 
                 modifies the attributes of the neural network, such as weights and learning 
                 rate. Thus, it helps in reducing the overall loss and improve the accuracy.
               </p>
@@ -257,12 +258,13 @@
               <div class="form-floating mb-3">
                 <select class="form-select" id="select_optim" placeholder="10" name="optimizer" method="GET"  style="font-size:15px;" onclick="showOptimizerParameters()"> 
                   <option value= "Adam" SELECTED>Adam</option>
-                  <option value= "AdamW" >AdamW</option>
+                  <option value= "gradientDescent" >Gradient descent</option>
+                  <option value= "Momentum" >Momentum</option>
                 </select>
                 <label for="select_optim">Optimizer</label>
               </div>
 
-              <p class="col-md-12 fs-6">5. The number of epochs is a hyperparameter of 
+              <p class="col-md-12 fs-6">7. The number of epochs is a hyperparameter of 
                 gradient descent that controls the number of complete passes through 
                 the training dataset.
               </p>
@@ -273,113 +275,46 @@
               </div>
             
 
+              <p class="col-md-12 fs-6">8. Learning rate decay scheduler is a technique used in machine learning to adjust the learning rate during training. A learning rate decay scheduler adjusts the learning rate according to a predefined schedule. The idea is to start with a high learning rate and gradually decrease it over time, so the model can make large updates to the weights at the beginning of training and then make smaller updates as it gets closer to the optimal solution.
 
-              <!-- <p class="col-md-12 fs-6">11. It is a parameter that provides the model a scale 
-                of how much model weights should be updated.
+
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate" value="0.001" required>
-                <label for="floatingInput">Learning rate</label>
-              </div> -->
-
-              <p class="col-md-12 fs-6">torch.optim.lr_scheduler.CosineAnnealingLR https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.CosineAnnealingLR.html#torch.optim.lr_scheduler.CosineAnnealingLR
-              </p>
-
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningRate" value="0.001" required>
-                <label for="floatingInput">Learning rate decay schedule</label>
-              </div>
-              <!-- <p class="col-md-12 fs-6">6. The batch size is a hyperparameter of gradient 
-                descent that controls the number of training samples to work through before 
-                the model’s internal parameters are updated.
-              </p>
-
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="batchSize" value="10" required>
-                <label for="floatingInput">Batch size</label>
-              </div> -->
-
-              <!-- <p class="col-md-12 fs-6">7. The learning goal is a hyperparameter of model 
-                learning utilized to determine whether or not the error is within the 
-                acceptable bounds.
-              </p>
-
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="learningGoal" value="0.5" required>
-                <label for="floatingInput">Learning goal</label>
-              </div> -->
-
-              <!-- <label class="col-md-8 fs-5 fw-bold">Testing parameter</label>
-              <br><br>
-              <p class="col-md-12 fs-6">8. Performance metrics are a part of every machine 
-                learning pipeline. They tell you if you’re making progress, and put a number 
-                on it. All machine learning models, whether it’s linear regression, or a SOTA 
-                technique like BERT, need a metric to judge performance.
-              </p>
-
-              <div class="form-floating mb-3">
-                <select class="form-select" id="select_testingMetric" name="testingMetric" placeholder="10" name="lossFunction" method="GET"  style="font-size:15px;"> 
-                  <option value= "RMSE" SELECTED>RMSE</option>
+                <select class="form-select" id="select_LearningRateDecaySchedule" placeholder="10" name="learningRateDecayScheduler" method="GET"  style="font-size:15px;" onclick="showOptimizerParameters()"> 
+                  <option value= "None" SELECTED>None</option>
+                  <option value= "Cosine" >Cosine</option>
                 </select>
-                <label for="select_testingMetric">Testing metric</label>
-              </div> -->
+                <label for="select_LearningRateDecaySchedule">Learning rate decay schedule</label>
+              </div>
 
             </div>
           </div>
 
           <br>
 
-          <!-- <div class="col-md-12">
+          <div class="col-md-12">
             <div class="h-100 p-5 bg-light border rounded-3">
-
-              <label class="col-md-8 fs-4 fw-bold">Back Propagation</label>
-              <br><br>
-              <p class="col-md-12 fs-6">Backpropagation is the essence of neural network 
-                training. It is the method of fine-tuning the weights of a neural network 
-                based on the error rate obtained in the previous epoch (i.e., iteration). 
-                Proper tuning of the weights allows you to reduce error rates and make the 
-                model reliable by increasing its generalization.
-              </p>
-
               
-
-              <p class="col-md-12 fs-6">12. The betas is a parameter of Adam / AdamW optimizer, 
-                using for computing running averages of gradient and its square(default: (0.9, 0.999)).
+              <p class="col-md-12 fs-6">Please fill out your student ID. 
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="betas" value="(0.9, 0.999)" required>
-                <label for="floatingInput">Betas</label>
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="studentId" value="110356021" required>
+                <label for="floatingInput">Student ID</label>
               </div>
-
-              <p class="col-md-12 fs-6">13. The eps is a parameter of Adam / AdamW optimizer that is 
-                added to the denominator to improve numerical stability (default: 1e-8).
-              </p>
-
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="eps" value="1e-08" required>
-                <label for="floatingInput">Eps</label>
-              </div>
-
-              <p class="col-md-12 fs-6">14. The weight decay is a parameter of Adam / AdamW optimizer 
-                that is L2 penalty (default: 0) in Adam and a coefficient (default: 1e-2) in AdamW.
-              </p>
-
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="weightDecay" value="0.01" required>
-                <label for="floatingInput">Weight decay</label>
-              </div>
-          </div> -->
               
+            </div>
+          </div>
 
+          <br>
 
-          <label class="col-md-8 fs-5"></label>
-          <label for="model_training" class="btn btn-outline-primary btn-lg">Train</label>
-          <input type="submit" id="model_training" class="btn btn-outline-primary btn-lg" formaction="/pipeline/model/scenario/SLFN" onclick="checkFields(event);" hidden>
-
-          <br><br>
-
+          <div class="mb-1" Align="center">
+            <label for="model_training" class="btn btn-outline-primary btn-lg">Train</label>
+            <input type="submit" id="model_training" class="btn btn-outline-primary btn-lg" formaction="/pipeline/model/hw1" onclick="checkFields(event);" hidden>
+          </div>
+          
+          <br>
 
           <div class="col-md-12">
             <div class="h-100 p-4 bg-light border rounded-3">
@@ -393,19 +328,19 @@
             <div class="h-100 p-5 bg-light border rounded-3">
               <label class="col-md-8 fs-3 fw-bold ">Model Performance</label>
               <br><br>
-              <text><b>Training accuracy : <font color="blue">{{trainingAccuracy}}</font></b></text>
+              <text><b>Training loss : <font color="blue">{{trainingLoss}}</font></b></text>
               <br>
-              <text><b>Validating accuracy : <font color="blue">{{validatingAccuracy}}</font></b></text>
+              <text><b>Validating loss : <font color="blue">{{validatingLoss}}</font></b></text>
               <br>
               <div class="p-5 mb-1 bg-light rounded-3">
       
-                <div class="gallery">
+                <!-- <div class="gallery">
                   <a target="_blank" href="{{url_path_for_trainingAccuracy}}">
                     <img src= "{{url_path_for_trainingAccuracy}}"  alt="Training Accuracy" width="600" height="400">
                   </a>
                   <div class="desc">Training Accuracy</div>
                 </div>
-                
+                 -->
                 <div class="gallery">
                   <a target="_blank" href="{{url_path_for_trainingLoss}}">
                     <img src= "{{url_path_for_trainingLoss}}"  alt="Training Loss" width="600" height="400">
@@ -413,12 +348,12 @@
                   <div class="desc">Training Loss</div>
                 </div>
 
-                <div class="gallery">
+                <!-- <div class="gallery">
                   <a target="_blank" href="{{url_path_for_validatingAccuracy}}">
                     <img src= "{{url_path_for_validatingAccuracy}}"  alt="Validating Accuracy" width="600" height="400">
                   </a>
                   <div class="desc">Validating Accuracy</div>
-                </div>
+                </div> -->
                 
                 <div class="gallery">
                   <a target="_blank" href="{{url_path_for_validatingLoss}}">
@@ -443,7 +378,7 @@
               <br><br>
               <text><b>1. Data subject : <font color="blue">{{dataDirectory}}</font></b></text>
               <br>
-              <text><b>1-1. Data Shape : <font color="blue">{{dataShape}}</font></b></text>
+              <text><b>1-1. Data shape : <font color="blue">{{dataShape}}</font></b></text>
               <br>
               <text><b>2. Hidden node : <font color="blue">{{hiddenNode}}</font></b></text>
               <br>
@@ -453,23 +388,27 @@
               <br>
               <text><b>5. Epoch : <font color="blue">{{epoch}}</font></b></text>
               <br>
-              <text><b>6. Batch size : <font color="blue">{{batchSize}}</font></b></text>
+              <!-- <text><b>6. Batch size : <font color="blue">{{batchSize}}</font></b></text>
               <br>
               <text><b>7. Learning goal : <font color="blue">{{learningGoal}}</font></b></text>
               <br>
               <text><b>8. Testing metric : <font color="blue">{{testingMetric}}</font></b></text>
+              <br> -->
+              <text><b>6. Loss function : <font color="blue">{{lossFunction}}</font></b></text>
               <br>
-              <text><b>9. Loss Function : <font color="blue">{{lossFunction}}</font></b></text>
+              <text><b>7. Regularization term : <font color="blue">{{regularizationTerm}}</font></b></text>
               <br>
-              <text><b>10. Optimizer : <font color="blue">{{optimizer}}</font></b></text>
+              <text><b>9. Optimizer : <font color="blue">{{optimizer}}</font></b></text>
               <br>
-              <text><b>11. Learning rate : <font color="blue">{{learningRate}}</font></b></text>
+              <text><b>9. Learning rate decay scheduler : <font color="blue">{{learningRateDecayScheduler}}</font></b></text>
+              <br>
+              <!-- <text><b>11. Learning rate : <font color="blue">{{learningRate}}</font></b></text>
               <br>
               <text><b>12. Betas : <font color="blue">{{betas}}</font></b></text>
               <br>
               <text><b>13. Eps : <font color="blue">{{eps}}</font></b></text>
               <br>
-              <text><b>14. Weight decay : <font color="blue">{{weightDecay}}</font></b></text>
+              <text><b>14. Weight decay : <font color="blue">{{weightDecay}}</font></b></text> -->
 
             </div>
           </div>
@@ -478,8 +417,14 @@
           <text>After training completed, this model & metadata would save automatically</text>
         </form>
 
-        <label class="col-md-8 fs-5"></label>
-        <label class="btn btn-outline-primary btn-lg" onclick="window.location.href='/pipeline/deploy';">Deployment pipeline</label>
+        <br>
+
+        <div class="mb-1" Align="center">
+          <label class="btn btn-outline-primary btn-lg" onclick="window.location.href='/pipeline/model/hw1/ensemble/';">Ensemble modeling</label>
+        </div>
+
+        
+        
 
       </div>
     </div>

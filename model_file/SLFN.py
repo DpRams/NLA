@@ -135,7 +135,7 @@ def main(model_params):
 
     MyNet = Network(dataDirectory = model_params.kwargs["dataDirectory"], \
                     dataShape = model_params.kwargs["dataShape"], \
-                    modelFile = "custoNet_SLFN.py", \
+                    modelFile = model_params.kwargs["modelFile"], \
                     inputDimension = model_params.kwargs["inputDimension"], \
                     hiddenNode = model_params.kwargs["hiddenNode"], \
                     outputDimension = model_params.kwargs["outputDimension"], \
@@ -151,7 +151,7 @@ def main(model_params):
                     eps = model_params.kwargs["eps"], \
                     weightDecay = model_params.kwargs["weightDecay"])
 
-    print(f"查看{MyNet.model_params}")
+    print(f"查看 {MyNet.model_params}")
 
     network, model_experiments_record, model_params, model_fig_drt = training_2LayerNet(MyNet, model_params)
 

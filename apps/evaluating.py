@@ -171,6 +171,36 @@ def making_figure_2LayerNet(model_experiments_record, model_params):
 
     return model_fig_drt
 
+def making_figure_Hw1(model_experiments_record, model_params):
+
+    # this line is set to prevent the bug about https://blog.csdn.net/qq_42998120/article/details/107871863
+    plt.switch_backend("agg")
+
+    data_drt = model_params.kwargs["dataDirectory"]
+    
+    # create dir path
+    timestamp = model_params.kwargs["timestamp"]
+    modelType = model_params.kwargs["modelFile"][:-3]
+    validLoss = str(model_experiments_record["experiments_record"]["valid"]["mean_loss"])[:5]
+    drtName = f"{data_drt}_{modelType}_{validLoss}_{timestamp}\\" 
+
+    # create dir    
+    drtPath = Path(f"{root}\\model_fig\\{drtName}")
+    drtPath.mkdir(parents=True, exist_ok=True)
+
+    training_loss_step = model_experiments_record["experiments_record"]["train"]["loss_step"]
+    validating_loss_step = model_experiments_record["experiments_record"]["valid"]["loss_step"]
+
+
+    # making figure
+    __plot_loss(training_loss_step, drtPath)
+    __plot_loss(validating_loss_step, drtPath, validating=True)
+
+    # model_fig_drt = drtPath # return the whole path
+    model_fig_drt = drtPath.parts[-1] # return only the last drtPath
+
+    return model_fig_drt
+
 def __plot_acc(training_acc_step, drtPath, validating=False):
 
     if not validating:

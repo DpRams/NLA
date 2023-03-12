@@ -16,7 +16,7 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
 from apps import evaluating, saving
-from network.net import Network
+from network.net import Hw1
 
 
 class CustomDataset(Dataset):
@@ -80,7 +80,7 @@ def training_2LayerNet(MyNet, model_params):
 
         MyNet.train()
 
-        acc_per_epoch, loss_per_epoch = [], []
+        loss_per_epoch = []
 
 
         for batch in train_loader:
@@ -92,15 +92,11 @@ def training_2LayerNet(MyNet, model_params):
             output, loss = MyNet.forward()
             MyNet.backward(loss)
 
-            train_acc = ((output - MyNet.y) <= MyNet.model_params["learningGoal"]).to(torch.float32).mean().cpu().detach()
-
-            acc_per_epoch.append(train_acc)
             loss_per_epoch.append(loss.item())
             
-        experiments_record["train"]["acc_step"].append(np.round(np.mean(acc_per_epoch), 3))
         experiments_record["train"]["loss_step"].append(np.round(np.mean(loss_per_epoch), 3))
 
-        acc_per_epoch, loss_per_epoch = [], []
+        loss_per_epoch = []
         
         for batch in val_loader:
 
@@ -111,47 +107,42 @@ def training_2LayerNet(MyNet, model_params):
             with torch.no_grad():
                 output, loss = MyNet.forward()
 
-                valid_acc = ((output - MyNet.y) <= MyNet.model_params["learningGoal"]).to(torch.float32).mean().cpu().detach()
-
-                acc_per_epoch.append(valid_acc)
                 loss_per_epoch.append(loss.item())
 
-        experiments_record["valid"]["acc_step"].append(np.round(np.mean(acc_per_epoch), 3))
         experiments_record["valid"]["loss_step"].append(np.round(np.mean(loss_per_epoch), 3))
-
-        experiments_record["train"]["mean_acc"] = np.round(np.mean(experiments_record["train"]["acc_step"]), 3)
         experiments_record["train"]["mean_loss"] = np.round(np.mean(experiments_record["train"]["loss_step"]), 3)
-        experiments_record["valid"]["mean_acc"] = np.round(np.mean(experiments_record["valid"]["acc_step"]), 3)
         experiments_record["valid"]["mean_loss"] = np.round(np.mean(experiments_record["valid"]["loss_step"]), 3)
 
     model_experiments_record = {"experiments_record" : experiments_record}
 
     # Plot graph
-    model_fig_drt = evaluating.making_figure_2LayerNet(model_experiments_record, model_params)    
+    model_fig_drt = evaluating.making_figure_Hw1(model_experiments_record, model_params)    
 
     return MyNet, model_experiments_record, model_params, model_fig_drt
 
 def main(model_params):
 
-    MyNet = Network(dataDirectory = model_params.kwargs["dataDirectory"], \
+    MyNet = Hw1(dataDirectory = model_params.kwargs["dataDirectory"], \
                     dataShape = model_params.kwargs["dataShape"], \
-                    modelFile = "custoNet_SLFN.py", \
+                    modelFile = model_params.kwargs["modelFile"], \
                     inputDimension = model_params.kwargs["inputDimension"], \
                     hiddenNode = model_params.kwargs["hiddenNode"], \
                     outputDimension = model_params.kwargs["outputDimension"], \
                     weightInitialization = model_params.kwargs["weightInitialization"], \
                     activationFunction = model_params.kwargs["activationFunction"], \
                     epoch = model_params.kwargs["epoch"], \
-                    batchSize = model_params.kwargs["batchSize"], \
-                    learningGoal = model_params.kwargs["learningGoal"], \
+                    batchSize = 10, \
                     lossFunction = model_params.kwargs["lossFunction"], \
+                    regularizationTerm = model_params.kwargs["regularizationTerm"], \
                     optimizer = model_params.kwargs["optimizer"], \
-                    learningRate = model_params.kwargs["learningRate"], \
-                    betas = model_params.kwargs["betas"], \
-                    eps = model_params.kwargs["eps"], \
-                    weightDecay = model_params.kwargs["weightDecay"])
+                    learningRate = 0.001, \
+                    betas = (0.9, 0.999), \
+                    eps = 1e-08, \
+                    weightDecay = 0.01, \
+                    learningRateDecayScheduler = model_params.kwargs["learningRateDecayScheduler"], \
+                    studentId = model_params.kwargs["studentId"])
 
-    print(f"查看{MyNet.model_params}")
+    print(f"查看 {MyNet.model_params}")
 
     network, model_experiments_record, model_params, model_fig_drt = training_2LayerNet(MyNet, model_params)
 

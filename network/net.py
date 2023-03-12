@@ -7,7 +7,6 @@ import requests
 
 class Network(torch.nn.Module):
 
-    # def __init__(self, nb_neuro, x_train_scaled, y_train_scaled, **kwargs):
     def __init__(self, **model_params):
 
         super().__init__()
@@ -19,11 +18,28 @@ class Network(torch.nn.Module):
         self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.model_params["hiddenNode"]).to(self.device)
         self.linear2 = torch.nn.Linear(self.model_params["hiddenNode"], self.model_params["outputDimension"]).to(self.device)
 
+        # Weight Initailization
+        self.weightInitializing(self.linear1.weight.data)
+        self.weightInitializing(self.linear2.weight.data)
+
         # Record the experiment result
         self.nb_node_pruned = 0
         self.nb_node = self.model_params["hiddenNode"]
 
         self.acceptable = False
+    
+    def weightInitializing(self, weight):
+
+        if self.model_params["weightInitialization"] == "xavierNormal":
+            return torch.nn.init.xavier_normal_(weight)
+        elif self.model_params["weightInitialization"] == "xavierUniform":
+            return torch.nn.init.xavier_uniform_(weight)
+        elif self.model_params["weightInitialization"] == "kaimingNormal":
+            return torch.nn.init.kaiming_normal_(weight)
+        elif self.model_params["weightInitialization"] == "kaimingUniform":
+            return torch.nn.init.kaiming_uniform_(weight)
+        else:
+            return 
     
     def getting_new_net_size(self):
         self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.nb_node).to(self.device)
@@ -68,8 +84,7 @@ class Network(torch.nn.Module):
     # Forward operaion
     def forward(self, reg_strength=0):
         
-        h_relu = self.linear1(self.x).clamp(min=0)
-        output = self.linear2(h_relu)
+        output = self.__activationFunction()
 
         param_val = torch.sum(torch.pow(self.linear2.bias.data, 2)) + \
                     torch.sum(torch.pow(self.linear2.weight.data, 2)) + \
@@ -80,14 +95,12 @@ class Network(torch.nn.Module):
             + self.linear1.weight.data.shape[1] * (self.linear1.weight.data.shape[0] + 1)
         ) * param_val
 
-        if self.model_params["lossFunction"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y)) + reg_term
-        if self.model_params["lossFunction"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y) + reg_term
-        if self.model_params["lossFunction"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y) + reg_term
+        loss = self.lossFunction(output, reg_term)
 
         return (output, loss)
     
-    # Backward operation
-    def backward(self, loss):
+
+    def gettingOptimizer(self):
 
         if self.model_params["optimizer"] == "Adam" : 
             optimizer = torch.optim.Adam(params=self.parameters(), \
@@ -95,6 +108,15 @@ class Network(torch.nn.Module):
                                             betas=self.model_params["betas"], \
                                             eps=self.model_params["eps"], \
                                             weight_decay=self.model_params["weightDecay"])
+            
+        elif self.model_params["optimizer"] == "gradientDescent" : 
+            optimizer = torch.optim.SGD(params=self.parameters(), \
+                                            lr=self.model_params["learningRate"])
+        
+        elif self.model_params["optimizer"] == "Momentum" : 
+            optimizer = torch.optim.SGD(params=self.parameters(), \
+                                            lr=self.model_params["learningRate"], \
+                                            momentum=0.9)
         elif self.model_params["optimizer"] == "AdamW" : 
             optimizer = torch.optim.AdamW(params=self.parameters(), \
                                             lr=self.model_params["learningRate"], \
@@ -102,7 +124,42 @@ class Network(torch.nn.Module):
                                             eps=self.model_params["eps"], \
                                             weight_decay=self.model_params["weightDecay"])
             
+        return optimizer
+    
+    def gettingLearningRateScheduler(self, optimizer):
 
+        if self.model_params["learningRateDecayScheduler"] == "None" :
+            scheduler = None
+
+        elif self.model_params["learningRateDecayScheduler"] == "Cosine" : 
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=150)
+
+        return scheduler
+    
+    def activationFunction(self):
+
+        if self.model_params["activationFunction"] == "tanh":
+            h_tanh = torch.tanh(self.linear1(self.x))
+            output = self.linear2(h_tanh)
+
+        elif self.model_params["activationFunction"] == "ReLU":
+            h_relu = self.linear1(self.x).clamp(min=0)
+            output = self.linear2(h_relu)
+
+        return output
+    
+    def lossFunction(self, output, reg_term):
+
+        if self.model_params["lossFunction"] == "RMSE" : loss = torch.sqrt(torch.nn.functional.mse_loss(output, self.y)) + reg_term
+        if self.model_params["lossFunction"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y) + reg_term
+        if self.model_params["lossFunction"] == "CROSSENTROPYLOSS" : loss = torch.nn.CrossEntropyLoss(output, self.y) + reg_term
+
+        return loss
+    
+    # Backward operation
+    def backward(self, loss):
+
+        optimizer = self.gettingOptimizer()
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -110,48 +167,10 @@ class Network(torch.nn.Module):
 
 class Hw1(Network):
 
-    def __init__(self, **model_params):
-
-        super().__init__()
-        
-        self.model_params = model_params
-        self.setting_device()
-
-        # Initialize
-        self.linear1 = torch.nn.Linear(self.model_params["inputDimension"], self.model_params["hiddenNode"]).to(self.device)
-        self.linear2 = torch.nn.Linear(self.model_params["hiddenNode"], self.model_params["outputDimension"]).to(self.device)
-
-        # Weight Initailization
-        self.__weightInitializing(self.linear1)
-        self.__weightInitializing(self.linear2)
-
-        # Record the experiment result
-        self.nb_node_pruned = 0
-        self.nb_node = self.model_params["hiddenNode"]
-
-        self.acceptable = False
-    
-    def __weightInitializing(self, weight):
-
-        if self.model_params["weightInitialization"] == "Xavier normal":
-            return torch.nn.init.xavier_normal_(weight)
-        elif self.model_params["weightInitialization"] == "Xavier uniform":
-            return torch.nn.init.xavier_uniform_(weight)
-        elif self.model_params["weightInitialization"] == "Kaiming normal":
-            return torch.nn.init.kaiming_normal_(weight)
-        elif self.model_params["weightInitialization"] == "Kaiming uniform":
-            return torch.nn.init.kaiming_uniform_(weight)
-
     # Forward operaion
     def forward(self, reg_strength=0):
         
-        if self.model_params["regularizationTerm"] == "tanh":
-            h_tanh = torch.tanh(self.linear1(self.x))
-            output = self.linear2(h_tanh)
-
-        elif self.model_params["regularizationTerm"] == "ReLU":
-            h_relu = self.linear1(self.x).clamp(min=0)
-            output = self.linear2(h_relu)
+        output = self.activationFunction()
 
         reg_strength = self.model_params["regularizationTerm"]
 
@@ -161,40 +180,18 @@ class Hw1(Network):
                     torch.sum(torch.pow(self.linear1.weight.data, 2))
         reg_term = reg_strength * param_val
 
-        if self.model_params["lossFunction"] == "MSE" : loss = torch.nn.functional.mse_loss(output, self.y) + reg_term
+        loss = self.lossFunction(output, reg_term)
 
         return (output, loss)
 
     # Backward operation
     def backward(self, loss):
 
-        if self.model_params["optimizer"] == "Adam" : 
-            optimizer = torch.optim.Adam(params=self.parameters(), \
-                                            lr=self.model_params["learningRate"], \
-                                            betas=self.model_params["betas"], \
-                                            eps=self.model_params["eps"], \
-                                            weight_decay=self.model_params["weightDecay"])
-            
-        elif self.model_params["optimizer"] == "Gradient descent" : 
-            optimizer = torch.optim.SGD(params=self.parameters(), \
-                                            lr=self.model_params["learningRate"])
-        
-        elif self.model_params["optimizer"] == "Momentum" : 
-            optimizer = torch.optim.SGD(params=self.parameters(), \
-                                            lr=self.model_params["learningRate"], \
-                                            momentum=0.9)
-
-
-        if self.model_params["learningRateDecaySchedule"] == "None" :
-            scheduler = None
-
-        elif self.model_params["learningRateDecaySchedule"] == "Cosine" : 
-            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=150)
-
+        optimizer = self.gettingOptimizer()
+        scheduler = self.gettingLearningRateScheduler(optimizer)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
         if scheduler:
             scheduler.step()
     

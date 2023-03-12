@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 import zipfile
 from io import BytesIO
 
-
+import json
 import uvicorn
 import os
 import requests
@@ -254,11 +254,107 @@ def pipeline_model(request: Request):
    return templates.TemplateResponse("hw1.html",{"request":request, "upload_data":upload_data})
 
 @app.post("/pipeline/model/hw1")
-def pipeline_model(request: Request):
+def pipeline_model(request: Request, \
+                     dataDirectory: str = Form(default=None, max_length=50), \
+                     hiddenNode : str = Form(default=None, max_length=50), \
+                     weightInitialization : str = Form(default=None, max_length=50), \
+                     activationFunction : str = Form(default=None, max_length=50), \
+                     epoch : str = Form(default=None, max_length=50), \
+                     lossFunction : str = Form(default=None, max_length=50), \
+                     regularizationTerm : str = Form(default=None, max_length=50), \
+                     optimizer : str = Form(default=None, max_length=50), \
+                     learningRateDecayScheduler : str = Form(default=None, max_length=50), \
+                     studentId : str = Form(default=None, max_length=50)):
 
    upload_data = os.listdir(f"{root}\\upload_data")
    
-   return templates.TemplateResponse("hw1.html",{"request":request, "upload_data":upload_data})
+   # Get data shape
+   dataShape = ModelParameter.get_dataShape(f"{root}\\upload_data\\{dataDirectory}")
+
+   # Define modelParameter
+   model_params = ModelParameter(dataDirectory=dataDirectory, \
+                                 dataShape=dataShape, \
+                                 inputDimension=dataShape["X"][1], \
+                                 hiddenNode=eval_avoidNone(hiddenNode), \
+                                 outputDimension=dataShape["Y"][1], \
+                                 modelFile = "hw1.py", \
+                                 weightInitialization = weightInitialization, \
+                                 activationFunction = activationFunction, \
+                                 epoch = eval_avoidNone(epoch), \
+                                 lossFunction = lossFunction, \
+                                 regularizationTerm = eval_avoidNone(regularizationTerm), \
+                                 optimizer = optimizer, \
+                                 learningRateDecayScheduler = learningRateDecayScheduler, \
+                                 timestamp=time.strftime("%y%m%d_%H%M%S", time.localtime()), \
+                                 studentId=studentId)
+   
+   # Train model
+   network, model_experiments_record, model_params, model_fig_drt = __model_training(model_params)
+
+   # Save model config a& Perf.
+   saving.writeIntoModelRegistry_hw1(network, model_experiments_record, model_params, model_fig_drt)
+
+   app.mount(
+      f"/model_fig",
+      StaticFiles(directory=Path(__file__).parent.parent.absolute() / "model_fig"), #  / img_drt
+      name="model_fig",
+   )  
+   # print(app.url_path_for('model_fig', path=f'/{model_fig_drt}/Accuracy.png'))
+   return templates.TemplateResponse("hw1.html", \
+            context={"request":request, \
+                     "upload_data":upload_data, \
+                     "dataDirectory":dataDirectory, \
+                     "dataShape":dataShape, \
+                     "hiddenNode":hiddenNode, \
+                     "weightInitialization":weightInitialization, \
+                     "activationFunction":activationFunction, \
+                     "epoch":epoch, \
+                     "lossFunction":lossFunction, \
+                     "regularizationTerm":regularizationTerm, \
+                     "optimizer":optimizer, \
+                     "learningRateDecayScheduler":learningRateDecayScheduler, \
+                     "model_experiments_record":model_experiments_record, \
+                     "trainingLoss":model_experiments_record["experiments_record"]["train"]["mean_loss"], \
+                     "validatingLoss":model_experiments_record["experiments_record"]["valid"]["mean_loss"], \
+                     "url_path_for_trainingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png'), \
+                     "url_path_for_validatingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingLoss.png'), \
+                     })
+
+
+@app.get("/pipeline/model/hw1/ensemble")
+def pipeline_model(request: Request):
+
+   
+   return templates.TemplateResponse("ensemble.html",{"request":request})
+
+# @app.get("/pipeline/model/hw1/ensemble/search")
+# def pipeline_model(request: Request, \
+#                    studentId: str = Form(default=None, max_length=50)):
+  
+#    return templates.TemplateResponse("ensemble.html",{"request":request, \
+#                                                       "inputStudentId":studentId})
+
+@app.post("/pipeline/model/hw1/ensemble/search")
+def pipeline_model(request: Request, \
+                   studentId: str = Form(default=None, max_length=50)):
+   
+   hwPath = Path(f"{root}\\hw\\hw1\\{studentId}.json")
+
+   if hwPath.is_file():
+      with open(f"{hwPath}", "r") as file:
+         existed_data = json.load(file)
+         modelRecord = existed_data[studentId]
+         
+      return templates.TemplateResponse("ensemble.html",{"request":request, \
+                                                      "inputStudentId":studentId, \
+                                                      "modelRecord":modelRecord})
+   else:
+      studentId = "not found"
+      return templates.TemplateResponse("ensemble.html",{"request":request, \
+                                                      "inputStudentId":studentId})
+
+
+
 
 @app.get("/pipeline/model/scenario/SLFN")
 def pipeline_model(request: Request):

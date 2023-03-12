@@ -1,0 +1,10 @@
+{
+    "110356025": [
+        {
+            "ptFileName": "solar_hw1_1.983_230312_212136.pt",
+            "dataDirectory": "solar",
+            "trainLoss": "0.937",
+            "validLoss": "1.983"
+        }
+    ]
+}
