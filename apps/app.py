@@ -26,7 +26,7 @@ file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
-from model_file import ASLFN, SLFN, hw1
+from model_file import ASLFN, SLFN, hw1, ensemble
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
 from ymlEditing import deployingModelToYml, revokingModelToYml, deployingModuleToYml
@@ -333,6 +333,40 @@ def pipeline_model(request: Request):
   
 #    return templates.TemplateResponse("ensemble.html",{"request":request, \
 #                                                       "inputStudentId":studentId})
+
+@app.post("/pipeline/model/hw1/ensemble")
+async def pipeline_model(request: Request, \
+                         studentIdBySearch: str = Form(default=None, max_length=50)):
+   
+   form_data = await request.form()
+   selected_models = [k for k, v in form_data.items() if v == "selected"]
+
+
+   dataDirectory_set = set([model.split("_")[0] for model in selected_models])
+
+   if len(dataDirectory_set) != 1: 
+      return templates.TemplateResponse("ensemble.html",{"request":request, \
+                                                         "checkData": "<Error> Your selected model are trained by different dataset. They can't do ensemble learning."})
+   dataDirectory = dataDirectory_set.pop()
+   validLoss = __model_ensemble(selected_models, dataDirectory)
+
+   # get studentId, model_record
+   hwPath = Path(f"{root}\\hw\\hw1\\{studentIdBySearch}.json")
+   with open(f"{hwPath}", "r") as file:
+      existed_data = json.load(file)
+      modelRecord = existed_data[studentIdBySearch]
+
+   return templates.TemplateResponse("ensemble.html",{"request":request, \
+                                                      "validLoss":f"The validating loss from ensemble model is {validLoss}.", \
+                                                      "inputStudentId":studentIdBySearch, \
+                                                      "modelRecord":modelRecord})
+
+
+def __model_ensemble(selected_models, dataDirectory):
+
+   validLoss = ensemble.ensembling(selected_models, dataDirectory)
+   return validLoss
+
 
 @app.post("/pipeline/model/hw1/ensemble/search")
 def pipeline_model(request: Request, \
