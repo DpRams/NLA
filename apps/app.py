@@ -365,6 +365,7 @@ async def pipeline_model(request: Request, \
 def __model_ensemble(selected_models, dataDirectory):
 
    validLoss = ensemble.ensembling(selected_models, dataDirectory)
+   # validLoss = ensemble.applyVotingRegressor(selected_models, dataDirectory)
    return validLoss
 
 

@@ -8,4 +8,5 @@ matplotlib
 pyyaml
 jinja2
 requests
+torchensemble
 # pip3 install torch torchvision torchaudio

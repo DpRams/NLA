@@ -1,12 +1,14 @@
 import torch 
 import os 
 import numpy as np
+import pandas as pd
 import sys
 from sklearn.preprocessing import StandardScaler
 from pathlib import Path
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler
 from sklearn.preprocessing import StandardScaler
+from torchensemble import VotingRegressor
 
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
@@ -58,6 +60,8 @@ def evaluating_ensemble(model_list, dataDirectory):
 
         # 平均 loss 
         avg_loss_models = np.mean(model_loss_list)
+        # # 最小化 loss 
+        # min_loss_models = min(model_loss_list)
 
         loss_per_epoch.append(avg_loss_models)
 
@@ -70,3 +74,40 @@ def evaluating_ensemble(model_list, dataDirectory):
 
 
 
+
+# def votingEnsembling(selected_models):
+
+#     estimators = {}
+#     for model in selected_models:
+#         ptPath = Path(f"{root}\\model_registry\\pt\\{model}")
+#         estimators[model] = torch.load(ptPath)
+
+#     return list(estimators.values())
+
+# def applyVotingRegressor(selected_models, dataDirectory):
+
+#     estimators = votingEnsembling(selected_models)
+#     model1 = estimators[0]
+#     model2 = estimators[1]
+#     ensemble_model = VotingRegressor(estimator=estimators, n_estimators=len(estimators))
+#     batchSize = __getDatasetLength(dataDirectory)
+#     train_loader, val_loader = hw1.reading_dataset_Training_only_2LayerNet(dataDirectory, batchSize)
+
+
+#     ensemble_model.set_optimizer("Adam")
+#     ensemble_model.set_criterion(torch.nn.functional.mse_loss)
+#     ensemble_model.fit(train_loader=train_loader, test_loader=val_loader)
+#     mse = ensemble_model.evaluate(test_loader=val_loader)
+#     # mse = torch.nn.functional.mse_loss(y_val, y_pred)
+
+#     return mse
+        
+
+# def __getDatasetLength(dataDirectory):
+
+#     filelist = os.listdir(f"./upload_data/{dataDirectory}/Train")
+#     file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
+#     filePath_X, filePath_Y = f"./upload_data/{dataDirectory}/Train/{file_x}", f"./upload_data/{dataDirectory}/Train/{file_y}"
+#     df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
+
+#     return len(df_X)

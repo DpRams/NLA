@@ -35,11 +35,11 @@ class CustomDataset(Dataset):
     def __getitem__(self, index):
         return self.X[index], self.y[index]
 
-def reading_dataset_Training_only_2LayerNet(dataDirecotry, batchSize):
+def reading_dataset_Training_only_2LayerNet(dataDirectory, batchSize):
     
-    filelist = os.listdir(f"./upload_data/{dataDirecotry}/Train")
+    filelist = os.listdir(f"./upload_data/{dataDirectory}/Train")
     file_x, file_y = sorted(filelist) # ordered by prefix: X_, Y_
-    filePath_X, filePath_Y = f"./upload_data/{dataDirecotry}/Train/{file_x}", f"./upload_data/{dataDirecotry}/Train/{file_y}"
+    filePath_X, filePath_Y = f"./upload_data/{dataDirectory}/Train/{file_x}", f"./upload_data/{dataDirectory}/Train/{file_y}"
     df_X, df_Y = pd.read_csv(filePath_X), pd.read_csv(filePath_Y)
 
     # StandardScaler
