@@ -1,0 +1,1 @@
+{"110356020": [{"ptFileName": "solar_hw1_1.201_230320_210853.pt", "dataDirectory": "solar", "trainLoss": "1.244", "validLoss": "1.201"}, {"ptFileName": "solar_hw1_2.641_230320_211302.pt", "dataDirectory": "solar", "trainLoss": "2.113", "validLoss": "2.641"}, {"ptFileName": "solar_hw1_4.156_230320_211639.pt", "dataDirectory": "solar", "trainLoss": "2.58", "validLoss": "4.156"}]}

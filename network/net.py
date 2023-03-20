@@ -84,7 +84,7 @@ class Network(torch.nn.Module):
     # Forward operaion
     def forward(self, reg_strength=0):
         
-        output = self.__activationFunction()
+        output = self.activationFunction()
 
         param_val = torch.sum(torch.pow(self.linear2.bias.data, 2)) + \
                     torch.sum(torch.pow(self.linear2.weight.data, 2)) + \
