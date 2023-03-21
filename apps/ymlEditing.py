@@ -86,3 +86,21 @@ def deployingModuleToYml(module_name, testing=True):
     with open("developer_upload\\timeTmp", 'w') as file:
         file.write(time.strftime("%y%m%d_%H%M%S", time.localtime()))
         file.close()
+
+
+def trainHw1Model(module_name):
+
+
+    ymlDict = {"stages": ["train"],
+               "train": {"stage": "train", "tags": runner_tags, \
+                          "script": ["echo \"train\"", f"cd developer_upload\\{module_name}", \
+                                    f"tar -xf {module_name}.zip", \
+                                    f"python hw1.py"], \
+                          "rules": [{"changes": ["developer_upload/timeTmp"]}]}}
+
+    with open(".\\.gitlab-ci.yml", 'w') as file:
+        yaml.dump(ymlDict, file)
+
+    with open("developer_upload\\timeTmp", 'w') as file:
+        file.write(time.strftime("%y%m%d_%H%M%S", time.localtime()))
+        file.close()

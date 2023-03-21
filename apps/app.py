@@ -29,7 +29,7 @@ sys.path.append(str(root))
 from model_file import ASLFN, SLFN, hw1, ensemble
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
-from ymlEditing import deployingModelToYml, revokingModelToYml, deployingModuleToYml
+from ymlEditing import deployingModelToYml, revokingModelToYml, deployingModuleToYml, trainHw1Model
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -56,11 +56,13 @@ def pipeline_platform(request: Request):
 
 @app.post("/pipeline/develop")
 def pipeline_platform(request: Request, \
+                     uploaded_module_hw1: UploadFile = File(default=None), \
                      uploaded_module_matching: UploadFile = File(default=None), \
                      uploaded_module_cramming: UploadFile = File(default=None), \
                      uploaded_module_reorganizing: UploadFile = File(default=None)):
 
-   module = uploaded_module_matching if uploaded_module_matching \
+   module = uploaded_module_hw1 if uploaded_module_hw1 \
+                     else uploaded_module_matching if uploaded_module_matching \
                      else uploaded_module_cramming if uploaded_module_cramming \
                      else uploaded_module_reorganizing
    
@@ -92,22 +94,28 @@ def pipeline_platform(request: Request, \
       return {"message": "The uploaded file is not a .zip file"}
    
    if __is_success:
-      deployingModuleToYml(module_name, testing=False)
+      if uploaded_module_hw1:
+         trainHw1Model(module_name)
+      else:
+         deployingModuleToYml(module_name, testing=False)
       autoPush.main()
+
    return {"message": f"Successfully uploaded {module.filename}"}
 
    # return templates.TemplateResponse("develop.html",{"request":request})
+
+@app.get("/pipeline/develop/hw1", responses={200:{"description":"An example of hw1"}})
+async def develop_matching():
+   # Get filenames from the database
+   path = Path("developer_example\\hw1")
+   file_list = [str(file) for file in path.glob("**/*")]
+   return zipfiles(file_list)
 
 @app.get("/pipeline/develop/matching", responses={200:{"description":"An example of matching modules"}})
 async def develop_matching():
    # Get filenames from the database
    path = Path("developer_example\\matching")
    file_list = [str(file) for file in path.glob("**/*")]
-   # os.chdir(f"{root}\\developer_example\\")
-   # path = Path("\\matching-ramsay")
-   # file_list = [str(file) for file in path.glob("**/*")]
-   # print(file_list)
-   # os.chdir(f"{root}")
    return zipfiles(file_list)
 
 @app.get("/pipeline/develop/cramming", responses={200:{"description":"An example of cramming modules"}})

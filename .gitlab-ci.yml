@@ -1,16 +1,14 @@
-deploy:
+stages:
+- train
+train:
   rules:
   - changes:
     - developer_upload/timeTmp
   script:
-  - echo "deploy"
-  - docker
-  - cd developer_upload\reorganizing-susan
-  - tar -xf reorganizing-susan.zip
-  - docker build -t reorganizing-susan:latest -f rootuser.Dockerfile .
-  - 'docker run --name reorganizing-susan -p 8623:8005 -d reorganizing-susan:latest '
-  stage: deploy
+  - echo "train"
+  - cd developer_upload\hw1-110356020
+  - tar -xf hw1-110356020.zip
+  - python hw1.py
+  stage: train
   tags:
   - AILab
-stages:
-- deploy
