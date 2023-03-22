@@ -91,7 +91,9 @@ def pipeline_platform(request: Request, \
          module.file.close()
          __is_success = True
    else:
-      return {"message": "The uploaded file is not a .zip file"}
+      wait_seconds = 3
+      message = "The uploaded file is not a .zip file"
+      redirect_url = "http://140.119.19.87/pipeline/develop"
    
    if __is_success:
       if uploaded_module_hw1:
@@ -100,9 +102,15 @@ def pipeline_platform(request: Request, \
          deployingModuleToYml(module_name, testing=False)
       autoPush.main()
 
-   return {"message": f"Successfully uploaded {module.filename}"}
+      wait_seconds = 15
+      message = "The uploaded file is not a .zip file"
+      redirect_url = "http://140.119.19.87/pipeline/model/hw1/ensemble"
 
-   # return templates.TemplateResponse("develop.html",{"request":request})
+   # return {"message": f"Successfully uploaded {module.filename}"}
+   return templates.TemplateResponse("redirect.html",{"request":request, \
+                                                      "message":message, \
+                                                      "redirect_url":redirect_url, \
+                                                      "wait_seconds":wait_seconds})
 
 @app.get("/pipeline/develop/hw1", responses={200:{"description":"An example of hw1"}})
 async def develop_matching():
