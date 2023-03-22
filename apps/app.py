@@ -103,7 +103,7 @@ def pipeline_platform(request: Request, \
       autoPush.main()
 
       wait_seconds = 15
-      message = "The uploaded file is not a .zip file"
+      message = f"Successfully uploaded {module.filename}"
       redirect_url = "http://140.119.19.87/pipeline/model/hw1/ensemble"
 
    # return {"message": f"Successfully uploaded {module.filename}"}
