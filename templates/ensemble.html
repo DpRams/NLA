@@ -124,12 +124,16 @@
       background-color: #f2f2f2;
       cursor: pointer; /* Add a pointer to the header cells */
     }
+    th::after{
+      content: " ↕️";
+    }
     .asc:after {
       content: " ▲";
     }
     .desc:after {
       content: " ▼";
     }
+    
   </style>
 
 
@@ -210,11 +214,11 @@
                 <table class="table table-striped" id="myTable">
                   <thead>
                     <tr>
-                      <th scope="col">checkbox</th>
-                      <th scope="col" onclick="sortTable(1);">Model name</th>
-                      <th scope="col" onclick="sortTable(2);">Data</th>
-                      <th scope="col" onclick="sortTable(3);">Training loss</th>
-                      <th scope="col" onclick="sortTable(4);">Validating loss</th>
+                      <th scope="col" onclick="sortTable(0);">checkbox</th>
+                      <th scope="col" onclick="sortTable(1);">Model name&nbsp;</th>
+                      <th scope="col" onclick="sortTable(2);">Data&nbsp;</th>
+                      <th scope="col" onclick="sortTable(3);">Training loss&nbsp;</th>
+                      <th scope="col" onclick="sortTable(4);">Validating loss&nbsp;</th>
                     </tr>
                   </thead>
                   <tbody>

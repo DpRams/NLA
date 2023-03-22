@@ -106,7 +106,6 @@ def pipeline_platform(request: Request, \
       message = f"Successfully uploaded {module.filename}"
       redirect_url = "http://140.119.19.87/pipeline/model/hw1/ensemble"
 
-   # return {"message": f"Successfully uploaded {module.filename}"}
    return templates.TemplateResponse("redirect.html",{"request":request, \
                                                       "message":message, \
                                                       "redirect_url":redirect_url, \
