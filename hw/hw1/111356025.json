@@ -1,1 +1,1 @@
-{"111356025": [{"ptFileName": "hospice_hw1_1.937_230411_140611.pt", "dataDirectory": "hospice", "trainLoss": "1.914", "validLoss": "1.937"}]}
+{"111356025": [{"ptFileName": "hospice_hw1_1.937_230411_140611.pt", "dataDirectory": "hospice", "trainLoss": "1.914", "validLoss": "1.937"}, {"ptFileName": "hospice_hw1_4.641_230411_141120.pt", "dataDirectory": "hospice", "trainLoss": "2.012", "validLoss": "4.641"}]}
