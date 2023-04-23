@@ -7,14 +7,14 @@ import requests
 # Step 1. 填寫下面的變數，變數請從右方註解中挑選
 
 dataDirectory = "hospice"              # "solar", "hospice"
-hiddenNode = "20"                 # any integer
-weightInitialization = "xavierNormal"       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
-activationFunction = "ReLU"         # "ReLU", "tanh"
-epoch = "15"                      # any integer
+hiddenNode = "18"                 # any integer
+weightInitialization = "xavierUniform"       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
+activationFunction = tanh""         # "ReLU", "tanh"
+epoch = "26"                      # any integer
 lossFunction = "MSE"  
-regularizationTerm = "0.001"         # "0", "0.001", "0.0001"
+regularizationTerm = "0"         # "0", "0.001", "0.0001"
 optimizer = "gradientDescent"                  # "Adam", "gradientDescent", "Momentum"
-learningRateDecayScheduler = "Cosine" # "None", "Cosine"
+learningRateDecayScheduler = "None" # "None", "Cosine"
 studentId = "110356021"                  # Your student ID, e.g., "110356021"
 
 # Step 2. 壓縮 hw1 資料夾，並編輯名稱為 "hw1-{studentId}.zip", e.g., hw1-110356021.zip 
