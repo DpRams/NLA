@@ -96,8 +96,8 @@ async def handle_code_submission(submission: CodeSubmission):
    trainHw1Model_noZip(folderName)
    autoPush.main()
 
-   wait_seconds = 5
-   message = f"Successfully pushed {folderName}, after"
+   wait_seconds = 10
+   message = f"Successfully pushed {folderName}"
    redirect_url = "http://140.119.19.87/pipeline/model/hw1/ensemble"
 
    return {"message": message,
@@ -966,4 +966,4 @@ def changingStatus(modelId):
 
 
 if __name__ == '__main__':
-	uvicorn.run("app:app", host="127.0.0.1", port=8000) # 若有 rewrite file 可能不行 reload=True，不然會一直重開 by 李忠大師
+	uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True) # 若有 rewrite file 可能不行 reload=True，不然會一直重開 by 李忠大師
