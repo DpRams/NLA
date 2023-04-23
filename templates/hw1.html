@@ -107,6 +107,7 @@
   </script>
 
   <script type="text/javascript" src="/static/js/script_model_2.js"></script>
+
     
   </head>
   <body>
@@ -160,7 +161,10 @@
                   <div class="form-floating mb-3">
                     <select class="form-select" id="select_data" placeholder="10" name="dataDirectory" method="GET"  style="font-size:15px;"> 
                       {% for dataDir in upload_data %}
-                      <option value= "{{dataDir}}" SELECTED>{{dataDir}}</option>"
+                        {% if dataDir == dataDirectory %}
+                          <option value= "{{dataDir}}" selected>{{dataDir}}</option>
+                        {% endif %}
+                        <option value= "{{dataDir}}">{{dataDir}}</option>
                       {% endfor %}
                     </select>
                     <label for="select_data">Data option</label>
@@ -184,7 +188,7 @@
               </p>
              
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode" value="10" required>
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="hiddenNode" value="{{hiddenNode}}" required>
                 <label for="floatingInput">Hidden layer node</label>
               </div>
               <p class="col-md-12 fs-6">3. Weight initialization is a procedure to set the 
@@ -193,12 +197,13 @@
               </p>
 
               <div class="form-floating mb-3">
-                <select class="form-select" id="select_weightInitialization" placeholder="10" name="weightInitialization" method="GET"  style="font-size:15px;"> 
-                  <option value= "xavierNormal" SELECTED>Xavier Normal</option>
-                  <option value= "xavierUniform" >Xavier Uniform</option>
-                  <option value= "kaimingNormal" >Kaiming Normal</option>
-                  <option value= "kaimingUniform" >Kaiming Uniform</option>
+                <select class="form-select" id="select_weightInitialization" placeholder="10" name="weightInitialization" method="GET" style="font-size:15px;"> 
+                  <option value="xavierNormal" {% if weightInitialization == "xavierNormal" %}selected{% endif %}>Xavier Normal</option>
+                  <option value="xavierUniform" {% if weightInitialization == "xavierUniform" %}selected{% endif %}>Xavier Uniform</option>
+                  <option value="kaimingNormal" {% if weightInitialization == "kaimingNormal" %}selected{% endif %}>Kaiming Normal</option>
+                  <option value="kaimingUniform" {% if weightInitialization == "kaimingUniform" %}selected{% endif %}>Kaiming Uniform</option>
                 </select>
+                
                 <label for="select_weightInitialization">Weight Initialization</label>
               </div>
 
@@ -209,9 +214,9 @@
               </p>
 
               <div class="form-floating mb-3">
-                <select class="form-select" id="select_activationFunction" placeholder="10" name="activationFunction" method="GET"  style="font-size:15px;"> 
-                  <option value= "ReLU" SELECTED>ReLU</option>
-                  <option value= "tanh" >tanh</option>
+                <select class="form-select" id="select_activationFunction" placeholder="10" name="activationFunction" value="{{activationFunction}}" method="GET"  style="font-size:15px;"> 
+                  <option value= "ReLU" {% if activationFunction == "ReLU" %}selected{% endif %}>ReLU</option>
+                  <option value= "tanh" {% if activationFunction == "tanh" %}selected{% endif %}>tanh</option>
                 </select>
                 <label for="select_activationFunction">Activation function</label>
               </div>
@@ -225,8 +230,7 @@
               <div class="form-floating mb-3">
                 <select class="form-select" id="select_loss" placeholder="10" name="lossFunction" method="GET"
                   style="font-size:15px;" onclick="showLossFunctionEquation()">
-                  <option value="MSE" SELECTED>MSE</option>
-                  <!-- <option value="CROSSENTROPYLOSS">CROSSENTROPYLOSS</option> -->
+                  <option value="MSE" {% if lossFunction == "MSE" %}selected{% endif %}>MSE</option>
                 </select>
                 <label for="select_loss">Loss function</label>
               </div>
@@ -242,9 +246,9 @@
               <div class="form-floating mb-3">
                 <select class="form-select" id="select_RegularizationTerm" placeholder="10" name="regularizationTerm" method="GET"
                   style="font-size:15px;">
-                  <option value="0" SELECTED>None</option>
-                  <option value="0.001">L2 norm with lambda = 0.001</option>
-                  <option value="0.0001">L2 norm with lambda = 0.0001</option>
+                  <option value="0" {% if regularizationTerm == "0" %}selected{% endif %}>None</option>
+                  <option value="0.001" {% if regularizationTerm == "0.001" %}selected{% endif %}>L2 norm with lambda = 0.001</option>
+                  <option value="0.0001" {% if regularizationTerm == "0.0001" %}selected{% endif %}>L2 norm with lambda = 0.0001</option>
                 </select>
                 <label for="select_RegularizationTerm">Regularization term</label>
               </div>
@@ -256,10 +260,10 @@
               </p>
 
               <div class="form-floating mb-3">
-                <select class="form-select" id="select_optim" placeholder="10" name="optimizer" method="GET"  style="font-size:15px;" onclick="showOptimizerParameters()"> 
-                  <option value= "Adam" SELECTED>Adam</option>
-                  <option value= "gradientDescent" >Gradient descent</option>
-                  <option value= "Momentum" >Momentum</option>
+                <select class="form-select" id="select_optim" placeholder="10" name="optimizer" method="GET" style="font-size:15px;" onclick="showOptimizerParameters()"> 
+                  <option value= "Adam" {% if optimizer == "Adam" %}selected{% endif %}>Adam</option>
+                  <option value= "gradientDescent" {% if optimizer == "gradientDescent" %}selected{% endif %}>Gradient descent</option>
+                  <option value= "Momentum" {% if optimizer == "Momentum" %}selected{% endif %}>Momentum</option>
                 </select>
                 <label for="select_optim">Optimizer</label>
               </div>
@@ -270,7 +274,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="epoch" value="10" required>
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="epoch" value="{{epoch}}" required>
                 <label for="floatingInput">Epoch</label>
               </div>
             
@@ -282,8 +286,8 @@
 
               <div class="form-floating mb-3">
                 <select class="form-select" id="select_LearningRateDecaySchedule" placeholder="10" name="learningRateDecayScheduler" method="GET"  style="font-size:15px;" onclick="showOptimizerParameters()"> 
-                  <option value= "None" SELECTED>None</option>
-                  <option value= "Cosine" >Cosine</option>
+                  <option value= "None" {% if learningRateDecayScheduler == "None" %}selected{% endif %}>None</option>
+                  <option value= "Cosine" {% if learningRateDecayScheduler == "Cosine" %}selected{% endif %}>Cosine</option>
                 </select>
                 <label for="select_LearningRateDecaySchedule">Learning rate decay schedule</label>
               </div>
@@ -300,7 +304,7 @@
               </p>
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="studentId" value="110356021" required>
+                <input type="text" class="form-control" id="floatingInput" placeholder="10" name="studentId" value="{{studentId}}" required>
                 <label for="floatingInput">Student ID</label>
               </div>
               
@@ -428,28 +432,6 @@
 
       </div>
     </div>
-
-    <script type="text/javascript">
-  
-      // function checkFields(event) {
-      //   const inputs = document.querySelectorAll('input[type="text"]');
-      //   console.log(inputs);
-
-      //   let alertShown = false;
-      //   for (let i = 0; i < inputs.length; i++) {
-
-      //     if (inputs[i].value === "") {
-      //       alert('Please fill out all fields');
-      //       event.preventDefault(); // prevent form submission
-      //       return;
-      //     }
-          
-      //   }
-      //   alert('The model is training!');
-      // }
-
-    </script>
-  
 
     <footer class="pt-3 mt-4 text-muted border-top">
       © 2022

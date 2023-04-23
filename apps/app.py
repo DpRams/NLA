@@ -328,6 +328,7 @@ def pipeline_model(request: Request, \
                      "regularizationTerm":regularizationTerm, \
                      "optimizer":optimizer, \
                      "learningRateDecayScheduler":learningRateDecayScheduler, \
+                     "studentId":studentId, \
                      "model_experiments_record":model_experiments_record, \
                      "trainingLoss":model_experiments_record["experiments_record"]["train"]["mean_loss"], \
                      "validatingLoss":model_experiments_record["experiments_record"]["valid"]["mean_loss"], \
