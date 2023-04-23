@@ -16,6 +16,7 @@ import autoPush
 import autoStartContainer
 import numpy as np
 import pandas as pd
+from pydantic import BaseModel
 import readingDockerTmp
 
 # testing
@@ -29,7 +30,7 @@ sys.path.append(str(root))
 from model_file import ASLFN, SLFN, hw1, ensemble
 from modelParameter import ModelParameter
 from apps import evaluating, saving 
-from ymlEditing import deployingModelToYml, revokingModelToYml, deployingModuleToYml, trainHw1Model
+from ymlEditing import deployingModelToYml, revokingModelToYml, deployingModuleToYml, trainHw1Model, trainHw1Model_noZip
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -53,6 +54,65 @@ def entry(request: Request):
 @app.get("/pipeline/develop")
 def pipeline_platform(request: Request):
    return templates.TemplateResponse("develop.html",{"request":request})
+
+class CodeRequest(BaseModel):
+    code: str
+
+@app.get("/pipeline/develop/editor/hw1")
+def pipeline_platform(request: Request):
+   return templates.TemplateResponse("develop-hw1.html",{"request":request})
+
+class CodeSubmission(BaseModel):
+   code: str
+   studentId: str
+
+@app.post("/submit-code")
+async def handle_code_submission(submission: CodeSubmission): # 
+   code = submission.code
+   studentId = submission.studentId
+
+   # Process the code as needed
+   result = "Code received: " + code
+   
+   print(result, studentId)
+
+   return {"result": result, "studentId":studentId} # 
+
+@app.post("/pipeline/develop/editor/hw1/submit-code")
+async def handle_code_submission(submission: CodeSubmission):
+   code = submission.code
+   studentId = submission.studentId
+
+   fileName = f"hw1.py"
+   folderName = f"hw1-{studentId}"
+   dir_path = Path(f"{root}\\developer_upload\\{folderName}")
+   if not dir_path.exists(): dir_path.mkdir(parents=True)
+
+   dir_path_str = str(dir_path)
+
+   with open(f"{dir_path_str}\\{fileName}", "w", encoding="utf-8") as file:
+      file.write(code)
+
+   trainHw1Model_noZip(folderName)
+   autoPush.main()
+
+   wait_seconds = 15
+   message = f"Successfully pushed {folderName}"
+   redirect_url = "http://140.119.19.87/pipeline/model/hw1/ensemble"
+
+   return templates.TemplateResponse("redirect.html",{"message":message, \
+                                                      "redirect_url":redirect_url, \
+                                                      "wait_seconds":wait_seconds})
+
+   # 先將 code 寫成一個 py file，再存成一個 zip file。
+   # call post("/pipeline/develop") API。
+
+@app.post("/pipeline/develop/editor/hw1")
+def pipeline_platform(request: CodeRequest):
+   code = request.code
+   # 在这里进行代码处理，并返回处理结果
+   result = eval(code)
+   return {"code": code}
 
 @app.post("/pipeline/develop")
 def pipeline_platform(request: Request, \
