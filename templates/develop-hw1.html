@@ -330,6 +330,19 @@ else:
 
                 const result = await response.json();
                 console.log(result);
+
+                // 处理重定向
+                if (result.redirect_url) {
+                    // 显示消息（可选）
+                    if (result.message) {
+                        alert(result.message);
+                    }
+
+                    // 等待指定的时间（以毫秒为单位）后进行重定向
+                    setTimeout(() => {
+                        window.location.href = result.redirect_url;
+                    }, result.wait_seconds * 1000);
+                }
               }
             </script>
 

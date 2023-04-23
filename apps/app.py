@@ -100,9 +100,9 @@ async def handle_code_submission(submission: CodeSubmission):
    message = f"Successfully pushed {folderName}"
    redirect_url = "http://140.119.19.87/pipeline/model/hw1/ensemble"
 
-   return templates.TemplateResponse("redirect.html",{"message":message, \
-                                                      "redirect_url":redirect_url, \
-                                                      "wait_seconds":wait_seconds})
+   return {"message": message,
+        "redirect_url": redirect_url,
+        "wait_seconds": wait_seconds}
 
    # 先將 code 寫成一個 py file，再存成一個 zip file。
    # call post("/pipeline/develop") API。
