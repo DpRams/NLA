@@ -6,8 +6,7 @@ train:
     - developer_upload/timeTmp
   script:
   - echo "train"
-  - cd developer_upload\hw1
-  - tar -xf hw1.zip
+  - cd developer_upload\hw1-110356021
   - python hw1.py
   stage: train
   tags:
