@@ -58,7 +58,7 @@ def pipeline_platform(request: Request):
 class CodeRequest(BaseModel):
     code: str
 
-@app.get("/pipeline/develop/editor/hw1")
+@app.get("/pipeline/develop/editor/hw1/submit-code")
 def pipeline_platform(request: Request):
    return templates.TemplateResponse("develop-hw1.html",{"request":request})
 
