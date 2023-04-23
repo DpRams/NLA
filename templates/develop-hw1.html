@@ -256,6 +256,7 @@ else:
 
             <!-- 在 HTML 页面中定义一个按钮元素，用于提交代码 -->
 
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
             <!-- 在 JavaScript 中初始化 CodeMirror 编辑器 -->
             <script>
@@ -333,9 +334,15 @@ else:
 
                 // 处理重定向
                 if (result.redirect_url) {
-                    // 显示消息（可选）
+                    // 显示消息（使用SweetAlert2）
                     if (result.message) {
-                        alert(result.message);
+                        Swal.fire({
+                            title: result.message,
+                            icon: 'success',
+                            timer: result.wait_seconds * 1000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                     }
 
                     // 等待指定的时间（以毫秒为单位）后进行重定向
