@@ -9,7 +9,7 @@ import requests
 dataDirectory = "hospice"              # "solar", "hospice"
 hiddenNode = "18"                 # any integer
 weightInitialization = "xavierUniform"       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
-activationFunction = tanh""         # "ReLU", "tanh"
+activationFunction = "tanh"         # "ReLU", "tanh"
 epoch = "26"                      # any integer
 lossFunction = "MSE"  
 regularizationTerm = "0"         # "0", "0.001", "0.0001"
