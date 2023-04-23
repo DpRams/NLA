@@ -107,12 +107,12 @@ async def handle_code_submission(submission: CodeSubmission):
    # 先將 code 寫成一個 py file，再存成一個 zip file。
    # call post("/pipeline/develop") API。
 
-@app.post("/pipeline/develop/editor/hw1")
-def pipeline_platform(request: CodeRequest):
-   code = request.code
-   # 在这里进行代码处理，并返回处理结果
-   result = eval(code)
-   return {"code": code}
+# @app.post("/pipeline/develop/editor/hw1")
+# def pipeline_platform(request: CodeRequest):
+#    code = request.code
+#    # 在这里进行代码处理，并返回处理结果
+#    result = eval(code)
+#    return {"code": code}
 
 @app.post("/pipeline/develop")
 def pipeline_platform(request: Request, \
