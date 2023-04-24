@@ -94,42 +94,6 @@
       /* This adds padding to the box to maintain its space */
     }
 
-    /* Make CodeMirror's container responsive */
-    .CodeMirror {
-      width: 100%;
-      height: 200%;
-    }
-
-    /* Adjust CodeMirror's height based on screen size */
-    @media (max-width: 575px) {
-      .CodeMirror {
-        height: 550px;
-      }
-    }
-
-    @media (min-width: 576px) and (max-width: 767px) {
-      .CodeMirror {
-        height: 600px;
-      }
-    }
-
-    @media (min-width: 768px) and (max-width: 991px) {
-      .CodeMirror {
-        height: 700px;
-      }
-    }
-
-    @media (min-width: 992px) and (max-width: 1199px) {
-      .CodeMirror {
-        height: 800px;
-      }
-    }
-
-    @media (min-width: 1200px) {
-      .CodeMirror {
-        height: 900px;
-      }
-    }
     .code-editor-container .CodeMirror {
       height: 500px; /* 设置一个默认高度 */
       width: 100%; /* 使宽度始终占据 100% 父容器 */
@@ -216,9 +180,6 @@ optimizer = "gradientDescent"                  # "Adam", "gradientDescent", "Mom
 learningRateDecayScheduler = "None" # "None", "Cosine"
 studentId = "110356021"                  # Your student ID, e.g., "110356021"
 
-# Step 2. 壓縮 hw1 資料夾，並編輯名稱為 "hw1-{studentId}.zip", e.g., hw1-110356021.zip 
-# Step 3. 於 http://140.119.19.87/pipeline/develop 上傳壓縮檔即可
-
 # 以上皆為待填區域
 ###################################
 
@@ -276,7 +237,7 @@ else:
             <!-- 在 JavaScript 中初始化 CodeMirror 编辑器 -->
             <script>
               const defaultCode_INPUT = `
-import requests
+              import requests
 
 
 ###################################
@@ -294,9 +255,6 @@ regularizationTerm = ""         # "0", "0.001", "0.0001"
 optimizer = ""                  # "Adam", "gradientDescent", "Momentum"
 learningRateDecayScheduler = "" # "None", "Cosine"
 studentId = ""                  # Your student ID, e.g., "110356021"
-
-# Step 2. 壓縮 hw1 資料夾，並編輯名稱為 "hw1-{studentId}.zip", e.g., hw1-110356021.zip 
-# Step 3. 於 http://140.119.19.87/pipeline/develop 上傳壓縮檔即可
 
 # 以上皆為待填區域
 ###################################
