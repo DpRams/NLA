@@ -382,7 +382,7 @@ else:
 
         <div class="row align-items-md-stretch p-3">
           <div class="mb-1" Align="center">
-            <button onclick="submitCode()" class="btn btn-outline-primary btn-lg">Submit Code</button>
+            <button onclick="submitCode()" class="btn btn-outline-primary btn-lg" id="submitButton">Submit Code</button>
           </div>
         </div>
 
@@ -397,6 +397,29 @@ else:
       </div>
 
       <script type="text/javascript" src="/static/js/script_develop.js"></script>
+      <script type="text/javascript" >
+        function checkStudentId() {
+          const studentIdInput = document.getElementById("floatingInput");
+          const submitButton = document.getElementById("submitButton");
+
+          if (studentIdInput.value.trim() !== "") {
+            submitButton.disabled = false;
+          } else {
+            submitButton.disabled = true;
+          }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          // 页面加载时检查 studentId
+          checkStudentId();
+
+          // 当 studentId 值更改时，重新检查
+          const studentIdInput = document.getElementById("floatingInput");
+          studentIdInput.addEventListener("input", checkStudentId);
+        });
+
+      </script>
+      
 
 
       <footer class="pt-3 mt-4 text-muted border-top">
