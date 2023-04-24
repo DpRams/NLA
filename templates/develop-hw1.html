@@ -96,8 +96,8 @@
 
     /* Make CodeMirror's container responsive */
     .CodeMirror {
-      width: 500px;
-      height: 1000px;
+      width: 100%;
+      height: 200%;
     }
 
     /* Adjust CodeMirror's height based on screen size */
@@ -128,6 +128,16 @@
     @media (min-width: 1200px) {
       .CodeMirror {
         height: 900px;
+      }
+    }
+    .code-editor-container .CodeMirror {
+      height: 500px; /* 设置一个默认高度 */
+      width: 100%; /* 使宽度始终占据 100% 父容器 */
+    }
+
+    @media (max-width: 767px) {
+      .code-editor-container .CodeMirror {
+        height: 300px; /* 在较小的屏幕上设置较小的高度 */
       }
     }
   </style>
@@ -165,9 +175,9 @@
 
       <!-- <form method="post" enctype="multipart/form-data" action="/submit-code"> -->
 
-      <div class="row align-items-md-stretch p-3">
+      <div class="row align-items-md-stretch p-1">
         <div class="col-md-6">
-          <div class="p-5 mb-4 bg-light rounded-3">
+          <div class="p-2 mb-4 bg-light rounded-3">
 
             <!-- 引入 CodeMirror 库的 CSS 和 JavaScript 文件 -->
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.css" />
@@ -177,7 +187,9 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.js"></script>
 
             <!-- 在 HTML 页面中定义一个 textarea 元素，用于用户输入代码 -->
-            <textarea id="code-editor_RO"></textarea>
+            <div class="code-editor-container">
+              <textarea id="code-editor_RO"></textarea>
+            </div>
 
             <!-- 在 HTML 页面中定义一个 div 元素，用于显示代码的运行结果 -->
             <div id="output_RO"></div>
@@ -247,10 +259,12 @@ else:
         </div>
 
         <div class="col-md-6">
-          <div class="p-5 mb-4 bg-light rounded-3">
+          <div class="p-2 mb-4 bg-light rounded-3">
 
             <!-- 在 HTML 页面中定义一个 textarea 元素，用于用户输入代码 -->
-            <textarea id="code-editor_INPUT" name="codeInput"></textarea>
+            <div class="code-editor-container">
+              <textarea id="code-editor_INPUT"></textarea>
+            </div>
 
             <!-- 在 HTML 页面中定义一个 div 元素，用于显示代码的运行结果 -->
             <div id="output_INPUT"></div>
