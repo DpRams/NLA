@@ -135,7 +135,8 @@
     }
     
   </style>
-
+  
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- <script type="text/javascript" src="{{ url_for('static', path='/js/script_deploy.js') }}"></script> -->
   <!-- <script type="text/javascript" src="/static/js/script_deploy.js"></script> -->
@@ -159,6 +160,22 @@
           <span class="fs-4">Teaching Assistant as a Service </span>
         </a>
       </header>
+
+      <a href="#" id="info-link">點擊顯示資訊</a>
+
+      <script>
+        document.getElementById("info-link").addEventListener("click", function(event) {
+          event.preventDefault(); // 防止連結的預設行為
+
+          Swal.fire({
+            title: "資訊標題",
+            // text: "model pt file: 123\nhyperparameters: \n",
+            html: '這裡是顯示的資訊內容。您可以點擊 <a href="https://example.com" target="_blank">這個連結</a> 進行查看。',
+            icon: "info",
+            confirmButtonText: "確定"
+          });
+        });
+      </script>
 
       <div class="p-5 mb-1 bg-light rounded-3">
         <div class="container-fluid py-0">
@@ -231,7 +248,9 @@
                         <label for="{{model.ptFileName}}">Ensemble</label>
 
                       </td>
-                      <td>{{model.ptFileName}}</td>
+                      <td>
+                        {{model.ptFileName}}
+                      </td>
                       <td>{{model.dataDirectory}}</td>
                       <td>{{model.trainLoss}}</td>
                       <td>{{model.validLoss}}</td>

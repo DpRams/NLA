@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, File, UploadFile, Form
+from fastapi import FastAPI, Request, File, UploadFile, Form, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse, StreamingResponse
@@ -395,6 +395,17 @@ def pipeline_model(request: Request, \
                      "url_path_for_trainingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png'), \
                      "url_path_for_validatingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingLoss.png'), \
                      })
+
+# API 路由：下載指定的檔案
+@app.get("/files/{file_name}")
+async def download_file(file_name: str):
+    
+    shared_folder = "C:\Users\user\rams\projcet\model_registry\pt"
+    file_path = os.path.join(shared_folder, file_name)
+    if os.path.exists(file_path):
+        return FileResponse(file_path, media_type="application/octet-stream", filename=file_name)
+    else:
+        raise HTTPException(status_code=404, detail="File not found")
 
 
 @app.get("/pipeline/model/hw1/ensemble")
