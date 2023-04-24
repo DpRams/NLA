@@ -83,7 +83,16 @@ def writeIntoModelRegistry_hw1(network, model_experiments_record, model_params, 
     trainLoss = str(model_experiments_record["experiments_record"]["train"]["mean_loss"])[:5]
     validLoss = str(model_experiments_record["experiments_record"]["valid"]["mean_loss"])[:5]
 
-    new_data = {"ptFileName":ptFileName, "dataDirectory":dataDirectory, "trainLoss":trainLoss, "validLoss":validLoss}
+    new_data = {"ptFileName":ptFileName, "dataDirectory":dataDirectory, "trainLoss":trainLoss, "validLoss":validLoss, 
+                "url":f"http://140.119.19.87/files/{ptFileName}",
+                "hiddenNode":model_params.kwargs["hiddenNode"],
+                "weightInitialization":model_params.kwargs["weightInitialization"],
+                "activationFunction":model_params.kwargs["activationFunction"],
+                "epoch":model_params.kwargs["epoch"],
+                "lossFunction":model_params.kwargs["lossFunction"],
+                "regularizationTerm":model_params.kwargs["regularizationTerm"],
+                "optimizer":model_params.kwargs["optimizer"],
+                "learningRateDecayScheduler":model_params.kwargs["learningRateDecayScheduler"]}
     # new_data = {studentId:[{"ptFileName":ptFileName, "dataDirectory":dataDirectory, "trainLoss":trainLoss, "validLoss":validLoss}]}
     
     hwPath = Path(f"{root}\\hw\\hw1\\{studentId}.json")

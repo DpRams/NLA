@@ -399,13 +399,13 @@ def pipeline_model(request: Request, \
 # API 路由：下載指定的檔案
 @app.get("/files/{file_name}")
 async def download_file(file_name: str):
-    
-    shared_folder = "C:\Users\user\rams\projcet\model_registry\pt"
-    file_path = os.path.join(shared_folder, file_name)
-    if os.path.exists(file_path):
-        return FileResponse(file_path, media_type="application/octet-stream", filename=file_name)
-    else:
-        raise HTTPException(status_code=404, detail="File not found")
+
+   shared_folder = f"{root}\\model_registry\\pt"
+   file_path = os.path.join(shared_folder, file_name)
+   if os.path.exists(file_path):
+      return FileResponse(file_path, media_type="application/octet-stream", filename=file_name)
+   else:
+      raise HTTPException(status_code=404, detail="File not found")
 
 
 @app.get("/pipeline/model/hw1/ensemble")
