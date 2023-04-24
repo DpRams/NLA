@@ -96,8 +96,8 @@
 
     /* Make CodeMirror's container responsive */
     .CodeMirror {
-      width: 100%;
-      height: auto;
+      width: 500px;
+      height: 1000px;
     }
 
     /* Adjust CodeMirror's height based on screen size */
@@ -193,16 +193,16 @@ import requests
 
 # Step 1. 填寫下面的變數，變數請從右方註解中挑選
 
-dataDirectory = ""              # "solar", "hospice"
-hiddenNode = ""                 # any integer
-weightInitialization = ""       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
-activationFunction = ""         # "ReLU", "tanh"
-epoch = ""                      # any integer
+dataDirectory = "hospice"              # "solar", "hospice"
+hiddenNode = "18"                 # any integer
+weightInitialization = "xavierUniform"       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
+activationFunction = "tanh"         # "ReLU", "tanh"
+epoch = "26"                      # any integer
 lossFunction = "MSE"  
-regularizationTerm = ""         # "0", "0.001", "0.0001"
-optimizer = ""                  # "Adam", "gradientDescent", "Momentum"
-learningRateDecayScheduler = "" # "None", "Cosine"
-studentId = ""                  # Your student ID, e.g., "110356021"
+regularizationTerm = "0"         # "0", "0.001", "0.0001"
+optimizer = "gradientDescent"                  # "Adam", "gradientDescent", "Momentum"
+learningRateDecayScheduler = "None" # "None", "Cosine"
+studentId = "110356021"                  # Your student ID, e.g., "110356021"
 
 # Step 2. 壓縮 hw1 資料夾，並編輯名稱為 "hw1-{studentId}.zip", e.g., hw1-110356021.zip 
 # Step 3. 於 http://140.119.19.87/pipeline/develop 上傳壓縮檔即可
@@ -236,7 +236,8 @@ else:
                 mode: "python",
                 lineNumbers: true,
                 theme: "eclipse",
-                readOnly: true
+                readOnly: true,
+                viewportMargin: Infinity
               });
 
               codeEditor_RO.setValue(defaultCode_RO.trim());
@@ -314,7 +315,7 @@ else:
                 theme: "eclipse",
               });
 
-
+              // codeEditor_INPUT.setSize("00px", "400px");
               codeEditor_INPUT.setValue(defaultCode_INPUT.trim());
 
               async function submitCode() {
