@@ -14,7 +14,7 @@ epoch = "35"                      # any integer
 lossFunction = "MSE"  
 regularizationTerm = "0"         # "0", "0.001", "0.0001"
 optimizer = "gradientDescent"                  # "Adam", "gradientDescent", "Momentum"
-learningRateDecayScheduler = "" # "None", "Cosine"
+learningRateDecayScheduler = "None" # "None", "Cosine"
 studentId = "110356021"                  # Your student ID, e.g., "110356021"
 
 # 以上皆為待填區域
