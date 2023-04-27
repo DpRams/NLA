@@ -394,6 +394,7 @@ def pipeline_model(request: Request, \
                      "validatingLoss":model_experiments_record["experiments_record"]["valid"]["mean_loss"], \
                      "url_path_for_trainingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/trainingLoss.png'), \
                      "url_path_for_validatingLoss":app.url_path_for('model_fig', path=f'/{model_fig_drt}/validatingLoss.png'), \
+                     "step2":"step2"
                      })
 
 # API 路由：下載指定的檔案
