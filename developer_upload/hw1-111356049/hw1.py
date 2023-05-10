@@ -6,15 +6,15 @@ import requests
 
 # Step 1. 填寫下面的變數，變數請從右方註解中挑選
 
-dataDirectory = "hospice"              # "solar", "hospice"
-hiddenNode = "15"                 # any integer
-weightInitialization = "xavierUniform"       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
+dataDirectory = ""              # "solar", "hospice"
+hiddenNode = "10"                 # any integer
+weightInitialization = "kaimingNormal"       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
 activationFunction = "ReLU"         # "ReLU", "tanh"
-epoch = "100"                      # any integer
+epoch = "200"                      # any integer
 lossFunction = "MSE"  
 regularizationTerm = "0"         # "0", "0.001", "0.0001"
-optimizer = "gradientDescent"                  # "Adam", "gradientDescent", "Momentum"
-learningRateDecayScheduler = "Cosine" # "None", "Cosine"
+optimizer = "Adam"                  # "Adam", "gradientDescent", "Momentum"
+learningRateDecayScheduler = "None" # "None", "Cosine"
 studentId = "111356049"                  # Your student ID, e.g., "110356021"
 
 # 以上皆為待填區域
