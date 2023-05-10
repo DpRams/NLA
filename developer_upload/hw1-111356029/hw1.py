@@ -6,15 +6,15 @@ import requests
 
 # Step 1. 填寫下面的變數，變數請從右方註解中挑選
 
-dataDirectory = "solar"              # "solar", "hospice"
-hiddenNode = "20"                 # any integer
-weightInitialization = "xavierUniform"       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
-activationFunction = "ReLU"         # "ReLU", "tanh"
-epoch = "50"                      # any integer
+dataDirectory = ""              # "solar", "hospice"
+hiddenNode = ""                 # any integer
+weightInitialization = ""       # "xavierNormal", "xavierUniform", "kaimingNormal", "kaimingUniform"
+activationFunction = ""         # "ReLU", "tanh"
+epoch = ""                      # any integer
 lossFunction = "MSE"  
-regularizationTerm = "0.001"         # "0", "0.001", "0.0001"
-optimizer = "Adam"                  # "Adam", "gradientDescent", "Momentum"
-learningRateDecayScheduler = "None" # "None", "Cosine"
+regularizationTerm = ""         # "0", "0.001", "0.0001"
+optimizer = ""                  # "Adam", "gradientDescent", "Momentum"
+learningRateDecayScheduler = "" # "None", "Cosine"
 studentId = "111356029"                  # Your student ID, e.g., "110356021"
 
 # 以上皆為待填區域
